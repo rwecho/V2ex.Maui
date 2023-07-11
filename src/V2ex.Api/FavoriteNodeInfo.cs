@@ -1,0 +1,31 @@
+﻿using HtmlAgilityPack;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+namespace V2ex.Api;
+
+
+[HasXPath]
+[DebuggerDisplay("{Items.Count,nq}")]
+public class FavoriteNodeInfo
+{
+    [XPath("//a[contains(@class, 'av-node')]")]
+    public List<ItemInfo> Items { get; init; } = new();
+
+    [HasXPath]
+    [DebuggerDisplay("{Name,nq}")]
+    public class ItemInfo
+    {
+        [XPath("/img", "src")]
+        public string Image { get; init; } = null!;
+        [XPath("/span[@class='fav-node-name']")]
+        public string Name { get; init; } = null!;
+        [XPath("/span[@class='f12 fade']")]
+        public string Topics { get; init; } = null!;
+
+        // todo
+        public string Link { get; init; } = null!;
+    }
+}
+ 
