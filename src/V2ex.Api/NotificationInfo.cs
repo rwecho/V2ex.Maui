@@ -26,9 +26,16 @@ public class NotificationInfo
     public List<string> ItemIds { get; set; } = new();
 
     [HasXPath]
-    [DebuggerDisplay("{TopicTitle}")]
+    [DebuggerDisplay("{DebuggerDisplay, nq}")]
     public class NotificationItemInfo
     {
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return $"{this.PreTitle} {this.TopicTitle} {this.PostTitle}";
+            }
+        }
         [XPath("//td//strong")]
         public string UserName { get; set; } = null!;
 

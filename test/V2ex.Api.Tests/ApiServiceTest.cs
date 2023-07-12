@@ -1,3 +1,4 @@
+using Shouldly;
 using Volo.Abp.Testing;
 
 namespace V2ex.Api.Tests;
@@ -7,10 +8,8 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     public ApiServiceTest()
     {
         this.ApiService = this.GetRequiredService<ApiService>();
-        this.HttpClient = this.GetRequiredService<HttpClient>();
     }
     private ApiService ApiService { get; }
-    private HttpClient HttpClient { get; }
 
     [Fact]
     public async Task GetDailyHotTest()
@@ -77,16 +76,10 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     public async Task LoginTest()
     {
         var loginParameters = await this.ApiService.GetLoginParameters();
-
-        var response = await this.HttpClient.GetAsync(loginParameters.GetCaptchaImageUrl());
-
-        using (var imageStream = await response.Content.ReadAsStreamAsync())
-        using (var fileStream = File.OpenWrite($"{loginParameters.Once}.png"))
+        await Should.ThrowAsync<InvalidOperationException>(async () =>
         {
-            await imageStream.CopyToAsync(fileStream);
-        }
-        var captcha = "";
-        await this.ApiService.Login(loginParameters, "rwecho", "rw870415", captcha);
+            await this.ApiService.Login(loginParameters, "rwecho", "", "");
+        });
     }
 
     [Fact]

@@ -1,4 +1,5 @@
-﻿using V2ex.Maui.Pages;
+﻿using V2ex.Api;
+using V2ex.Maui.Pages;
 using Volo.Abp.Autofac;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
@@ -33,7 +34,11 @@ public class AppModule : AbpModule
             });
         });
 
-        context.Services.AddHttpClient();
+        context.Services.AddSingleton((sp) =>
+        {
+            var handler = new CookieHttpClientHandler(sp.GetRequiredService<MauiPreferences>());
+            return new HttpClient(handler);
+        });
 
         Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
         Routing.RegisterRoute(nameof(MemberPage), typeof(MemberPage));
