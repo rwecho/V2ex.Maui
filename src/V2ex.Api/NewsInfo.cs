@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace V2ex.Api;
 
+
 [HasXPath]
 [DebuggerDisplay("{DebuggerDisplay}")]
 public class NewsInfo

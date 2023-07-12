@@ -1,10 +1,8 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace V2ex.Api;
@@ -30,31 +28,31 @@ public class ApiService
     {
         var url = "/api/topics/hot.json";
         var response = await this.HttpClient.GetAsync(url);
-        return await ReadFromJsonAsync<DailyHotInfo>(response.Content);
+        return await response.ReadFromJson<DailyHotInfo>();
     }
 
     public async Task<NodeInfo?> GetNodeInfo(string nodeName)
     {
         var url = $"/api/nodes/show.json?name={nodeName}";
         var response = await this.HttpClient.GetAsync(url);
-        return await ReadFromJsonAsync<NodeInfo>(response.Content);
+        return await response.ReadFromJson<NodeInfo>();
     }
 
-    public async Task<NodesInfo> GetNodesInfo()
+    public async Task<NodesInfo?> GetNodesInfo()
     {
         var url = "/api/nodes/s2.json";
         var response = await this.HttpClient.GetAsync(url);
-        return await ReadFromJsonAsync<NodesInfo>(response.Content) ?? new NodesInfo();
+        return await response.ReadFromJson<NodesInfo>();
     }
 
     public async Task<MemberInfo?> GetMemberInfo(string username)
     {
         var url = $"/api/members/show.json?username={username}";
         var response = await this.HttpClient.GetAsync(url);
-        return await ReadFromJsonAsync<MemberInfo>(response.Content);
+        return await response.ReadFromJson<MemberInfo>();
     }
 
-    public async Task<SoV2EXSearchResultInfo> Search(string keyword, int from = 0, string sort = "created")
+    public async Task<SoV2EXSearchResultInfo?> Search(string keyword, int from = 0, string sort = "created")
     {
         var queryString = new Dictionary<string, string>
         {
@@ -66,19 +64,10 @@ public class ApiService
         var url = $"https://www.sov2ex.com/api/search?{EncodeQuerystring(queryString)}";
         var response = await this.HttpClient.GetAsync(url);
 
-        return await ReadFromJsonAsync<SoV2EXSearchResultInfo>(response.Content) ??
-            new SoV2EXSearchResultInfo();
+        return await response.ReadFromJson<SoV2EXSearchResultInfo>();
     }
 
-    private static async Task<T?> ReadFromJsonAsync<T>(HttpContent content)
-    {
-        var json = await content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-    }
-
+  
     private static string EncodeQuerystring(Dictionary<string, string> queryString)
     {
         return string.Join("&", queryString.Select(x => $"{x.Key}={x.Value}"));
@@ -88,28 +77,24 @@ public class ApiService
     {
         var url = "/?tab=" + tab;
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-
-        return GetEncapsulatedData<NewsInfo>(content);
+        return await response.GetEncapsulatedData<NewsInfo>();
     }
 
     public async Task<NewsInfo> GetRecentTopics()
     {
         var url = "/recent";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NewsInfo>(content);
+        return await response.GetEncapsulatedData<NewsInfo>();
     }
 
     public async Task<LoginParameters> GetLoginParameters()
     {
         var url = "/signin?next=/mission/daily";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<LoginParameters>(content);
+        return await response.GetEncapsulatedData<LoginParameters>();
     }
 
-    public async Task Login(
+    public async Task<NewsInfo> Login(
         LoginParameters loginParameters,
         string username,
         string password,
@@ -124,39 +109,30 @@ public class ApiService
                 { loginParameters.PasswordParameter, password },
                 { loginParameters.CaptchaParameter, captcha},
                 { "once", loginParameters.Once },
-                { "next", "/mission/daily" },
+                { "next", "/" },
             })
         };
 
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/signin");
         var response = await this.HttpClient.SendAsync(request);
 
-        var content = await response.Content.ReadAsStringAsync();
+        return await response.GetEncapsulatedData<NewsInfo, LoginProblem>((error) =>
+        {
+            if (error.HasProblem())
+            {
+                throw new InvalidOperationException(string.Join("\r\n", error.Errors));
+            }
+        });
     }
 
     public async Task<TopicInfo> GetTopicDetail(string topicId, int page = 1)
     {
         var url = $"/t/{topicId}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
-    private static T GetEncapsulatedData<T>(string html)
-    {
-        var document = new HtmlDocument();
-        document.LoadHtml(html);
-        try
-        {
-            var result = document.DocumentNode.GetEncapsulatedData<T>();
-
-            return result;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
+  
 
     public async Task<NotificationInfo?> GetNotifications(int page = 1)
     {
@@ -164,8 +140,7 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("user-agent", WEB_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NotificationInfo>(content);
+        return await response.GetEncapsulatedData<NotificationInfo>();
     }
 
     public async Task<FollowingInfo?> GetFollowingInfo(int page = 1)
@@ -174,8 +149,7 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("user-agent", WAP_IOS_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<FollowingInfo>(content);
+        return await response.GetEncapsulatedData<FollowingInfo>();
     }
 
     public async Task<FavoriteTopicsInfo?> GetFavoriteTopics(int page = 1)
@@ -184,32 +158,28 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("user-agent", WAP_IOS_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<FavoriteTopicsInfo>(content);
+        return await response.GetEncapsulatedData<FavoriteTopicsInfo>();
     }
 
     public async Task<FavoriteNodeInfo> GetFavoriteNodes()
     {
         var url = "/my/nodes";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<FavoriteNodeInfo>(content);
+        return await response.GetEncapsulatedData<FavoriteNodeInfo>();
     }
 
     public async Task<NodesNavInfo> GetNodesNavInfo()
     {
         var url = "/";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NodesNavInfo>(content);
+        return await response.GetEncapsulatedData<NodesNavInfo>();
     }
 
     public async Task<NodeTopicsInfo> GetNodeTopics(string node, int page = 1)
     {
         var url = $"/go/{node}?page={page}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NodeTopicsInfo>(content);
+        return await response.GetEncapsulatedData<NodeTopicsInfo>();
     }
 
     public async Task<MemberPageInfo> GetUserPageInfo(string username)
@@ -217,8 +187,7 @@ public class ApiService
         var url = $"/member/{username}";
 
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<MemberPageInfo>(content);
+        return await response.GetEncapsulatedData<MemberPageInfo>();
     }
 
     public Task<BingSearchResultInfo> BingSearch(string url)
@@ -230,8 +199,7 @@ public class ApiService
     {
         var url = "/new";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return CreateTopicParameter.Parse(content);
+        return await response.GetEncapsulatedData<CreateTopicParameter>();
     }
 
     public async Task<TopicInfo> PostTopic(string title, string content,
@@ -249,8 +217,7 @@ public class ApiService
             })
         };
         var response = await this.HttpClient.SendAsync(request);
-        var contentHtml = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
     public async Task<AppendTopicParameter> GetAppendTopicParameter(string topicId)
@@ -259,8 +226,7 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return AppendTopicParameter.Parse(content);
+        return await response.GetEncapsulatedData<AppendTopicParameter>();
     }
 
     public async Task<TopicInfo> AppendTopic(string topicId,
@@ -277,8 +243,7 @@ public class ApiService
             })
         };
         var response = await this.HttpClient.SendAsync(request);
-        var htmlContent = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
     public async Task<UnitInfo> ThanksReplier(string replyId, string once)
@@ -293,16 +258,14 @@ public class ApiService
     {
         var url = $"/thank/topic/{replyId}?once={once}";
         var response = await this.HttpClient.PostAsync(url, null);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
     public async Task<ThanksInfo> ThanksMoney()
     {
         var url = "/ajax/money";
         var response = await this.HttpClient.PostAsync(url, null);
-        var content = await response.Content.ReadAsStringAsync();
-        return ThanksInfo.Parse(content);
+        return await response.GetEncapsulatedData<ThanksInfo>();
     }
 
     public async Task<TopicInfo> FavoriteTopic(string topicId, string once)
@@ -312,40 +275,35 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
     public async Task<NewsInfo> IgnoreTopic(string topicId, string once)
     {
         var url = $"/ignore/topic/{topicId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NewsInfo>(content);
+        return await response.GetEncapsulatedData<NewsInfo>();
     }
 
     public async Task<UnitInfo> IgnoreReply(string replyId, string once)
     {
         var url = $"/ignore/reply/{replyId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
     public async Task<NodeTopicInfo> IgnoreNode(string nodeId, string once)
     {
         var url = $"/settings/ignore/node/{nodeId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return NodeTopicInfo.Parse(content);
+        return await response.GetEncapsulatedData<NodeTopicInfo>();
     }
 
     public async Task<NodeTopicInfo> UnignoreNode(string nodeId, string once)
     {
         var url = $"/settings/ignore/node/{nodeId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return NodeTopicInfo.Parse(content);
+        return await response.GetEncapsulatedData<NodeTopicInfo>();
     }
 
     public async Task<TopicInfo> UnfavoriteTopic(string topicId, string once)
@@ -354,24 +312,21 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
-    public async Task<UnitInfo> UpTopc(string topicId, string once)
+    public async Task<UnitInfo> UpTopic(string topicId, string once)
     {
         var url = $"/up/topic/{topicId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
-    public async Task<UnitInfo> DownTopc(string topicId, string once)
+    public async Task<UnitInfo> DownTopic(string topicId, string once)
     {
         var url = $"/down/topic/{topicId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
     public async Task<TopicInfo> ReplyTopic(string topicId, string content, string once)
@@ -386,22 +341,19 @@ public class ApiService
             })
         };
         var response = await this.HttpClient.SendAsync(request);
-        var contentHtml = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
     public async Task<UnitInfo> BlockUser(string url)
     {
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
     public async Task<MemberPageInfo> FollowUser(string url)
     {
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<MemberPageInfo>(content);
+        return await response.GetEncapsulatedData<MemberPageInfo>();
     }
 
     public async Task<UnitInfo> FavoriteNode(string url)
@@ -409,16 +361,14 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return UnitInfo.Parse(content);
+        return await response.GetEncapsulatedData<UnitInfo>();
     }
 
     public async Task<DailyInfo> GetDailyInfo()
     {
         var url = "/mission/daily";
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return DailyInfo.Parse(content);
+        return await response.GetEncapsulatedData<DailyInfo>();
     }
 
     public async Task<DailyInfo> CheckIn(string once)
@@ -427,8 +377,7 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return DailyInfo.Parse(content);
+        return await response.GetEncapsulatedData<DailyInfo>();
     }
 
     public async Task<NewsInfo> SignInTwoStep(string code, string once)
@@ -445,8 +394,7 @@ public class ApiService
         };
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<NewsInfo>(content);
+        return await response.GetEncapsulatedData<NewsInfo>();
     }
 
     public async Task<DailyInfo> RequestByUrl(string url)
@@ -454,21 +402,18 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        return DailyInfo.Parse(content);
+        return await response.GetEncapsulatedData<DailyInfo>();
     }
 
     public async Task<TopicInfo> FadeTopic(string url)
     {
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 
     public async Task<TopicInfo> StickyTopic(string url)
     {
         var response = await this.HttpClient.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        return GetEncapsulatedData<TopicInfo>(content);
+        return await response.GetEncapsulatedData<TopicInfo>();
     }
 }
