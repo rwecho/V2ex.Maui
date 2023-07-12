@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              x:Class="V2ex.Maui.Pages.TabPage"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
              x:DataType="viewModels:TabPageViewModel">
-
     <ContentPage.Resources>
+        <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
+
         <DataTemplate x:Key="NewsInfoItemCard" x:DataType="viewModels:NewsInfoItemViewModel">
             <VerticalStackLayout Margin="0" Background="transparent">
                 <VerticalStackLayout.GestureRecognizers>
@@ -53,8 +55,8 @@
                         </Grid.GestureRecognizers>
                     </Grid>
                 </Grid>
-                
-                <Label Margin="8" Text="{Binding Title}">
+
+                <Label Margin="8" Text="{Binding Title, Converter={StaticResource HtmlDecodeConverter}}">
                    
                 </Label>
 

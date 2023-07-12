@@ -17,7 +17,11 @@ public class ApiService
     public ApiService(HttpClient httpClient)
     {
         this.HttpClient = httpClient;
-        this.HttpClient.BaseAddress = new Uri(UrlUtils.BASE_URL);
+
+        if (this.HttpClient.BaseAddress == null)
+        {
+            this.HttpClient.BaseAddress = new Uri(UrlUtils.BASE_URL);
+        }
     }
 
     private HttpClient HttpClient { get; }

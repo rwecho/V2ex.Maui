@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MainPage"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
              Title="V2ex">
     <VerticalStackLayout>
         <Label 

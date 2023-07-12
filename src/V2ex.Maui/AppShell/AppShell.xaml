@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="V2ex.Maui.AppShell.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+    xmlns:local="clr-namespace:V2ex.Maui.AppShell"
+    xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+    xmlns:components="clr-namespace:V2ex.Maui.AppShell.Components"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="True"
+    x:DataType="local:AppShellViewModel"
+    Title="V2ex.Maui">
+    <!--<Shell.TitleView>
+        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center"
+                               Background="white">
+            <Label Text="123"></Label>
+        </HorizontalStackLayout>
+    </Shell.TitleView>-->
+    <Shell.FlyoutHeader>
+        <components:FlyoutHeader></components:FlyoutHeader>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <components:FlyoutFooter></components:FlyoutFooter>
+    </Shell.FlyoutFooter>
+    <FlyoutItem Title="MainFlyoutItem" x:Name="MainFlyoutItem"
+                Shell.FlyoutBehavior="Flyout"
+                Shell.FlyoutItemIsVisible="False">
+    </FlyoutItem>
+
+    <MenuItem Text="Nodes"
+              Command="{Binding GotoNodesPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Topic}"
+                             FontFamily="MdOutlined"
+                             Color="#c6c6c6"
+                ></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+    
+    <MenuItem Text="Notifications"
+              Command="{Binding GotoNotificationsPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Notifications}"
+                             FontFamily="MdOutlined"
+                             Color="#c6c6c6"/>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="Settings"
+              Command="{Binding GotoSettingsPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Settings}"
+                             FontFamily="MdOutlined"
+                             Color="#c6c6c6"/>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+</Shell>

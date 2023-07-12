@@ -2,7 +2,7 @@
 using Volo.Abp.DependencyInjection;
 using IPreferences = V2ex.Api.IPreferences;
 
-namespace V2ex.Maui.Shell;
+namespace V2ex.Maui.AppShell;
 
 public class MauiPreferences : IPreferences, ITransientDependency
 {

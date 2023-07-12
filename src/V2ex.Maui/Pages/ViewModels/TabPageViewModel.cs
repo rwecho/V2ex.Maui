@@ -2,8 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
-using V2ex.Maui.Services;
-using V2ex.Maui.Shell;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
@@ -21,6 +19,7 @@ public partial class TabPageViewModel : ObservableObject, IQueryAttributable, IT
     {
         this.ApiService = apiService;
     }
+
     [ObservableProperty]
     private string _tabName = "all";
     private ApiService ApiService { get; }
@@ -63,26 +62,14 @@ public partial class TabPageViewModel : ObservableObject, IQueryAttributable, IT
 
 public partial class NewsInfoViewModel: ObservableObject
 {
-    [ObservableProperty]
-    private string? _unread;
-
-    [ObservableProperty]
-    private string? _twoStepString;
-
     public NewsInfoViewModel(NewsInfo newsInfo)
     {
-        //this.Unread = newsInfo.Unread;
-        //this.TwoStepString = newsInfo.TwoStepString;
-
         foreach (var item in newsInfo.Items)
         {
             this.Items.Add(new NewsInfoItemViewModel(item));
         }
     }
-
     public ObservableCollection<NewsInfoItemViewModel> Items { get; } = new();
-
-  
 }
 
 public partial class NewsInfoItemViewModel : ObservableObject
@@ -139,18 +126,26 @@ public partial class NewsInfoItemViewModel : ObservableObject
     [RelayCommand]
     public async Task TapTitle(CancellationToken cancellationToken)
     {
-        await AppShell.Current.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
+        await Shell.Current.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object?>
         {
             {"id", this.Id },
             {"title", this.Title },
-            {"link", this.Link }
+            {"link", this.Link },
+            {"avatar", this.Avatar },
+            {"avatarLink", this.AvatarLink },
+            {"userName", this.UserName },
+            {"userLink", this.UserLink },
+            {"lastReplied", this.LastReplied },
+            {"nodeName", this.NodeName },
+            {"nodeLink", this.NodeLink },
+            {"replies", this.Replies}
         });
     }
 
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
-        await AppShell.Current.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+        await Shell.Current.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
         {
             {"username", this.UserName }
         });
@@ -159,7 +154,7 @@ public partial class NewsInfoItemViewModel : ObservableObject
     [RelayCommand]
     public async Task TapNode(CancellationToken cancellationToken)
     {
-        await AppShell.Current.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
+        await Shell.Current.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
             {"node", this.NodeName }
         });

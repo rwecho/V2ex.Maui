@@ -1,4 +1,4 @@
-﻿namespace V2ex.Maui.Shell;
+﻿namespace V2ex.Maui.AppShell;
 
 public class AppCenterOptions
 {

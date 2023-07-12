@@ -6,23 +6,21 @@ namespace V2ex.Maui.Pages;
 
 public partial class TabPage : ContentPage, ITransientDependency
 {
-	public TabPage(TabPageViewModel viewModel)
+    private TabPageViewModel ViewModel { get; }
+
+    public TabPage(TabPageViewModel viewModel)
 	{
 		InitializeComponent();
-		this.BindingContext = viewModel;
-    }
-
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
+		this.BindingContext =this.ViewModel = viewModel;
     }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        base.OnNavigatedTo(args);
+        if (this.ViewModel.CurrentState == StateKeys.Success)
+        {
+            return;
+        }
 
-        var viewModel = this.BindingContext as TabPageViewModel;
-
-        Task.Run(() => viewModel!.Load());
+        Task.Run(() => this.ViewModel!.Load());
     }
 }

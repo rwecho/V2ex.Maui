@@ -1,5 +1,4 @@
-﻿using V2ex.Maui.Shell;
-
+﻿
 namespace V2ex.Maui;
 
 public partial class App : Application
@@ -8,6 +7,6 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = serviceProvider.GetRequiredService<AppShell>();
+        MainPage = serviceProvider.GetRequiredService<AppShell.AppShell>();
     }
 }

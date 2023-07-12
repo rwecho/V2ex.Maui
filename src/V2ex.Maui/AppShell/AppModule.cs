@@ -5,7 +5,7 @@ using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
 using Volo.Abp.Modularity;
 
-namespace V2ex.Maui.Shell;
+namespace V2ex.Maui.AppShell;
 
 [DependsOn(typeof(AbpAutofacModule),
     typeof(AbpBlobStoringModule),
@@ -34,6 +34,8 @@ public class AppModule : AbpModule
             });
         });
 
+        context.Services.AddTransient<ApiService>();
+
         context.Services.AddSingleton((sp) =>
         {
             var handler = new CookieHttpClientHandler(sp.GetRequiredService<MauiPreferences>());
@@ -47,5 +49,6 @@ public class AppModule : AbpModule
         Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         Routing.RegisterRoute(nameof(NodesPage), typeof(NodesPage));
         Routing.RegisterRoute(nameof(NodePage), typeof(NodePage));
+        Routing.RegisterRoute(nameof(NotificationsPage), typeof(NotificationsPage));
     }
 }

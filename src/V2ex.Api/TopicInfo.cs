@@ -53,7 +53,7 @@ public class TopicInfo
 
     [XPath("//div[@id='Main']//a[@class='normal_page'][last()]")]
     [SkipNodeNotFound]
-    public int TotalPage { get; set; }
+    public int MaximumPage { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]")]
     [SkipNodeNotFound]

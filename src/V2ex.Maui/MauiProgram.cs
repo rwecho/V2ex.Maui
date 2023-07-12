@@ -35,7 +35,7 @@ public static class MauiProgram
         builder.Logging.AddSerilog(dispose: true);
         ConfigureConfiguration(builder);
 
-        builder.Services.AddApplication<Shell.AppModule>(options =>
+        builder.Services.AddApplication<AppShell.AppModule>(options =>
         {
             options.Services.ReplaceConfiguration(builder.Configuration);
         });

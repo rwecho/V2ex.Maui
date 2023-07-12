@@ -1,4 +1,4 @@
-namespace V2ex.Maui.Shell.Components;
+namespace V2ex.Maui.AppShell.Components;
 
 public partial class FlyoutFooter : ContentView
 {

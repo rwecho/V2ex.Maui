@@ -1,22 +1,24 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
 using V2ex.Maui.Pages;
 using V2ex.Maui.Pages.ViewModels;
-using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
-namespace V2ex.Maui.Shell;
+namespace V2ex.Maui.AppShell;
 
-public partial class AppShell : Microsoft.Maui.Controls.Shell, ITransientDependency
+public partial class AppShell : Shell, ITransientDependency
 {
-    public AppShell(IServiceProvider serviceProvider)
+    public AppShell(IServiceProvider serviceProvider, AppShellViewModel viewModel)
     {
         this.ServiceProvider = serviceProvider;
         InitializeComponent();
-        InitialzieDefaultFlyoutItem();
+        this.BindingContext = viewModel;
+        InitializeDefaultFlyoutItem();
     }
 
     public IServiceProvider ServiceProvider { get; }
+
     protected override bool OnBackButtonPressed()
     {
         var result = base.OnBackButtonPressed();
@@ -24,17 +26,11 @@ public partial class AppShell : Microsoft.Maui.Controls.Shell, ITransientDepende
         return result;
     }
 
-    private void InitialzieDefaultFlyoutItem()
+    private void InitializeDefaultFlyoutItem()
     {
         var tabDefinitions = TabDefinition.GetTabDefinitions();
 
 #if ANDROID || IOS
-        var flyoutItem = new FlyoutItem
-        {
-            Title = "MainPage",
-        };
-        AppShell.SetFlyoutBehavior(flyoutItem, FlyoutBehavior.Flyout);
-        AppShell.SetFlyoutItemIsVisible(flyoutItem, false);
         var tab = new Tab
         {
             Title = "TabPage",
@@ -46,26 +42,17 @@ public partial class AppShell : Microsoft.Maui.Controls.Shell, ITransientDepende
             var pageViewModel = (page.BindingContext as TabPageViewModel);
             if (pageViewModel == null)
             {
-                throw new InvalidOperationException("TabPage's viewmodel can not be empty.");
+                throw new InvalidOperationException("TabPage's view model can not be empty.");
             }
             pageViewModel.TabName = tabDefinition.Name;
             tab.Items.Add(new ShellContent
             {
                 Title = tabDefinition.Description,
                 Content = page,
-                Route = $"tab/{tabDefinition.Name}"
             });
         }
-
-        flyoutItem.Items.Add(tab);
-        this.Items.Add(flyoutItem);
+        MainFlyoutItem.Items.Add(tab);
 #else
-
-        var item = new FlyoutItem
-        {
-            FlyoutItemIsVisible = false,
-        };
-        this.Items.Add(item);
         foreach (var tabDefinition in tabDefinitions)
         {
             var page = this.ServiceProvider.GetRequiredService<TabPage>();
@@ -76,13 +63,33 @@ public partial class AppShell : Microsoft.Maui.Controls.Shell, ITransientDepende
             }
             pageViewModel.TabName = tabDefinition.Name;
 
-         
-            item.Items.Add(new ShellContent
+            this.MainFlyoutItem.Items.Add(new ShellContent
             {
                 Title = tabDefinition.Description,
                 Content = page,
             });
         }
 #endif
+    }
+}
+
+public partial class AppShellViewModel : ObservableObject, ITransientDependency
+{
+    [RelayCommand]
+    public async Task GotoSettingsPage(CancellationToken cancellationToken)
+    {
+        await Shell.Current.GoToAsync(nameof(SettingsPage), true);
+    }
+
+    [RelayCommand]
+    public async Task GotoNotificationsPage(CancellationToken cancellationToken)
+    {
+        await Shell.Current.GoToAsync(nameof(NotificationsPage), true);
+    }
+    
+    [RelayCommand]
+    public async Task GotoNodesPage(CancellationToken cancellationToken)
+    {
+        await Shell.Current.GoToAsync(nameof(NodesPage), true);
     }
 }

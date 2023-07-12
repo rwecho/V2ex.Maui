@@ -2,11 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MemberPage"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
+             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewModels:MemberPageViewModel"
              Title="MemberPage">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Welcome to .NET MAUI!111"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>
