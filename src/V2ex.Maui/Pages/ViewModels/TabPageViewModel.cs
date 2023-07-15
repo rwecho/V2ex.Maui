@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
+using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
@@ -66,13 +67,13 @@ public partial class NewsInfoViewModel: ObservableObject
     {
         foreach (var item in newsInfo.Items)
         {
-            this.Items.Add(new NewsInfoItemViewModel(item));
+            this.Items.Add(InstanceActivator.Create<NewsInfoItemViewModel>(item));
         }
     }
     public ObservableCollection<NewsInfoItemViewModel> Items { get; } = new();
 }
 
-public partial class NewsInfoItemViewModel : ObservableObject
+public partial class NewsInfoItemViewModel : ObservableObject, ITransientDependency
 {
     [ObservableProperty]
     private string _title = null!;
@@ -93,7 +94,7 @@ public partial class NewsInfoItemViewModel : ObservableObject
     private string _userLink = null!;
 
     [ObservableProperty]
-    private DateTime? _lastReplied;
+    private DateTime _lastReplied;
 
     [ObservableProperty]
     private string _nodeName = null!;
@@ -102,12 +103,14 @@ public partial class NewsInfoItemViewModel : ObservableObject
     private string _nodeLink = null!;
 
     [ObservableProperty]
-    private int? _replies = null!;
+    private int _replies;
 
     [ObservableProperty]
     private string _id = null!;
 
-    public NewsInfoItemViewModel(NewsInfo.Item item)
+    public NavigationManager NavigationManager { get; }
+
+    public NewsInfoItemViewModel(NewsInfo.Item item, NavigationManager navigationManager)
     {
         // set all properties with item
         this.Title = item.Title;
@@ -121,12 +124,13 @@ public partial class NewsInfoItemViewModel : ObservableObject
         this.NodeLink = item.NodeLink;
         this.Replies = item.Replies;
         this.Id = item.Id;
+        this.NavigationManager = navigationManager;
     }
 
     [RelayCommand]
     public async Task TapTitle(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object?>
+        await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
         {
             {"id", this.Id },
             {"title", this.Title },
@@ -145,7 +149,7 @@ public partial class NewsInfoItemViewModel : ObservableObject
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+        await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
         {
             {"username", this.UserName }
         });
@@ -154,7 +158,7 @@ public partial class NewsInfoItemViewModel : ObservableObject
     [RelayCommand]
     public async Task TapNode(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
+        await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
             {"node", this.NodeName }
         });

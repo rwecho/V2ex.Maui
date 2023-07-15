@@ -10,14 +10,9 @@ public static class HttpResponseMessageExtensions
 {
     public static async Task<T?> ReadFromJson<T>(this HttpResponseMessage response)
     {
-        if ((int)response.StatusCode >= 400 && (int)response.StatusCode <= 500)
+        if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException("The page is not found.");
-        }
-        // handle status code greater than 500
-        if ((int)response.StatusCode >= 500)
-        {
-            throw new InvalidOperationException("The server is not available.");
+            throw new InvalidOperationException(response.ReasonPhrase);
         }
         var content = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions
@@ -28,14 +23,9 @@ public static class HttpResponseMessageExtensions
 
     public static async Task<T> GetEncapsulatedData<T>(this HttpResponseMessage response)
     {
-        if ((int)response.StatusCode >= 400 && (int)response.StatusCode <= 500)
+        if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException("The page is not found.");
-        }
-        // handle status code greater than 500
-        if ((int)response.StatusCode >= 500)
-        {
-            throw new InvalidOperationException("The server is not available.");
+            throw new InvalidOperationException(response.ReasonPhrase);
         }
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();
@@ -46,14 +36,9 @@ public static class HttpResponseMessageExtensions
 
     public static async Task<T> GetEncapsulatedData<T, TError>(this HttpResponseMessage response, Action<TError> handleError)
     {
-        if ((int)response.StatusCode >= 400 && (int)response.StatusCode <= 500)
+        if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException("The page is not found.");
-        }
-        // handle status code greater than 500
-        if ((int)response.StatusCode >= 500)
-        {
-            throw new InvalidOperationException("The server is not available.");
+            throw new InvalidOperationException(response.ReasonPhrase);
         }
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();

@@ -12,10 +12,10 @@ namespace V2ex.Maui;
 
 public static class MauiProgram
 {
-    public static MauiApp CreateMauiApp()
+    public static MauiApp CreateMauiApp(string? filesDir = null)
     {
         var builder = MauiApp.CreateBuilder();
-        SetupSerilog();
+        SetupSerilog(filesDir);
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
@@ -47,13 +47,15 @@ public static class MauiProgram
         return app;
     }
 
-    private static void SetupSerilog()
+    private static void SetupSerilog(string? filesDir = null)
     {
+        var logFilePath = Path.Combine(filesDir ?? string.Empty, "log.txt");
         Log.Logger = new LoggerConfiguration()
         .MinimumLevel.Verbose()
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .Enrich.FromLogContext()
         .WriteTo.AppCenter(LogEventLevel.Information)
+        .WriteTo.File(logFilePath)
         .CreateLogger();
     }
 

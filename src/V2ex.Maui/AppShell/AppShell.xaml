@@ -10,6 +10,7 @@
     Shell.FlyoutBehavior="Flyout"
     Shell.NavBarIsVisible="True"
     x:DataType="local:AppShellViewModel"
+    FlyoutIsPresented="{Binding FlyoutIsPresented}"
     Title="V2ex.Maui">
     <!--<Shell.TitleView>
         <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center"

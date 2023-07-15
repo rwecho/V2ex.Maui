@@ -1,5 +1,10 @@
-﻿using V2ex.Api;
+﻿using Autofac;
+using Microsoft.Extensions.Http.Logging;
+using Microsoft.Extensions.Logging;
+using V2ex.Api;
 using V2ex.Maui.Pages;
+using V2ex.Maui.Services;
+using Volo.Abp;
 using Volo.Abp.Autofac;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
@@ -34,21 +39,37 @@ public class AppModule : AbpModule
             });
         });
 
-        context.Services.AddTransient<ApiService>();
+        context.Services.AddSingleton<ApiService>();
 
-        context.Services.AddSingleton((sp) =>
+        // add http client and configure cookie handler
+        context.Services.AddHttpClient("api", client =>
         {
-            var handler = new CookieHttpClientHandler(sp.GetRequiredService<MauiPreferences>());
-            return new HttpClient(handler);
-        });
+        })
+            .ConfigurePrimaryHttpMessageHandler((sp) =>
+            {
+                return new CookieHttpClientHandler(sp.GetRequiredService<MauiPreferences>());
+            })
+            .AddHttpMessageHandler((sp) =>
+            {
+                return new LoggingHttpMessageHandler(sp.GetRequiredService<ILogger<ApiService>>());
+            });
 
-        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
-        Routing.RegisterRoute(nameof(MemberPage), typeof(MemberPage));
-        Routing.RegisterRoute(nameof(TabPage), typeof(TabPage));
-        Routing.RegisterRoute(nameof(TopicPage), typeof(TopicPage));
-        Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
-        Routing.RegisterRoute(nameof(NodesPage), typeof(NodesPage));
-        Routing.RegisterRoute(nameof(NodePage), typeof(NodePage));
-        Routing.RegisterRoute(nameof(NotificationsPage), typeof(NotificationsPage));
+       
+    }
+
+    public override void OnApplicationInitialization(ApplicationInitializationContext context)
+    {
+        base.OnApplicationInitialization(context);
+        var routingManager = context.ServiceProvider.GetRequiredService<RoutingManager>();
+
+        routingManager.Register(nameof(MainPage), typeof(MainPage));
+        routingManager.Register(nameof(MemberPage), typeof(MemberPage));
+        routingManager.Register(nameof(TabPage), typeof(TabPage));
+        routingManager.Register(nameof(SettingsPage), typeof(SettingsPage));
+        routingManager.Register(nameof(TopicPage), typeof(TopicPage));
+        routingManager.Register(nameof(NodesPage), typeof(NodesPage), true);
+        routingManager.Register(nameof(NodePage), typeof(NodePage));
+        routingManager.Register(nameof(NotificationsPage), typeof(NotificationsPage), true);
+        routingManager.Register(nameof(LoginPage), typeof(LoginPage), true);
     }
 }

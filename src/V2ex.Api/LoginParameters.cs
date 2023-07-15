@@ -24,8 +24,26 @@ public class LoginParameters
     public string Captcha { get; init; } = null!;
 
 
-    public string GetCaptchaImageUrl()
+}
+
+[HasXPath]
+[DebuggerDisplay("{DebuggerDisplay}")]
+public class RestrictedProblem
+{
+    [XPath("//title")]
+    public string DocumentTitle { get; init; } = null!;
+
+    [XPath("//div[@id='Main']//div[@class='box']")]
+    public string? RestrictedContent { get; init; }
+
+
+    public bool IsRestricted()
     {
-        return $"{UrlUtils.BASE_URL}{this.Captcha}?once={Once}";
+        if (DocumentTitle.Contains("登录受限"))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

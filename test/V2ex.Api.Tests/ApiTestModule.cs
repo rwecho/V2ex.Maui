@@ -9,11 +9,12 @@ public class ApiTestModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddTransient<ApiService>();
-        context.Services.AddSingleton((sp) =>
+        context.Services.AddSingleton<ApiService>();
+        context.Services.AddHttpClient("api", client =>
         {
-            var handler = new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
-            return new HttpClient(handler);
+        }).ConfigurePrimaryHttpMessageHandler((sp) =>
+        {
+            return new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
         });
     }
 }

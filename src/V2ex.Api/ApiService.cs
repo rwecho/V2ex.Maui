@@ -5,22 +5,23 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace V2ex.Api;
+
 public class ApiService
 {
     private const string WAP_Android_USER_AGENT = "Mozilla/5.0 (Linux; Android 9.0; V2er Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36";
 
-    private const string WEB_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4; V2er) " +
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36";
-
     private const string WAP_IOS_USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1";
 
-    public ApiService(HttpClient httpClient)
+    private const string WEB_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.79";
+
+    public ApiService(IHttpClientFactory httpClientFactory)
     {
-        this.HttpClient = httpClient;
+        this.HttpClient = httpClientFactory.CreateClient("api");
 
         if (this.HttpClient.BaseAddress == null)
         {
             this.HttpClient.BaseAddress = new Uri(UrlUtils.BASE_URL);
+            this.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(WEB_USER_AGENT);
         }
     }
 
@@ -69,7 +70,6 @@ public class ApiService
         return await response.ReadFromJson<SoV2EXSearchResultInfo>();
     }
 
-  
     private static string EncodeQuerystring(Dictionary<string, string> queryString)
     {
         return string.Join("&", queryString.Select(x => $"{x.Key}={x.Value}"));
@@ -93,7 +93,21 @@ public class ApiService
     {
         var url = "/signin?next=/mission/daily";
         var response = await this.HttpClient.GetAsync(url);
-        return await response.GetEncapsulatedData<LoginParameters>();
+        return await response.GetEncapsulatedData<LoginParameters, RestrictedProblem>((error) =>
+        {
+            if (error.IsRestricted())
+            {
+                throw new InvalidOperationException(error.RestrictedContent);
+            }
+        });
+    }
+
+    public async Task<byte[]> GetCaptchaImage(LoginParameters loginParameters)
+    {
+        var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        var url = $"{loginParameters.Captcha}?once={loginParameters.Once}&now={now}";
+        var response = await this.HttpClient.GetAsync(url);
+        return await response.Content.ReadAsByteArrayAsync();
     }
 
     public async Task<NewsInfo> Login(
@@ -134,13 +148,10 @@ public class ApiService
         return await response.GetEncapsulatedData<TopicInfo>();
     }
 
-  
-
     public async Task<NotificationInfo?> GetNotifications(int page = 1)
     {
         var url = $"/notifications?p={page}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("user-agent", WEB_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<NotificationInfo>();
     }
@@ -149,7 +160,6 @@ public class ApiService
     {
         var url = $"/my/following?page={page}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("user-agent", WAP_IOS_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<FollowingInfo>();
     }
@@ -158,7 +168,6 @@ public class ApiService
     {
         var url = $"/my/topics?page={page}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("user-agent", WAP_IOS_USER_AGENT);
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<FavoriteTopicsInfo>();
     }

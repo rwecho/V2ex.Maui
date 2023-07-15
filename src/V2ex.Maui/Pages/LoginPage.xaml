@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:converter="clr-namespace:V2ex.Maui.Converters"
+             x:DataType="viewModels:LoginPageViewModel"
+             x:Class="V2ex.Maui.Pages.LoginPage"
+             Title="LoginPage">
+    <ContentPage.Resources>
+        <converter:SingleObjectToArray x:Key="SingleObjectToArray"></converter:SingleObjectToArray>
+        <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"></toolkit:ByteArrayToImageSourceConverter>
+        <DataTemplate x:Key="Login"
+                      x:DataType="viewModels:LoginViewModel">
+            <Grid>
+                <VerticalStackLayout>
+                    <Entry Placeholder="username" Margin="8" Text="{Binding UserName}"></Entry>
+                    <Entry Placeholder="password" Margin="8" IsPassword="True" Text="{Binding Password}"></Entry>
+
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Entry Placeholder="captcha" Grid.Column="0" Text="{Binding Captcha}"></Entry>
+                        <Image Grid.Column="1" Source="{Binding CaptchaImage, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                               HeightRequest="48"
+                               Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RefreshCaptchaCommand}"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Grid>
+
+                    <HorizontalStackLayout Margin="8" HorizontalOptions="EndAndExpand">
+                        <Button Text="Login" Command="{Binding LoginCommand}" 
+                                IsEnabled="{Binding CanLoginCommandExecute}" ></Button>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <ActivityIndicator 
+                               Color="{StaticResource Primary}"
+                               IsRunning="{Binding IsLogining}"
+                               IsVisible="{Binding IsLogining}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <VerticalStackLayout x:Name="StateContainer" 
+        toolkit:StateContainer.CurrentState="{Binding CurrentState}"
+        toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+        <toolkit:StateContainer.StateViews>
+            <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+                               Color="{StaticResource Primary}"
+                               IsRunning="True"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+            <RefreshView toolkit:StateView.StateKey="Success"
+                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
+                         RefreshColor="{StaticResource Primary}"
+                         Command="{Binding LoadCommand}">
+                <ScrollView>
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Login, Converter={StaticResource SingleObjectToArray}}"
+                                         BindableLayout.ItemTemplate="{StaticResource Login }">
+                    </VerticalStackLayout>
+                </ScrollView>
+            </RefreshView>
+
+            <Label toolkit:StateView.StateKey="Error"
+                   Text="{Binding Exception}" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"></Label>
+        </toolkit:StateContainer.StateViews>
+    </VerticalStackLayout>
+</ContentPage>

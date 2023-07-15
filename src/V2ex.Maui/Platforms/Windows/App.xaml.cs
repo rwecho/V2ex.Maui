@@ -19,6 +19,6 @@ namespace V2ex.Maui.WinUI
             this.InitializeComponent();
         }
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp(FileSystem.Current.AppDataDirectory);
     }
 }

@@ -7,10 +7,81 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MemberPageViewModel"
              Title="MemberPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!111"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
+
+        <DataTemplate x:Key="TopicDataTemplate" x:DataType="viewModels:MemberPageTopicViewModel">
+            <Grid>
+                <Label Text="{Binding Title}"></Label>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ReplyDataTemplate" x:DataType="viewModels:MemberPageReplyViewModel">
+            <VerticalStackLayout >
+                <Label Margin="8">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding OpUserName}"></Span>
+                            <Span Text=" "></Span>
+                            <Span Text="{Binding NodeName}"></Span>
+                            <Span Text=" "></Span>
+                            <Span Text="{Binding TopicTitle}"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Text="{Binding Content}" Margin="8"></Label>
+
+                <Label Text="{Binding ReplyTimeText}" Margin="8" HorizontalOptions="End"></Label>
+
+                <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
+                         HeightRequest="1" ></BoxView>
+            </VerticalStackLayout>
+        </DataTemplate>
+    </ContentPage.Resources>
+    
+    <ScrollView>
+        <Grid 
+            toolkit:StateContainer.CurrentState="{Binding CurrentState}"
+            toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+
+            <toolkit:StateContainer.StateViews>
+                <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+                               Color="{StaticResource Primary}"
+                               IsRunning="True"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+                <VerticalStackLayout toolkit:StateView.StateKey="Success">
+                    <Grid HeightRequest="192">
+                        <VerticalStackLayout VerticalOptions="Center"
+                                             HorizontalOptions="Center">
+                            <Image Source="{Binding Member.Avatar}" 
+                                    HeightRequest="64" WidthRequest="64" 
+                                    Aspect="AspectFill"></Image>
+                            <Label Text="{Binding Member.UserName}"></Label>
+                            <Label Text="{Binding Member.Tagline}" 
+                                IsVisible="{Binding Member.Tagline, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"></Label>
+                            <Label Text="{Binding Member.Bank}"
+                                IsVisible="{Binding Member.Bank, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                            <Label Text="{Binding Member.CreatedText}"
+                                IsVisible="{Binding Member.CreatedText, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"></Label>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
+                         HeightRequest="1" ></BoxView>
+
+                    <CollectionView ItemsSource="{Binding Member.Topics}"
+                                    ItemTemplate="{StaticResource TopicDataTemplate }"></CollectionView>
+
+                    <CollectionView ItemsSource="{Binding Member.Replies}"
+                                    ItemTemplate="{StaticResource ReplyDataTemplate }"></CollectionView>
+                </VerticalStackLayout>
+                <Label toolkit:StateView.StateKey="Error"
+                   Text="{Binding Exception}" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"></Label>
+            </toolkit:StateContainer.StateViews>
+        </Grid>
+    </ScrollView>
 </ContentPage>

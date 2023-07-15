@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
 using V2ex.Maui.Pages;
 using V2ex.Maui.Pages.ViewModels;
+using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.AppShell;
@@ -75,21 +76,34 @@ public partial class AppShell : Shell, ITransientDependency
 
 public partial class AppShellViewModel : ObservableObject, ITransientDependency
 {
+    [ObservableProperty]
+    private bool _flyoutIsPresented;
+
+    public NavigationManager NavigationManager { get; }
+
+    public AppShellViewModel(NavigationManager navigationManager)
+    {
+        this.NavigationManager = navigationManager;
+    }
+
     [RelayCommand]
     public async Task GotoSettingsPage(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(SettingsPage), true);
+        await this.NavigationManager.GoToAsync(nameof(SettingsPage), true);
+        this.FlyoutIsPresented = false;
     }
 
     [RelayCommand]
     public async Task GotoNotificationsPage(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(NotificationsPage), true);
+        await this.NavigationManager.GoToAsync(nameof(NotificationsPage), true);
+        this.FlyoutIsPresented = false;
     }
     
     [RelayCommand]
     public async Task GotoNodesPage(CancellationToken cancellationToken)
     {
-        await Shell.Current.GoToAsync(nameof(NodesPage), true);
+        await this.NavigationManager.GoToAsync(nameof(NodesPage), true);
+        this.FlyoutIsPresented = false;
     }
 }

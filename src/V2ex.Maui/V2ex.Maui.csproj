@@ -71,6 +71,7 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.5.23280.8" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-preview.5.23280.8" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="7.3.0-rc.3" />
 		<PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="7.3.0-rc.3" />
 	</ItemGroup>
@@ -82,6 +83,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\NotificationsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

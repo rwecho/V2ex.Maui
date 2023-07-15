@@ -38,7 +38,7 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     [Fact]
     public async Task GetMemberInfoTest()
     {
-        var nodeName = "livid";
+        var nodeName = "rwecho";
         var memberInfo = await this.ApiService.GetMemberInfo(nodeName);
         Assert.NotNull(memberInfo);
     }
@@ -53,7 +53,7 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     [Fact]
     public async Task GetTabTopicsTest()
     {
-        var tab = "tech";
+        var tab = "all";
         var result = await this.ApiService.GetTabTopics(tab);
         Assert.NotNull(result);
     }
@@ -120,7 +120,7 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     [Fact]
     public async Task GetUserPageInfoTest()
     {
-        var username = "livid";
+        var username = "rwecho";
         var result = await this.ApiService.GetUserPageInfo(username);
         Assert.NotNull(result);
     }

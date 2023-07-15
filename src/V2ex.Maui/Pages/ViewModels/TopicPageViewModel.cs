@@ -40,7 +40,6 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
         {
             Id = id.ToString()!;
         }
-
     }
 
     [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]

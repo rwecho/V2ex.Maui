@@ -57,7 +57,8 @@
             </VerticalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
-    <VerticalStackLayout VerticalOptions="StartAndExpand"
+    <Grid VerticalOptions="FillAndExpand"
+                        x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 
@@ -67,8 +68,8 @@
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
-
             <RefreshView toolkit:StateView.StateKey="Success"
+                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
                          RefreshColor="{StaticResource Primary}"
                          Command="{Binding LoadCommand}">
                 <ScrollView>
@@ -128,5 +129,5 @@
         </toolkit:StateContainer.StateViews>
 
         <Label Text="Default Text"></Label>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
