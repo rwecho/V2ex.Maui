@@ -57,6 +57,13 @@
                          HeightRequest="1" ></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
+        
+        <DataTemplate x:Key="FooterTemplate">
+            <Label Text="All data loaded."
+                   FontSize="18"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand" />
+        </DataTemplate>
     </ContentPage.Resources>
     <Grid VerticalOptions="FillAndExpand"
                         x:Name="StateContainer"
@@ -116,7 +123,8 @@
 
                         <CollectionView ItemsSource="{Binding Topic.Replies}"
                                         SelectionMode="None"
-                                        ItemTemplate="{StaticResource ReplyCard}">
+                                        ItemTemplate="{StaticResource ReplyCard}"
+                                        FooterTemplate="{StaticResource FooterTemplate}">
                         </CollectionView>
                     </VerticalStackLayout>
                 </ScrollView>

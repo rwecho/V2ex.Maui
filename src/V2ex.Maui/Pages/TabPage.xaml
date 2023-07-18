@@ -64,6 +64,13 @@
                          HeightRequest="1" ></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
+
+        <DataTemplate x:Key="FooterTemplate">
+            <Label Text="All data loaded."
+                   FontSize="18"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand" />
+        </DataTemplate>
     </ContentPage.Resources>
 
     <Grid VerticalOptions="FillAndExpand"
@@ -81,8 +88,9 @@
                             toolkit:StateView.StateKey="Success"
                             HeightRequest="{Binding Height, Source={x:Reference Grid}}">
                 <CollectionView ItemsSource="{Binding NewsInfo.Items}" 
-                                    SelectionMode="Single"
-                                    ItemTemplate="{StaticResource NewsInfoItemCard}">
+                                SelectionMode="Single"
+                                ItemTemplate="{StaticResource NewsInfoItemCard}"
+                                FooterTemplate="{StaticResource FooterTemplate}">
                 </CollectionView>
             </RefreshView>
             <Label toolkit:StateView.StateKey="Error" Text="{Binding Exception}" 

@@ -34,6 +34,13 @@
                 </Grid.GestureRecognizers>
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="FooterTemplate">
+            <Label Text="All data loaded."
+                   FontSize="18"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand" />
+        </DataTemplate>
     </ContentPage.Resources>
     <VerticalStackLayout VerticalOptions="FillAndExpand"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
@@ -51,6 +58,7 @@
                          Command="{Binding LoadCommand}">
                 <CollectionView ItemsSource="{Binding Nodes}"
                                 ItemTemplate="{StaticResource NodeTemplate}"
+                                FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"

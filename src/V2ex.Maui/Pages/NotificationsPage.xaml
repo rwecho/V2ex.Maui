@@ -68,6 +68,14 @@
             
             
         </DataTemplate>
+
+
+        <DataTemplate x:Key="FooterTemplate">
+            <Label Text="All data loaded."
+                   FontSize="18"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand" />
+        </DataTemplate>
     </ContentPage.Resources>
     <VerticalStackLayout VerticalOptions="FillAndExpand"
                          Margin="16"
@@ -89,6 +97,7 @@
                                 ItemTemplate="{StaticResource NotificationTemplate}"
                                 RemainingItemsThreshold="3  "
                                 RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                                FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                 </CollectionView>
             </RefreshView>
