@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace V2ex.Api;
 
@@ -25,8 +26,9 @@ public class FavoriteTopicsInfo
     [DebuggerDisplay("{UserName,nq} {TopicTitle,nq}")]
     public class ItemInfo
     {
-        [XPath("//td/a/img", "href")]
-        public string? Avatar { get; init; } = null!;
+        [XPath("//td/a/img", "src")]
+        [SkipNodeNotFound]
+        public string? Avatar { get; init; }
 
         [XPath("//span[@class='topic_info']/strong[1]/a")]
         public string UserName { get; init; } = null!;
@@ -60,5 +62,13 @@ public class FavoriteTopicsInfo
 
         [XPath("//span[@class='topic_info']/strong[2]/a", "href")]
         public string? LastReplyUserLink { get; set; }
+
+        public string Id
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
+            }
+        }
     }
 }

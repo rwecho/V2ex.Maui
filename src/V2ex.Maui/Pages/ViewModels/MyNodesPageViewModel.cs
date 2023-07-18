@@ -61,4 +61,6 @@ public partial class NodeViewModel : ObservableObject
 
     [ObservableProperty]
     private string _image,_name, _topics, _link;
+
+
 }
