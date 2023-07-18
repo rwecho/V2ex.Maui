@@ -27,28 +27,35 @@ public partial class FlyoutHeaderViewModel: ObservableObject, ITransientDependen
     [ObservableProperty]
     private UserInfo? _user;
 
+    public event EventHandler? OnNavigationChanged;
+
     [RelayCommand]
     public async Task GotoNodes(CancellationToken cancellationToken = default)
     {
         await this.NavigationManager.GoToAsync(nameof(MyNodesPage));
+
+        OnNavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]
     public async Task GotoTopics(CancellationToken cancellationToken = default)
     {
         await this.NavigationManager.GoToAsync(nameof(MyTopicsPage));
+        OnNavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]
     public async Task GotoFollowing(CancellationToken cancellationToken = default)
     {
         await this.NavigationManager.GoToAsync(nameof(MyFollowingPage));
+        OnNavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]
     public async Task GotoLogin(CancellationToken cancellationToken = default)
     {
         await this.NavigationManager.GoToAsync(nameof(LoginPage));
+        OnNavigationChanged?.Invoke(this, EventArgs.Empty);
     }
 }
 
@@ -60,5 +67,5 @@ public partial class FlyoutHeader : ContentView, ITransientDependency
 		this.BindingContext = this.ViewModel = viewModel;
 	}
 
-    private FlyoutHeaderViewModel ViewModel { get; }
+    public FlyoutHeaderViewModel ViewModel { get; }
 }

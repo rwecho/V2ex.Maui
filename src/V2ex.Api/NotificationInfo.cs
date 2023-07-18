@@ -11,6 +11,7 @@ namespace V2ex.Api;
 public class NotificationInfo
 {
     [XPath("//div[@id='Main']//div[@class='header']//strong")]
+    [SkipNodeNotFound]
     public int Total { get; set; }
 
     [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]

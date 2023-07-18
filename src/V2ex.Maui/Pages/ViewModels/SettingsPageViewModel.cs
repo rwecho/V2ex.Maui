@@ -60,7 +60,7 @@ public partial class SettingsPageViewModel : ObservableObject, IQueryAttributabl
             this.UserManager.Logout();
             this.CurrentState = StateKeys.Success;
 
-            await this.NavigationManager.GoToAsync(nameof(TabPage), true,null );
+            await this.NavigationManager.GoToAsync($"../../");
         }
         catch (Exception exception)
         {

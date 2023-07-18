@@ -17,15 +17,23 @@ public partial class AppShell : Shell, ITransientDependency
         this.ServiceProvider = serviceProvider;
         this.AppPreferencesManager = appPreferencesManager;
         InitializeComponent();
-        this.BindingContext = viewModel;
+        this.BindingContext =this.ViewModel = viewModel;
         InitializeDefaultFlyoutItem();
 
-        this.FlyoutHeader = this.ServiceProvider.GetRequiredService<FlyoutHeader>();
-        this.FlyoutFooter = this.ServiceProvider.GetRequiredService<FlyoutFooter>();
+        var flyoutHeader = InstanceActivator.Create<FlyoutHeader>();
+        flyoutHeader.ViewModel.OnNavigationChanged += FlyoutHeader_OnNavigationChanged;
+        this.FlyoutHeader = flyoutHeader;
+
+        this.FlyoutFooter = InstanceActivator.Create<FlyoutFooter>();
     }
 
-    public IServiceProvider ServiceProvider { get; }
+    private void FlyoutHeader_OnNavigationChanged(object? sender, EventArgs e)
+    {
+        this.ViewModel.FlyoutIsPresented = false;
+    }
+    private IServiceProvider ServiceProvider { get; }
     public AppPreferencesManager AppPreferencesManager { get; }
+    private AppShellViewModel ViewModel { get; }
 
     protected override bool OnBackButtonPressed()
     {

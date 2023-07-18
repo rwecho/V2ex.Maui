@@ -47,7 +47,7 @@ public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, 
             var loginParameters = await this.ApiService.GetLoginParameters();
 
             var captcha = await this.ApiService.GetCaptchaImage(loginParameters);
-            this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha, this.Next ?? "/");
+            this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha, this.Next ?? "../../");
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
@@ -62,7 +62,7 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
 {
     public LoginViewModel(LoginParameters loginParameters,
         byte[] captchaImage,
-        string? next,
+        string next,
         ApiService apiService,
         UserManager userManager,
         NavigationManager navigationManager)
@@ -80,7 +80,9 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
     private byte[] _captchaImage;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-    private string? _userName, _password, _captcha, _next;
+    private string? _userName, _password, _captcha;
+    [ObservableProperty]
+    private string _next;
 
 
     private LoginParameters LoginParameters { get; }
@@ -119,7 +121,7 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
                 this.UserManager.Login(newsInfo.CurrentUser);
             }
 
-            await this.NavigationManager.GoToAsync(this.Next ?? "/");
+            await this.NavigationManager.GoToAsync(this.Next);
         }
         catch (InvalidOperationException exception)
         {
