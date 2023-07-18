@@ -5,7 +5,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class NodesPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class MyNodesPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
     [ObservableProperty]
     private string? _currentState;
@@ -17,7 +17,7 @@ public partial class NodesPageViewModel : ObservableObject, IQueryAttributable, 
     [ObservableProperty]
     private List<NodeViewModel>? _nodes;
 
-    public NodesPageViewModel(ApiService apiService)
+    public MyNodesPageViewModel(ApiService apiService)
     {
         this.ApiService = apiService;
         

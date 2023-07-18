@@ -7,7 +7,7 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class MemberPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
-    public const string UserNameKey = "username";
+    public const string QueryUserNameKey = "username";
 
     [ObservableProperty]
     private string? _currentState, _userName;
@@ -29,7 +29,7 @@ public partial class MemberPageViewModel : ObservableObject, IQueryAttributable,
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue(UserNameKey, out var username))
+        if (query.TryGetValue(QueryUserNameKey, out var username))
         {
             this.UserName = username.ToString();
         }

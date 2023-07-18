@@ -67,7 +67,9 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(TabPage), typeof(TabPage));
         routingManager.Register(nameof(SettingsPage), typeof(SettingsPage));
         routingManager.Register(nameof(TopicPage), typeof(TopicPage));
-        routingManager.Register(nameof(NodesPage), typeof(NodesPage), true);
+        routingManager.Register(nameof(MyNodesPage), typeof(MyNodesPage), true);
+        routingManager.Register(nameof(MyTopicsPage), typeof(MyTopicsPage), true);
+        routingManager.Register(nameof(MyFollowingPage), typeof(MyFollowingPage), true);
         routingManager.Register(nameof(NodePage), typeof(NodePage));
         routingManager.Register(nameof(NotificationsPage), typeof(NotificationsPage), true);
         routingManager.Register(nameof(LoginPage), typeof(LoginPage), true);

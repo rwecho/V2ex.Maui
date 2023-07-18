@@ -9,7 +9,7 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
-    public const string TopicPageQueryIdKey = "id";
+    public const string QueryIdKey = "id";
 
     [ObservableProperty]
     private string _id = null!;
@@ -40,7 +40,7 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue(TopicPageQueryIdKey, out var id))
+        if (query.TryGetValue(QueryIdKey, out var id))
         {
             Id = id.ToString()!;
         }

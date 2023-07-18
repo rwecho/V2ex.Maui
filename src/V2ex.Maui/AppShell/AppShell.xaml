@@ -28,16 +28,6 @@
                 Shell.FlyoutItemIsVisible="False">
     </FlyoutItem>
 
-    <MenuItem Text="Nodes"
-              Command="{Binding GotoNodesPageCommand}">
-        <MenuItem.IconImageSource>
-            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Topic}"
-                             FontFamily="MdOutlined"
-                             Color="#c6c6c6"
-                ></FontImageSource>
-        </MenuItem.IconImageSource>
-    </MenuItem>
-    
     <MenuItem Text="Notifications"
               Command="{Binding GotoNotificationsPageCommand}">
         <MenuItem.IconImageSource>

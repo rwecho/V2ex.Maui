@@ -120,11 +120,4 @@ public partial class AppShellViewModel : ObservableObject, ITransientDependency
         await this.NavigationManager.GoToAsync(nameof(NotificationsPage), true);
         this.FlyoutIsPresented = false;
     }
-    
-    [RelayCommand]
-    public async Task GotoNodesPage(CancellationToken cancellationToken)
-    {
-        await this.NavigationManager.GoToAsync(nameof(NodesPage), true);
-        this.FlyoutIsPresented = false;
-    }
 }

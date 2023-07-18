@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:V2ex.Maui.AppShell.Components"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
              x:Class="V2ex.Maui.AppShell.Components.FlyoutHeader"
              x:DataType="local:FlyoutHeaderViewModel">
     <VerticalStackLayout>
@@ -31,13 +32,16 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding User.MoneyGold}" />
-                        <Span Text=" 金币" />
+                        <Span Text="{x:Static fonts:FaSolid.Coins}" FontFamily="FaSolid" FontSize="8"
+                              TextColor="#eadc8a"></Span>
                         <Span Text=" | " />
                         <Span Text="{Binding User.MoneySilver}" />
-                        <Span Text=" 银币" />
+                        <Span Text="{x:Static fonts:FaSolid.Coins}" FontFamily="FaSolid" FontSize="8"
+                              TextColor="#dbdbdb"></Span>
                         <Span Text=" | " />
                         <Span Text="{Binding User.MoneyBronze}" />
-                        <Span Text=" 铜币" />
+                        <Span Text="{x:Static fonts:FaSolid.Coins}" FontFamily="FaSolid" FontSize="8"
+                              TextColor="#efbb9c"></Span>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -53,10 +57,44 @@
                 
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" BackgroundColor="{StaticResource Gray100}"  Text="{Binding User.Nodes}" LineBreakMode="WordWrap">
-            </Button>
-            <Button Grid.Column="1" Text="{Binding User.Topics}" BackgroundColor="{StaticResource Gray100}"></Button>
-            <Button Grid.Column="2" Text="{Binding User.Following}" BackgroundColor="{StaticResource Gray100}"></Button>
+            <Grid Grid.Column="0">
+                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
+                                     Padding="0,16">
+                    <Label Text="{Binding User.Nodes}" HorizontalOptions="Center" ></Label>
+                    <Label Text="Nodes" HorizontalOptions="Center" ></Label>
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer  Command="{Binding GotoNodesCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
+                                     Padding="0,16">
+                    <Label Text="{Binding User.Topics}" HorizontalOptions="Center" ></Label>
+                    <Label Text="Topics" HorizontalOptions="Center" ></Label>
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer  Command="{Binding GotoTopicsCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
+                                     Padding="0,16">
+                    <Label Text="{Binding User.Following}" HorizontalOptions="Center" ></Label>
+                    <Label Text="Following" HorizontalOptions="Center" ></Label>
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer  Command="{Binding GotoFollowingCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
         </Grid>
 
     </VerticalStackLayout>

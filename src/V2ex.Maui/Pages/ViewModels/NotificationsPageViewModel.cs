@@ -129,7 +129,7 @@ public partial class NotificationItemViewModel: ObservableObject
     {
         await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
         {
-            {MemberPageViewModel.UserNameKey, this.UserName}
+            {MemberPageViewModel.QueryUserNameKey, this.UserName}
         });
     }
 
@@ -138,7 +138,7 @@ public partial class NotificationItemViewModel: ObservableObject
     {
         await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
         {
-            {TopicPageViewModel.TopicPageQueryIdKey, this.Id}
+            {TopicPageViewModel.QueryIdKey, this.Id}
         });
     }
 }

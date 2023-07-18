@@ -13,12 +13,15 @@ public class TopicInfo
     [SkipNodeNotFound]
     public string Title { get; set; } = null!;
     [XPath("//div[@id='Main']//div[@class='header']/small/a")]
+    [SkipNodeNotFound]
     public string UserName { get; set; } = null!;
 
     [XPath("//div[@id='Main']//div[@class='header']/small/a", "href")]
-    public string UserLink { get; set; } = null!;
+    [SkipNodeNotFound]
+    public string UserLink { get; set; } = null!;   
 
     [XPath("//div[@id='Main']//div[@class='header']/div[@class='fr']//img", "src")]
+    [SkipNodeNotFound]
     public string Avatar { get; set; } = null!;
 
     [XPath("//div[@id='Main']//div[@class='header']/small/span", "title")]

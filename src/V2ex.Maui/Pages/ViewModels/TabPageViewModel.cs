@@ -6,6 +6,7 @@ using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
+
 public static class StateKeys
 {
     public const string Loading = nameof(Loading);
@@ -132,7 +133,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     {
         await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
         {
-            {"id", this.Id },
+            {TopicPageViewModel.QueryIdKey, this.Id },
             {"title", this.Title },
             {"link", this.Link },
             {"avatar", this.Avatar },
@@ -151,7 +152,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     {
         await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
         {
-            {"username", this.UserName }
+            {MemberPageViewModel.QueryUserNameKey, this.UserName }
         });
     }
 
@@ -160,7 +161,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {"node", this.NodeName }
+            {NodePageViewModel.QueryNameKey , this.NodeName }
         });
     }
 }

@@ -3,15 +3,15 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages;
 
-public partial class NodesPage : ContentPage, ITransientDependency
+public partial class MyNodesPage : ContentPage, ITransientDependency
 {
-	public NodesPage(NodesPageViewModel viewModel)
+	public MyNodesPage(MyNodesPageViewModel viewModel)
 	{
 		InitializeComponent();
 		this.BindingContext = this.ViewModel = viewModel;
 	}
 
-    private NodesPageViewModel ViewModel { get; }
+    private MyNodesPageViewModel ViewModel { get; }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
