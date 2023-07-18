@@ -44,6 +44,12 @@ public partial class FlyoutHeaderViewModel: ObservableObject, ITransientDependen
     {
         await this.NavigationManager.GoToAsync(nameof(MyFollowingPage));
     }
+
+    [RelayCommand]
+    public async Task GotoLogin(CancellationToken cancellationToken = default)
+    {
+        await this.NavigationManager.GoToAsync(nameof(LoginPage));
+    }
 }
 
 public partial class FlyoutHeader : ContentView, ITransientDependency

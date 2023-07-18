@@ -46,7 +46,8 @@ public class MemberPageInfo
         [XPath("//span[@class='topic_info']/strong[1]/a")]
         public string UserName { get; init; } = null!;
         [XPath("//span[@class='topic_info']/strong[2]/a")]
-        public string? LatestReplyUserName { get; init; } = null!;
+        [SkipNodeNotFound]
+        public string? LatestReplyUserName { get; init; }
         [XPath("//span[@class='topic_info']/a[@class='node']")]
         public string NodeName { get; init; } = null!;
         [XPath("//span[@class='topic_info']/a[@class='node']", "href")]
@@ -64,6 +65,7 @@ public class MemberPageInfo
         [XPath("//span[@class='item_title']/a", "href")]
         public string Link { get; init; } = null!;
         [XPath("//td/a[@class='count_livid']")]
+        [SkipNodeNotFound]
         public int ReplyNumber { get; init; }
     }
 

@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:V2ex.Maui.AppShell.Components"
              xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="V2ex.Maui.AppShell.Components.FlyoutHeader"
              x:DataType="local:FlyoutHeaderViewModel">
+    <ContentView.Resources>
+        <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <toolkit:IsNullConverter x:Key="IsNullConverter" />
+    </ContentView.Resources>
     <VerticalStackLayout>
-        <Grid Margin="16,16,16,8" ColumnSpacing="8">
+        <Grid Margin="16,16,16,8" ColumnSpacing="8"
+              IsVisible="{Binding User, Converter={StaticResource IsNotNullConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -45,11 +51,10 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-
-           
         </Grid>
 
-        <Grid Margin="16,8" ColumnSpacing="8">
+        <Grid Margin="16,8" ColumnSpacing="8"
+              IsVisible="{Binding User, Converter={StaticResource IsNotNullConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -95,6 +100,21 @@
                     <TapGestureRecognizer  Command="{Binding GotoFollowingCommand}"></TapGestureRecognizer>
                 </Grid.GestureRecognizers>
             </Grid>
+        </Grid>
+
+        <Grid Margin="16,16,16,8"
+              ColumnSpacing="8" 
+              IsVisible="{Binding User, Converter={StaticResource IsNullConverter}}"
+              >
+            <Border Grid.Column="0"  Stroke="{StaticResource Gray100}"
+                     WidthRequest="64"
+                     HeightRequest="64"></Border>
+            <Label Grid.Column="1" Text="登录" VerticalOptions="Center" HorizontalOptions="Center"
+                   TextColor="{StaticResource Gray400}"></Label>
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer  Command="{Binding GotoLoginCommand}"></TapGestureRecognizer>
+            </Grid.GestureRecognizers>
         </Grid>
 
     </VerticalStackLayout>

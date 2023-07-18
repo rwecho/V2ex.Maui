@@ -10,12 +10,12 @@
     Shell.FlyoutBehavior="Flyout"
     Shell.NavBarIsVisible="True"
     x:DataType="local:AppShellViewModel"
+    x:Name="ShellMain"
     FlyoutIsPresented="{Binding FlyoutIsPresented}"
     Title="V2ex.Maui">
     <!--<Shell.TitleView>
-        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center"
-                               Background="white">
-            <Label Text="123"></Label>
+        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="{Binding Path=CurrentPage.Title, Source={x:Reference ShellMain}}"  />
         </HorizontalStackLayout>
     </Shell.TitleView>-->
    
