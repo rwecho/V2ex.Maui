@@ -53,6 +53,11 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
     {
         try
         {
+            if(string.IsNullOrEmpty( this.Id))
+            {
+                throw new InvalidOperationException("Id 不能为空");
+            }
+
             this.CurrentState = StateKeys.Loading;
             this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
             this.Topic = InstanceActivator.Create<TopicViewModel>(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage), this.MarkdownHtml);
@@ -147,24 +152,6 @@ public partial class TopicViewModel : ObservableObject
 
     private NavigationManager NavigationManager { get; }
 
-    [RelayCommand]
-    public async Task TapTitle(CancellationToken cancellationToken)
-    {
-        await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
-        {
-            { TopicPageViewModel.QueryIdKey, this.Id }
-        });
-    }
-
-
-    [RelayCommand]
-    public async Task TapContent(CancellationToken cancellationToken)
-    {
-        await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
-        {
-            { TopicPageViewModel.QueryIdKey, this.Id }
-        });
-    }
 
     [RelayCommand]
     public async Task TapNode(CancellationToken cancellationToken)

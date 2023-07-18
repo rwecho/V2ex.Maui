@@ -120,18 +120,11 @@
                         </Grid>
 
                         <Label Margin="8" Text="{Binding Topic.Title, Converter={StaticResource HtmlDecodeConverter}}" >
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Topic.TapTitleCommand}"/>
-                            </Label.GestureRecognizers>
                         </Label>
                         <WebView x:Name="ContentWebView" HeightRequest="10" VerticalOptions="FillAndExpand" >
                             <WebView.Source>
                                 <HtmlWebViewSource Html="{Binding Topic.Content}"></HtmlWebViewSource>
                             </WebView.Source>
-
-                            <WebView.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Topic.TapContentCommand}"/>
-                            </WebView.GestureRecognizers>
                         </WebView>
 
                         <Grid Margin="8">
