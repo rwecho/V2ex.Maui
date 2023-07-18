@@ -61,17 +61,11 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
         UserManager userManager)
     {
         this.LoginParameters = loginParameters;
-        this.NameParameter = this.LoginParameters.NameParameter;
-        this.PasswordParameter = this.LoginParameters.PasswordParameter;
-        this.Once = this.LoginParameters.Once;
-        this.CaptchaParameter = this.LoginParameters.CaptchaParameter;
         this.CaptchaImage = captchaImage;
         this.ApiService = apiService;
         this.UserManager = userManager;
     }
 
-    [ObservableProperty]
-    private string _nameParameter, _passwordParameter, _once, _captchaParameter;
 
     [ObservableProperty]
     private byte[] _captchaImage;

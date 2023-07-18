@@ -7,6 +7,29 @@
              x:Class="V2ex.Maui.Pages.NodesPage"
              Shell.NavBarIsVisible="True"
              Title="NodesPage">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="NodeTemplate" x:DataType="viewModels:NodeViewModel">
+            <Grid Padding="8" RowSpacing="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Source="{Binding Image}" 
+                       HeightRequest="64"
+                       WidthRequest="64"
+                       VerticalOptions="Center" />
+                <Label Grid.Row="1"
+                       Text="{Binding Name}"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+                <Label Grid.Row="2"
+                          Text="{Binding Topics}"
+                          VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
     <VerticalStackLayout VerticalOptions="FillAndExpand"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
@@ -21,11 +44,14 @@
                          HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
                          RefreshColor="{StaticResource Primary}"
                          Command="{Binding LoadCommand}">
-                <ScrollView>
-                    <VerticalStackLayout>
-                       
-                    </VerticalStackLayout>
-                </ScrollView>
+                <CollectionView ItemsSource="{Binding Nodes}"
+                                ItemTemplate="{StaticResource NodeTemplate}"
+                                >
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                        Span="4" />
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
             </RefreshView>
 
             <Label toolkit:StateView.StateKey="Error"

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
+using V2ex.Maui.AppShell.Components;
 using V2ex.Maui.Pages;
 using V2ex.Maui.Pages.ViewModels;
 using V2ex.Maui.Services;
@@ -10,15 +11,20 @@ namespace V2ex.Maui.AppShell;
 
 public partial class AppShell : Shell, ITransientDependency
 {
-    public AppShell(IServiceProvider serviceProvider, AppShellViewModel viewModel)
+    public AppShell(IServiceProvider serviceProvider, AppShellViewModel viewModel,
+        AppPreferencesManager appPreferencesManager)
     {
         this.ServiceProvider = serviceProvider;
+        this.AppPreferencesManager = appPreferencesManager;
         InitializeComponent();
         this.BindingContext = viewModel;
         InitializeDefaultFlyoutItem();
+
+        this.FlyoutHeader = this.ServiceProvider.GetRequiredService<FlyoutHeader>();
     }
 
     public IServiceProvider ServiceProvider { get; }
+    public AppPreferencesManager AppPreferencesManager { get; }
 
     protected override bool OnBackButtonPressed()
     {
@@ -46,12 +52,20 @@ public partial class AppShell : Shell, ITransientDependency
                 throw new InvalidOperationException("TabPage's view model can not be empty.");
             }
             pageViewModel.TabName = tabDefinition.Name;
-            tab.Items.Add(new ShellContent
+
+            var shellContent = new ShellContent
             {
                 Title = tabDefinition.Description,
                 Content = page,
-            });
+            };
+            tab.Items.Add(shellContent);
+
+            if (this.AppPreferencesManager.Current?.LatestTabName == tabDefinition.Name)
+            {
+                tab.CurrentItem = shellContent;
+            }
         }
+
         MainFlyoutItem.Items.Add(tab);
 #else
         foreach (var tabDefinition in tabDefinitions)
@@ -64,11 +78,18 @@ public partial class AppShell : Shell, ITransientDependency
             }
             pageViewModel.TabName = tabDefinition.Name;
 
-            this.MainFlyoutItem.Items.Add(new ShellContent
+          
+            var shellContent = new ShellContent
             {
                 Title = tabDefinition.Description,
                 Content = page,
-            });
+            };
+            this.MainFlyoutItem.Items.Add(shellContent);
+
+            if (this.AppPreferencesManager.Current?.LatestTabName == tabDefinition.Name)
+            {
+                this.MainFlyoutItem.CurrentItem = shellContent;
+            }
         }
 #endif
     }

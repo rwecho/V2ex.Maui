@@ -57,6 +57,7 @@
 	  <None Remove="Resources\Fonts\feathericon.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
+	  <None Remove="Resources\Raw\MarkdownContainer.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,6 +81,12 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\V2ex.Api\V2ex.Api.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\MarkdownContainer.html">
+	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>

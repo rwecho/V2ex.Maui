@@ -1,6 +1,8 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace V2ex.Api;
 
@@ -66,5 +68,13 @@ public class NotificationInfo
         [XPath("//td//div[@class='payload']", ReturnType.InnerHtml)]
         [SkipNodeNotFound]
         public string? Payload { get; set; }
+
+        public string Id
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
+            }
+        }
     }
 }

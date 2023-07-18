@@ -18,9 +18,7 @@
             <Label Text="123"></Label>
         </HorizontalStackLayout>
     </Shell.TitleView>-->
-    <Shell.FlyoutHeader>
-        <components:FlyoutHeader></components:FlyoutHeader>
-    </Shell.FlyoutHeader>
+   
 
     <Shell.FlyoutFooter>
         <components:FlyoutFooter></components:FlyoutFooter>

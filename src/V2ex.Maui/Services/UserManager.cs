@@ -9,24 +9,26 @@ public class UserManager : ISingletonDependency
     private const string UserKey = "user.json";
     private UserInfo? _currentUser;
     private ReaderWriterLockSlim ReaderWriterLockSlim { get; } = new ReaderWriterLockSlim();
-    private bool _isInitialized = true;
     public bool IsAuthorized => this.CurrentUser != null;
+    public event EventHandler<UserInfo?>? UserChanged;
 
     public UserInfo? CurrentUser
     {
         get
         {
-            if (_currentUser == null && _isInitialized)
-            {
-                _currentUser = this.GetCurrentUser();
-                _isInitialized = false;
-            }
             return _currentUser;
         }
         private set
         {
             _currentUser = value;
+
+            this.UserChanged?.Invoke(this, _currentUser);
         }
+    }
+
+    public UserManager()
+    {
+        this.CurrentUser = this.GetCurrentUser();
     }
 
     public void Login(UserInfo user)

@@ -7,6 +7,7 @@ namespace V2ex.Api;
 public class LoginProblem
 {
     [XPath("//div[@class='problem']//li")]
+    [SkipNodeNotFound]
     public List<string> Errors { get; set; } = new();
 
     public bool HasProblem()

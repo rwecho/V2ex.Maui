@@ -91,7 +91,7 @@ public class ApiService
 
     public async Task<LoginParameters> GetLoginParameters()
     {
-        var url = "/signin?next=/mission/daily";
+        var url = "/signin?next=/";
         var response = await this.HttpClient.GetAsync(url);
         return await response.GetEncapsulatedData<LoginParameters, RestrictedProblem>((error) =>
         {

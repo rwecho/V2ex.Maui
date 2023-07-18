@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace V2ex.Api;
 
 [HasXPath]
-[DebuggerDisplay("{DebuggerDisplay}")]
+[DebuggerDisplay("{Name}")]
 public class UserInfo
 {
     [XPath("//td/span/a")]
@@ -21,7 +21,7 @@ public class UserInfo
     public int Following { get; set; }
 
     [XPath("//div/a[@href='/notifications']")]
-    public int Notifications { get; set; }
+    public string? Notifications { get; set; }
 
     [XPath("//div[@id='money']/a/text()[1]")]
     public string? MoneyGold { get; set; }

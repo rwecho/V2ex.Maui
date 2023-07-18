@@ -15,7 +15,7 @@ public partial class NodesPageViewModel : ObservableObject, IQueryAttributable, 
     private bool _canCurrentStateChange = true;
 
     [ObservableProperty]
-    private NodesViewModel? _nodes;
+    private List<NodeViewModel>? _nodes;
 
     public NodesPageViewModel(ApiService apiService)
     {
@@ -35,8 +35,10 @@ public partial class NodesPageViewModel : ObservableObject, IQueryAttributable, 
         try
         {
             this.CurrentState = StateKeys.Loading;
-            var nodes = await this.ApiService.GetNodesInfo();
-            this.Nodes = new NodesViewModel(nodes);
+            var nodeInfo = await this.ApiService.GetFavoriteNodes() ?? throw new InvalidOperationException("获取节点失败");
+            this.Nodes = nodeInfo.Items
+                .Select(o=> new NodeViewModel(o))
+                .ToList();
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
@@ -47,11 +49,16 @@ public partial class NodesPageViewModel : ObservableObject, IQueryAttributable, 
     }
 }
 
-public class NodesViewModel : ObservableObject
+public partial class NodeViewModel : ObservableObject
 {
-    public NodesViewModel(NodesInfo nodesInfo)
+    public NodeViewModel(FavoriteNodeInfo.ItemInfo node)
     {
-
+        this.Image = node.Image;
+        this.Name = node.Name;
+        this.Topics = node.Topics;
+        this.Link = node.Link;
     }
 
+    [ObservableProperty]
+    private string _image,_name, _topics, _link;
 }

@@ -10,6 +10,7 @@
              Title="TopicPage">
     <ContentPage.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
+        <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
             <VerticalStackLayout Margin="0" Background="transparent">
                 <Grid Margin="8">
@@ -105,13 +106,13 @@
                         </Grid>
 
                         <Label Margin="8" Text="{Binding Topic.Title, Converter={StaticResource HtmlDecodeConverter}}" />
-                        <WebView x:Name="ContentWebView" HeightRequest="400" VerticalOptions="FillAndExpand">
+                        <WebView x:Name="ContentWebView" HeightRequest="10" VerticalOptions="FillAndExpand" >
                             <WebView.Source>
                                 <HtmlWebViewSource Html="{Binding Topic.Content}"></HtmlWebViewSource>
                             </WebView.Source>
                         </WebView>
                         <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
-                         HeightRequest="1" ></BoxView>
+                            HeightRequest="1" ></BoxView>
 
                         <CollectionView ItemsSource="{Binding Topic.Replies}"
                                         SelectionMode="None"

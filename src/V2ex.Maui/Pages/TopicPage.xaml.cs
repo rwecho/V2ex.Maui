@@ -10,9 +10,21 @@ public partial class TopicPage : ContentPage, ITransientDependency
 	{
 		InitializeComponent();
         this.ContentWebView.Navigated += ContentWebView_Navigated;
-
+        this.ContentWebView.SizeChanged += ContentWebView_SizeChanged;
         this.BindingContext = this.ViewModel = viewModel;
 	}
+
+    private void ContentWebView_SizeChanged(object? sender, EventArgs e)
+    {
+        this.ContentWebView.EvaluateJavaScriptAsync("document.documentElement.scrollHeight;")
+            .ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && double.TryParse(task.Result, out double contentHeight))
+                {
+                    this.ContentWebView.HeightRequest = contentHeight;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+    }
 
     private void ContentWebView_Navigated(object? sender, WebNavigatedEventArgs e)
     {

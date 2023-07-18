@@ -3,7 +3,7 @@ using Volo.Abp.Testing;
 
 namespace V2ex.Api.Tests;
 
-public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
+public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
 {
     public ApiServiceTest()
     {
@@ -31,7 +31,7 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     public async Task GetNodesInfoTest()
     {
         var nodesInfo = await this.ApiService.GetNodesInfo();
-        
+
         Assert.NotNull(nodesInfo);
     }
 
@@ -76,14 +76,19 @@ public class ApiServiceTest: AbpIntegratedTest<ApiTestModule>
     public async Task LoginTest()
     {
         var loginParameters = await this.ApiService.GetLoginParameters();
-        await Should.ThrowAsync<InvalidOperationException>(async () =>
+
+        var image = await this.ApiService.GetCaptchaImage(loginParameters);
+
+        using (var fileStream = File.OpenWrite($"{loginParameters.Once}.png"))
         {
-            await this.ApiService.Login(loginParameters, "rwecho", "", "");
-        });
+            await fileStream.WriteAsync(image);
+        }
+        var captcha = "";
+        await this.ApiService.Login(loginParameters, "rwecho", "", captcha);
     }
 
     [Fact]
-    public  async Task GetTopicDetailTest()
+    public async Task GetTopicDetailTest()
     {
         var result = await this.ApiService.GetTopicDetail("793349");
         Assert.NotNull(result);

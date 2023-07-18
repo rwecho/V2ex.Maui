@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using System;
 using System.Diagnostics;
 
 namespace V2ex.Api;
@@ -22,24 +21,23 @@ public class LoginParameters
 
     [XPath("//td/img[@id='captcha-image']", "src")]
     public string Captcha { get; init; } = null!;
-
-
 }
 
 [HasXPath]
-[DebuggerDisplay("{DebuggerDisplay}")]
+[DebuggerDisplay("{DocumentTitle}")]
 public class RestrictedProblem
 {
     [XPath("//title")]
-    public string DocumentTitle { get; init; } = null!;
+    [SkipNodeNotFound]
+    public string? DocumentTitle { get; init; }
 
     [XPath("//div[@id='Main']//div[@class='box']")]
+    [SkipNodeNotFound]
     public string? RestrictedContent { get; init; }
-
 
     public bool IsRestricted()
     {
-        if (DocumentTitle.Contains("登录受限"))
+        if (DocumentTitle != null && DocumentTitle.Contains("登录受限"))
         {
             return true;
         }

@@ -9,13 +9,13 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
-    public const string TopicPageQueryKey = "id";
+    public const string TopicPageQueryIdKey = "id";
 
     [ObservableProperty]
     private string _id = null!;
 
     [ObservableProperty]
-    private string? _currentState;
+    private string? _currentState, _markdownHtml;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
     private bool _canCurrentStateChange = true;
@@ -28,15 +28,19 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
 
     [ObservableProperty]
     private TopicViewModel? _topic;
-    public TopicPageViewModel(ApiService apiService)
+
+    public TopicPageViewModel(ApiService apiService, ResourcesService resourcesService)
     {
         this.ApiService = apiService;
+        this.ResourcesService = resourcesService;
     }
+
     private ApiService ApiService { get; }
+    public ResourcesService ResourcesService { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue(TopicPageQueryKey, out var id))
+        if (query.TryGetValue(TopicPageQueryIdKey, out var id))
         {
             Id = id.ToString()!;
         }
@@ -48,7 +52,8 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
         try
         {
             this.CurrentState = StateKeys.Loading;
-            this.Topic = new TopicViewModel(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage));
+            this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
+            this.Topic = new TopicViewModel(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage), this.MarkdownHtml);
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
@@ -61,10 +66,10 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
 
 public partial class TopicViewModel : ObservableObject
 {
-    public TopicViewModel(TopicInfo topic)
+    public TopicViewModel(TopicInfo topic, string markdownHtml)
     {
         this.Title = topic.Title;
-        this.Content = topic.Content;
+        this.Content = markdownHtml.Replace("@markdown", topic.Content);
         this.UserName = topic.UserName;
         this.UserLink = topic.UserLink;
         this.Avatar = topic.Avatar;
@@ -83,37 +88,51 @@ public partial class TopicViewModel : ObservableObject
 
     [ObservableProperty]
     private string _title;
+
     [ObservableProperty]
     private string _content;
+
     [ObservableProperty]
     private string _userName;
+
     [ObservableProperty]
     private string _userLink;
+
     [ObservableProperty]
     private string _avatar;
+
     [ObservableProperty]
     private DateTime _created;
+
     [ObservableProperty]
     private string _createdText;
+
     [ObservableProperty]
     private string? _topicStats;
+
     [ObservableProperty]
     private string _nodeName;
+
     [ObservableProperty]
     private string _nodeLink;
+
     [ObservableProperty]
     private string? _replyStats;
+
     [ObservableProperty]
     private List<string> _tags;
+
     [ObservableProperty]
     private int _currentPage;
+
     [ObservableProperty]
     private int _maximumPage;
+
     [ObservableProperty]
     private ObservableCollection<ReplyViewModel> _replies;
 }
 
-public partial class ReplyViewModel: ObservableObject
+public partial class ReplyViewModel : ObservableObject
 {
     public ReplyViewModel(TopicInfo.ReplyInfo reply)
     {
@@ -131,26 +150,32 @@ public partial class ReplyViewModel: ObservableObject
     [ObservableProperty]
     private string _content;
 
-    [ObservableProperty ]
+    [ObservableProperty]
     private string _userName;
+
     [ObservableProperty]
     private string _userLink;
+
     [ObservableProperty]
     private string _avatar;
+
     [ObservableProperty]
     private DateTime _replyTime;
+
     [ObservableProperty]
     private string _replyTimeText;
+
     [ObservableProperty]
     private string? _badges;
+
     [ObservableProperty]
     private int _floor;
+
     [ObservableProperty]
     private string? _alreadyThanked;
 
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
-       
     }
 }
