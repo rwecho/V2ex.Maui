@@ -10,8 +10,9 @@ namespace V2ex.Maui.Pages.ViewModels;
 [DisablePropertyInjection]
 public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
+    private const string QueryNextKey = "next";
     [ObservableProperty]
-    private string? _currentState;
+    private string? _currentState, _next;
 
     [ObservableProperty]
     private Exception? _exception;
@@ -31,6 +32,10 @@ public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, 
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        if(query.TryGetValue(QueryNextKey, out var value))
+        {
+            this.Next = value.ToString();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
@@ -42,7 +47,7 @@ public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, 
             var loginParameters = await this.ApiService.GetLoginParameters();
 
             var captcha = await this.ApiService.GetCaptchaImage(loginParameters);
-            this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha);
+            this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha, this.Next ?? "/");
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
@@ -57,13 +62,17 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
 {
     public LoginViewModel(LoginParameters loginParameters,
         byte[] captchaImage,
+        string? next,
         ApiService apiService,
-        UserManager userManager)
+        UserManager userManager,
+        NavigationManager navigationManager)
     {
+        this.Next = next;
         this.LoginParameters = loginParameters;
         this.CaptchaImage = captchaImage;
         this.ApiService = apiService;
         this.UserManager = userManager;
+        this.NavigationManager = navigationManager;
     }
 
 
@@ -71,12 +80,13 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
     private byte[] _captchaImage;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-    private string? _userName, _password, _captcha;
+    private string? _userName, _password, _captcha, _next;
 
 
     private LoginParameters LoginParameters { get; }
     private ApiService ApiService { get; }
     private UserManager UserManager { get; }
+    private NavigationManager NavigationManager { get; }
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private bool _isLogining;
@@ -91,6 +101,12 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
         try
         {
             this.IsLogining = true;
+
+            if (string.IsNullOrEmpty(this.UserName) || string.IsNullOrEmpty(this.Password) || string.IsNullOrEmpty(this.Captcha))
+            {
+                return;
+            }
+
             var newsInfo = await this.ApiService.Login(
                 this.LoginParameters,
                 this.UserName,
@@ -102,6 +118,8 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
             {
                 this.UserManager.Login(newsInfo.CurrentUser);
             }
+
+            await this.NavigationManager.GoToAsync(this.Next ?? "/");
         }
         catch (InvalidOperationException exception)
         {
