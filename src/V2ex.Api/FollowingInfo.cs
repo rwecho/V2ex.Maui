@@ -75,5 +75,13 @@ public class FollowingInfo
                 return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
             }
         }
+
+        public string NodeId
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+            }
+        }
     }
 }

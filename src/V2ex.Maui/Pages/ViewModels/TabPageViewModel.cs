@@ -107,7 +107,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     private int _replies;
 
     [ObservableProperty]
-    private string _id = null!;
+    private string _id = null!, _nodeId;
 
     public NavigationManager NavigationManager { get; }
 
@@ -125,6 +125,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
         this.NodeLink = item.NodeLink;
         this.Replies = item.Replies;
         this.Id = item.Id;
+        this.NodeId = item.NodeId;
         this.NavigationManager = navigationManager;
     }
 
@@ -161,7 +162,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {NodePageViewModel.QueryNameKey , this.NodeName }
+            {NodePageViewModel.QueryNameKey , this.NodeId }
         });
     }
 }

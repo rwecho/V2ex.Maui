@@ -18,7 +18,7 @@ public partial class MyFollowingPageViewModel : ObservableObject, IQueryAttribut
     private bool _canCurrentStateChange = true;
 
     [ObservableProperty]
-    private List<NodeViewModel>? _nodes;
+    private List<MyNodesItemViewModel>? _nodes;
 
     public MyFollowingPageViewModel(ApiService apiService)
     {
@@ -73,6 +73,7 @@ public partial class FollowingItemViewModel : ObservableObject
         this.Replies = item.Replies;
         this.NodeLink = item.NodeLink;
         this.NodeName = item.NodeName;
+        this.NodeName = item.NodeId;
         this.Created = item.Created;
         this.CreatedText = item.CreatedText;
         this.LastReplyUserName = item.LastReplyUserName;
@@ -82,7 +83,7 @@ public partial class FollowingItemViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _id, _avatar, _userName, _userLink, _topicTitle, _topicLink, _nodeName, _nodeLink;
+    private string _nodeId, _id, _avatar, _userName, _userLink, _topicTitle, _topicLink, _nodeName, _nodeLink;
 
     [ObservableProperty]
     private int _replies;
@@ -109,7 +110,7 @@ public partial class FollowingItemViewModel : ObservableObject
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {NodePageViewModel.QueryNameKey, this.NodeName }
+            {NodePageViewModel.QueryNameKey, NodeId }
         });
     }
 

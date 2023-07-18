@@ -66,5 +66,13 @@ public class NewsInfo
                 return new UriBuilder(UrlUtils.CompleteUrl(Link)).Path.Split("/").Last();
             }
         }
+
+        public string NodeId
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+            }
+        }
     }
 }

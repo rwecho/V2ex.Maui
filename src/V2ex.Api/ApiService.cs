@@ -41,6 +41,13 @@ public class ApiService
         return await response.ReadFromJson<NodeInfo>();
     }
 
+    public async Task<NodePageInfo?> GetNodePageInfo(string nodeName, int page=1)
+    {
+        var url = $"/go/{nodeName}?page={page}";
+        var response = await this.HttpClient.GetAsync(url);
+        return await response.GetEncapsulatedData<NodePageInfo>();
+    }
+
     public async Task<NodesInfo?> GetNodesInfo()
     {
         var url = "/api/nodes/s2.json";
@@ -176,7 +183,18 @@ public class ApiService
     {
         var url = "/my/nodes";
         var response = await this.HttpClient.GetAsync(url);
-        return await response.GetEncapsulatedData<FavoriteNodeInfo>();
+
+        List<string> links = new ();
+        var nodeInfo = await response.GetEncapsulatedData<FavoriteNodeInfo>(node =>
+        {
+            links.AddRange(node.SelectNodes("//a[contains(@class, 'av-node')]").Select(o=>o.GetAttributeValue("href", "")));
+        });
+
+        for (int i = 0; i < links.Count; i++)
+        {
+            nodeInfo.Items[i].Link = links[i];
+        }
+        return nodeInfo;
     }
 
     public async Task<NodesNavInfo> GetNodesNavInfo()

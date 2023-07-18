@@ -34,6 +34,20 @@ public static class HttpResponseMessageExtensions
         return result;
     }
 
+    public static async Task<T> GetEncapsulatedData<T>(this HttpResponseMessage response, Action<HtmlNode> handleNode)
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException(response.ReasonPhrase);
+        }
+        var content = await response.Content.ReadAsStringAsync();
+        var document = new HtmlDocument();
+        document.LoadHtml(content);
+        handleNode(document.DocumentNode);
+        var result = document.DocumentNode.GetEncapsulatedData<T>();
+        return result;
+    }
+
     public static async Task<T> GetEncapsulatedData<T, TError>(this HttpResponseMessage response, Action<TError> handleError)
     {
         if (!response.IsSuccessStatusCode)

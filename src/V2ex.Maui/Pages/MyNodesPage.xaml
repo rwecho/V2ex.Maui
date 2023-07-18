@@ -8,7 +8,7 @@
              Shell.NavBarIsVisible="True"
              Title="NodesPage">
     <ContentPage.Resources>
-        <DataTemplate x:Key="NodeTemplate" x:DataType="viewModels:NodeViewModel">
+        <DataTemplate x:Key="NodeTemplate" x:DataType="viewModels:MyNodesItemViewModel">
             <Grid Padding="8" RowSpacing="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -27,6 +27,11 @@
                           Text="{Binding Topics}"
                           VerticalOptions="Center" 
                        HorizontalOptions="Center"/>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GotoNodeCommand}"
+                                          NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
             </Grid>
         </DataTemplate>
     </ContentPage.Resources>

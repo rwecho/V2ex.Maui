@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +26,15 @@ public class FavoriteNodeInfo
         public string Topics { get; init; } = null!;
 
         // todo
-        public string Link { get; init; } = null!;
+        public string Link { get; set; } = null!;
+
+        public string Id
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(Link)).Path.Split("/").Last();
+            }
+        }
     }
 }
  

@@ -30,3 +30,5 @@ public class NodeInfo
     [JsonPropertyName("avatar_normal")]
     public string? AvatarNormal { get; set; }
 }
+
+

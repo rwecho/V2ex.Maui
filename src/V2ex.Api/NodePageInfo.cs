@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace V2ex.Api;
 
 [HasXPath]
 [DebuggerDisplay("{CurrentPage}/{MaximumPage}")]
-public class FavoriteTopicsInfo
+public class NodePageInfo
 {
     [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]
     [SkipNodeNotFound]
@@ -18,7 +19,7 @@ public class FavoriteTopicsInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell item']")]
+    [XPath("//div[@id='TopicsNode']//div[contains(@class,'cell')]")]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
 
@@ -28,7 +29,7 @@ public class FavoriteTopicsInfo
     {
         [XPath("//td/a/img", "src")]
         [SkipNodeNotFound]
-        public string? Avatar { get; init; }
+        public string Avatar { get; init; } = null!;
 
         [XPath("//span[@class='topic_info']/strong[1]/a")]
         public string UserName { get; init; } = null!;
@@ -42,25 +43,24 @@ public class FavoriteTopicsInfo
         [XPath("//span[@class='item_title']/a", "href")]
         public string TopicLink { get; init; } = null!;
 
+        [XPath("//td/a[contains(@class, 'count_')]")]
+        [SkipNodeNotFound]
         public int Replies { get; init; }
-
-        [XPath("//span[@class='topic_info']/a[@class='node']")]
-        public string NodeName { get; init; } = null!;
-
-        [XPath("//span[@class='topic_info']/a[@class='node']", "href")]
-        public string NodeLink { get; init; } = null!;
 
         [XPath("//span[@class='topic_info']/span", "title")]
         [SkipNodeNotFound]
         public DateTime Created { get; set; }
 
         [XPath("//span[@class='topic_info']/span")]
-        public string CreatedText { get; set; } = null!;
+        [SkipNodeNotFound]
+        public string? CreatedText { get; set; }
 
         [XPath("//span[@class='topic_info']/strong[2]/a")]
+        [SkipNodeNotFound]
         public string? LastReplyUserName { get; set; }
 
         [XPath("//span[@class='topic_info']/strong[2]/a", "href")]
+        [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
 
         public string Id
@@ -70,13 +70,7 @@ public class FavoriteTopicsInfo
                 return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
             }
         }
-
-        public string NodeId
-        {
-            get
-            {
-                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
-            }
-        }
     }
 }
+
+
