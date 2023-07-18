@@ -21,6 +21,7 @@ public partial class AppShell : Shell, ITransientDependency
         InitializeDefaultFlyoutItem();
 
         this.FlyoutHeader = this.ServiceProvider.GetRequiredService<FlyoutHeader>();
+        this.FlyoutFooter = this.ServiceProvider.GetRequiredService<FlyoutFooter>();
     }
 
     public IServiceProvider ServiceProvider { get; }

@@ -19,10 +19,6 @@
         </HorizontalStackLayout>
     </Shell.TitleView>-->
    
-
-    <Shell.FlyoutFooter>
-        <components:FlyoutFooter></components:FlyoutFooter>
-    </Shell.FlyoutFooter>
     <FlyoutItem Title="MainFlyoutItem" x:Name="MainFlyoutItem"
                 Shell.FlyoutBehavior="Flyout"
                 Shell.FlyoutItemIsVisible="False">
