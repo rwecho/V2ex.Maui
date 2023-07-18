@@ -162,7 +162,7 @@ public partial class NewsInfoItemViewModel : ObservableObject, ITransientDepende
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {NodePageViewModel.QueryNameKey , this.NodeId }
+            {NodePageViewModel.QueryNodeKey , this.NodeId }
         });
     }
 }

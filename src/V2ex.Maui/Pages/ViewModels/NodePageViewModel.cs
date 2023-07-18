@@ -8,7 +8,7 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class NodePageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
-    public const string QueryNameKey = "node";
+    public const string QueryNodeKey = "node";
 
     [ObservableProperty]
     private string? _currentState, _nodeName;
@@ -31,7 +31,7 @@ public partial class NodePageViewModel : ObservableObject, IQueryAttributable, I
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue(QueryNameKey, out var nodeName))
+        if (query.TryGetValue(QueryNodeKey, out var nodeName))
         {
             this.NodeName = nodeName.ToString();
         }

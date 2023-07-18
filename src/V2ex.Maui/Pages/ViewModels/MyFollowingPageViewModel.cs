@@ -110,7 +110,7 @@ public partial class FollowingItemViewModel : ObservableObject
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {NodePageViewModel.QueryNameKey, NodeId }
+            {NodePageViewModel.QueryNodeKey, NodeId }
         });
     }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace V2ex.Api;
 
@@ -35,7 +36,8 @@ public class TopicInfo
     public string? TopicStats { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='topic_content']", ReturnType.InnerHtml)]
-    public string Content { get; set; } = null!;
+    [SkipNodeNotFound]
+    public string? Content { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='header']/a[2]")]
     public string NodeName { get; set; } = null!;
@@ -65,6 +67,24 @@ public class TopicInfo
     [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]", "id")]
     [SkipNodeNotFound]
     public List<string> ReplyIds { get; set; } = new();
+
+    public string NodeId
+    {
+        get
+        {
+            return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+        }
+    }
+
+    public string Id
+    {
+        get
+        {
+            //todo get id of topic;
+            //return new UriBuilder(UrlUtils.CompleteUrl(Link)).Path.Split("/").Last();
+            return "";
+        }
+    }
 
     [HasXPath]
     [DebuggerDisplay("{Content}")]

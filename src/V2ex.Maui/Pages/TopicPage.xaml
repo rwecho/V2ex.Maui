@@ -92,6 +92,10 @@
                             <Image Grid.Column="0" Source="{Binding Topic.Avatar}" 
                                HeightRequest="32" WidthRequest="32" 
                                Aspect="AspectFill">
+
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Topic.TapUserCommand}"/>
+                                </Image.GestureRecognizers>
                             </Image>
 
                             <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
@@ -104,6 +108,9 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Topic.TapUserCommand}"/>
+                                </VerticalStackLayout.GestureRecognizers>
                             </VerticalStackLayout>
 
                             <Grid Grid.Column="2" VerticalOptions="Start" >
@@ -112,11 +119,19 @@
                             </Grid>
                         </Grid>
 
-                        <Label Margin="8" Text="{Binding Topic.Title, Converter={StaticResource HtmlDecodeConverter}}" />
+                        <Label Margin="8" Text="{Binding Topic.Title, Converter={StaticResource HtmlDecodeConverter}}" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Topic.TapTitleCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <WebView x:Name="ContentWebView" HeightRequest="10" VerticalOptions="FillAndExpand" >
                             <WebView.Source>
                                 <HtmlWebViewSource Html="{Binding Topic.Content}"></HtmlWebViewSource>
                             </WebView.Source>
+
+                            <WebView.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Topic.TapContentCommand}"/>
+                            </WebView.GestureRecognizers>
                         </WebView>
 
                         <Grid Margin="8">

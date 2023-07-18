@@ -128,7 +128,7 @@ public partial class TagItemViewModel : ObservableObject, ITransientDependency
     {
         await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
         {
-            {NodePageViewModel.QueryNameKey, NodeId }
+            {NodePageViewModel.QueryNodeKey, NodeId }
         });
     }
 

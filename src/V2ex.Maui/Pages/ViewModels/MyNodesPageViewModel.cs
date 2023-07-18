@@ -72,6 +72,6 @@ public partial class MyNodesItemViewModel : ObservableObject
     [RelayCommand]
     public async Task GotoNode(CancellationToken cancellationToken)
     {
-        await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object> { { NodePageViewModel.QueryNameKey, Id } });
+        await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object> { { NodePageViewModel.QueryNodeKey, Id } });
     }
 }

@@ -55,7 +55,7 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
         {
             this.CurrentState = StateKeys.Loading;
             this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
-            this.Topic = new TopicViewModel(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage), this.MarkdownHtml);
+            this.Topic = InstanceActivator.Create<TopicViewModel>(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage), this.MarkdownHtml);
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
@@ -77,10 +77,10 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
 
 public partial class TopicViewModel : ObservableObject
 {
-    public TopicViewModel(TopicInfo topic, string markdownHtml)
+    public TopicViewModel(TopicInfo topic, string markdownHtml, NavigationManager navigationManager)
     {
         this.Title = topic.Title;
-        this.Content = markdownHtml.Replace("@markdown", topic.Content);
+        this.Content = topic.Content == null ? null : markdownHtml.Replace("@markdown", topic.Content);
         this.UserName = topic.UserName;
         this.UserLink = topic.UserLink;
         this.Avatar = topic.Avatar;
@@ -89,19 +89,22 @@ public partial class TopicViewModel : ObservableObject
         this.TopicStats = topic.TopicStats;
         this.NodeName = topic.NodeName;
         this.NodeLink = topic.NodeLink;
+        this.NodeId = topic.NodeId;
+        this.Id = topic.Id;
         this.ReplyStats = topic.ReplyStats;
         this.Tags = topic.Tags;
         this.CurrentPage = topic.CurrentPage;
         this.MaximumPage = topic.MaximumPage;
         this.Replies = new ObservableCollection<ReplyViewModel>(
-            topic.Replies.Select(x => new ReplyViewModel(x)));
+            topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x)));
+        this.NavigationManager = navigationManager;
     }
 
     [ObservableProperty]
-    private string _title;
+    private string _title, _nodeId, _id;
 
     [ObservableProperty]
-    private string _content;
+    private string? _content;
 
     [ObservableProperty]
     private string _userName;
@@ -141,11 +144,49 @@ public partial class TopicViewModel : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<ReplyViewModel> _replies;
+
+    private NavigationManager NavigationManager { get; }
+
+    [RelayCommand]
+    public async Task TapTitle(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
+        {
+            { TopicPageViewModel.QueryIdKey, this.Id }
+        });
+    }
+
+
+    [RelayCommand]
+    public async Task TapContent(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(TopicPage), true, new Dictionary<string, object>
+        {
+            { TopicPageViewModel.QueryIdKey, this.Id }
+        });
+    }
+
+    [RelayCommand]
+    public async Task TapNode(CancellationToken cancellationToken)
+    {
+       await this.NavigationManager.GoToAsync(nameof(NodePage), true, new Dictionary<string, object>
+        {
+            { NodePageViewModel.QueryNodeKey, this.NodeId }
+        });
+    }
+
+    public async Task TapUser(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+        {
+            { MemberPageViewModel.QueryUserNameKey, this.UserName }
+        });
+    }
 }
 
 public partial class ReplyViewModel : ObservableObject
 {
-    public ReplyViewModel(TopicInfo.ReplyInfo reply)
+    public ReplyViewModel(TopicInfo.ReplyInfo reply, NavigationManager navigationManager)
     {
         this.Content = reply.Content;
         this.UserName = reply.UserName;
@@ -156,6 +197,7 @@ public partial class ReplyViewModel : ObservableObject
         this.Badges = reply.Badges;
         this.Floor = reply.Floor;
         this.AlreadyThanked = reply.AlreadyThanked;
+        this.NavigationManager = navigationManager;
     }
 
     [ObservableProperty]
@@ -185,8 +227,14 @@ public partial class ReplyViewModel : ObservableObject
     [ObservableProperty]
     private string? _alreadyThanked;
 
+    private NavigationManager NavigationManager { get; }
+
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
+        await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+        {
+            { MemberPageViewModel.QueryUserNameKey, this.UserName }
+        });
     }
 }
