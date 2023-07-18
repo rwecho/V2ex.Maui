@@ -1,26 +1,44 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using V2ex.Api;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class MyFollowingPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class TagPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
+    public const string QueryTagKey = "tag";
     [ObservableProperty]
-    private string? _currentState;
+    private string? _tagName;
+
+    [ObservableProperty]
+    private string _id = null!;
+
+    [ObservableProperty]
+    private string? _currentState, _markdownHtml;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
+    private bool _canCurrentStateChange = true;
+
+    [ObservableProperty]
+    private int _currentPage = 0, _maximumPage;
 
     [ObservableProperty]
     private Exception? _exception;
 
     [ObservableProperty]
-    private bool _canCurrentStateChange = true;
+    private TopicViewModel? _topic;
 
     [ObservableProperty]
-    private List<MyNodesItemViewModel>? _nodes;
+    private List<TagItemViewModel> _items = new();
 
-    public MyFollowingPageViewModel(ApiService apiService)
+    public TagPageViewModel(ApiService apiService)
     {
         this.ApiService = apiService;
     }
@@ -29,41 +47,41 @@ public partial class MyFollowingPageViewModel : ObservableObject, IQueryAttribut
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        if (query.TryGetValue(QueryTagKey, out var tag))
+        {
+            TagName = tag.ToString()!;
+        }
     }
-
-    [ObservableProperty]
-    private int _currentPage, _maximumPage;
-
-    [ObservableProperty]
-    private List<FollowingItemViewModel> _items = new();
-
     [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
     public async Task Load(CancellationToken cancellationToken = default)
     {
         try
         {
+            if (string.IsNullOrEmpty(this.TagName))
+            {
+                throw new InvalidOperationException("Tag名称不能为空");
+            }
             this.CurrentState = StateKeys.Loading;
-            var followingInfo = await this.ApiService.GetFollowingInfo() ?? throw new InvalidOperationException("获取节点失败");
+            var tag = await this.ApiService.GetTagInfo(this.TagName, this.CurrentPage);
 
-            this.CurrentPage = followingInfo.CurrentPage;
-            this.MaximumPage = followingInfo.MaximumPage;
-
-            this.Items = followingInfo.Items
-                .Select(o => InstanceActivator.Create<FollowingItemViewModel>(o))
-                .ToList();
+            this.CurrentPage = tag.CurrentPage;
+            this.MaximumPage = tag.MaximumPage;
+            this.Items = tag.Items.Select(o => InstanceActivator.Create<TagItemViewModel>(o)).ToList();
             this.CurrentState = StateKeys.Success;
         }
-        catch (Exception exception)
+        catch (Exception ex)
         {
-            this.Exception = exception;
+            this.Exception = ex;
             this.CurrentState = StateKeys.Error;
         }
     }
 }
 
-public partial class FollowingItemViewModel : ObservableObject
+
+public partial class TagItemViewModel : ObservableObject, ITransientDependency
 {
-    public FollowingItemViewModel(FollowingInfo.ItemInfo item, NavigationManager navigationManager)
+
+    public TagItemViewModel(TagInfo.ItemInfo item, NavigationManager navigationManager)
     {
         this.Avatar = item.Avatar;
         this.UserName = item.UserName;
@@ -83,7 +101,7 @@ public partial class FollowingItemViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _nodeId, _id, _avatar, _userName, _userLink, _topicTitle, _topicLink, _nodeName, _nodeLink;
+    private string _nodeId, _id, _userName, _userLink, _topicTitle, _topicLink, _nodeName, _nodeLink;
 
     [ObservableProperty]
     private int _replies;
@@ -92,7 +110,7 @@ public partial class FollowingItemViewModel : ObservableObject
     private DateTime _created;
 
     [ObservableProperty]
-    private string? _createdText, _lastReplyUserName, _lastReplyUserLink;
+    private string? _avatar, _createdText, _lastReplyUserName, _lastReplyUserLink;
 
     private NavigationManager NavigationManager { get; }
 

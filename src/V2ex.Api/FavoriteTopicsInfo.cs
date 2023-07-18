@@ -58,9 +58,11 @@ public class FavoriteTopicsInfo
         public string CreatedText { get; set; } = null!;
 
         [XPath("//span[@class='topic_info']/strong[2]/a")]
+        [SkipNodeNotFound]
         public string? LastReplyUserName { get; set; }
 
         [XPath("//span[@class='topic_info']/strong[2]/a", "href")]
+        [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
 
         public string Id

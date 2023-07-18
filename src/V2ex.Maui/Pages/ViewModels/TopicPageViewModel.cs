@@ -29,14 +29,16 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
     [ObservableProperty]
     private TopicViewModel? _topic;
 
-    public TopicPageViewModel(ApiService apiService, ResourcesService resourcesService)
+    public TopicPageViewModel(ApiService apiService, ResourcesService resourcesService, NavigationManager navigationManager)
     {
         this.ApiService = apiService;
         this.ResourcesService = resourcesService;
+        this.NavigationManager = navigationManager;
     }
 
     private ApiService ApiService { get; }
-    public ResourcesService ResourcesService { get; }
+    private ResourcesService ResourcesService { get; }
+    private NavigationManager NavigationManager { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -61,6 +63,15 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
             this.Exception = exception;
             this.CurrentState = StateKeys.Error;
         }
+    }
+
+    [RelayCommand]
+    public async Task TapTag(string tag, CancellationToken cancellationToken = default)
+    {
+        await this.NavigationManager.GoToAsync(nameof(TagPage), true, new Dictionary<string, object>
+        {
+            {TagPageViewModel.QueryTagKey, tag.Trim() }
+        });
     }
 }
 

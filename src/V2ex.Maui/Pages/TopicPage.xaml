@@ -4,6 +4,7 @@
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
              x:Class="V2ex.Maui.Pages.TopicPage"
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:TopicPageViewModel"
@@ -100,7 +101,6 @@
                                         <FormattedString>
                                             <Span Text="{Binding Topic.CreatedText}" FontSize="Caption"></Span>
                                             <Span Text=" " FontSize="Caption"></Span>
-                                            <Span Text="{Binding Topic.TopicStats}" FontSize="Caption"></Span>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
@@ -118,6 +118,44 @@
                                 <HtmlWebViewSource Html="{Binding Topic.Content}"></HtmlWebViewSource>
                             </WebView.Source>
                         </WebView>
+
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Topic.Tags}"
+                                                   Spacing="8"
+                                                   x:Name="TagContainer">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate >
+                                        <Grid>
+                                            <BoxView Color="{StaticResource Gray100}" CornerRadius="4"/>
+                                            <Label Margin="8,4" >
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{x:Static fonts:Fi.Tag}" FontFamily="Fi"></Span>
+                                                        <Span Text=" "></Span>
+                                                        <Span Text="{Binding .}"></Span>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.TapTagCommand, Source={x:Reference TagContainer}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </HorizontalStackLayout>
+
+                            <Label Grid.Column="2" Text="{Binding Topic.TopicStats, Converter={StaticResource HtmlDecodeConverter}}" FontSize="Caption"
+                                    TextColor="{StaticResource Gray400}" >
+                            </Label>
+                        </Grid>
                         <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
                             HeightRequest="1" ></BoxView>
 

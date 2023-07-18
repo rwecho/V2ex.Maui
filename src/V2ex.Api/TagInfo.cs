@@ -1,14 +1,13 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace V2ex.Api;
 
 [HasXPath]
-[DebuggerDisplay("{CurrentPage}/{MaximumPage}")]
-public class NodePageInfo
+public class TagInfo
 {
     [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]
     [SkipNodeNotFound]
@@ -18,17 +17,16 @@ public class NodePageInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='TopicsNode']//div[contains(@class,'cell')]")]
+    [XPath("//div[@id='Main']//div[contains(@class,'cell')]")]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
 
     [HasXPath]
-    [DebuggerDisplay("{UserName,nq} {TopicTitle,nq}")]
     public class ItemInfo
     {
         [XPath("//td/a/img", "src")]
         [SkipNodeNotFound]
-        public string Avatar { get; init; } = null!;
+        public string? Avatar { get; init; }
 
         [XPath("//span[@class='topic_info']/strong[1]/a")]
         public string UserName { get; init; } = null!;
@@ -42,22 +40,24 @@ public class NodePageInfo
         [XPath("//span[@class='item_title']/a", "href")]
         public string TopicLink { get; init; } = null!;
 
-        [XPath("//td/a[contains(@class, 'count_')]")]
-        [SkipNodeNotFound]
         public int Replies { get; init; }
+
+        [XPath("//span[@class='topic_info']/a[@class='node']")]
+        public string NodeName { get; init; } = null!;
+
+        [XPath("//span[@class='topic_info']/a[@class='node']", "href")]
+        public string NodeLink { get; init; } = null!;
 
         [XPath("//span[@class='topic_info']/span", "title")]
         [SkipNodeNotFound]
         public DateTime Created { get; set; }
 
         [XPath("//span[@class='topic_info']/span")]
-        [SkipNodeNotFound]
-        public string? CreatedText { get; set; }
+        public string CreatedText { get; set; } = null!;
 
         [XPath("//span[@class='topic_info']/strong[2]/a")]
         [SkipNodeNotFound]
         public string? LastReplyUserName { get; set; }
-
         [XPath("//span[@class='topic_info']/strong[2]/a", "href")]
         [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
@@ -67,6 +67,14 @@ public class NodePageInfo
             get
             {
                 return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
+            }
+        }
+
+        public string NodeId
+        {
+            get
+            {
+                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
             }
         }
     }

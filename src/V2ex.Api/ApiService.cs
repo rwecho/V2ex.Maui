@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using static V2ex.Api.AppendTopicParameter;
 
 namespace V2ex.Api;
 
@@ -94,6 +95,13 @@ public class ApiService
         var url = "/recent";
         var response = await this.HttpClient.GetAsync(url);
         return await response.GetEncapsulatedData<NewsInfo>();
+    }
+
+    public async Task<TagInfo> GetTagInfo(string tagName, int page = 1)
+    {
+        var url = $"/tag/{tagName}?page={page}";
+        var response = await this.HttpClient.GetAsync(url);
+        return await response.GetEncapsulatedData<TagInfo>();
     }
 
     public async Task<LoginParameters> GetLoginParameters()
