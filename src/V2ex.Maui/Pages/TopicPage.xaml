@@ -10,6 +10,7 @@
              x:DataType="viewModels:TopicPageViewModel"
              Title="TopicPage">
     <ContentPage.Resources>
+        <toolkit:IsEqualConverter x:Key="IsEqualConverter"></toolkit:IsEqualConverter>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
@@ -58,11 +59,15 @@
             </VerticalStackLayout>
         </DataTemplate>
         
-        <DataTemplate x:Key="FooterTemplate">
-            <Label Text="All data loaded."
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand" />
+        <DataTemplate x:Key="FooterTemplate" x:DataType="viewModels:TopicPageViewModel">
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label Text="全部加载完成"
+                       Margin="16"
+                       IsVisible="{Binding LoadAll}"
+                       TextColor="{StaticResource Gray400}"
+                       FontSize="Caption"/>
+            </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid VerticalOptions="FillAndExpand"
@@ -169,8 +174,10 @@
                         <CollectionView ItemsSource="{Binding Topic.Replies}"
                                         SelectionMode="None"
                                         ItemTemplate="{StaticResource ReplyCard}"
+                                        Footer="{Binding .}"
                                         FooterTemplate="{StaticResource FooterTemplate}">
                         </CollectionView>
+
                     </VerticalStackLayout>
                 </ScrollView>
             </RefreshView>
@@ -180,7 +187,5 @@
                    VerticalOptions="Center"
                    HorizontalOptions="Center"></Label>
         </toolkit:StateContainer.StateViews>
-
-        <Label Text="Default Text"></Label>
     </Grid>
 </ContentPage>

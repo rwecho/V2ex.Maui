@@ -18,10 +18,10 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
     private string? _currentState, _markdownHtml;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
-    private bool _canCurrentStateChange = true;
+    private bool _canCurrentStateChange = true, _loadAll;
 
     [ObservableProperty]
-    private int _currentPage = 0;
+    private int _currentPage = 0, _maximumPage = 0;
 
     [ObservableProperty]
     private Exception? _exception;
@@ -60,7 +60,11 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
 
             this.CurrentState = StateKeys.Loading;
             this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
-            this.Topic = InstanceActivator.Create<TopicViewModel>(await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage), this.MarkdownHtml);
+            var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
+            this.CurrentPage = topicInfo.CurrentPage;
+            this.MaximumPage = topicInfo.MaximumPage;
+            this.LoadAll = this.CurrentPage == this.MaximumPage;
+            this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo, this.MarkdownHtml);
             this.CurrentState = StateKeys.Success;
         }
         catch (Exception exception)
