@@ -4,7 +4,6 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Services;
 
-
 public class UserManager : ISingletonDependency
 {
     private const string UserKey = "user.json";

@@ -1,10 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using V2ex.Api;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
@@ -14,6 +9,7 @@ namespace V2ex.Maui.Pages.ViewModels;
 public partial class TagPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
     public const string QueryTagKey = "tag";
+
     [ObservableProperty]
     private string? _tagName;
 
@@ -52,6 +48,7 @@ public partial class TagPageViewModel : ObservableObject, IQueryAttributable, IT
             TagName = tag.ToString()!;
         }
     }
+
     [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
     public async Task Load(CancellationToken cancellationToken = default)
     {
@@ -77,10 +74,8 @@ public partial class TagPageViewModel : ObservableObject, IQueryAttributable, IT
     }
 }
 
-
 public partial class TagItemViewModel : ObservableObject, ITransientDependency
 {
-
     public TagItemViewModel(TagInfo.ItemInfo item, NavigationManager navigationManager)
     {
         this.Avatar = item.Avatar;

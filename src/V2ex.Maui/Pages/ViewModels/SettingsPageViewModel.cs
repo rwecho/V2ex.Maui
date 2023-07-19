@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using V2ex.Api;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
@@ -8,15 +9,18 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class SettingsPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
-    public SettingsPageViewModel(ApiService apiService, UserManager userManager, NavigationManager navigationManager)
+    public SettingsPageViewModel(ApiService apiService, UserManager userManager, NavigationManager navigationManager,
+        IStringLocalizer<MauiResource> localizer)
     {
         this.ApiService = apiService;
         this.UserManager = userManager;
         this.NavigationManager = navigationManager;
+        this.Localizer = localizer;
     }
     private ApiService ApiService { get; }
     private UserManager UserManager { get; }
     private NavigationManager NavigationManager { get; }
+    private IStringLocalizer<MauiResource> Localizer { get; }
 
     [ObservableProperty]
     private string? _currentState;
@@ -49,7 +53,11 @@ public partial class SettingsPageViewModel : ObservableObject, IQueryAttributabl
     [RelayCommand]
     public async Task Logout(CancellationToken cancellationToken)
     {
-        if (!await Shell.Current.DisplayAlert("提示", "退出登录", "确定", "取消"))
+        if (!await Shell.Current.DisplayAlert(
+            this.Localizer["AlertTitle"],
+            this.Localizer["LogoutConfirmMessage"],
+            this.Localizer["Ok"],
+            this.Localizer["Cancel"]))
         {
             return;
         }

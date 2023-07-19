@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Microsoft.Extensions.Http.Logging;
+﻿using Microsoft.Extensions.Http.Logging;
 using Microsoft.Extensions.Logging;
 using V2ex.Api;
 using V2ex.Maui.Pages;
@@ -8,17 +7,34 @@ using Volo.Abp;
 using Volo.Abp.Autofac;
 using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
+using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.VirtualFileSystem;
 
 namespace V2ex.Maui.AppShell;
 
+
 [DependsOn(typeof(AbpAutofacModule),
     typeof(AbpBlobStoringModule),
-    typeof(AbpBlobStoringFileSystemModule))]
+    typeof(AbpBlobStoringFileSystemModule),
+    typeof(AbpLocalizationModule))]
 public class AppModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        Configure<AbpVirtualFileSystemOptions>(options =>
+        {
+            options.FileSets.AddEmbedded<AppModule>("V2ex.Maui");
+        });
+
+        Configure<AbpLocalizationOptions>(options =>
+        {
+            options.DefaultResourceType = typeof(MauiResource);
+            options.Resources
+                .Add<MauiResource>("zh")
+                .AddVirtualJson("/Localization/Resources/Maui");
+        });
+
         context.Services.AddTransient((sp) => DeviceDisplay.Current);
         context.Services.AddTransient((sp) =>
         {
@@ -53,8 +69,6 @@ public class AppModule : AbpModule
             {
                 return new LoggingHttpMessageHandler(sp.GetRequiredService<ILogger<ApiService>>());
             });
-
-       
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

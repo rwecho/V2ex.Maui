@@ -61,9 +61,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="appsettings.json" />
-		<EmbeddedResource Include="appsettings.secrets.json" />
 		<EmbeddedResource Include="Localization\**\*.json" />
+		<Content Remove="Localization\**\*.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json" />
+	  <EmbeddedResource Include="appsettings.secrets.json" />
 	</ItemGroup>
 
 	<ItemGroup>

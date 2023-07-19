@@ -1,0 +1,10 @@
+{
+  "culture": "zh",
+  "texts": {
+    "HelloWorld": "你好!",
+    "AlertTitle": "提示",
+    "LogoutConfirmMessage": "退出登录",
+    "Ok": "确定",
+    "Cancel": "取消"
+  }
+}
