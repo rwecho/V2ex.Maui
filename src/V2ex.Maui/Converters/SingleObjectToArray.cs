@@ -1,17 +1,16 @@
 ﻿using System.Globalization;
-using System.Web;
 
 namespace V2ex.Maui.Converters;
 
-public class HtmlDecodeConverter : IValueConverter
+public class SingleObjectToArray : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string text)
+        if (value == null)
         {
-            return HttpUtility.HtmlDecode(text);
+            return Array.Empty<object>();
         }
-        return value;
+        return new object[] { value };
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

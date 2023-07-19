@@ -1,15 +1,15 @@
 ﻿using System.Globalization;
-using System.Web;
 
 namespace V2ex.Maui.Converters;
 
-public class HtmlDecodeConverter : IValueConverter
+public class MarkdownContainerConverter : IValueConverter
 {
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string text)
+        if (value is string text && parameter is string html)
         {
-            return HttpUtility.HtmlDecode(text);
+            return html.Replace("@markdown", text);
         }
         return value;
     }
