@@ -2,7 +2,7 @@
 
 public static class InstanceActivator
 {
-    private static IServiceProvider? ServiceProvider { get; set; }
+    public static IServiceProvider? ServiceProvider { get; set; }
 
     public static void Initialize(IServiceProvider serviceProvider)
     {
@@ -17,5 +17,15 @@ public static class InstanceActivator
             throw new InvalidOperationException("Activator is not initialized");
         }
         return ActivatorUtilities.CreateInstance<T>(ServiceProvider, parameters);
+    }
+
+    public static T Create<T>()
+        where T : notnull
+    {
+        if (ServiceProvider == null)
+        {
+            throw new InvalidOperationException("Activator is not initialized");
+        }
+        return ServiceProvider.GetRequiredService<T>();
     }
 }

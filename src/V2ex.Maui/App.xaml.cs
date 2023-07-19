@@ -1,6 +1,4 @@
-﻿
-using Polly;
-using V2ex.Maui.Services;
+﻿using V2ex.Maui.Services;
 
 namespace V2ex.Maui;
 

@@ -33,6 +33,7 @@ public partial class TopicPage : ContentPage, ITransientDependency
             {
                 if (task.IsCompletedSuccessfully && double.TryParse(task.Result, out double contentHeight))
                 {
+                    // always there is a 1195 height firstly, so we ignore it
                     if(contentHeight == 1195)
                     {
                         return;

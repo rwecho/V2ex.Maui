@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MyTopicsPage"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyTopicsPageViewModel"
-             Title="MyTopicsPage">
+             Title="{services:L Text=MyTopicsPageTitle}">
     <ContentPage.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
 

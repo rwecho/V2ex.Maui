@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="V2ex.Maui.Pages.NotificationsPage"
-             Title="NotificationsPage"
+             Title="{services:L Text=NotificationPageTitle}"
              x:DataType="viewModels:NotificationsPageViewModel">
     <ContentPage.Resources>
         <DataTemplate x:Key="NotificationTemplate" x:DataType="viewModels:NotificationItemViewModel">

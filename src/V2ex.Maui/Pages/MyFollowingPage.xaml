@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MyFollowingPage"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyFollowingPageViewModel"
-             Title="MyFollowingPage">
+             Title="{services:L Text=MyFollowingPageTitle}">
     <ContentPage.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
 

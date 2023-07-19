@@ -5,6 +5,25 @@
     "AlertTitle": "提示",
     "LogoutConfirmMessage": "退出登录",
     "Ok": "确定",
-    "Cancel": "取消"
+    "Cancel": "取消",
+    "username": "用户名",
+    "password": "密码",
+    "captcha": "验证码",
+
+    "Login": "登录",
+    "LoginPageTitle": "登录",
+    "NotificationsPageTitle": "消息",
+    "NodePageTitle": "节点",
+    "TagPageTitle": "标签",
+    "TopicPageTitle": "话题",
+    "SettingsPageTitle": "设置",
+    "AboutPageTitle": "关于",
+    "MemberPageTitle": "用户",
+    "MyFollowingPageTitle": "我的关注",
+    "MyNodesPageTitle": "我收藏的节点",
+    "MyTopicsPageTitle": "我收藏的话题",
+
+    "SettingsMenuText": "设置",
+    "NotificationsMenuText": "消息"
   }
 }

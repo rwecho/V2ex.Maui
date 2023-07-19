@@ -4,9 +4,10 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
              xmlns:converter="clr-namespace:V2ex.Maui.Converters"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
              x:DataType="viewModels:LoginPageViewModel"
              x:Class="V2ex.Maui.Pages.LoginPage"
-             Title="LoginPage">
+             Title="{services:L Text=LoginPageTitle}">
     <ContentPage.Resources>
         <converter:SingleObjectToArray x:Key="SingleObjectToArray"></converter:SingleObjectToArray>
         <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"></toolkit:ByteArrayToImageSourceConverter>
@@ -14,15 +15,15 @@
                       x:DataType="viewModels:LoginViewModel">
             <Grid>
                 <VerticalStackLayout>
-                    <Entry Placeholder="username" Margin="8" Text="{Binding UserName}"></Entry>
-                    <Entry Placeholder="password" Margin="8" IsPassword="True" Text="{Binding Password}"></Entry>
+                    <Entry Placeholder="{services:L Text=username}" Margin="8" Text="{Binding UserName}"></Entry>
+                    <Entry Placeholder="{services:L Text=password}" Margin="8" IsPassword="True" Text="{Binding Password}"></Entry>
 
                     <Grid Margin="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Entry Placeholder="captcha" Grid.Column="0" Text="{Binding Captcha}"></Entry>
+                        <Entry Placeholder="{services:L Text=captcha}" Grid.Column="0" Text="{Binding Captcha}"></Entry>
                         <Image Grid.Column="1" Source="{Binding CaptchaImage, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                HeightRequest="48"
                                Aspect="AspectFill">
@@ -33,7 +34,7 @@
                     </Grid>
 
                     <HorizontalStackLayout Margin="8" HorizontalOptions="EndAndExpand">
-                        <Button Text="Login" Command="{Binding LoginCommand}" 
+                        <Button Text="{services:L Text=Login}" Command="{Binding LoginCommand}" 
                                 IsEnabled="{Binding CanLoginCommandExecute}" ></Button>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Http.Logging;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using V2ex.Api;
 using V2ex.Maui.Pages;
@@ -88,5 +89,9 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(NotificationsPage), typeof(NotificationsPage), true);
         routingManager.Register(nameof(LoginPage), typeof(LoginPage));
         routingManager.Register(nameof(TagPage), typeof(TagPage));
+
+
+        var localizer = context.ServiceProvider.GetRequiredService<IStringLocalizer<MauiResource>>();
+        var a = localizer["HelloWorld"];
     }
 }
