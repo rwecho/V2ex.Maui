@@ -47,8 +47,8 @@
                         </VerticalStackLayout.GestureRecognizers>
                     </VerticalStackLayout>
 
-                    <Grid Grid.Column="2" VerticalOptions="Start" Background="Transparent">
-                        <BoxView Color="{StaticResource Gray100}" CornerRadius="10"/>
+                    <Grid Grid.Column="2" VerticalOptions="Start" >
+                        <BoxView Style="{StaticResource RoundBadge}"/>
                         <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
 
                         <Grid.GestureRecognizers>
@@ -61,8 +61,7 @@
 
                 </Label>
 
-                <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
-                         HeightRequest="1" ></BoxView>
+                <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
 

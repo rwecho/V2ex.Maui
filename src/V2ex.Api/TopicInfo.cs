@@ -50,6 +50,7 @@ public class TopicInfo
     public string? ReplyStats { get; set; }
 
     [XPath("//div[@id='Main']//a[@class='tag']")]
+    [SkipNodeNotFound]
     public List<string> Tags { get; set; } = new();
 
     [XPath("//div[@id='Main']//a[@class='page_current'][1]")]

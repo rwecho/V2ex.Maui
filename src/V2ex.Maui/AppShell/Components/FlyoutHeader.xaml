@@ -63,7 +63,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
                 <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
                                      Padding="0,16">
                     <Label Text="{Binding User.Nodes}" HorizontalOptions="Center" ></Label>
@@ -76,7 +76,7 @@
             </Grid>
 
             <Grid Grid.Column="1">
-                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
                 <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
                                      Padding="0,16">
                     <Label Text="{Binding User.Topics}" HorizontalOptions="Center" ></Label>
@@ -89,7 +89,7 @@
             </Grid>
 
             <Grid Grid.Column="2">
-                <BoxView CornerRadius="4" BackgroundColor="{StaticResource Gray100}"></BoxView>
+                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
                 <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
                                      Padding="0,16">
                     <Label Text="{Binding User.Following}" HorizontalOptions="Center" ></Label>
@@ -117,5 +117,7 @@
             </Grid.GestureRecognizers>
         </Grid>
 
+
+        <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}" ></BoxView>
     </VerticalStackLayout>
 </ContentView>

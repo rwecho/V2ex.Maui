@@ -33,8 +33,7 @@
 
                 <Label Text="{Binding ReplyTimeText}" Margin="8" HorizontalOptions="End"></Label>
 
-                <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
-                         HeightRequest="1" ></BoxView>
+                <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
@@ -68,8 +67,7 @@
                         </VerticalStackLayout>
                     </Grid>
 
-                    <BoxView Margin="0,4,0,0" BackgroundColor="{StaticResource Gray100}"
-                         HeightRequest="1" ></BoxView>
+                    <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
 
                     <CollectionView ItemsSource="{Binding Member.Topics}"
                                     ItemTemplate="{StaticResource TopicDataTemplate }"></CollectionView>

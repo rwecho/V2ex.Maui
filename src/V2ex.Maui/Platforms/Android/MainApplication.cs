@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Runtime;
+using V2ex.Maui.Platforms.Android;
 
 namespace V2ex.Maui
 {
@@ -11,6 +12,18 @@ namespace V2ex.Maui
         {
         }
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp(FilesDir!.AbsolutePath);
+        protected override MauiApp CreateMauiApp()
+        {
+            if (OperatingSystem.IsAndroidVersionAtLeast(26))
+            {
+                Microsoft.Maui.Handlers.WebViewHandler.Mapper.ModifyMapping(
+                    nameof(Android.Webkit.WebView.WebChromeClient),
+                    (handler, view, args) => handler.PlatformView.SetWebChromeClient(new CustomWebChromeClient(handler)));
+            }
+
+            var app = MauiProgram.CreateMauiApp(FilesDir!.AbsolutePath);
+
+            return app;
+        }
     }
 }
