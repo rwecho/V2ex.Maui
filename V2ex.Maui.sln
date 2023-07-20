@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82A4EDD0-B08F-489F-A156-EB9791CB6DF3}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.github\workflows\ci.yml = .github\workflows\ci.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{913FC4E5-D8C6-49BA-AC86-24BC717BDDAF}"
@@ -16,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "V2ex.Api", "src\V2ex.Api\V2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "V2ex.Maui", "src\V2ex.Maui\V2ex.Maui.csproj", "{D662FC9F-41A6-4E9C-98D1-B851FD71B079}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "V2ex.Api.Tests", "test\V2ex.Api.Tests\V2ex.Api.Tests.csproj", "{9E34D577-F228-46BF-A423-9DB861F48707}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "V2ex.Api.Tests", "test\V2ex.Api.Tests\V2ex.Api.Tests.csproj", "{9E34D577-F228-46BF-A423-9DB861F48707}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
