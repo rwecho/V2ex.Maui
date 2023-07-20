@@ -84,7 +84,10 @@
                                VerticalOptions="Center" />
             <RefreshView VerticalOptions="FillAndExpand"
                         toolkit:StateView.StateKey="Success"
-                        HeightRequest="{Binding Height, Source={x:Reference StateContainer}}">
+                        HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
+                        RefreshColor="{StaticResource Primary}"
+                        IsRefreshing="{Binding IsReloading}"
+                        Command="{Binding ReloadCommand}">
                 <CollectionView ItemsSource="{Binding NewsInfo.Items}" 
                                 SelectionMode="Single"
                                 ItemTemplate="{StaticResource NewsInfoItemCard}"

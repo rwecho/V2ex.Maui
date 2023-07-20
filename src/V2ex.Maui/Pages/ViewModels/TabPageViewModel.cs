@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
@@ -6,13 +7,6 @@ using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
-
-public static class StateKeys
-{
-    public const string Loading = nameof(Loading);
-    public const string Success = nameof(Success);
-    public const string Error = nameof(Error);
-}
 public partial class TabPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
 {
     public const string TagPageQueryKey = "tab";
@@ -36,7 +30,7 @@ public partial class TabPageViewModel : ObservableObject, IQueryAttributable, IT
     private bool _canCurrentStateChange = true;
 
     [ObservableProperty]
-    private bool _navBarIsVisible = true;
+    private bool _navBarIsVisible = true, _isReloading = false;
 
     [ObservableProperty]
     private Exception? exception;
@@ -61,6 +55,24 @@ public partial class TabPageViewModel : ObservableObject, IQueryAttributable, IT
         {
             this.Exception = exception;
             this.CurrentState = StateKeys.Error;
+        }
+    }
+
+    [RelayCommand]
+    public async Task Reload(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            this.IsReloading = true;
+            this.NewsInfo = new NewsInfoViewModel(await this.ApiService.GetTabTopics(this.TabName));
+        }
+        catch (Exception)
+        {
+            await Toast.Make("Reload error").Show(cancellationToken);
+        }
+        finally
+        {
+            this.IsReloading = false;
         }
     }
 }
