@@ -1,5 +1,7 @@
 # V2ex.MAUI
 
+[![CI Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml)
+
 I believe this project might seem unnecessary since there are already many excellent apps that everyone is familiar with. However, with the upcoming release of .NET Core 8.0 and the growing interest in the .NET community, I want to seize this opportunity to establish this project. Currently, it remains a rough prototype with only a few basic features, far from being fully functional and user-friendly. But I trust that with a better understanding of app development, I will shape this app into a multi-platform, user-friendly, and feature-rich V2ex application.
 
 ## Screenshots
