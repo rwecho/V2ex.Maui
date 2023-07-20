@@ -9,11 +9,10 @@
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:SettingsPageViewModel"
              Title="{services:L Text=SettingsPageTitle}">
-    <VerticalStackLayout VerticalOptions="FillAndExpand"
+    <Grid VerticalOptions="FillAndExpand"
                          x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
-
         <toolkit:StateContainer.StateViews>
             <ActivityIndicator toolkit:StateView.StateKey="Loading" 
                                Color="{StaticResource Primary}"
@@ -37,5 +36,5 @@
                    VerticalOptions="Center"
                    HorizontalOptions="Center"></Label>
         </toolkit:StateContainer.StateViews>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

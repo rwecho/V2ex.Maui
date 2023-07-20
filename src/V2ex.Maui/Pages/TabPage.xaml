@@ -73,11 +73,9 @@
         </DataTemplate>
     </ContentPage.Resources>
 
-    <Grid VerticalOptions="FillAndExpand"
-          x:Name="Grid"
+    <Grid x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
-
         <toolkit:StateContainer.StateViews>
             <ActivityIndicator toolkit:StateView.StateKey="Loading"  
                                Color="{StaticResource Primary}"
@@ -85,8 +83,8 @@
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
             <RefreshView VerticalOptions="FillAndExpand"
-                            toolkit:StateView.StateKey="Success"
-                            HeightRequest="{Binding Height, Source={x:Reference Grid}}">
+                        toolkit:StateView.StateKey="Success"
+                        HeightRequest="{Binding Height, Source={x:Reference StateContainer}}">
                 <CollectionView ItemsSource="{Binding NewsInfo.Items}" 
                                 SelectionMode="Single"
                                 ItemTemplate="{StaticResource NewsInfoItemCard}"

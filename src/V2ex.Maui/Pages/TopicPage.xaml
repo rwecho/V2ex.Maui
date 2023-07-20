@@ -71,8 +71,7 @@
             </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
-    <Grid VerticalOptions="FillAndExpand"
-                        x:Name="StateContainer"
+    <Grid x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 

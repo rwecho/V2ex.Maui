@@ -71,6 +71,7 @@ public partial class AppShell : Shell, ITransientDependency
 
             if (this.AppPreferencesManager.Current?.LatestTabName == tabDefinition.Name)
             {
+                // issue: the default opened tab is blank.
                 tab.CurrentItem = shellContent;
             }
         }

@@ -40,7 +40,7 @@
     </ContentPage.Resources>
     
     <ScrollView>
-        <Grid 
+        <Grid x:Name="StateContainer" 
             toolkit:StateContainer.CurrentState="{Binding CurrentState}"
             toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 

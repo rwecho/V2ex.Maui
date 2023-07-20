@@ -73,8 +73,7 @@
                    VerticalOptions="CenterAndExpand" />
         </DataTemplate>
     </ContentPage.Resources>
-    <VerticalStackLayout VerticalOptions="FillAndExpand"
-                         x:Name="StateContainer"
+    <Grid x:Name="StateContainer" 
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 
@@ -100,5 +99,5 @@
                    VerticalOptions="Center"
                    HorizontalOptions="Center"></Label>
         </toolkit:StateContainer.StateViews>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
