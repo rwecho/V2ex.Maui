@@ -36,6 +36,9 @@ public partial class TabPageViewModel : ObservableObject, IQueryAttributable, IT
     private bool _canCurrentStateChange = true;
 
     [ObservableProperty]
+    private bool _navBarIsVisible = true;
+
+    [ObservableProperty]
     private Exception? exception;
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
