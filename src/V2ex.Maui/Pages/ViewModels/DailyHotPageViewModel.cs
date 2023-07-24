@@ -21,10 +21,10 @@ public partial class DailyHotPageViewModel : BaseViewModel
                 DateTimeOffset.FromUnixTimeSeconds(o.Created)
                     .ToLocalTime()
                     .ToHumanReadable(this.Localizer), 
-                o.Node?.Name,
+                o.Node?.Title,
                 o.LastReplyBy,
                 o.Id.ToString(),
-                o.Node?.Id.ToString(),
+                o.Node?.Name.ToString(),
                 o.Replies))
             .ToList();
     }
