@@ -14,18 +14,18 @@ public partial class DailyHotPageViewModel : BaseViewModel
     {
         this.Items = (await this.ApiService.GetDailyHot()
             ?? throw new InvalidOperationException("Can not get daily hot info"))
-            .Select(o => new Components.TopicViewModel
-            {
-                Title = o.Title,
-                Avatar = o.Member?.AvatarLarge,
-                UserName = o.Member?.UserName,
-                NodeName = o.Node?.Name,
-                CreatedText = DateTimeOffset.FromUnixTimeSeconds(o.Created)
+            .Select(o => Components.TopicViewModel.Create(
+                o.Title, 
+                o.Member?.AvatarLarge,
+                o.Member?.UserName, 
+                DateTimeOffset.FromUnixTimeSeconds(o.Created)
                     .ToLocalTime()
-                    .ToHumanReadable(this.Localizer),
-                Replies = o.Replies,
-                LastReplyBy = o.LastReplyBy
-            })
+                    .ToHumanReadable(this.Localizer), 
+                o.Node?.Name,
+                o.LastReplyBy,
+                o.Id.ToString(),
+                o.Node?.Id.ToString(),
+                o.Replies))
             .ToList();
     }
 }

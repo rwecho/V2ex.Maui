@@ -14,7 +14,7 @@
                          WidthRequest="{Binding Source={x:Reference Root}, Path=Width}"
                          x:DataType="local:TopicViewModel">
         <VerticalStackLayout.GestureRecognizers>
-            <!--<TapGestureRecognizer Command="{Binding TapTitleCommand}"/>-->
+            <TapGestureRecognizer Command="{Binding TapTitleCommand}"/>
         </VerticalStackLayout.GestureRecognizers>
 
         <Grid Margin="8">
@@ -28,7 +28,7 @@
                 HeightRequest="32" WidthRequest="32" 
                 Aspect="AspectFill">
                 <Image.GestureRecognizers>
-                    <!--<TapGestureRecognizer Command="{Binding TapUserCommand}"/>-->
+                    <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
 
@@ -46,7 +46,7 @@
                 </Label>
 
                 <VerticalStackLayout.GestureRecognizers>
-                    <!--<TapGestureRecognizer Command="{Binding TapUserCommand}"/>-->
+                    <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                 </VerticalStackLayout.GestureRecognizers>
             </VerticalStackLayout>
 
@@ -54,7 +54,7 @@
                 <BoxView Style="{StaticResource RoundBadge}"/>
                 <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
                 <Grid.GestureRecognizers>
-                    <!--<TapGestureRecognizer Command="{Binding TapNodeCommand}"/>-->
+                    <TapGestureRecognizer Command="{Binding TapNodeCommand}"/>
                 </Grid.GestureRecognizers>
             </Grid>
 
