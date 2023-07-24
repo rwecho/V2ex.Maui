@@ -54,55 +54,6 @@
             </Label>
         </Grid>
 
-        <Grid Margin="16,8" ColumnSpacing="8"
-              IsVisible="{Binding User, Converter={StaticResource IsNotNullConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
-                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
-                                     Padding="0,16">
-                    <Label Text="{Binding User.Nodes}" HorizontalOptions="Center" ></Label>
-                    <Label Text="Nodes" HorizontalOptions="Center" ></Label>
-                </VerticalStackLayout>
-
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer  Command="{Binding GotoNodesCommand}"></TapGestureRecognizer>
-                </Grid.GestureRecognizers>
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
-                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
-                                     Padding="0,16">
-                    <Label Text="{Binding User.Topics}" HorizontalOptions="Center" ></Label>
-                    <Label Text="Topics" HorizontalOptions="Center" ></Label>
-                </VerticalStackLayout>
-
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer  Command="{Binding GotoTopicsCommand}"></TapGestureRecognizer>
-                </Grid.GestureRecognizers>
-            </Grid>
-
-            <Grid Grid.Column="2">
-                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
-                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8"
-                                     Padding="0,16">
-                    <Label Text="{Binding User.Following}" HorizontalOptions="Center" ></Label>
-                    <Label Text="Following" HorizontalOptions="Center" ></Label>
-                </VerticalStackLayout>
-
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer  Command="{Binding GotoFollowingCommand}"></TapGestureRecognizer>
-                </Grid.GestureRecognizers>
-            </Grid>
-        </Grid>
-
         <Grid Margin="16,16,16,8"
               ColumnSpacing="8" 
               IsVisible="{Binding User, Converter={StaticResource IsNullConverter}}"

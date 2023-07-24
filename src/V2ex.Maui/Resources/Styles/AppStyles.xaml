@@ -8,7 +8,7 @@
 
     <Style x:Key="VerticalSeparator" TargetType="BoxView">
         <Setter Property="BackgroundColor" Value="{StaticResource Gray100}"></Setter>
-        <Setter Property="HeightRequest" Value="1"></Setter>
+        <Setter Property="WidthRequest" Value="1"></Setter>
     </Style>
 
     <Style x:Key="RoundBadge" TargetType="BoxView">

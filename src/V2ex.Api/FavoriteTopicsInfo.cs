@@ -18,7 +18,7 @@ public class FavoriteTopicsInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell item']")]
+    [XPath("//div[@id='Main']//div[@class='cell item']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
 

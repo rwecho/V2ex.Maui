@@ -31,7 +31,7 @@ public class MemberPageInfo
     [SkipNodeNotFound]
     public List<TopicInfo> Topics { get; init; } = new();
 
-    [XPath("//div[@class='dock_area']")]
+    [XPath("//div[@class='dock_area']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ReplyInfo> Replies { get; init; } = new();
 

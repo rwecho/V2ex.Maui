@@ -61,7 +61,7 @@ public class TopicInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]")]
+    [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ReplyInfo> Replies { get; set; } = new();
 

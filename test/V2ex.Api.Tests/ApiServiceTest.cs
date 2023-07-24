@@ -1,4 +1,3 @@
-using Shouldly;
 using Volo.Abp.Testing;
 
 namespace V2ex.Api.Tests;
@@ -9,6 +8,7 @@ public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
     {
         this.ApiService = this.GetRequiredService<ApiService>();
     }
+
     private ApiService ApiService { get; }
 
     [Fact]
@@ -17,7 +17,6 @@ public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
         var dailyHotInfo = await this.ApiService.GetDailyHot();
         Assert.NotNull(dailyHotInfo);
     }
-
 
     [Fact]
     public async Task GetNodeInfoTest()
@@ -33,6 +32,13 @@ public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
         var nodesInfo = await this.ApiService.GetNodesInfo();
 
         Assert.NotNull(nodesInfo);
+    }
+
+    [Fact]
+    public async Task GetNodesNavInfoTest()
+    {
+        var nodesNavInfo = await this.ApiService.GetNodesNavInfo();
+        Assert.NotNull(nodesNavInfo);
     }
 
     [Fact]

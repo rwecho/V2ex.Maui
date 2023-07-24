@@ -51,4 +51,9 @@ public partial class TopicPage : ContentPage, ITransientDependency
         }
         Task.Run(() => this.ViewModel!.Load());
     }
+
+    private void CollectionView_RemainingItemsThresholdReached(object sender, EventArgs e)
+    {
+
+    }
 }

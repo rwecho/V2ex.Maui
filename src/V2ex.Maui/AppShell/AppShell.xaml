@@ -34,6 +34,33 @@
         </MenuItem.IconImageSource>
     </MenuItem>
 
+    <MenuItem Text="{services:L Text=MyFavoriteMenuText}"
+              Command="{Binding GotoMyFavoritePageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Favorite}"
+                             FontFamily="MdOutlined"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=DailyHotMenuText}"
+              Command="{Binding GotoDailyHotPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Fire}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=NodesMenuText}"
+              Command="{Binding GotoNodesPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.ShareNodes}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
     <MenuItem Text="{services:L Text=SettingsMenuText}"
               Command="{Binding GotoSettingsPageCommand}">
         <MenuItem.IconImageSource>

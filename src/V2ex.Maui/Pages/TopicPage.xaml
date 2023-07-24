@@ -169,11 +169,16 @@
                                     TextColor="{StaticResource Gray400}" >
                             </Label>
                         </Grid>
+                        
+                        
                         <BoxView Margin="0,4,0,0"  Style="{StaticResource HorizontalSeparator}" ></BoxView>
 
                         <CollectionView ItemsSource="{Binding Topic.Replies}"
                                         SelectionMode="None"
                                         ItemTemplate="{StaticResource ReplyCard}"
+                                        RemainingItemsThreshold="5"
+                                        RemainingItemsThresholdReached="CollectionView_RemainingItemsThresholdReached"
+                                        RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
                                         Footer="{Binding .}"
                                         FooterTemplate="{StaticResource FooterTemplate}">
                         </CollectionView>

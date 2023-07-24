@@ -21,7 +21,7 @@ public class NodeTopicsInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='TopicsNode']/div")]
+    [XPath("//div[@id='TopicsNode']/div", ReturnType.OuterHtml)]
     public List<ItemInfo> Items { get; init; } = new();
 
     public class ItemInfo

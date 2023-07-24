@@ -24,6 +24,9 @@
     "MyTopicsPageTitle": "我收藏的话题",
 
     "SettingsMenuText": "设置",
-    "NotificationsMenuText": "消息"
+    "NotificationsMenuText": "消息",
+    "MyFavoriteMenuText": "收藏",
+    "DailyHotMenuText": "今日热议",
+    "NodesMenuText": "节点"
   }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="V2ex.Maui.Pages.NodesPage"
+             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewModels:NodesPageViewModel"
+             Title="NodesPageTitle">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="NodeItemTemplate" x:DataType="viewModels:NodeItemViewModel">
+            <Grid Margin="4" >
+                <BoxView Style="{StaticResource RoundBadge}"></BoxView>
+                <Label Text="{Binding Name}"  Margin="8,4"></Label>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GotoNodePageCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NodeCategoryTemplate" x:DataType="viewModels:NodeCategoryViewModel">
+            <Grid Margin="8, 8" RowSpacing="8" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <HorizontalStackLayout Spacing="8">
+                    <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
+                    <Label Text="{Binding Category}"></Label>
+                </HorizontalStackLayout>
+                <FlexLayout Grid.Row="1" Wrap="Wrap" 
+                            BindableLayout.ItemsSource="{Binding Items}"
+                            BindableLayout.ItemTemplate="{StaticResource NodeItemTemplate}"></FlexLayout>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <Grid x:Name="StateContainer" 
+        toolkit:StateContainer.CurrentState="{Binding CurrentState}"
+        toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+
+        <toolkit:StateContainer.StateViews>
+            <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+                            Color="{StaticResource Primary}"
+                            IsRunning="True"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+            <ScrollView toolkit:StateView.StateKey="Success"
+                        HeightRequest="{Binding Height, Source={x:Reference StateContainer}}">
+                <FlexLayout 
+                            Direction="Column"
+                            BindableLayout.ItemsSource="{Binding NodeCategories}"
+                            BindableLayout.ItemTemplate="{StaticResource NodeCategoryTemplate}">
+                </FlexLayout>
+            </ScrollView>
+
+            <Label toolkit:StateView.StateKey="Error"
+                Text="{Binding Exception}" 
+                VerticalOptions="Center"
+                HorizontalOptions="Center"></Label>
+        </toolkit:StateContainer.StateViews>
+    </Grid>
+</ContentPage>

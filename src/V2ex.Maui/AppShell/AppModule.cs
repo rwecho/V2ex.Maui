@@ -89,6 +89,9 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(NotificationsPage), typeof(NotificationsPage), true);
         routingManager.Register(nameof(LoginPage), typeof(LoginPage));
         routingManager.Register(nameof(TagPage), typeof(TagPage));
+        routingManager.Register(nameof(DailyHotPage), typeof(DailyHotPage));
+        routingManager.Register(nameof(MyFavoritePage), typeof(MyFavoritePage));
+        routingManager.Register(nameof(NodesPage), typeof(NodesPage));
 
 
         var localizer = context.ServiceProvider.GetRequiredService<IStringLocalizer<MauiResource>>();

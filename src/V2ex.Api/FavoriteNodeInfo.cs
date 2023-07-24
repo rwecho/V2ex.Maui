@@ -11,7 +11,7 @@ namespace V2ex.Api;
 [DebuggerDisplay("{Items.Count,nq}")]
 public class FavoriteNodeInfo
 {
-    [XPath("//a[contains(@class, 'av-node')]")]
+    [XPath("//a[contains(@class, 'av-node')]", ReturnType.OuterHtml)]
     public List<ItemInfo> Items { get; init; } = new();
 
     [HasXPath]

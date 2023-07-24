@@ -17,7 +17,7 @@ public class TagInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[contains(@class,'cell')]")]
+    [XPath("//div[@id='Main']//div[contains(@class,'cell')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
 

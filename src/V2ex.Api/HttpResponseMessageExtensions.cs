@@ -30,6 +30,7 @@ public static class HttpResponseMessageExtensions
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();
         document.LoadHtml(content);
+
         var result = document.DocumentNode.GetEncapsulatedData<T>();
         return result;
     }

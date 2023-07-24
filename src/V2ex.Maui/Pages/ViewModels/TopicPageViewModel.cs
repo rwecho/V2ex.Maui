@@ -82,6 +82,33 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
             {TagPageViewModel.QueryTagKey, tag.Trim() }
         });
     }
+
+    [RelayCommand]
+    public async Task RemainingReachedCommand(CancellationToken cancellationToken)
+    {
+        if(this.CurrentPage == this.MaximumPage)
+        {
+            return;
+        }
+
+        try
+        {
+            if(this.MarkdownHtml == null || this.Topic == null)
+            {
+                throw new InvalidOperationException("We must load data first.");
+            }
+
+            var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
+            this.CurrentPage = topicInfo.CurrentPage;
+            this.MaximumPage = topicInfo.MaximumPage;
+            this.LoadAll = this.CurrentPage == this.MaximumPage;
+            this.Topic.AddNextPage(topicInfo);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }
 
 public partial class TopicViewModel : ObservableObject
@@ -107,6 +134,19 @@ public partial class TopicViewModel : ObservableObject
         this.Replies = new ObservableCollection<ReplyViewModel>(
             topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x)));
         this.NavigationManager = navigationManager;
+    }
+
+
+    internal void AddNextPage(TopicInfo topic)
+    {
+        this.ReplyStats = topic.ReplyStats;
+        this.CurrentPage = topic.CurrentPage;
+        this.MaximumPage = topic.MaximumPage;
+
+        foreach (var item in topic.Replies)
+        {
+            this.Replies.Add(InstanceActivator.Create<ReplyViewModel>(item));
+        }
     }
 
     [ObservableProperty]
@@ -173,6 +213,7 @@ public partial class TopicViewModel : ObservableObject
             { MemberPageViewModel.QueryUserNameKey, this.UserName }
         });
     }
+
 }
 
 public partial class ReplyViewModel : ObservableObject

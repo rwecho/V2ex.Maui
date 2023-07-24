@@ -22,7 +22,7 @@ public class NotificationInfo
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[contains(@id, 'n_')]")]
+    [XPath("//div[contains(@id, 'n_')]", ReturnType.OuterHtml)]
     public List<NotificationItemInfo> Items { get; set; } = new();
 
     [XPath("//div[contains(@id, 'n_')]", "id")]

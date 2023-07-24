@@ -12,10 +12,10 @@ public class NewsInfo
 {
     private string DebuggerDisplay => $"Items:{this.Items.Count}";
 
-    [XPath("//div[contains(@class, 'cell') and contains(@class, 'item')]")]
+    [XPath("//div[contains(@class, 'cell') and contains(@class, 'item')]", ReturnType.InnerHtml)]
     public List<NewsInfo.Item> Items { get; init; } = new();
 
-    [XPath("//div[@id='Rightbar']//a[@href='/my/nodes']/ancestor::div[@class='box']")]
+    [XPath("//div[@id='Rightbar']//a[@href='/my/nodes']/ancestor::div[@class='box']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public UserInfo? CurrentUser { get; init; }
 
@@ -24,9 +24,11 @@ public class NewsInfo
     public class Item
     {
         [XPath("//span[contains(@class, 'item_title')]/a")]
+        [SkipNodeNotFound]
         public string Title { get; init; } = null!;
 
         [XPath("//span[contains(@class, 'item_title')]/a", "href")]
+        [SkipNodeNotFound]
         public string Link { get; init; } = null!;
 
         [XPath("//td/a/img", "src")]
