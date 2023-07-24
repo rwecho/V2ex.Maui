@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using V2ex.Api;
+using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
@@ -21,6 +23,8 @@ public abstract partial class BaseViewModel : ObservableObject, ITransientDepend
     public IAbpLazyServiceProvider LazyServiceProvider { get; set; } = null!;
 
     protected ApiService ApiService => LazyServiceProvider.LazyGetRequiredService<ApiService>();
+
+    protected IStringLocalizer<MauiResource> Localizer => LazyServiceProvider.LazyGetRequiredService<IStringLocalizer<MauiResource>>();
 
     protected ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();
 

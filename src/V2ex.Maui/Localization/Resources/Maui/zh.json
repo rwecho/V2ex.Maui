@@ -27,6 +27,12 @@
     "NotificationsMenuText": "消息",
     "MyFavoriteMenuText": "收藏",
     "DailyHotMenuText": "今日热议",
-    "NodesMenuText": "节点"
+    "NodesMenuText": "节点",
+    "JustNow": "刚刚",
+    "SecondsAgo": "{0} 秒前",
+    "MinutesAgo": "{0} 分钟前",
+    "HoursAgo": "{0} 小时前",
+    "DaysAgo": "{0} 天前",
+    "Replies": "评论"
   }
 }

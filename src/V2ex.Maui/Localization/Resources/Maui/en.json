@@ -1,6 +1,38 @@
 {
   "culture": "en",
   "texts": {
-    "HelloWorld": "Hello 1111 World!"
+    "HelloWorld": "hello!",
+    "AlertTitle": "Alert",
+    "LogoutConfirmMessage": "Are you want to logout?",
+    "Ok": "Ok",
+    "Cancel": "Cancel",
+    "username": "username",
+    "password": "password",
+    "captcha": "captcha",
+
+    "Login": "Login",
+    "LoginPageTitle": "Login",
+    "NotificationsPageTitle": "Notifications",
+    "NodePageTitle": "Nodes",
+    "TagPageTitle": "Tags",
+    "TopicPageTitle": "Topic",
+    "SettingsPageTitle": "Settings",
+    "AboutPageTitle": "About",
+    "MemberPageTitle": "Member",
+    "MyFollowingPageTitle": "My Following",
+    "MyNodesPageTitle": "My Favorite Nodes",
+    "MyTopicsPageTitle": "My Favorite Topics",
+
+    "SettingsMenuText": "Settings",
+    "NotificationsMenuText": "Notifications",
+    "MyFavoriteMenuText": "Favorite",
+    "DailyHotMenuText": "Daily Hot",
+    "NodesMenuText": "Nodes",
+    "JustNow": "Just now",
+    "SecondsAgo": "{0} seconds ago",
+    "MinutesAgo": "{0} minutes ago",
+    "HoursAgo": "{0} hours ago",
+    "DaysAgo": "{0} days ago",
+    "Replies": "Replies"
   }
 }

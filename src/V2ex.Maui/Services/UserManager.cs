@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Extensions.Localization;
+using System.Text.Json;
 using V2ex.Api;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Localization;
 
 namespace V2ex.Maui.Services;
 

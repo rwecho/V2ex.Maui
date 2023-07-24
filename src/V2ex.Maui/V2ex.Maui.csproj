@@ -98,6 +98,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\Components\TopicView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\DailyHotPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
