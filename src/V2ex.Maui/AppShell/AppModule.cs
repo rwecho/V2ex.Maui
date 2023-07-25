@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Http.Logging;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using V2ex.Api;
 using V2ex.Maui.Pages;
 using V2ex.Maui.Services;
@@ -14,7 +15,6 @@ using Volo.Abp.VirtualFileSystem;
 
 namespace V2ex.Maui.AppShell;
 
-
 [DependsOn(typeof(AbpAutofacModule),
     typeof(AbpBlobStoringModule),
     typeof(AbpBlobStoringFileSystemModule),
@@ -23,6 +23,10 @@ public class AppModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        //todo: set zh-Hans language as default.
+        CultureInfo.CurrentCulture = new CultureInfo("zh-Hans");
+        CultureInfo.CurrentUICulture = new CultureInfo("zh-Hans");
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<AppModule>("V2ex.Maui");
@@ -32,7 +36,7 @@ public class AppModule : AbpModule
         {
             options.DefaultResourceType = typeof(MauiResource);
             options.Resources
-                .Add<MauiResource>("zh")
+                .Add<MauiResource>("zh-Hans")
                 .AddVirtualJson("/Localization/Resources/Maui");
         });
 
@@ -92,9 +96,5 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(DailyHotPage), typeof(DailyHotPage));
         routingManager.Register(nameof(MyFavoritePage), typeof(MyFavoritePage));
         routingManager.Register(nameof(NodesPage), typeof(NodesPage));
-
-
-        var localizer = context.ServiceProvider.GetRequiredService<IStringLocalizer<MauiResource>>();
-        var a = localizer["HelloWorld"];
     }
 }

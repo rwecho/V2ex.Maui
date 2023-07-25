@@ -62,12 +62,5 @@ public class NodePageInfo
         [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
 
-        public string Id
-        {
-            get
-            {
-                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
-            }
-        }
     }
 }

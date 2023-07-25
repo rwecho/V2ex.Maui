@@ -59,7 +59,7 @@ public partial class NodeItemViewModel : ObservableObject
     [RelayCommand]
     public async Task GotoNodePage(CancellationToken cancellationToken = default)
     {
-        var node = new UriBuilder(UrlUtils.CompleteUrl(this.Link)).Path.Split('/').Last();
+        var node = new UriBuilder(UrlUtilities.CompleteUrl(this.Link)).Path.Split('/').Last();
 
         await this.NavigationManager.GoToAsync(nameof(NodePage), true,
              new Dictionary<string, object>

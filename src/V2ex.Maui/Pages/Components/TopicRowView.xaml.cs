@@ -81,7 +81,7 @@ public partial class TopicRowViewModel : ObservableObject, ITransientDependency
 
     public static TopicRowViewModel Create(
         string? title, string? avatar,
-        string? userName, string createdText,
+        string? userName, string? createdText,
         string? nodeName, string? lastReplyBy,
         string topicId, string? nodeId,
         int replies)

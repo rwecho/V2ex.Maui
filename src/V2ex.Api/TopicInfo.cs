@@ -73,7 +73,7 @@ public class TopicInfo
     {
         get
         {
-            return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+            return new UriBuilder(UrlUtilities.CompleteUrl(NodeLink)).Path.Split("/").Last();
         }
     }
 

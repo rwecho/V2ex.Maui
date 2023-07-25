@@ -42,6 +42,8 @@ public class FavoriteTopicsInfo
         [XPath("//span[@class='item_title']/a", "href")]
         public string TopicLink { get; init; } = null!;
 
+        [XPath("//a[@class='count_livid']")]
+        [SkipNodeNotFound]
         public int Replies { get; init; }
 
         [XPath("//span[@class='topic_info']/a[@class='node']")]
@@ -64,21 +66,5 @@ public class FavoriteTopicsInfo
         [XPath("//span[@class='topic_info']/strong[2]/a", "href")]
         [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
-
-        public string Id
-        {
-            get
-            {
-                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
-            }
-        }
-
-        public string NodeId
-        {
-            get
-            {
-                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
-            }
-        }
     }
 }

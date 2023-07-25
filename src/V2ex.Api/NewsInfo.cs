@@ -69,7 +69,7 @@ public class NewsInfo
         {
             get
             {
-                return new UriBuilder(UrlUtils.CompleteUrl(Link)).Path.Split("/").Last();
+                return new UriBuilder(UrlUtilities.CompleteUrl(Link)).Path.Split("/").Last();
             }
         }
 
@@ -77,7 +77,7 @@ public class NewsInfo
         {
             get
             {
-                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+                return new UriBuilder(UrlUtilities.CompleteUrl(NodeLink)).Path.Split("/").Last();
             }
         }
     }

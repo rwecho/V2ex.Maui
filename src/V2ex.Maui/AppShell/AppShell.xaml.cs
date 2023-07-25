@@ -134,7 +134,7 @@ public partial class AppShellViewModel : ObservableObject, ITransientDependency
     [RelayCommand]
     public async Task GotoMyFavoritePage(CancellationToken cancellationToken)
     {
-        await this.NavigationManager.GoToAsync(nameof(MyFavoritePage), true);
+        await this.NavigationManager.GoToAsync(nameof(MyTopicsPage), true);
         this.FlyoutIsPresented = false;
     }
 

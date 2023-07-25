@@ -74,7 +74,7 @@ public class NotificationInfo
         {
             get
             {
-                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
+                return new UriBuilder(UrlUtilities.CompleteUrl(TopicLink)).Path.Split("/").Last();
             }
         }
     }

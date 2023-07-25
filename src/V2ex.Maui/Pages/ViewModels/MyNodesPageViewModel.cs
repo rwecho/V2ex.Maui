@@ -60,7 +60,7 @@ public partial class MyNodesItemViewModel : ObservableObject
         this.Name = node.Name;
         this.Topics = node.Topics;
         this.Link = node.Link;
-        this.Id = node.Id;
+        this.Id = Utilities.ParseId(node.Link) ;
         this.NavigationManager = navigationManager;
     }
 

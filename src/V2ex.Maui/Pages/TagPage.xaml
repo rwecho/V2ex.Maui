@@ -4,73 +4,14 @@
              x:Class="V2ex.Maui.Pages.TagPage"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
+             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:TagPageViewModel"
              Title="{services:L Text=TagPageTitle}">
     <ContentPage.Resources>
-        <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-
-        <DataTemplate x:Key="TopicTemplate" x:DataType="viewModels:TagItemViewModel">
-            <VerticalStackLayout Margin="0" Background="transparent">
-                <VerticalStackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapTitleCommand}"/>
-                </VerticalStackLayout.GestureRecognizers>
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <Image Grid.Column="0" Source="{Binding Avatar}" 
-                           HeightRequest="32" WidthRequest="32" 
-                           Aspect="AspectFill">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
-                        <Label Text="{Binding UserName}" />
-                        <Label TextColor="{StaticResource Gray400}" >
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding CreatedText}" FontSize="Caption"></Span>
-                                    <Span Text=" " FontSize="Caption"></Span>
-                                    <Span Text="评论 " FontSize="Caption"></Span>
-                                    <Span Text="{Binding Replies}" FontSize="Caption"></Span>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
-                        </VerticalStackLayout.GestureRecognizers>
-                    </VerticalStackLayout>
-
-                    <Grid Grid.Column="2" VerticalOptions="Start" >
-                        <BoxView Style="{StaticResource RoundBadge}"/>
-                        <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
-
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapNodeCommand}"/>
-                        </Grid.GestureRecognizers>
-                    </Grid>
-                </Grid>
-
-                <Label Margin="8" Text="{Binding TopicTitle, Converter={StaticResource Key=HtmlDecodeConverter}}">
-
-                </Label>
-
-                <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
-            </VerticalStackLayout>
-        </DataTemplate>
-
-        <DataTemplate x:Key="FooterTemplate">
-            <Label Text="All data loaded."
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand" />
+        <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
+            <components:TopicRowView Topic="{Binding .}"></components:TopicRowView>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer"
@@ -89,7 +30,6 @@
                          Command="{Binding LoadCommand}">
                 <CollectionView ItemsSource="{Binding Items}"
                                 ItemTemplate="{StaticResource TopicTemplate}"
-                                FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                 </CollectionView>
             </RefreshView>

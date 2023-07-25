@@ -72,7 +72,7 @@ public class FollowingInfo
         {
             get
             {
-                return new UriBuilder(UrlUtils.CompleteUrl(TopicLink)).Path.Split("/").Last();
+                return new UriBuilder(UrlUtilities.CompleteUrl(TopicLink)).Path.Split("/").Last();
             }
         }
 
@@ -80,7 +80,7 @@ public class FollowingInfo
         {
             get
             {
-                return new UriBuilder(UrlUtils.CompleteUrl(NodeLink)).Path.Split("/").Last();
+                return new UriBuilder(UrlUtilities.CompleteUrl(NodeLink)).Path.Split("/").Last();
             }
         }
     }

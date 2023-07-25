@@ -20,7 +20,7 @@ public class ApiService
 
         if (this.HttpClient.BaseAddress == null)
         {
-            this.HttpClient.BaseAddress = new Uri(UrlUtils.BASE_URL);
+            this.HttpClient.BaseAddress = new Uri(UrlUtilities.BASE_URL);
             this.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(WEB_USER_AGENT);
         }
     }
@@ -143,7 +143,7 @@ public class ApiService
             })
         };
 
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/signin");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/signin");
         var response = await this.HttpClient.SendAsync(request);
 
         return await response.GetEncapsulatedData<NewsInfo, LoginProblem>((error) =>
@@ -191,15 +191,11 @@ public class ApiService
         var url = "/my/nodes";
         var response = await this.HttpClient.GetAsync(url);
 
-        List<string> links = new();
-        var nodeInfo = await response.GetEncapsulatedData<FavoriteNodeInfo>(node =>
-        {
-            links.AddRange(node.SelectNodes("//a[contains(@class, 'av-node')]").Select(o => o.GetAttributeValue("href", "")));
-        });
+        var nodeInfo = await response.GetEncapsulatedData<FavoriteNodeInfo>();
 
-        for (int i = 0; i < links.Count; i++)
+        foreach (var item in nodeInfo.Items)
         {
-            nodeInfo.Items[i].Link = links[i];
+            item.Image = UrlUtilities.CompleteUrl(item.Image);
         }
         return nodeInfo;
     }
@@ -260,7 +256,7 @@ public class ApiService
     {
         var url = $"/t/{topicId}/append";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<AppendTopicParameter>();
     }
@@ -309,7 +305,7 @@ public class ApiService
         var url = $"/favorite/topic/{topicId}?once={once}";
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<TopicInfo>();
     }
@@ -346,7 +342,7 @@ public class ApiService
     {
         var url = $"/unfavorite/topic/{topicId}?once={once}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/t/{topicId}");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<TopicInfo>();
     }
@@ -395,7 +391,7 @@ public class ApiService
     public async Task<UnitInfo> FavoriteNode(string url)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<UnitInfo>();
     }
@@ -411,7 +407,7 @@ public class ApiService
     {
         var url = $"/mission/daily/redeem?once={once}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<DailyInfo>();
     }
@@ -428,7 +424,7 @@ public class ApiService
                 { "once", once },
             })
         };
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<NewsInfo>();
     }
@@ -436,7 +432,7 @@ public class ApiService
     public async Task<DailyInfo> RequestByUrl(string url)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtils.BASE_URL}/mission/daily");
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         return await response.GetEncapsulatedData<DailyInfo>();
     }

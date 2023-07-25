@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Localization;
-using System.Text.Json;
+﻿using System.Text.Json;
 using V2ex.Api;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Localization;
 
 namespace V2ex.Maui.Services;
 
@@ -12,6 +10,7 @@ public class UserManager : ISingletonDependency
     private UserInfo? _currentUser;
     private ReaderWriterLockSlim ReaderWriterLockSlim { get; } = new ReaderWriterLockSlim();
     public bool IsAuthorized => this.CurrentUser != null;
+
     public event EventHandler<UserInfo?>? UserChanged;
 
     public UserInfo? CurrentUser
