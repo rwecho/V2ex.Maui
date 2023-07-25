@@ -35,9 +35,13 @@ public class TopicInfo
     [SkipNodeNotFound]
     public string? TopicStats { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='topic_content']", ReturnType.InnerHtml)]
+    [XPath("//div[@id='Main']//div[@class='cell']/div[@class='topic_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
     public string? Content { get; set; }
+
+    [XPath("//div[@id='Main']//div[@class='subtle']", ReturnType.InnerHtml)]
+    [SkipNodeNotFound]
+    public List<SupplementInfo> Supplements { get; set; } = new();
 
     [XPath("//div[@id='Main']//div[@class='header']/a[2]")]
     public string NodeName { get; set; } = null!;
@@ -65,10 +69,6 @@ public class TopicInfo
     [SkipNodeNotFound]
     public List<ReplyInfo> Replies { get; set; } = new();
 
-    [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]", "id")]
-    [SkipNodeNotFound]
-    public List<string> ReplyIds { get; set; } = new();
-
     public string NodeId
     {
         get
@@ -77,20 +77,26 @@ public class TopicInfo
         }
     }
 
-    public string Id
+    [HasXPath]
+    [DebuggerDisplay("{Content}")]
+    public class SupplementInfo
     {
-        get
-        {
-            //todo get id of topic;
-            //return new UriBuilder(UrlUtils.CompleteUrl(Link)).Path.Split("/").Last();
-            return "";
-        }
+        [XPath("//span[@class='fade']/span", "title")]
+        public DateTime Created { get; set; }
+        [XPath("//span[@class='fade']/span")]
+        public string CreatedText { get; set; } = null!;
+
+        [XPath("//div[@class='topic_content']", ReturnType.InnerHtml)]
+        public string? Content { get; set; }
     }
+
 
     [HasXPath]
     [DebuggerDisplay("{Content}")]
     public class ReplyInfo
     {
+        [XPath("div[@class='cell' and contains(@id, 'r_')]", "id")]
+        public string Id { get; init; } = null!;
         [XPath("//td/div[@class='reply_content']")]
         public string Content { get; init; } = null!;
         [XPath("//td/strong/a")]

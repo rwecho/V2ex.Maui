@@ -10,9 +10,9 @@
              x:DataType="viewModels:DailyHotPageViewModel"
              Title="{services:L Text=DailyHotPageTitle}">
     <ContentPage.Resources>
-        <DataTemplate x:Key="ItemTemplate" x:DataType="components:TopicViewModel">
-            <components:TopicView Topic="{Binding}">
-            </components:TopicView>
+        <DataTemplate x:Key="ItemTemplate" x:DataType="components:TopicRowViewModel">
+            <components:TopicRowView Topic="{Binding}">
+            </components:TopicRowView>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer" 

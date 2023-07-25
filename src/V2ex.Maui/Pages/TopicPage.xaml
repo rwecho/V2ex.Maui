@@ -12,10 +12,11 @@
              Title="{services:L Text=TopicPageTitle}">
     <ContentPage.Resources>
         <toolkit:IsEqualConverter x:Key="IsEqualConverter"></toolkit:IsEqualConverter>
+        <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter"></toolkit:IsListNotNullOrEmptyConverter>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
-            <VerticalStackLayout Margin="0" Background="transparent">
+            <VerticalStackLayout Background="transparent">
                 <Grid Margin="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -48,7 +49,7 @@
 
                     <Grid Grid.Column="2" VerticalOptions="Start" >
                         <BoxView Style="{StaticResource RoundBadge}"/>
-                        <Label  Margin="8,4" Text="{Binding Floor}" FontSize="Caption"></Label>
+                        <Label Margin="8,4" Text="{Binding Floor}" FontSize="Caption"></Label>
                     </Grid>
                 </Grid>
 
@@ -68,6 +69,34 @@
                        IsVisible="{Binding LoadAll}"
                        TextColor="{StaticResource Gray400}"
                        FontSize="Caption"/>
+            </HorizontalStackLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SupplementTemplate" x:DataType="viewModels:SupplementViewModel">
+            <HorizontalStackLayout Margin="8" Spacing="8" >
+                <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
+            <Grid Padding="8, 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Supplement "></Span>
+                            <Span Text="{Binding Index}"></Span>
+                            <Span Text=" "></Span>
+                            <Span Text="{Binding CreatedText}"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  Text="{Binding Content}"></Label>
+            </Grid>
             </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
@@ -131,40 +160,20 @@
                             </WebView.Source>
                         </WebView>
 
+                        <VerticalStackLayout BackgroundColor="#fffff9" IsVisible="{Binding Topic.Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Topic.Supplements}"
+                                                 BindableLayout.ItemTemplate="{StaticResource SupplementTemplate}">
+                                
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+
                         <Grid Margin="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-
-                            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Topic.Tags}"
-                                                   Spacing="8"
-                                                   x:Name="TagContainer"
-                                                   IsVisible="false">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate >
-                                        <Grid>
-                                            <BoxView Style="{StaticResource RoundBadge}"/>
-                                            <Label Margin="8,4" >
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="{x:Static fonts:Fi.Tag}" FontFamily="Fi"></Span>
-                                                        <Span Text=" "></Span>
-                                                        <Span Text="{Binding .}"></Span>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-
-                                            <Grid.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.TapTagCommand, Source={x:Reference TagContainer}}"
-                                                                      CommandParameter="{Binding .}"/>
-                                            </Grid.GestureRecognizers>
-                                        </Grid>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </HorizontalStackLayout>
-
                             <Label Grid.Column="2" Text="{Binding Topic.TopicStats, Converter={StaticResource HtmlDecodeConverter}}" FontSize="Caption"
                                     TextColor="{StaticResource Gray400}" >
                             </Label>

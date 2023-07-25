@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
-             x:Class="V2ex.Maui.Pages.Components.TopicView"
+             x:Class="V2ex.Maui.Pages.Components.TopicRowView"
              x:Name="Root">
     <ContentView.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
@@ -12,7 +12,7 @@
     <VerticalStackLayout Background="transparent"
                          BindingContext="{Binding Source={x:Reference Root}, Path=Topic }"
                          WidthRequest="{Binding Source={x:Reference Root}, Path=Width}"
-                         x:DataType="local:TopicViewModel">
+                         x:DataType="local:TopicRowViewModel">
         <VerticalStackLayout.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding TapTitleCommand}"/>
         </VerticalStackLayout.GestureRecognizers>
@@ -40,6 +40,7 @@
                             <Span Text="{Binding CreatedText}" FontSize="Caption"></Span>
                             <Span Text=" " FontSize="Caption"></Span>
                             <Span Text="{services:L Text=Replies}" FontSize="Caption"></Span>
+                            <Span Text=" " FontSize="Caption"></Span>
                             <Span Text="{Binding Replies}" FontSize="Caption"></Span>
                         </FormattedString>
                     </Label.FormattedText>
@@ -61,6 +62,6 @@
             
         </Grid>
         <Label Margin="8" Text="{Binding Title, Converter={StaticResource Key=HtmlDecodeConverter}}" />
-        <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}" />
+        <BoxView Margin="0,4,0,0" HeightRequest="1" Style="{StaticResource HorizontalSeparator}" />
     </VerticalStackLayout>
 </ContentView>

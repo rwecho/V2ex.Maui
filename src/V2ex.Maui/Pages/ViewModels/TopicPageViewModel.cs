@@ -126,11 +126,13 @@ public partial class TopicViewModel : ObservableObject
         this.NodeName = topic.NodeName;
         this.NodeLink = topic.NodeLink;
         this.NodeId = topic.NodeId;
-        this.Id = topic.Id;
         this.ReplyStats = topic.ReplyStats;
         this.Tags = topic.Tags;
         this.CurrentPage = topic.CurrentPage;
         this.MaximumPage = topic.MaximumPage;
+        this.Supplements = topic.Supplements
+            .Select((o, index) => new SupplementViewModel(index, o))
+            .ToList();
         this.Replies = new ObservableCollection<ReplyViewModel>(
             topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x)));
         this.NavigationManager = navigationManager;
@@ -150,7 +152,7 @@ public partial class TopicViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _title, _nodeId, _id;
+    private string _title, _nodeId;
 
     [ObservableProperty]
     private string? _content;
@@ -186,6 +188,9 @@ public partial class TopicViewModel : ObservableObject
     private List<string> _tags;
 
     [ObservableProperty]
+    private List<SupplementViewModel> _supplements;
+
+    [ObservableProperty]
     private int _currentPage;
 
     [ObservableProperty]
@@ -214,6 +219,24 @@ public partial class TopicViewModel : ObservableObject
         });
     }
 
+}
+
+public partial class SupplementViewModel: ObservableObject
+{
+    public SupplementViewModel(int index, TopicInfo.SupplementInfo item)
+    {
+        this.Index = index;
+        this.Content = item.Content;
+        this.Created = item.Created;
+        this.CreatedText = item.CreatedText;
+    }
+
+    [ObservableProperty]
+    private int _index;
+    [ObservableProperty]
+    private string? _content, _createdText;
+    [ObservableProperty]
+    private DateTime _created;
 }
 
 public partial class ReplyViewModel : ObservableObject

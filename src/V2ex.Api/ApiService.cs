@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static V2ex.Api.AppendTopicParameter;
 
 namespace V2ex.Api;
 
@@ -42,7 +41,7 @@ public class ApiService
         return await response.ReadFromJson<NodeInfo>();
     }
 
-    public async Task<NodePageInfo?> GetNodePageInfo(string nodeName, int page=1)
+    public async Task<NodePageInfo?> GetNodePageInfo(string nodeName, int page = 1)
     {
         var url = $"/go/{nodeName}?page={page}";
         var response = await this.HttpClient.GetAsync(url);
@@ -192,10 +191,10 @@ public class ApiService
         var url = "/my/nodes";
         var response = await this.HttpClient.GetAsync(url);
 
-        List<string> links = new ();
+        List<string> links = new();
         var nodeInfo = await response.GetEncapsulatedData<FavoriteNodeInfo>(node =>
         {
-            links.AddRange(node.SelectNodes("//a[contains(@class, 'av-node')]").Select(o=>o.GetAttributeValue("href", "")));
+            links.AddRange(node.SelectNodes("//a[contains(@class, 'av-node')]").Select(o => o.GetAttributeValue("href", "")));
         });
 
         for (int i = 0; i < links.Count; i++)

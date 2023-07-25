@@ -86,6 +86,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\Components\TopicRowView.xaml.cs">
+	    <DependentUpon>TopicRowView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\MyNodesPage.xaml.cs">
 	    <DependentUpon>MyNodesPage.xaml</DependentUpon>
 	  </Compile>
@@ -98,7 +101,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Components\TopicView.xaml">
+	  <MauiXaml Update="Pages\Components\TopicRowView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\DailyHotPage.xaml">

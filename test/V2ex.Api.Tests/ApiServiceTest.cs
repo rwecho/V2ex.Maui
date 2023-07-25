@@ -96,7 +96,7 @@ public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
     [Fact]
     public async Task GetTopicDetailTest()
     {
-        var result = await this.ApiService.GetTopicDetail("793349");
+        var result = await this.ApiService.GetTopicDetail("959361");
         Assert.NotNull(result);
     }
 

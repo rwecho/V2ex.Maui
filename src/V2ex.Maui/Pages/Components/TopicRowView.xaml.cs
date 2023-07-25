@@ -6,26 +6,26 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.Components;
 
-public partial class TopicView : ContentView
+public partial class TopicRowView : ContentView
 {
-    public TopicView()
+    public TopicRowView()
     {
         InitializeComponent();
     }
 
     public static readonly BindableProperty TopicProperty = BindableProperty.Create(
         nameof(Topic),
-        typeof(TopicViewModel),
-        typeof(TopicView));
+        typeof(TopicRowViewModel),
+        typeof(TopicRowView));
 
-    public TopicViewModel? Topic
+    public TopicRowViewModel? Topic
     {
-        get => (TopicViewModel)GetValue(TopicProperty);
+        get => (TopicRowViewModel)GetValue(TopicProperty);
         set => SetValue(TopicProperty, value);
     }
 }
 
-public partial class TopicViewModel : ObservableObject, ITransientDependency
+public partial class TopicRowViewModel : ObservableObject, ITransientDependency
 {
     [ObservableProperty]
     private string? _title, _avatar, _userName, _createdText, _nodeName, _lastReplyBy, _topicId, _nodeId;
@@ -33,7 +33,7 @@ public partial class TopicViewModel : ObservableObject, ITransientDependency
     [ObservableProperty]
     private int _replies;
 
-    public TopicViewModel(NavigationManager navigationManager)
+    public TopicRowViewModel(NavigationManager navigationManager)
     {
         this.NavigationManager = navigationManager;
     }
@@ -79,14 +79,14 @@ public partial class TopicViewModel : ObservableObject, ITransientDependency
         });
     }
 
-    public static TopicViewModel Create(
+    public static TopicRowViewModel Create(
         string? title, string? avatar,
         string? userName, string createdText,
         string? nodeName, string? lastReplyBy,
         string topicId, string? nodeId,
         int replies)
     {
-        var instance = InstanceActivator.Create<TopicViewModel>();
+        var instance = InstanceActivator.Create<TopicRowViewModel>();
         instance.Title = title;
         instance.Avatar = avatar;
         instance.UserName = userName;

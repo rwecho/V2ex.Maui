@@ -51,6 +51,10 @@ public class NewsInfo
         [SkipNodeNotFound]
         public string? LastRepliedText { get; init; }
 
+        [XPath("//span[contains(@class, 'topic_info')]/strong[2]/a")]
+        [SkipNodeNotFound]
+        public string? LastRepliedBy { get; init; }
+
         [XPath("//span[contains(@class, 'topic_info')]/a[@class='node']")]
         public string NodeName { get; init; } = null!;
 

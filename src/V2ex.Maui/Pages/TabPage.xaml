@@ -5,71 +5,13 @@
              xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              x:Class="V2ex.Maui.Pages.TabPage"
              Shell.NavBarIsVisible="{Binding NavBarIsVisible}"
              x:DataType="viewModels:TabPageViewModel">
     <ContentPage.Resources>
-        <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-
-        <DataTemplate x:Key="NewsInfoItemCard" x:DataType="viewModels:NewsInfoItemViewModel">
-            <VerticalStackLayout Margin="0" Background="transparent">
-                <VerticalStackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapTitleCommand}"/>
-                </VerticalStackLayout.GestureRecognizers>
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <Image Grid.Column="0" Source="{Binding Avatar}" 
-                           HeightRequest="32" WidthRequest="32" 
-                           Aspect="AspectFill">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
-                        <Label Text="{Binding UserName}" />
-                        <Label TextColor="{StaticResource Gray400}" >
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding LastReplied}" FontSize="Caption"></Span>
-                                    <Span Text=" " FontSize="Caption"></Span>
-                                    <Span Text="{Binding Replies}" FontSize="Caption"></Span>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
-                        </VerticalStackLayout.GestureRecognizers>
-                    </VerticalStackLayout>
-
-                    <Grid Grid.Column="2" VerticalOptions="Start" Background="Transparent">
-                        <BoxView Style="{StaticResource RoundBadge}"/>
-                        <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
-
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapNodeCommand}"/>
-                        </Grid.GestureRecognizers>
-                    </Grid>
-                </Grid>
-
-                <Label Margin="8" Text="{Binding Title, Converter={StaticResource HtmlDecodeConverter}}">
-                   
-                </Label>
-
-                <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}" ></BoxView>
-            </VerticalStackLayout>
-        </DataTemplate>
-
-        <DataTemplate x:Key="FooterTemplate">
-            <Label Text="All data loaded."
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand" />
+        <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
+            <components:TopicRowView Topic="{Binding .}"></components:TopicRowView>
         </DataTemplate>
     </ContentPage.Resources>
 
@@ -90,8 +32,7 @@
                         Command="{Binding ReloadCommand}">
                 <CollectionView ItemsSource="{Binding NewsInfo.Items}" 
                                 SelectionMode="Single"
-                                ItemTemplate="{StaticResource NewsInfoItemCard}"
-                                FooterTemplate="{StaticResource FooterTemplate}"
+                                ItemTemplate="{StaticResource TopicRowTemplate}"
                                 Scrolled="CollectionView_Scrolled">
                 </CollectionView>
             </RefreshView>
