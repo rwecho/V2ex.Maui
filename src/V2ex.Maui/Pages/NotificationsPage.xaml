@@ -8,78 +8,53 @@
              Title="{services:L Text=NotificationPageTitle}"
              x:DataType="viewModels:NotificationsPageViewModel">
     <ContentPage.Resources>
+        <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <DataTemplate x:Key="NotificationTemplate" x:DataType="viewModels:NotificationItemViewModel">
-            <Grid RowSpacing="8" ColumnSpacing="8" Margin="0,4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Grid.Column="0" HeightRequest="32" WidthRequest="32" Source="{Binding Avatar}">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
-                    </Image.GestureRecognizers>
-                </Image>
-                <HorizontalStackLayout Grid.Column="1" Grid.Row="0">
-                    <Label Text="{Binding UserName}">
-                        <Label.GestureRecognizers>
+            <VerticalStackLayout Spacing="0" >
+                <HorizontalStackLayout Margin="8,0"
+                    Spacing="8" VerticalOptions="Center" >
+                    <Image HeightRequest="32" 
+                        WidthRequest="32"
+                        Source="{Binding Avatar}">
+                        <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <HorizontalStackLayout VerticalOptions="Center">
+                        <Label Text="{Binding UserName}" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
 
-                    <Label LineBreakMode="WordWrap">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding PreTitle}" TextColor="{StaticResource Gray400}"></Span>
-                                <Span Text="{Binding TopicTitle}"></Span>
-                                <Span Text="{Binding PostTitle}" TextColor="{StaticResource Gray400}"></Span>
-                            </FormattedString>
-                        </Label.FormattedText>
+                        <Label LineBreakMode="WordWrap">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding PreTitle}" TextColor="{StaticResource Gray400}"></Span>
+                                    <Span Text="{Binding TopicTitle}"></Span>
+                                    <Span Text="{Binding PostTitle}" TextColor="{StaticResource Gray400}"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
 
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Created}" HorizontalOptions="End" TextColor="{StaticResource Gray400}"></Label>
+                    </HorizontalStackLayout>
                 </HorizontalStackLayout>
 
-                <Grid Grid.Row="1" Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <BoxView  Grid.Column="0" Margin="0,0,8,0" BackgroundColor="{StaticResource Gray100}"
-                         WidthRequest="2" ></BoxView>
-                    <Label Grid.Column="1" Text="{Binding Payload}"></Label>
-
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
-                </Grid>
-
-                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Created}" HorizontalOptions="End" TextColor="{StaticResource Gray400}"></Label>
-
-                <BoxView Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Margin="0,8" BackgroundColor="{StaticResource Gray100}"
-                         HeightRequest="1" ></BoxView>
-            </Grid>
-            
-            
-        </DataTemplate>
-
-
-        <DataTemplate x:Key="FooterTemplate">
-            <Label Text="All data loaded."
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand" />
+                <HorizontalStackLayout Margin="8,4" Spacing="8">
+                    <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
+                    <Label Text="{Binding Payload}"></Label>
+                </HorizontalStackLayout>
+                
+                <BoxView Style="{StaticResource HorizontalSeparator}"
+                         Margin="0,4"></BoxView>
+            </VerticalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
-    <Grid Margin="16"
-          x:Name="StateContainer"
+    <Grid x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 
@@ -95,10 +70,12 @@
                          Command="{Binding LoadCommand}">
                 <CollectionView ItemsSource="{Binding Notification.Items}"
                                 ItemTemplate="{StaticResource NotificationTemplate}"
-                                RemainingItemsThreshold="3  "
-                                RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
-                                FooterTemplate="{StaticResource FooterTemplate}"
+                                ItemSizingStrategy="MeasureFirstItem"
                                 >
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="3"
+                               Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
                 </CollectionView>
             </RefreshView>
 

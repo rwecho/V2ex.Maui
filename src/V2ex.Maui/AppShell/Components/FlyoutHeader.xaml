@@ -54,22 +54,20 @@
             </Label>
         </Grid>
 
-        <Grid Margin="16,16,16,8"
-              ColumnSpacing="8" 
+        <Grid Margin="0,16"
+              HeightRequest="64"
+              WidthRequest="64"
               IsVisible="{Binding User, Converter={StaticResource IsNullConverter}}"
               >
-            <Border Grid.Column="0"  Stroke="{StaticResource Gray100}"
-                     WidthRequest="64"
-                     HeightRequest="64"></Border>
-            <Label Grid.Column="1" Text="{services:L Text=Login}" VerticalOptions="Center" HorizontalOptions="Center"
+            <BoxView Style="{StaticResource RoundBadge}"></BoxView>
+            <Label Grid.Column="1" Text="{services:L Text=Login}" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
                    TextColor="{StaticResource Gray400}"></Label>
-
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer  Command="{Binding GotoLoginCommand}"></TapGestureRecognizer>
             </Grid.GestureRecognizers>
         </Grid>
-
-
         <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}" ></BoxView>
     </VerticalStackLayout>
 </ContentView>

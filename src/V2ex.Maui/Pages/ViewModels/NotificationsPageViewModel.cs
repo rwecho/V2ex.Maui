@@ -113,7 +113,7 @@ public partial class NotificationItemViewModel: ObservableObject
         this.PostTitle = item.PostTitle;
         this.Created = item.Created;
         this.Payload = item.Payload;
-        this.Id = item.Id;
+        this.Id = Utilities.ParseId(item.TopicLink);
         this.NavigationManager = navigationManager;
     }
 

@@ -23,10 +23,8 @@ public class NotificationInfo
     public int MaximumPage { get; set; }
 
     [XPath("//div[contains(@id, 'n_')]", ReturnType.OuterHtml)]
+    [SkipNodeNotFound]
     public List<NotificationItemInfo> Items { get; set; } = new();
-
-    [XPath("//div[contains(@id, 'n_')]", "id")]
-    public List<string> ItemIds { get; set; } = new();
 
     [HasXPath]
     [DebuggerDisplay("{DebuggerDisplay, nq}")]
@@ -39,6 +37,7 @@ public class NotificationInfo
                 return $"{this.PreTitle} {this.TopicTitle} {this.PostTitle}";
             }
         }
+
         [XPath("//td//strong")]
         public string UserName { get; set; } = null!;
 
@@ -69,13 +68,5 @@ public class NotificationInfo
         [XPath("//td//div[@class='payload']", ReturnType.InnerHtml)]
         [SkipNodeNotFound]
         public string? Payload { get; set; }
-
-        public string Id
-        {
-            get
-            {
-                return new UriBuilder(UrlUtilities.CompleteUrl(TopicLink)).Path.Split("/").Last();
-            }
-        }
     }
 }
