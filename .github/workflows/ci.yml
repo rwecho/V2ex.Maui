@@ -34,7 +34,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
           include-prerelease: true
-          
+
       - name: Install MAUI Workload
         run: dotnet workload install maui --ignore-failed-sources
 
@@ -69,7 +69,7 @@ jobs:
         run: dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
+        run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj -r win10-x64
 
       - name: Build MAUI Windows
         run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-windows10.0.19041.0 --no-restore
@@ -80,62 +80,62 @@ jobs:
           name: V2ex.Maui-windows-ci-build
           path: src/V2ex.Maui/bin/Release/net8.0-windows10.0.19041.0/win10-x64/AppPackages/V2ex.Maui*/V2ex.Maui*.msix
 
-# MAUI iOS Build
-  build-ios:
-    runs-on: macos-12
-    name: iOS Build
-    steps:
+# # MAUI iOS Build
+#   build-ios:
+#     runs-on: macos-12
+#     name: iOS Build
+#     steps:
 
-      - name: Checkout
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+#       - name: Checkout
+#         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
-      - name: Setup .NET 8
-        uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
-        with:
-          dotnet-version: 8.0.x
-          include-prerelease: true
+#       - name: Setup .NET 8
+#         uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
+#         with:
+#           dotnet-version: 8.0.x
+#           include-prerelease: true
 
-      - name: Install MAUI Workload
-        run: dotnet workload install maui --ignore-failed-sources
+#       - name: Install MAUI Workload
+#         run: dotnet workload install maui --ignore-failed-sources
 
-      - name: Restore Dependencies
-        run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
+#       - name: Restore Dependencies
+#         run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
 
-      - name: Build MAUI iOS
-        run: dotnet build src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-ios --no-restore /p:buildForSimulator=True /p:packageApp=True /p:ArchiveOnBuild=False
+#       - name: Build MAUI iOS
+#         run: dotnet build src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-ios --no-restore /p:buildForSimulator=True /p:packageApp=True /p:ArchiveOnBuild=False
 
-      - name: Upload iOS Artifact
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
-        with:
-          name: V2ex.Maui-ios-ci-build
-          path: src/V2ex.Maui/bin/Release/net8.0-ios/iossimulator-x64/**/*.app
+#       - name: Upload iOS Artifact
+#         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+#         with:
+#           name: V2ex.Maui-ios-ci-build
+#           path: src/V2ex.Maui/bin/Release/net8.0-ios/iossimulator-x64/**/*.app
 
-# MAUI MacCatalyst Build
-  build-mac:
-    runs-on: macos-12
-    name: MacCatalyst Build
-    steps:
-    
-      - name: Checkout
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+# # MAUI MacCatalyst Build
+#   build-mac:
+#     runs-on: macos-12
+#     name: MacCatalyst Build
+#     steps:
 
-      - name: Setup .NET 8
-        uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
-        with:
-          dotnet-version: 8.0.x
-          include-prerelease: true
+#       - name: Checkout
+#         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
-      - name: Install MAUI Workload
-        run: dotnet workload install maui --ignore-failed-sources
+#       - name: Setup .NET 8
+#         uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
+#         with:
+#           dotnet-version: 8.0.x
+#           include-prerelease: true
 
-      - name: Restore Dependencies
-        run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
+#       - name: Install MAUI Workload
+#         run: dotnet workload install maui --ignore-failed-sources
 
-      - name: Build MAUI MacCatalyst
-        run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-maccatalyst --no-restore -p:BuildIpa=True
+#       - name: Restore Dependencies
+#         run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
 
-      - name: Upload MacCatalyst Artifact
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
-        with:
-          name: V2ex.Maui-macos-ci-build
-          path: src/V2ex.Maui/bin/Release/net8.0-maccatalyst/maccatalyst-x64/publish/*.pkg
+#       - name: Build MAUI MacCatalyst
+#         run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-maccatalyst --no-restore -p:BuildIpa=True
+
+#       - name: Upload MacCatalyst Artifact
+#         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+#         with:
+#           name: V2ex.Maui-macos-ci-build
+#           path: src/V2ex.Maui/bin/Release/net8.0-maccatalyst/maccatalyst-x64/publish/*.pkg

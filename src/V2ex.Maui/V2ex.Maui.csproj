@@ -16,7 +16,7 @@
 		<ApplicationTitle>V2ex.Maui</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.v2ex.maui</ApplicationId>
+		<ApplicationId>top.rwecho.v2ex.maui</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
