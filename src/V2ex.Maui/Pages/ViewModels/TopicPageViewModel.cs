@@ -3,11 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
 using V2ex.Maui.Services;
-using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
 {
     public const string QueryIdKey = "id";
 
@@ -15,28 +14,23 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
     private string _id = null!;
 
     [ObservableProperty]
-    private string? _currentState, _markdownHtml;
+    private string?  _markdownHtml;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
-    private bool _canCurrentStateChange = true, _loadAll;
+    [ObservableProperty]
+    private bool  _loadAll;
 
     [ObservableProperty]
     private int _currentPage = 0, _maximumPage = 0;
 
     [ObservableProperty]
-    private Exception? _exception;
-
-    [ObservableProperty]
     private TopicViewModel? _topic;
 
-    public TopicPageViewModel(ApiService apiService, ResourcesService resourcesService, NavigationManager navigationManager)
+    public TopicPageViewModel(ResourcesService resourcesService, NavigationManager navigationManager)
     {
-        this.ApiService = apiService;
         this.ResourcesService = resourcesService;
         this.NavigationManager = navigationManager;
     }
 
-    private ApiService ApiService { get; }
     private ResourcesService ResourcesService { get; }
     private NavigationManager NavigationManager { get; }
 
@@ -45,32 +39,6 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
         if (query.TryGetValue(QueryIdKey, out var id))
         {
             Id = id.ToString()!;
-        }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            if(string.IsNullOrEmpty( this.Id))
-            {
-                throw new InvalidOperationException("Id 不能为空");
-            }
-
-            this.CurrentState = StateKeys.Loading;
-            this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
-            var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
-            this.CurrentPage = topicInfo.CurrentPage;
-            this.MaximumPage = topicInfo.MaximumPage;
-            this.LoadAll = this.CurrentPage == this.MaximumPage;
-            this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo, this.MarkdownHtml);
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
         }
     }
 
@@ -108,6 +76,21 @@ public partial class TopicPageViewModel : ObservableObject, IQueryAttributable, 
         {
             throw;
         }
+    }
+
+    protected override async Task OnLoad(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(this.Id))
+        {
+            throw new InvalidOperationException("Id 不能为空");
+        }
+
+        this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
+        var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
+        this.CurrentPage = topicInfo.CurrentPage;
+        this.MaximumPage = topicInfo.MaximumPage;
+        this.LoadAll = this.CurrentPage == this.MaximumPage;
+        this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo, this.MarkdownHtml);
     }
 }
 

@@ -1,53 +1,21 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Localization;
-using V2ex.Api;
+﻿using CommunityToolkit.Mvvm.Input;
 using V2ex.Maui.Services;
-using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class SettingsPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class SettingsPageViewModel : BaseViewModel, IQueryAttributable
 {
-    public SettingsPageViewModel(ApiService apiService, UserManager userManager, NavigationManager navigationManager,
-        IStringLocalizer<MauiResource> localizer)
+    public SettingsPageViewModel(UserManager userManager, NavigationManager navigationManager)
     {
-        this.ApiService = apiService;
         this.UserManager = userManager;
         this.NavigationManager = navigationManager;
-        this.Localizer = localizer;
     }
-    private ApiService ApiService { get; }
+
     private UserManager UserManager { get; }
     private NavigationManager NavigationManager { get; }
-    private IStringLocalizer<MauiResource> Localizer { get; }
 
-    [ObservableProperty]
-    private string? _currentState;
-
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
-    private bool _canCurrentStateChange = true;
-
-    [ObservableProperty]
-    private Exception? exception;
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-      
-    }
-
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            this.CurrentState = StateKeys.Loading;
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
     }
 
     [RelayCommand]
@@ -75,5 +43,10 @@ public partial class SettingsPageViewModel : ObservableObject, IQueryAttributabl
             this.Exception = exception;
             this.CurrentState = StateKeys.Error;
         }
+    }
+
+    protected override Task OnLoad(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }

@@ -2,52 +2,24 @@
 using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
 using V2ex.Maui.Services;
-using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class MyNodesPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class MyNodesPageViewModel : BaseViewModel, IQueryAttributable
 {
     [ObservableProperty]
-    private string? _currentState;
-
-    [ObservableProperty]
-    private Exception? _exception;
-
-    [ObservableProperty]
-    private bool _canCurrentStateChange = true;
-
-    [ObservableProperty]
     private List<MyNodesItemViewModel>? _nodes;
-
-    public MyNodesPageViewModel(ApiService apiService)
-    {
-        this.ApiService = apiService;
-    }
-
-    private ApiService ApiService { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
     }
 
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
+    protected override async Task OnLoad(CancellationToken cancellationToken)
     {
-        try
-        {
-            this.CurrentState = StateKeys.Loading;
-            var nodeInfo = await this.ApiService.GetFavoriteNodes() ?? throw new InvalidOperationException("获取节点失败");
-            this.Nodes = nodeInfo.Items
-                .Select(o => InstanceActivator.Create<MyNodesItemViewModel>(o))
-                .ToList();
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
+        var nodeInfo = await this.ApiService.GetFavoriteNodes() ?? throw new InvalidOperationException("获取节点失败");
+        this.Nodes = nodeInfo.Items
+            .Select(o => InstanceActivator.Create<MyNodesItemViewModel>(o))
+            .ToList();
     }
 }
 
@@ -60,7 +32,7 @@ public partial class MyNodesItemViewModel : ObservableObject
         this.Name = node.Name;
         this.Topics = node.Topics;
         this.Link = node.Link;
-        this.Id = Utilities.ParseId(node.Link) ;
+        this.Id = Utilities.ParseId(node.Link);
         this.NavigationManager = navigationManager;
     }
 

@@ -5,27 +5,15 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class MemberPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class MemberPageViewModel : BaseViewModel, IQueryAttributable
 {
     public const string QueryUserNameKey = "username";
 
     [ObservableProperty]
-    private string? _currentState, _userName;
+    private string?  _userName;
 
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoadCommand))]
-    private bool _canCurrentStateChange = true;
-
-    [ObservableProperty]
-    private Exception? _exception;
     [ObservableProperty]
     private MemberViewModel? _member;
-
-    public MemberPageViewModel(ApiService apiService)
-    {
-        this.ApiService = apiService;
-    }
-
-    private ApiService ApiService { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -35,27 +23,15 @@ public partial class MemberPageViewModel : ObservableObject, IQueryAttributable,
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
+    protected override async Task OnLoad(CancellationToken cancellationToken)
     {
-        try
+        if (string.IsNullOrEmpty(this.UserName))
         {
-            this.CurrentState = StateKeys.Loading;
-
-            if (string.IsNullOrEmpty(this.UserName))
-            {
-                throw new InvalidOperationException("User name can not not be empty.");
-            }
-
-            var memberInfo = await this.ApiService.GetUserPageInfo(this.UserName);
-            this.Member = memberInfo == null ? null : new MemberViewModel(memberInfo);
-            this.CurrentState = StateKeys.Success;
+            throw new InvalidOperationException("User name can not not be empty.");
         }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
+
+        var memberInfo = await this.ApiService.GetUserPageInfo(this.UserName);
+        this.Member = memberInfo == null ? null : new MemberViewModel(memberInfo);
     }
 }
 

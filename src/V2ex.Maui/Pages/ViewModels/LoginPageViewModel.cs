@@ -8,27 +8,15 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 
 [DisablePropertyInjection]
-public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class LoginPageViewModel : BaseViewModel, IQueryAttributable
 {
     private const string QueryNextKey = "next";
     [ObservableProperty]
-    private string? _currentState, _next;
-
-    [ObservableProperty]
-    private Exception? _exception;
-
-    [ObservableProperty]
-    private bool _canCurrentStateChange = true;
+    private string?  _next;
 
     [ObservableProperty]
     private LoginViewModel? _login;
 
-    public LoginPageViewModel(ApiService apiService)
-    {
-        this.ApiService = apiService;
-    }
-
-    private ApiService ApiService { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -38,23 +26,12 @@ public partial class LoginPageViewModel : ObservableObject, IQueryAttributable, 
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
+    protected override async Task OnLoad(CancellationToken cancellationToken)
     {
-        try
-        {
-            this.CurrentState = StateKeys.Loading;
-            var loginParameters = await this.ApiService.GetLoginParameters();
+        var loginParameters = await this.ApiService.GetLoginParameters();
 
-            var captcha = await this.ApiService.GetCaptchaImage(loginParameters);
-            this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha, this.Next ?? "../../");
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
+        var captcha = await this.ApiService.GetCaptchaImage(loginParameters);
+        this.Login = InstanceActivator.Create<LoginViewModel>(loginParameters, captcha, this.Next ?? "../../");
     }
 }
 

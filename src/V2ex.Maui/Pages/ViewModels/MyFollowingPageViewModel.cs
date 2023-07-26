@@ -6,26 +6,10 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class MyFollowingPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class MyFollowingPageViewModel : BaseViewModel, IQueryAttributable
 {
     [ObservableProperty]
-    private string? _currentState;
-
-    [ObservableProperty]
-    private Exception? _exception;
-
-    [ObservableProperty]
-    private bool _canCurrentStateChange = true;
-
-    [ObservableProperty]
     private List<MyNodesItemViewModel>? _nodes;
-
-    public MyFollowingPageViewModel(ApiService apiService)
-    {
-        this.ApiService = apiService;
-    }
-
-    private ApiService ApiService { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -37,27 +21,16 @@ public partial class MyFollowingPageViewModel : ObservableObject, IQueryAttribut
     [ObservableProperty]
     private List<FollowingItemViewModel> _items = new();
 
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
+    protected override async Task OnLoad(CancellationToken cancellationToken)
     {
-        try
-        {
-            this.CurrentState = StateKeys.Loading;
-            var followingInfo = await this.ApiService.GetFollowingInfo() ?? throw new InvalidOperationException("获取节点失败");
+        var followingInfo = await this.ApiService.GetFollowingInfo() ?? throw new InvalidOperationException("获取节点失败");
 
-            this.CurrentPage = followingInfo.CurrentPage;
-            this.MaximumPage = followingInfo.MaximumPage;
+        this.CurrentPage = followingInfo.CurrentPage;
+        this.MaximumPage = followingInfo.MaximumPage;
 
-            this.Items = followingInfo.Items
-                .Select(o => InstanceActivator.Create<FollowingItemViewModel>(o))
-                .ToList();
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
+        this.Items = followingInfo.Items
+            .Select(o => InstanceActivator.Create<FollowingItemViewModel>(o))
+            .ToList();
     }
 }
 

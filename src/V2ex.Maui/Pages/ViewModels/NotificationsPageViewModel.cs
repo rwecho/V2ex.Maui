@@ -2,48 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
 using V2ex.Maui.Services;
-using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
-public partial class NotificationsPageViewModel : ObservableObject, IQueryAttributable, ITransientDependency
+public partial class NotificationsPageViewModel : BaseViewModel, IQueryAttributable
 {
-    [ObservableProperty]
-    private string? _currentState;
-    [ObservableProperty]
-    private Exception? _exception;
-    [ObservableProperty]
-    private bool _canCurrentStateChange = true;
-
     [ObservableProperty]
     private NotificationViewModel? _notification;
 
-    public NotificationsPageViewModel(ApiService apiService)
-    {
-        this.ApiService = apiService;
-    }
-
-    private ApiService ApiService { get; }
-
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-    }
-
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task Load(CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            this.CurrentState = StateKeys.Loading;
-            var notificationInfo = await this.ApiService.GetNotifications() ?? throw new InvalidOperationException("获取我的消息失败");
-            this.Notification = new (notificationInfo);
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
-        }
     }
 
     [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
@@ -53,12 +21,12 @@ public partial class NotificationsPageViewModel : ObservableObject, IQueryAttrib
         try
         {
             this.CurrentState = StateKeys.Loading;
-            if(this.Notification == null)
+            if (this.Notification == null)
             {
                 throw new InvalidOperationException("未加载数据");
             }
 
-            if(this.Notification.CurrentPage >= this.Notification.MaximumPage)
+            if (this.Notification.CurrentPage >= this.Notification.MaximumPage)
             {
                 return;
             }
@@ -79,6 +47,12 @@ public partial class NotificationsPageViewModel : ObservableObject, IQueryAttrib
             this.CurrentState = StateKeys.Error;
         }
     }
+
+    protected override async Task OnLoad(CancellationToken cancellationToken)
+    {
+        var notificationInfo = await this.ApiService.GetNotifications() ?? throw new InvalidOperationException("获取我的消息失败");
+        this.Notification = new(notificationInfo);
+    }
 }
 
 public partial class NotificationViewModel : ObservableObject
@@ -87,19 +61,20 @@ public partial class NotificationViewModel : ObservableObject
     {
         this.Total = notificationInfo.Total;
         this.CurrentPage = notificationInfo.CurrentPage;
-        this.MaximumPage= notificationInfo.MaximumPage;
+        this.MaximumPage = notificationInfo.MaximumPage;
         this.Items = notificationInfo.Items
-            .Select(o=> InstanceActivator.Create<NotificationItemViewModel>(o))
+            .Select(o => InstanceActivator.Create<NotificationItemViewModel>(o))
             .ToList();
     }
 
     [ObservableProperty]
     private int _total, _currentPage, _maximumPage;
+
     [ObservableProperty]
     public List<NotificationItemViewModel> _items;
 }
 
-public partial class NotificationItemViewModel: ObservableObject
+public partial class NotificationItemViewModel : ObservableObject
 {
     public NotificationItemViewModel(NotificationInfo.NotificationItemInfo item,
         NavigationManager navigationManager)
@@ -119,6 +94,7 @@ public partial class NotificationItemViewModel: ObservableObject
 
     [ObservableProperty]
     private string? _preTitle, _postTitle, _created, _payload;
+
     [ObservableProperty]
     private string _id, _userName, _userLink, _avatar, _topicLink, _topicTitle;
 
