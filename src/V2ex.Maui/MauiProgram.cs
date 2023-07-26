@@ -26,6 +26,7 @@ public static class MauiProgram
                 fonts.AddFont("feathericon.ttf", "Fi");
                 fonts.AddFont("fa-brands-400.ttf", "FaBrands");
                 fonts.AddFont("fa-regular-400.ttf", "FaRegular");
+                fonts.AddFont("apple-logo.ttf", "Apple");
                 fonts.AddFont("fa-solid-900.ttf", "FaSolid");
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

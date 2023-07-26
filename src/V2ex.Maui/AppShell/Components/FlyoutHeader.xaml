@@ -52,6 +52,14 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+
+            <Grid.Behaviors>
+                <toolkit:AnimationBehavior>
+                    <toolkit:AnimationBehavior.AnimationType>
+                        <toolkit:FadeAnimation Opacity="0.5" />
+                    </toolkit:AnimationBehavior.AnimationType>
+                </toolkit:AnimationBehavior>
+            </Grid.Behaviors>
         </Grid>
 
         <Grid Margin="0,16"
@@ -67,6 +75,13 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer  Command="{Binding GotoLoginCommand}"></TapGestureRecognizer>
             </Grid.GestureRecognizers>
+            <Grid.Behaviors>
+                <toolkit:AnimationBehavior>
+                    <toolkit:AnimationBehavior.AnimationType>
+                        <toolkit:FadeAnimation Opacity="0.5" />
+                    </toolkit:AnimationBehavior.AnimationType>
+                </toolkit:AnimationBehavior>
+            </Grid.Behaviors>
         </Grid>
         <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}" ></BoxView>
     </VerticalStackLayout>

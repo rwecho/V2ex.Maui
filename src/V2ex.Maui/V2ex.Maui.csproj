@@ -58,6 +58,7 @@
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	  <None Remove="appsettings.secrets.json" />
+	  <None Remove="Resources\Fonts\apple-logo.ttf" />
 	  <None Remove="Resources\Fonts\fa-brands-400.ttf" />
 	  <None Remove="Resources\Fonts\fa-regular-400.ttf" />
 	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
