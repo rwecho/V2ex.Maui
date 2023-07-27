@@ -2,30 +2,29 @@ name: PUBLISH Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
   pull_request:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
-  DOTNET_NOLOGO: true                     # Disable the .NET logo
+  DOTNET_NOLOGO: true # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
-  DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
+  DOTNET_CLI_TELEMETRY_OPTOUT: true # Disable sending .NET CLI telemetry
 
 jobs:
-# MAUI Android Build
+  # MAUI Android Build
   build-android:
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
     name: Android Build
     steps:
-
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
@@ -56,10 +55,9 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
           # override default build-tools version (29.0.3) -- optional
-          BUILD_TOOLS_VERSION: "30.0.2"
+          BUILD_TOOLS_VERSION: '30.0.2'
 
       - uses: actions/upload-artifact@v2
         with:
           name: Signed app bundle
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
-
