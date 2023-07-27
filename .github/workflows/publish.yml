@@ -1,4 +1,4 @@
-name: CI Build
+name: PUBLISH Build
 
 on:
   push:
