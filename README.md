@@ -1,6 +1,18 @@
 # V2ex.MAUI
 
+<div style="display: flex; justify-content: start ;">
+<div >
+
 [![CI Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml)
+
+</div>
+<div style="margin-left:8px">
+
+[![PUBLISH Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
+
+</div>
+</div>
+
 
 I believe this project might seem unnecessary since there are already many excellent apps that everyone is familiar with. However, with the upcoming release of .NET Core 8.0 and the growing interest in the .NET community, I want to seize this opportunity to establish this project. Currently, it remains a rough prototype with only a few basic features, far from being fully functional and user-friendly. But I trust that with a better understanding of app development, I will shape this app into a multi-platform, user-friendly, and feature-rich V2ex application.
 
@@ -24,7 +36,7 @@ __basic functions__
 
 * Login
 * Tab topics
-* Topic 
+* Topic
 * My Favorites
 * Settings
 
@@ -61,14 +73,14 @@ For details please visit [insights](https://github.com/rwecho/V2ex.Maui/graphs/c
 
 ## Acknowledges
 
-- [V2ex](https://www.v2ex.com) 
+- [V2ex](https://www.v2ex.com)
 
-- [V2er](https://github.com/v2er-app/Android) 
-    
-    V2er is my daily app. 
-    
-    > V2er is a mobile app for the V2EX website, a community-driven forum that discusses a wide range of topics such as technology, programming, and lifestyle.   
-- [Abp](https://github.com/abpframework/abp) 
+- [V2er](https://github.com/v2er-app/Android)
+
+    V2er is my daily app.
+
+    > V2er is a mobile app for the V2EX website, a community-driven forum that discusses a wide range of topics such as technology, programming, and lifestyle.
+- [Abp](https://github.com/abpframework/abp)
 
     > ABP is an open-source application framework for ASP.NET Core that helps developers create modular and maintainable applications.
 
