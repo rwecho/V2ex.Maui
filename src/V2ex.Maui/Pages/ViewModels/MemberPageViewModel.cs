@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using V2ex.Api;
-using Volo.Abp.DependencyInjection;
+using V2ex.Maui.Pages.Components;
+using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
@@ -10,7 +10,7 @@ public partial class MemberPageViewModel : BaseViewModel, IQueryAttributable
     public const string QueryUserNameKey = "username";
 
     [ObservableProperty]
-    private string?  _userName;
+    private string? _userName;
 
     [ObservableProperty]
     private MemberViewModel? _member;
@@ -35,63 +35,50 @@ public partial class MemberPageViewModel : BaseViewModel, IQueryAttributable
     }
 }
 
-public partial class MemberViewModel: ObservableObject
+public partial class MemberViewModel : ObservableObject
 {
     public MemberViewModel(MemberPageInfo member)
     {
         this.UserName = member.UserName;
         this.Avatar = member.Avatar;
         this.Tagline = member.Tagline;
-        this.Bank = member.Bank;
+        this.Bank = member.TodayActivity;
+        this.IsOnline = member.IsOnline != null;
         this.CreatedText = member.CreatedText;
         this.FollowOnClick = member.FollowOnClick;
         this.BlockOnClick = member.BlockOnClick;
-        this.Topics = member.Topics.Select(o=> new MemberPageTopicViewModel(o)).ToList();
+        this.Topics = member.Topics.Select(o => TopicRowViewModel.Create(o.Title,
+            "",
+            o.UserName,
+            o.CreatedText,
+            o.NodeName,
+            o.LatestReplyBy,
+            Utilities.ParseId(o.Link),
+            Utilities.ParseId(o.NodeLink),
+            o.Replies
+            )).ToList();
         this.Replies = member.Replies.Zip(member.ReplyContents)
-            .Select(o=> new MemberPageReplyViewModel(o.First,o.Second))
+            .Select(o => new MemberPageReplyViewModel(o.First, o.Second))
             .ToList();
     }
 
     [ObservableProperty]
     private string _userName, _avatar;
+
     [ObservableProperty]
     private string? _tagline, _bank, _createdText, _followOnClick, _blockOnClick;
 
+    [ObservableProperty]
+    private bool _isOnline;
 
     [ObservableProperty]
-    private List<MemberPageTopicViewModel> _topics;
+    private List<TopicRowViewModel> _topics;
 
     [ObservableProperty]
     private List<MemberPageReplyViewModel> _replies;
 }
 
-public partial class MemberPageTopicViewModel: ObservableObject
-{
-    public MemberPageTopicViewModel(MemberPageInfo.TopicInfo topic)
-    {
-        this.Title = topic.Title;
-        this.UserName = topic.UserName;
-        this.LatestReplyUserName = topic.LatestReplyUserName;
-        this.NodeName = topic.NodeName;
-        this.NodeLink = topic.NodeLink;
-        this.CreatedText = topic.CreatedText;
-        this.Created = topic.Created;
-        this.Link = topic.Link;
-        this.ReplyNumber = topic.ReplyNumber;
-    }
-
-    [ObservableProperty]
-    private string _title,_link, _userName, _nodeName, _nodeLink;
-
-    [ObservableProperty]
-    private string? _LatestReplyUserName, _createdText;
-    [ObservableProperty]
-    private int _replyNumber;
-    [ObservableProperty]
-    private DateTime _created;
-}
-
-public partial class MemberPageReplyViewModel: ObservableObject
+public partial class MemberPageReplyViewModel : ObservableObject
 {
     public MemberPageReplyViewModel(MemberPageInfo.ReplyInfo reply, string content)
     {

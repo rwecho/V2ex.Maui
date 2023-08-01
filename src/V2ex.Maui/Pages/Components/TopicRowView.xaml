@@ -25,8 +25,8 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="0" Source="{Binding Avatar}" 
-                HeightRequest="32" WidthRequest="32" 
+            <Image Grid.Column="0" Source="{Binding Avatar}"
+                HeightRequest="32" WidthRequest="32"
                 Aspect="AspectFill">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
@@ -40,7 +40,7 @@
                 </Image.Behaviors>
             </Image>
 
-            <VerticalStackLayout Grid.Column="1" Margin="8,0" 
+            <VerticalStackLayout Grid.Column="1" Margin="8,0"
                                  HorizontalOptions="Start">
                 <VerticalStackLayout.Behaviors>
                     <toolkit:AnimationBehavior>
@@ -50,7 +50,7 @@
                     </toolkit:AnimationBehavior>
                 </VerticalStackLayout.Behaviors>
                 <Label Text="{Binding UserName}" >
-                    
+
                 </Label>
                 <HorizontalStackLayout Spacing="8" >
                     <Label TextColor="{StaticResource Gray400}" >
@@ -61,11 +61,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label TextColor="{StaticResource Gray400}" 
+                    <Label TextColor="{StaticResource Gray400}"
                         IsVisible="{Binding NodeName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
                         <Label.FormattedText>
                             <FormattedString>
-                           
+
                                 <Span Text="{services:L Text=Replies}" FontSize="Caption"></Span>
                                 <Span Text=" " FontSize="Caption"></Span>
                                 <Span Text="{Binding Replies}" FontSize="Caption"></Span>
@@ -79,8 +79,8 @@
                 </VerticalStackLayout.GestureRecognizers>
             </VerticalStackLayout>
 
-            <Grid Grid.Column="2" 
-                  VerticalOptions="Start" 
+            <Grid Grid.Column="2"
+                  VerticalOptions="Start"
                   IsVisible="{Binding NodeName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
                 <BoxView Style="{StaticResource RoundBadge}"/>
                 <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
@@ -97,15 +97,15 @@
                 </Grid.Behaviors>
             </Grid>
 
-            <Grid Grid.Column="2" 
-               VerticalOptions="Start" 
+            <Grid Grid.Column="2"
+               VerticalOptions="Start"
                IsVisible="{Binding NodeName, Converter={StaticResource IsStringNullOrEmptyConverter}}">
                 <BoxView Style="{StaticResource RoundBadge}"/>
                 <Label  Margin="8,4" Text="{Binding Replies}" FontSize="Caption"></Label>
             </Grid>
         </Grid>
         <Label Margin="8" Text="{Binding Title, Converter={StaticResource Key=HtmlDecodeConverter}}">
-           
+
         </Label>
         <BoxView Margin="0,4,0,0" HeightRequest="1" Style="{StaticResource HorizontalSeparator}" />
         <VerticalStackLayout.Behaviors>

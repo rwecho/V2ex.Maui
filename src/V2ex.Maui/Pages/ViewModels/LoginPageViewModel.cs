@@ -7,15 +7,20 @@ using Volo.Abp.DependencyInjection;
 namespace V2ex.Maui.Pages.ViewModels;
 
 
-[DisablePropertyInjection]
 public partial class LoginPageViewModel : BaseViewModel, IQueryAttributable
 {
+    private LoginViewModel? _login;
     private const string QueryNextKey = "next";
+
     [ObservableProperty]
     private string?  _next;
 
-    [ObservableProperty]
-    private LoginViewModel? _login;
+    [DisablePropertyInjection]
+    public LoginViewModel? Login
+    {
+        get => _login;
+        set => SetProperty(ref _login, value);
+    }
 
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)

@@ -89,7 +89,7 @@
 		<PackageReference Include="Volo.Abp.Localization" Version="7.3.0-rc.3" />
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionV2exMauiHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionV2exMauiHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarV2exMauiHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\V2ex.Api\V2ex.Api.csproj" />
@@ -112,6 +112,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Pages\Components\TopicRowView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Components\TopicRowView2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\DailyHotPage.xaml">

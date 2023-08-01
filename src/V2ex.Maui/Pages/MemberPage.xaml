@@ -4,6 +4,7 @@
              x:Class="V2ex.Maui.Pages.MemberPage"
              Shell.NavBarIsVisible="True"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MemberPageViewModel"
@@ -11,29 +12,32 @@
     <ContentPage.Resources>
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
 
-        <DataTemplate x:Key="TopicDataTemplate" x:DataType="viewModels:MemberPageTopicViewModel">
-            <Grid>
-                <Label Text="{Binding Title}"></Label>
-            </Grid>
+        <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
+            <components:TopicRowView2 Topic="{Binding .}"></components:TopicRowView2>
         </DataTemplate>
+        
         <DataTemplate x:Key="ReplyDataTemplate" x:DataType="viewModels:MemberPageReplyViewModel">
             <VerticalStackLayout >
-                <Label Margin="8">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding OpUserName}"></Span>
-                            <Span Text=" "></Span>
-                            <Span Text="{Binding NodeName}"></Span>
-                            <Span Text=" "></Span>
-                            <Span Text="{Binding TopicTitle}"></Span>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-
+                <toolkit:DockLayout HorizontalSpacing="8" Margin="8">
+                    <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"
+                             toolkit:DockLayout.DockPosition="Left"></BoxView>
+                    <Label Text="{Binding ReplyTimeText}" 
+                           FontSize="Caption"
+                           toolkit:DockLayout.DockPosition="Right"></Label>
+                    <Label >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="回复了 " FontSize="Caption"></Span>
+                                <Span Text="{Binding OpUserName}" FontSize="Caption"></Span>
+                                <Span Text=" 创建的主题> " FontSize="Caption"></Span>
+                                <Span Text="{Binding NodeName}" FontSize="Caption"></Span>
+                                <Span Text=" > " FontSize="Caption"></Span>
+                                <Span Text="{Binding TopicTitle}" FontSize="Caption"></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </toolkit:DockLayout>
                 <Label Text="{Binding Content}" Margin="8"></Label>
-
-                <Label Text="{Binding ReplyTimeText}" Margin="8" HorizontalOptions="End"></Label>
-
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
@@ -52,26 +56,66 @@
                                VerticalOptions="Center" />
 
                 <VerticalStackLayout toolkit:StateView.StateKey="Success">
-                    <Grid HeightRequest="192">
-                        <VerticalStackLayout VerticalOptions="Center"
-                                             HorizontalOptions="Center">
+                    <Grid ColumnSpacing="8" Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <VerticalStackLayout Spacing="8">
                             <Image Source="{Binding Member.Avatar}" 
-                                    HeightRequest="64" WidthRequest="64" 
-                                    Aspect="AspectFill"></Image>
-                            <Label Text="{Binding Member.UserName}"></Label>
+                               HeightRequest="64"
+                               WidthRequest="64" 
+                               Aspect="AspectFill"></Image>
+
+                            <Grid HorizontalOptions="Center">
+                                <BoxView Style="{StaticResource RoundBadge}"
+                                    CornerRadius="8"
+                                    Color="Green"
+                                    ></BoxView>
+                                <Label Text="ONLINE" Margin="8,2"
+                                  TextColor="{StaticResource White}"
+                                  FontSize="10"></Label>
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                            <HorizontalStackLayout >
+                                <Label Text="{Binding Member.UserName}"
+                                    FontSize="Title"></Label>
+                            </HorizontalStackLayout>
+
                             <Label Text="{Binding Member.Tagline}" 
+                                    FontSize="10"
+                                    TextColor="{StaticResource Gray400}"
                                 IsVisible="{Binding Member.Tagline, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"></Label>
-                            <Label Text="{Binding Member.Bank}"
-                                IsVisible="{Binding Member.Bank, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+
+                            <Label FontSize="Caption"
+                                   TextColor="{StaticResource Gray400}"
+                                IsVisible="{Binding Member.Bank, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="今日活跃度排名 "></Span>
+                                        <Span Text="{Binding Member.Bank}"></Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <!--todo: LineBreakMode is not working: https://github.com/dotnet/maui/issues/10633-->
                             <Label Text="{Binding Member.CreatedText}"
+                                    FontSize="10"
+                                    TextColor="{StaticResource Gray400}"
+                                   LineBreakMode="WordWrap"
                                 IsVisible="{Binding Member.CreatedText, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"></Label>
                         </VerticalStackLayout>
+
                     </Grid>
 
                     <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
 
                     <CollectionView ItemsSource="{Binding Member.Topics}"
-                                    ItemTemplate="{StaticResource TopicDataTemplate }"></CollectionView>
+                                    ItemTemplate="{StaticResource TopicRowTemplate }"></CollectionView>
 
                     <CollectionView ItemsSource="{Binding Member.Replies}"
                                     ItemTemplate="{StaticResource ReplyDataTemplate }"></CollectionView>

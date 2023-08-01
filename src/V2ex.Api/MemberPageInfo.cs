@@ -21,13 +21,18 @@ public class MemberPageInfo
     public string Avatar { get; init; } = null!;
     [XPath("//div[@id='Main']//span/a[@href='/top/dau']")]
     [SkipNodeNotFound]
-    public string? Bank { get; init; }
+    public string? TodayActivity { get; init; }
     [XPath("//div[@id='Main']//td/span[@class='bigger']/following-sibling::span[@class='gray']/text()[1]")]
     [SkipNodeNotFound]
     public string? CreatedText { get; init; }
+
+    [XPath("//div[@id='Main']//td/strong[@class='online']")]
+    [SkipNodeNotFound]
+    public string? IsOnline { get; set; }
+
     public string? FollowOnClick { get; init; } = null!;
     public string? BlockOnClick { get; init; } = null!;
-    [XPath("//span[@class='item_title']/ancestor::table")]
+    [XPath("//span[@class='item_title']/ancestor::table", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
     public List<TopicInfo> Topics { get; init; } = new();
 
@@ -35,7 +40,7 @@ public class MemberPageInfo
     [SkipNodeNotFound]
     public List<ReplyInfo> Replies { get; init; } = new();
 
-    [XPath("//div[@class='inner']/div[@class='reply_content']", ReturnType.InnerHtml)]
+    [XPath("//div[@class='reply_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
     public List<string> ReplyContents { get; init; } = new();
 
@@ -47,7 +52,7 @@ public class MemberPageInfo
         public string UserName { get; init; } = null!;
         [XPath("//span[@class='topic_info']/strong[2]/a")]
         [SkipNodeNotFound]
-        public string? LatestReplyUserName { get; init; }
+        public string? LatestReplyBy { get; init; }
         [XPath("//span[@class='topic_info']/a[@class='node']")]
         public string NodeName { get; init; } = null!;
         [XPath("//span[@class='topic_info']/a[@class='node']", "href")]
@@ -66,7 +71,7 @@ public class MemberPageInfo
         public string Link { get; init; } = null!;
         [XPath("//td/a[@class='count_livid']")]
         [SkipNodeNotFound]
-        public int ReplyNumber { get; init; }
+        public int Replies { get; init; }
     }
 
     [HasXPath]
