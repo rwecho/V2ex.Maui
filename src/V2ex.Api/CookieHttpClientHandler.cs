@@ -17,7 +17,7 @@ public class CookieHttpClientHandler : HttpClientHandler
         this.CookieContainer = new CookieContainer();
         this.UseCookies = true;
         this.UseDefaultCredentials = false;
-        this.AllowAutoRedirect = true;
+        this.AllowAutoRedirect = false;
         this.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
         this.Preferences = preference;
 

@@ -14,9 +14,6 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     private string _id = null!;
 
     [ObservableProperty]
-    private string?  _markdownHtml;
-
-    [ObservableProperty]
     private bool  _loadAll;
 
     [ObservableProperty]
@@ -54,28 +51,16 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     public async Task RemainingReachedCommand(CancellationToken cancellationToken)
     {
-        if(this.CurrentPage == this.MaximumPage)
+        if (this.CurrentPage == this.MaximumPage || this.Topic == null)
         {
             return;
         }
 
-        try
-        {
-            if(this.MarkdownHtml == null || this.Topic == null)
-            {
-                throw new InvalidOperationException("We must load data first.");
-            }
-
-            var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
-            this.CurrentPage = topicInfo.CurrentPage;
-            this.MaximumPage = topicInfo.MaximumPage;
-            this.LoadAll = this.CurrentPage == this.MaximumPage;
-            this.Topic.AddNextPage(topicInfo);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
+        this.CurrentPage = topicInfo.CurrentPage;
+        this.MaximumPage = topicInfo.MaximumPage;
+        this.LoadAll = this.CurrentPage == this.MaximumPage;
+        this.Topic.AddNextPage(topicInfo);
     }
 
     protected override async Task OnLoad(CancellationToken cancellationToken)
@@ -85,21 +70,20 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
             throw new InvalidOperationException("Id 不能为空");
         }
 
-        this.MarkdownHtml = await this.ResourcesService.GetMarkdownContainer();
         var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
         this.CurrentPage = topicInfo.CurrentPage;
         this.MaximumPage = topicInfo.MaximumPage;
         this.LoadAll = this.CurrentPage == this.MaximumPage;
-        this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo, this.MarkdownHtml);
+        this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo);
     }
 }
 
 public partial class TopicViewModel : ObservableObject
 {
-    public TopicViewModel(TopicInfo topic, string markdownHtml, NavigationManager navigationManager)
+    public TopicViewModel(TopicInfo topic,  NavigationManager navigationManager)
     {
         this.Title = topic.Title;
-        this.Content = topic.Content == null ? null : markdownHtml.Replace("@markdown", topic.Content);
+        this.Content = topic.Content;
         this.UserName = topic.UserName;
         this.UserLink = topic.UserLink;
         this.Avatar = topic.Avatar;
@@ -194,6 +178,7 @@ public partial class TopicViewModel : ObservableObject
         });
     }
 
+    [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
         await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
@@ -239,31 +224,18 @@ public partial class ReplyViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _content;
+    private string _content, _userName, _userLink, _avatar, _replyTimeText;
 
-    [ObservableProperty]
-    private string _userName;
-
-    [ObservableProperty]
-    private string _userLink;
-
-    [ObservableProperty]
-    private string _avatar;
 
     [ObservableProperty]
     private DateTime _replyTime;
 
     [ObservableProperty]
-    private string _replyTimeText;
-
-    [ObservableProperty]
-    private string? _badges;
+    private string? _badges, _alreadyThanked;
 
     [ObservableProperty]
     private int _floor;
 
-    [ObservableProperty]
-    private string? _alreadyThanked;
 
     private NavigationManager NavigationManager { get; }
 

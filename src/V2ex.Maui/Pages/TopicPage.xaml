@@ -5,6 +5,7 @@
              xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
              x:Class="V2ex.Maui.Pages.TopicPage"
              Shell.NavBarIsVisible="True"
@@ -12,6 +13,7 @@
              Title="{services:L Text=TopicPageTitle}">
     <ContentPage.Resources>
         <toolkit:IsEqualConverter x:Key="IsEqualConverter"></toolkit:IsEqualConverter>
+        <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter"></toolkit:IsListNotNullOrEmptyConverter>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
@@ -53,11 +55,72 @@
                     </Grid>
                 </Grid>
 
-                <Label Margin="8" Text="{Binding Content, Converter={StaticResource HtmlDecodeConverter}}">
-
-                </Label>
+                <components:HtmlLabel Margin="8" Text="{Binding Content}"></components:HtmlLabel>
 
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
+            </VerticalStackLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HeaderTemplate" x:DataType="viewModels:TopicViewModel">
+            <VerticalStackLayout>
+                <Grid Margin="8" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Source="{Binding Avatar}" 
+                        HeightRequest="32" WidthRequest="32" 
+                        Aspect="AspectFill">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
+                        <Label Text="{Binding UserName}" />
+                        <Label TextColor="{StaticResource Gray400}" >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding CreatedText}" FontSize="Caption"></Span>
+                                    <Span Text=" " FontSize="Caption"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <VerticalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
+                        </VerticalStackLayout.GestureRecognizers>
+                    </VerticalStackLayout>
+
+                    <Grid Grid.Column="2" VerticalOptions="Start" >
+                        <BoxView Style="{StaticResource RoundBadge}"/>
+                        <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
+                    </Grid>
+                </Grid>
+                <Label Margin="8,4" Text="{Binding Title, Converter={StaticResource HtmlDecodeConverter}}" >
+                </Label>
+                <components:HtmlLabel Margin="8,4" Text="{Binding Content}"></components:HtmlLabel>
+
+                <VerticalStackLayout BackgroundColor="#fffff9" 
+                      IsVisible="{Binding Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Supplements}"
+                          BindableLayout.ItemTemplate="{StaticResource SupplementTemplate}">
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+
+                <Grid Margin="8,4" IsVisible="{Binding TopicStats, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="2" Text="{Binding TopicStats, Converter={StaticResource HtmlDecodeConverter}}" FontSize="Caption"
+                            TextColor="{StaticResource Gray400}" >
+                    </Label>
+                </Grid>
+
+                <BoxView Margin="0,4,0,0"  Style="{StaticResource HorizontalSeparator}" ></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
         
@@ -71,21 +134,15 @@
                        FontSize="Caption"/>
             </HorizontalStackLayout>
         </DataTemplate>
+        
 
         <DataTemplate x:Key="SupplementTemplate" x:DataType="viewModels:SupplementViewModel">
-            <HorizontalStackLayout Margin="8" Spacing="8" >
-                <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
-            <Grid Padding="8, 16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                
-                <Label>
+
+            <toolkit:DockLayout Margin="8" VerticalSpacing="8" HorizontalSpacing="8">
+                <BoxView toolkit:DockLayout.DockPosition="Left" 
+                         Style="{StaticResource VerticalSeparator}" 
+                         WidthRequest="4"></BoxView>
+                <Label toolkit:DockLayout.DockPosition="Top">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Supplement "></Span>
@@ -95,9 +152,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  Text="{Binding Content}"></Label>
-            </Grid>
-            </HorizontalStackLayout>
+                <components:HtmlLabel Text="{Binding Content}"></components:HtmlLabel>
+            </toolkit:DockLayout>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer"
@@ -114,88 +170,18 @@
                          HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
                          RefreshColor="{StaticResource Primary}"
                          Command="{Binding LoadCommand}">
-                <ScrollView>
-                    <VerticalStackLayout>
-                        <Grid Margin="8" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="{Binding Topic.Avatar}" 
-                               HeightRequest="32" WidthRequest="32" 
-                               Aspect="AspectFill">
-
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Topic.TapUserCommand}"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-
-                            <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
-                                <Label Text="{Binding Topic.UserName}" />
-                                <Label TextColor="{StaticResource Gray400}" >
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding Topic.CreatedText}" FontSize="Caption"></Span>
-                                            <Span Text=" " FontSize="Caption"></Span>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <VerticalStackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Topic.TapUserCommand}"/>
-                                </VerticalStackLayout.GestureRecognizers>
-                            </VerticalStackLayout>
-
-                            <Grid Grid.Column="2" VerticalOptions="Start" >
-                                <BoxView Style="{StaticResource RoundBadge}"/>
-                                <Label  Margin="8,4" Text="{Binding Topic.NodeName}" FontSize="Caption"></Label>
-                            </Grid>
-                        </Grid>
-
-                        <Label Margin="8" Text="{Binding Topic.Title, Converter={StaticResource HtmlDecodeConverter}}" >
-                        </Label>
-                        <WebView x:Name="ContentWebView" HeightRequest="10" VerticalOptions="FillAndExpand" >
-                            <WebView.Source>
-                                <HtmlWebViewSource Html="{Binding Topic.Content}"></HtmlWebViewSource>
-                            </WebView.Source>
-                        </WebView>
-
-                        <VerticalStackLayout BackgroundColor="#fffff9" IsVisible="{Binding Topic.Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
-                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Topic.Supplements}"
-                                                 BindableLayout.ItemTemplate="{StaticResource SupplementTemplate}">
-                                
-                            </VerticalStackLayout>
-                        </VerticalStackLayout>
-
-
-                        <Grid Margin="8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="2" Text="{Binding Topic.TopicStats, Converter={StaticResource HtmlDecodeConverter}}" FontSize="Caption"
-                                    TextColor="{StaticResource Gray400}" >
-                            </Label>
-                        </Grid>
-                        
-                        
-                        <BoxView Margin="0,4,0,0"  Style="{StaticResource HorizontalSeparator}" ></BoxView>
-
-                        <CollectionView ItemsSource="{Binding Topic.Replies}"
-                                        SelectionMode="None"
-                                        ItemTemplate="{StaticResource ReplyCard}"
-                                        RemainingItemsThreshold="5"
-                                        RemainingItemsThresholdReached="CollectionView_RemainingItemsThresholdReached"
-                                        RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
-                                        Footer="{Binding .}"
-                                        FooterTemplate="{StaticResource FooterTemplate}">
-                        </CollectionView>
-
-                    </VerticalStackLayout>
-                </ScrollView>
+                <CollectionView ItemsSource="{Binding Topic.Replies}"
+                                SelectionMode="None"
+                                ItemTemplate="{StaticResource ReplyCard}"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReached="CollectionView_RemainingItemsThresholdReached"
+                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                Header="{Binding Topic}"
+                                HeaderTemplate="{StaticResource HeaderTemplate}"
+                                Footer="{Binding .}"
+                                FooterTemplate="{StaticResource FooterTemplate}">
+                </CollectionView>
             </RefreshView>
-
             <Label toolkit:StateView.StateKey="Error"
                    Text="{Binding Exception}" 
                    VerticalOptions="Center"

@@ -25,10 +25,12 @@ public class TopicInfo
     [SkipNodeNotFound]
     public string Avatar { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='header']/small/span", "title")]
+    [XPath("//div[@id='Main']//div[@class='header']/small/span", "title", NodeReturnType = ReturnType.InnerHtml)]
+    [SkipNodeNotFound]
     public DateTime Created{ get; set; }
 
     [XPath("//div[@id='Main']//div[@class='header']/small/span")]
+    [SkipNodeNotFound]
     public string CreatedText { get; set; } = null!;
 
     [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[contains(@class, 'topic_stats')]")]
@@ -44,9 +46,11 @@ public class TopicInfo
     public List<SupplementInfo> Supplements { get; set; } = new();
 
     [XPath("//div[@id='Main']//div[@class='header']/a[2]")]
+    [SkipNodeNotFound]
     public string NodeName { get; set; } = null!;
 
     [XPath("//div[@id='Main']//div[@class='header']/a[2]", "href")]
+    [SkipNodeNotFound]
     public string NodeLink { get; set; } = null!;
 
     [XPath("//div[@id='Main']//a[@class='tag']/../../span")]
@@ -82,8 +86,10 @@ public class TopicInfo
     public class SupplementInfo
     {
         [XPath("//span[@class='fade']/span", "title")]
+        [SkipNodeNotFound]
         public DateTime Created { get; set; }
         [XPath("//span[@class='fade']/span")]
+        [SkipNodeNotFound]
         public string CreatedText { get; set; } = null!;
 
         [XPath("//div[@class='topic_content']", ReturnType.InnerHtml)]

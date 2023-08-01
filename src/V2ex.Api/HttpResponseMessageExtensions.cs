@@ -10,10 +10,7 @@ public static class HttpResponseMessageExtensions
 {
     public static async Task<T?> ReadFromJson<T>(this HttpResponseMessage response)
     {
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InvalidOperationException(response.ReasonPhrase);
-        }
+        CheckStatusCode(response);
         var content = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions
         {
@@ -23,10 +20,7 @@ public static class HttpResponseMessageExtensions
 
     public static async Task<T> GetEncapsulatedData<T>(this HttpResponseMessage response)
     {
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InvalidOperationException(response.ReasonPhrase);
-        }
+        CheckStatusCode(response);
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();
         document.LoadHtml(content);
@@ -35,12 +29,28 @@ public static class HttpResponseMessageExtensions
         return result;
     }
 
+    private static void CheckStatusCode(HttpResponseMessage response)
+    {
+        var statusCode = (int)response.StatusCode;
+        if (statusCode > 300 && statusCode < 400)
+        {
+            throw new NotAuthorizedException();
+        }
+
+        if (statusCode > 400 && statusCode < 500)
+        {
+            throw new BadRequestException(response.ReasonPhrase);
+        }
+
+        if (statusCode > 500)
+        {
+            throw new ServerErrorException(response.ReasonPhrase);
+        }
+    }
+
     public static async Task<T> GetEncapsulatedData<T>(this HttpResponseMessage response, Action<HtmlNode> handleNode)
     {
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InvalidOperationException(response.ReasonPhrase);
-        }
+        CheckStatusCode(response);
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();
         document.LoadHtml(content);
@@ -51,10 +61,7 @@ public static class HttpResponseMessageExtensions
 
     public static async Task<T> GetEncapsulatedData<T, TError>(this HttpResponseMessage response, Action<TError> handleError)
     {
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InvalidOperationException(response.ReasonPhrase);
-        }
+        CheckStatusCode(response);
         var content = await response.Content.ReadAsStringAsync();
         var document = new HtmlDocument();
         document.LoadHtml(content);
@@ -64,5 +71,4 @@ public static class HttpResponseMessageExtensions
         var result = document.DocumentNode.GetEncapsulatedData<T>();
         return result;
     }
-
 }

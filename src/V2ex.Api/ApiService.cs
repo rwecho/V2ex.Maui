@@ -159,6 +159,7 @@ public class ApiService
     {
         var url = $"/t/{topicId}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
+
         return await response.GetEncapsulatedData<TopicInfo>();
     }
 
