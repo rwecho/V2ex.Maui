@@ -1,4 +1,9 @@
+using CommunityToolkit.Mvvm.Input;
 using HtmlAgilityPack;
+using System.Text.RegularExpressions;
+using V2ex.Api;
+using V2ex.Maui.Pages.ViewModels;
+using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages.Components;
 
@@ -16,13 +21,10 @@ public partial class HtmlLabel : ContentView
 
     private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if(bindable is not HtmlLabel htmlLabel)
+        if (bindable is not HtmlLabel htmlLabel)
         {
             return;
         }
-
-        htmlLabel.Container.Children.Clear();
-
         var newHtml = (string)newValue;
         if (string.IsNullOrEmpty(newHtml))
         {
@@ -31,17 +33,16 @@ public partial class HtmlLabel : ContentView
         var htmlDoc = new HtmlDocument();
         htmlDoc.LoadHtml(newHtml);
 
-        foreach (var childNode in htmlDoc.DocumentNode.ChildNodes)
-        {
-            htmlLabel.Container.Children.Add(RenderDocumentNode(childNode));
-        }
+        htmlLabel.Content = RenderNode(htmlDoc.DocumentNode);
     }
 
-    private static IView RenderNode(HtmlNode documentNode)
+    private static View? RenderNode(HtmlNode documentNode)
     {
-        var container = new StackLayout
+        //todo: not find a layout to render a multiple labels with wrap
+        // so use a flex layout to render a multiple labels and every label is a paragraph
+        var container = new FlexLayout
         {
-            Orientation = StackOrientation.Vertical
+            Direction = Microsoft.Maui.Layouts.FlexDirection.Column
         };
 
         foreach (var childNode in documentNode.ChildNodes)
@@ -77,51 +78,75 @@ public partial class HtmlLabel : ContentView
         };
     }
 
-    private static Label RenderInnerText(HtmlNode documentNode)
+    private static View? RenderInnerText(HtmlNode documentNode)
     {
-        return new Label
-        {
-            Text = documentNode.InnerText
-        };
-    }
+        var text = documentNode.InnerText.Trim();
 
-    private static Label RenderParagraph(HtmlNode documentNode)
-    {
-        return new Label
+        if(text == "@")
         {
-            Text = documentNode.InnerText
-        };
-    }
+            return null;
+        }
 
-    private static Label RenderNewLine()
-    {
-        return new Label
-        {
-            Text = Environment.NewLine
-        };
-    }
-
-    private static Label RenderLink(HtmlNode documentNode)
-    {
         return new Label
         {
             Text = documentNode.InnerText,
+        };
+    }
+
+    private static View? RenderParagraph(HtmlNode documentNode)
+    {
+        return RenderInnerText(documentNode);
+    }
+
+
+    private static View? RenderLink(HtmlNode documentNode)
+    {
+        return new Label
+        {
+            Text = $"@{documentNode.InnerText}",
+            TextDecorations = TextDecorations.Underline,
             GestureRecognizers =
                     {
                         new TapGestureRecognizer
                         {
-                            Command = new Command(() =>
+                            Command = new RelayCommand(async () =>
                             {
                                 var href = documentNode.GetAttributeValue("href", string.Empty);
                                 if (string.IsNullOrEmpty(href))
                                 {
                                     return;
                                 }
-                                Launcher.OpenAsync(href);
+                                await LaunchHref(href);
                             })
                         }
                     }
         };
+    }
+
+    private static async Task LaunchHref(string href)
+    {
+        var navigationManager = InstanceActivator.Create<NavigationManager>();
+        var memberRouter = new Regex("/member/(.+)");
+        if (memberRouter.IsMatch(href))
+        {
+            var match = memberRouter.Match(href);
+            var username = match.Groups[1].Value;
+
+            await navigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+            {
+                { MemberPageViewModel.QueryUserNameKey, username }
+            });
+            return;
+        }
+
+        if (href.StartsWith("http"))
+        {
+            await Launcher.OpenAsync(href);
+        }
+        else
+        {
+            await Launcher.OpenAsync(UrlUtilities.CompleteUrl(href));
+        }
     }
 
     private static Image RenderImage(HtmlNode documentNode)
@@ -132,12 +157,9 @@ public partial class HtmlLabel : ContentView
         };
     }
 
-    private static Label RenderText(HtmlNode documentNode)
+    private static View? RenderText(HtmlNode documentNode)
     {
-        return new Label
-        {
-            Text = documentNode.InnerText
-        };
+        return RenderInnerText(documentNode);
     }
 
     public string? Text

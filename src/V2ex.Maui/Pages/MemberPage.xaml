@@ -37,7 +37,7 @@
                         </Label.FormattedText>
                     </Label>
                 </toolkit:DockLayout>
-                <Label Text="{Binding Content}" Margin="8"></Label>
+                <components:HtmlLabel Text="{Binding Content}" Margin="8"></components:HtmlLabel>
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>

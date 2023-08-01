@@ -1,5 +1,11 @@
 ﻿using Android.App;
 using Android.Runtime;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Distribute;
+using Microsoft.Extensions.Options;
+using V2ex.Maui.AppShell;
 using V2ex.Maui.Platforms.Android;
 
 namespace V2ex.Maui
@@ -23,6 +29,10 @@ namespace V2ex.Maui
 
             var app = MauiProgram.CreateMauiApp(FilesDir!.AbsolutePath);
 
+            var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
+            AppCenter.Start(appCenterOptions.Value.Secret,
+                typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            Distribute.SetEnabledForDebuggableBuild(true);
             return app;
         }
     }

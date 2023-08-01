@@ -64,5 +64,6 @@ public static class MauiProgram
     {
         var assembly = typeof(App).GetTypeInfo().Assembly;
         builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.json", optional: false, false);
+        builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.secrets.json", optional: false, false);
     }
 }

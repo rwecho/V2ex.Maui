@@ -11,10 +11,10 @@ public class ApiTestModule : AbpModule
     {
         context.Services.AddSingleton<ApiService>();
         context.Services.AddHttpClient("api", client =>
-        {
-        }).ConfigurePrimaryHttpMessageHandler((sp) =>
-        {
-            return new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
-        });
+            {
+            }).ConfigurePrimaryHttpMessageHandler((sp) =>
+            {
+                return new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
+            });
     }
 }

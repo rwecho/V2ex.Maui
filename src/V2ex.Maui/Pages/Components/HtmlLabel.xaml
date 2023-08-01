@@ -3,6 +3,4 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.Components.HtmlLabel"
              x:Name="Root">
-    <VerticalStackLayout x:Name="Container">
-    </VerticalStackLayout>
 </ContentView>
