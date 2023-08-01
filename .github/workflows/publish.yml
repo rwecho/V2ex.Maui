@@ -51,7 +51,7 @@ jobs:
           npm install -g appcenter-cli
           git log --oneline --decorate > notes.txt
           cat notes.txt
-          appcenter distribute release -f src/V2ex.Maui/bin/Release/net8.0-android/*Signed.a* -R notes.txt -a HappyTreeFriends/V2exMAUI  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+          appcenter distribute release -f src/V2ex.Maui/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMAUI  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
       
           
     
