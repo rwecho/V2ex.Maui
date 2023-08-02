@@ -103,7 +103,7 @@ public class TopicInfo
     {
         [XPath("div[@class='cell' and contains(@id, 'r_')]", "id")]
         public string Id { get; init; } = null!;
-        [XPath("//td/div[@class='reply_content']")]
+        [XPath("//td/div[@class='reply_content']", ReturnType.InnerHtml)]
         public string Content { get; init; } = null!;
         [XPath("//td/strong/a")]
         [SkipNodeNotFound]
