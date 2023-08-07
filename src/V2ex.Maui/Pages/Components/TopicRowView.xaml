@@ -53,7 +53,7 @@
 
                 </Label>
                 <HorizontalStackLayout Spacing="8" >
-                    <Label TextColor="{StaticResource Gray400}" >
+                    <Label  TextColor="{StaticResource Gray400}" >
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding CreatedText}" FontSize="Caption"></Span>

@@ -50,7 +50,7 @@
 
             <toolkit:StateContainer.StateViews>
                 <ActivityIndicator toolkit:StateView.StateKey="Loading" 
-                               Color="{StaticResource Primary}"
+                               Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
