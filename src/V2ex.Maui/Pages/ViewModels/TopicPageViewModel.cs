@@ -49,7 +49,7 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     }
 
     [RelayCommand]
-    public async Task RemainingReachedCommand(CancellationToken cancellationToken)
+    public async Task RemainingReached(CancellationToken cancellationToken)
     {
         if (this.CurrentPage == this.MaximumPage || this.Topic == null)
         {
@@ -61,6 +61,17 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
         this.MaximumPage = topicInfo.MaximumPage;
         this.LoadAll = this.CurrentPage == this.MaximumPage;
         this.Topic.AddNextPage(topicInfo);
+    }
+
+    [RelayCommand]
+    public async Task OpenInBrowser(CancellationToken cancellationToken)
+    {
+        if(this.Topic == null)
+        {
+            return;
+        }
+
+        await Browser.Default.OpenAsync(this.Topic.Url);
     }
 
     protected override async Task OnLoad(CancellationToken cancellationToken)
@@ -80,7 +91,7 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
 
 public partial class TopicViewModel : ObservableObject
 {
-    public TopicViewModel(TopicInfo topic,  NavigationManager navigationManager)
+    public TopicViewModel(TopicInfo topic, NavigationManager navigationManager)
     {
         this.Title = topic.Title;
         this.Content = topic.Content;
@@ -103,6 +114,8 @@ public partial class TopicViewModel : ObservableObject
         this.Replies = new ObservableCollection<ReplyViewModel>(
             topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x)));
         this.NavigationManager = navigationManager;
+
+        this.Url = UrlUtilities.CompleteUrl(topic.Url);
     }
 
 
@@ -125,7 +138,7 @@ public partial class TopicViewModel : ObservableObject
     private string? _content;
 
     [ObservableProperty]
-    private string _userName;
+    private string _userName, _url;
 
     [ObservableProperty]
     private string _userLink;

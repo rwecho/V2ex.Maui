@@ -23,6 +23,7 @@ public class NodeTopicsInfo
 
     [XPath("//div[@id='TopicsNode']/div", ReturnType.OuterHtml)]
     public List<ItemInfo> Items { get; init; } = new();
+    public string Url { get; internal set; } = null!;
 
     public class ItemInfo
     {

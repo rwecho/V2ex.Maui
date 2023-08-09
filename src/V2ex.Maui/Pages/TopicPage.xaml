@@ -11,6 +11,16 @@
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:TopicPageViewModel"
              Title="{services:L Text=TopicPageTitle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{services:L Text=OpenInBrowser}"
+             Command="{Binding OpenInBrowserCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{x:Static fonts:MdOutlined.Open_in_browser}"
+                   FontFamily="MdOutlined"
+                   Color="#c6c6c6"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <toolkit:IsEqualConverter x:Key="IsEqualConverter"></toolkit:IsEqualConverter>
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>

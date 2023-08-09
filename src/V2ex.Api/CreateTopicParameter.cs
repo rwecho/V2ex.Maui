@@ -9,6 +9,7 @@ public class CreateTopicParameter
     public string Once { get; init; } = null!;
     public List<string> HotNodes { get; init; } = new();
     public ProblemInfo? Problem { get; init; }
+    public string Url { get; internal set; } = null!;
 
     internal static CreateTopicParameter Parse(string html)
     {

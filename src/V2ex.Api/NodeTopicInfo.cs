@@ -9,6 +9,8 @@ public class NodeTopicInfo
     public int Total { get; init; }
     public string FavoriteLink { get; init; } = null!;
     public List<ItemInfo> Items { get; init; } = null!;
+    public string Url { get; internal set; } = null!;
+
     internal static NodeTopicInfo Parse(string html)
     {
         var document = new HtmlDocument();

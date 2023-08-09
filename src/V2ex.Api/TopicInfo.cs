@@ -81,6 +81,8 @@ public class TopicInfo
         }
     }
 
+    public string Url { get; internal set; } = null!;
+
     [HasXPath]
     [DebuggerDisplay("{Content}")]
     public class SupplementInfo

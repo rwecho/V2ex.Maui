@@ -18,6 +18,7 @@ public class NewsInfo
     [XPath("//div[@id='Rightbar']//a[@href='/my/nodes']/ancestor::div[@class='box']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public UserInfo? CurrentUser { get; init; }
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{Title}-{UserName}")]

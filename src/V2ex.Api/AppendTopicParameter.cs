@@ -9,6 +9,8 @@ public class AppendTopicParameter
     public string Once { get; init; } = null!;
     public List<TipInfo> Tips { get; set; } = new();
     public ProblemInfo? Problem { get; init; }
+    public string Url { get; internal set; } = null!;
+
     internal static AppendTopicParameter Parse(string html)
     {
         var document = new HtmlDocument();

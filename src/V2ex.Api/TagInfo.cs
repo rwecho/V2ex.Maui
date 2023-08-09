@@ -20,6 +20,7 @@ public class TagInfo
     [XPath("//div[@id='Main']//div[contains(@class,'cell')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     public class ItemInfo
