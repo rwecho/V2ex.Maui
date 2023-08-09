@@ -6,6 +6,7 @@
              xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:SettingsPageViewModel"
              Title="{services:L Text=SettingsPageTitle}">
@@ -19,18 +20,38 @@
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
-            <RefreshView toolkit:StateView.StateKey="Success"
-                         Margin="16"
-                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
-                         RefreshColor="{StaticResource Violet900}"
-                         Command="{Binding LoadCommand}">
-                <ScrollView>
-                    <VerticalStackLayout>
-                        <Button Text="退出" TextColor="{StaticResource Gray600}" BackgroundColor="{StaticResource Yellow300Accent}"
-                                Command="{Binding LogoutCommand}"></Button>
-                    </VerticalStackLayout>
-                </ScrollView>
-            </RefreshView>
+
+            <ScrollView toolkit:StateView.StateKey="Success" Margin="16">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto"
+                          RowSpacing="8">
+                        <Label Text="{services:L Text=NightMode}" 
+                               FontSize="Body"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"></Label>
+                        <HorizontalStackLayout Grid.Column="1"
+                               HorizontalOptions="End">
+                            <Label Text="{Binding NightModeText}" TextColor="{StaticResource Zinc400}"></Label>
+                            <Label Text="{x:Static fonts:MdOutlined.Chevron_right }" 
+                                   FontFamily="MdOutlined"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource Zinc400}"></Label>
+                        </HorizontalStackLayout>
+                        
+                        <BoxView Grid.Row="1" Grid.ColumnSpan="2"
+                                 Style="{StaticResource HorizontalSeparator}" ></BoxView>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoThemePageCommand}"></TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                        
+                    </Grid>
+
+                    <Button Text="退出" TextColor="{StaticResource Zinc700}" 
+                            BackgroundColor="{StaticResource Gray100}"
+                            Command="{Binding LogoutCommand}"></Button>
+                </VerticalStackLayout>
+            </ScrollView>
             <Label toolkit:StateView.StateKey="Error"
                    Text="{Binding Exception}" 
                    VerticalOptions="Center"

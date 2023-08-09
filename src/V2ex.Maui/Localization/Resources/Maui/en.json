@@ -36,6 +36,13 @@
     "MinutesAgo": "{0} minutes ago",
     "HoursAgo": "{0} hours ago",
     "DaysAgo": "{0} days ago",
-    "Replies": "Replies"
+    "Replies": "Replies",
+
+    "ThemeSettingsPageTitle": "Night Mode",
+    "Open": "Open",
+    "Close": "Close",
+    "DarkTheme": "Dark Theme",
+    "LightTheme": "Light Theme",
+    "FollowBySystem": "Follow by system",
   }
 }

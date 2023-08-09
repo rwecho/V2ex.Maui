@@ -1,18 +1,27 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class SettingsPageViewModel : BaseViewModel, IQueryAttributable
 {
-    public SettingsPageViewModel(UserManager userManager, NavigationManager navigationManager)
+    public SettingsPageViewModel(UserManager userManager, NavigationManager navigationManager, 
+        AppPreferencesManager appPreferencesManager)
     {
         this.UserManager = userManager;
         this.NavigationManager = navigationManager;
+        this.AppPreferencesManager = appPreferencesManager;
+        this.AppPreferencesManager.CurrentChanged += this.AppPreferencesManager_CurrentChanged;
     }
 
     private UserManager UserManager { get; }
     private NavigationManager NavigationManager { get; }
+    private AppPreferencesManager AppPreferencesManager { get; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NightModeText))]
+    private AppPreferences? _appPreferences;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -45,8 +54,35 @@ public partial class SettingsPageViewModel : BaseViewModel, IQueryAttributable
         }
     }
 
+    [RelayCommand]
+    public async Task GotoThemePage(CancellationToken cancellation)
+    {
+        await this.NavigationManager.GoToAsync(nameof(ThemeSettingsPage), true);
+    }
+
     protected override Task OnLoad(CancellationToken cancellationToken)
     {
+        this.AppPreferences = this.AppPreferencesManager.Current;
         return Task.CompletedTask;
+    }
+
+    private void AppPreferencesManager_CurrentChanged(object? sender, EventArgs e)
+    {
+        this.OnPropertyChanged(nameof(NightModeText));
+    }
+
+    public string NightModeText
+    {
+        get
+        {
+            var nightMode = this.AppPreferences?.NightMode ?? NightMode.Close;
+            return nightMode switch
+            {
+                NightMode.Open => this.Localizer["Open"],
+                NightMode.Close => this.Localizer["Close"],
+                NightMode.FollowBySystem => this.Localizer["FollowBySystem"],
+                _ => throw new NotSupportedException(),
+            };
+        }
     }
 }

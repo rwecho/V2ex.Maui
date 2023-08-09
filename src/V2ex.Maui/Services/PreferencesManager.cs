@@ -13,6 +13,9 @@ public abstract class PreferencesManager<T>
     {
         this.Key = key;
     }
+
+    public event EventHandler? CurrentChanged;
+
     public T? Current
     {
         get
@@ -28,6 +31,7 @@ public abstract class PreferencesManager<T>
         private set
         {
             _current = value;
+            this.CurrentChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
