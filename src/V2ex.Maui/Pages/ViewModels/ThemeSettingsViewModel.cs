@@ -33,6 +33,19 @@ public partial class ThemeSettingsViewModel : BaseViewModel
         appPreferences.NightMode = nightMode;
         this.AppPreferencesManager.Set(appPreferences);
         var _ = Toast.Make("App theme changed success.").Show();
+
+        if (nightMode == Services.NightMode.Open)
+        {
+            Application.Current!.UserAppTheme = AppTheme.Dark;
+        }
+        else if (nightMode == Services.NightMode.Close)
+        {
+            Application.Current!.UserAppTheme = AppTheme.Light;
+        }
+        else if (nightMode == Services.NightMode.FollowBySystem)
+        {
+            Application.Current!.UserAppTheme = AppTheme.Unspecified;
+        }
     }
 
     private AppPreferencesManager AppPreferencesManager { get; }
