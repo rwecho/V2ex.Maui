@@ -65,7 +65,7 @@ public class TopicInfo
     [SkipNodeNotFound]
     public int CurrentPage { get; set; }
 
-    [XPath("//div[@id='Main']//a[@class='normal_page'][last()]")]
+    [XPath("//div[@id='Main']//a[@class='page_normal'][last()]")]
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 

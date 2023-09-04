@@ -14,10 +14,10 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     private string _id = null!;
 
     [ObservableProperty]
-    private bool  _loadAll;
+    private bool  _loadAll, _isLoading;
 
     [ObservableProperty]
-    private int _currentPage = 0, _maximumPage = 0;
+    private int _currentPage = 1, _maximumPage = 0;
 
     [ObservableProperty]
     private TopicViewModel? _topic;
@@ -56,10 +56,13 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
             return;
         }
 
-        var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
+        var nextPage = this.CurrentPage + 1;
+        this.IsLoading = false;
+        var topicInfo = await this.ApiService.GetTopicDetail(this.Id, nextPage);
+        this.IsLoading = true;
         this.CurrentPage = topicInfo.CurrentPage;
         this.MaximumPage = topicInfo.MaximumPage;
-        this.LoadAll = this.CurrentPage == this.MaximumPage;
+        this.LoadAll = this.CurrentPage >= this.MaximumPage;
         this.Topic.AddNextPage(topicInfo);
     }
 
@@ -84,7 +87,7 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
         var topicInfo = await this.ApiService.GetTopicDetail(this.Id, this.CurrentPage);
         this.CurrentPage = topicInfo.CurrentPage;
         this.MaximumPage = topicInfo.MaximumPage;
-        this.LoadAll = this.CurrentPage == this.MaximumPage;
+        this.LoadAll = this.CurrentPage >= this.MaximumPage;
         this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo);
     }
 }
@@ -127,7 +130,8 @@ public partial class TopicViewModel : ObservableObject
 
         foreach (var item in topic.Replies)
         {
-            this.Replies.Add(InstanceActivator.Create<ReplyViewModel>(item));
+            var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item);
+            this.Replies.Add(replyViewModel);
         }
     }
 

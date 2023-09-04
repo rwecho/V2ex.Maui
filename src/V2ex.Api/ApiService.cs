@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using static V2ex.Api.MemberPageInfo;
 
 namespace V2ex.Api;
 
@@ -61,10 +62,16 @@ public class ApiService
 
     public async Task<NodePageInfo?> GetNodePageInfo(string nodeName, int page = 1)
     {
-        var url = $"/go/{nodeName}?page={page}";
+        var url = $"/go/{nodeName}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
         var nodePageInfo = await response.GetEncapsulatedData<NodePageInfo>(this.Logger);
         nodePageInfo.Url = url;
+        
+        // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
+        if (nodePageInfo.CurrentPage > nodePageInfo.MaximumPage)
+        {
+            nodePageInfo.MaximumPage = nodePageInfo.CurrentPage;
+        }
         return nodePageInfo;
     }
 
@@ -87,6 +94,8 @@ public class ApiService
         var memberInfo = await response.ReadFromJson<MemberInfo>();
         if (memberInfo != null)
             memberInfo.Url = url;
+
+
         return memberInfo;
     }
 
@@ -133,7 +142,7 @@ public class ApiService
 
     public async Task<TagInfo> GetTagInfo(string tagName, int page = 1)
     {
-        var url = $"/tag/{tagName}?page={page}";
+        var url = $"/tag/{tagName}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
         var tagInfo =  await response.GetEncapsulatedData<TagInfo>(this.Logger);
         tagInfo.Url = url;
@@ -203,8 +212,14 @@ public class ApiService
         var url = $"/t/{topicId}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
 
-        var topicInfo =  await response.GetEncapsulatedData<TopicInfo>(this.Logger);
+        var topicInfo = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         topicInfo.Url = url;
+
+        // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
+        if (topicInfo.CurrentPage > topicInfo.MaximumPage)
+        {
+            topicInfo.MaximumPage = topicInfo.CurrentPage;
+        }
         return topicInfo;
     }
 
@@ -215,29 +230,50 @@ public class ApiService
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<NotificationInfo>(this.Logger);
         if (result != null)
+        {
             result.Url = url;
+            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
+            if (result.CurrentPage > result.MaximumPage)
+            {
+                result.MaximumPage = result.CurrentPage;
+            }
+        }
         return result;
     }
 
     public async Task<FollowingInfo?> GetFollowingInfo(int page = 1)
     {
-        var url = $"/my/following?page={page}";
+        var url = $"/my/following?p={page}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<FollowingInfo>(this.Logger);
         if (result != null)
+        {
             result.Url = url;
+            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
+            if (result.CurrentPage > result.MaximumPage)
+            {
+                result.MaximumPage = result.CurrentPage;
+            }
+        }
         return result;
     }
 
     public async Task<FavoriteTopicsInfo?> GetFavoriteTopics(int page = 1)
     {
-        var url = $"/my/topics?page={page}";
+        var url = $"/my/topics?p={page}";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<FavoriteTopicsInfo>(this.Logger);
         if (result != null)
+        {
             result.Url = url;
+            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
+            if (result.CurrentPage > result.MaximumPage)
+            {
+                result.MaximumPage = result.CurrentPage;
+            }
+        }
         return result;
     }
 
@@ -267,7 +303,7 @@ public class ApiService
 
     public async Task<NodeTopicsInfo> GetNodeTopics(string node, int page = 1)
     {
-        var url = $"/go/{node}?page={page}";
+        var url = $"/go/{node}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<NodeTopicsInfo>(this.Logger);
         result.Url = url;

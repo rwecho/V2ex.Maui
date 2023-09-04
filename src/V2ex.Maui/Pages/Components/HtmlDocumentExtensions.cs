@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Xml;
 using V2ex.Api;
 using V2ex.Maui.Pages.ViewModels;
 using V2ex.Maui.Services;
@@ -45,7 +47,7 @@ public static class HtmlDocumentExtensions
             HtmlNodeType.Element when documentNode.Name == "a" =>
                 RenderLink(documentNode),
             HtmlNodeType.Element when documentNode.Name == "br" =>
-                null,
+                RenderNewLine(documentNode),
             HtmlNodeType.Element when documentNode.Name == "p" =>
                 RenderChildrenNodes(documentNode),
             HtmlNodeType.Element when documentNode.Name == "div" =>
@@ -53,7 +55,6 @@ public static class HtmlDocumentExtensions
             _ => RenderInnerText(documentNode)
         };
     }
-
 
     private static View? RenderInnerText(HtmlNode htmlNode)
     {
@@ -66,7 +67,7 @@ public static class HtmlDocumentExtensions
 
         return new Label
         {
-            Text = htmlNode.InnerText,
+            Text = HttpUtility.HtmlDecode(htmlNode.InnerText) ,
             VerticalOptions = LayoutOptions.Center,
         };
     }
@@ -131,4 +132,13 @@ public static class HtmlDocumentExtensions
     {
         return RenderInnerText(htmlNode);
     }
+
+    private static View? RenderNewLine(HtmlNode _)
+    {
+        return new Label
+        {
+            Text = "",
+        };
+    }
+
 }

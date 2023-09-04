@@ -66,11 +66,19 @@
             </VerticalStackLayout>
         </DataTemplate>
 
-        <DataTemplate x:Key="FooterTemplate">
-            <Label Text="All data loaded."
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand" />
+        <DataTemplate x:Key="FooterTemplate" x:DataType="viewModels:TopicPageViewModel">
+            <HorizontalStackLayout Margin="16" HorizontalOptions="Center">
+                <Label Text="全部加载完成"
+                    IsVisible="{Binding LoadAll}"
+                    TextColor="{StaticResource Gray400}"
+                    FontSize="Caption"/>
+
+                <ActivityIndicator 
+                  Color="{StaticResource Violet900}"
+                  IsRunning="{Binding IsLoading}"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center" />
+            </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer" 
@@ -89,6 +97,9 @@
                          Command="{Binding LoadCommand}">
                 <CollectionView ItemsSource="{Binding Items}"
                                 ItemTemplate="{StaticResource TopicTemplate}"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                 </CollectionView>

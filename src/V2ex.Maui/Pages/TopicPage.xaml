@@ -142,6 +142,12 @@
                        IsVisible="{Binding LoadAll}"
                        TextColor="{StaticResource Gray400}"
                        FontSize="Caption"/>
+
+                <ActivityIndicator 
+                    Color="{StaticResource Violet900}"
+                    IsRunning="{Binding IsLoading}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
             </HorizontalStackLayout>
         </DataTemplate>
         
@@ -184,7 +190,6 @@
                                 SelectionMode="None"
                                 ItemTemplate="{StaticResource ReplyCard}"
                                 RemainingItemsThreshold="5"
-                                RemainingItemsThresholdReached="CollectionView_RemainingItemsThresholdReached"
                                 RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
                                 Header="{Binding Topic}"
                                 HeaderTemplate="{StaticResource HeaderTemplate}"
