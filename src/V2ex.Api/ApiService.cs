@@ -122,9 +122,9 @@ public class ApiService
         return string.Join("&", queryString.Select(x => $"{x.Key}={x.Value}"));
     }
 
-    public async Task<NewsInfo> GetTabTopics(string tab)
+    public async Task<NewsInfo> GetTabTopics(string? tab= null)
     {
-        var url = "/?tab=" + tab;
+        var url = tab == null ? "/" : "/?tab=" + tab;
         var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
         newsInfo.Url = url;
@@ -153,7 +153,7 @@ public class ApiService
     {
         var url = "/signin?next=/";
         var response = await this.HttpClient.GetAsync(url);
-        var loginPrameters = await response.GetEncapsulatedData<LoginParameters, RestrictedProblem>((error) =>
+        var loginParameters = await response.GetEncapsulatedData<LoginParameters, RestrictedProblem>((error) =>
         {
             if (error.IsRestricted())
             {
@@ -161,8 +161,8 @@ public class ApiService
             }
         }, this.Logger);
 
-        loginPrameters.Url = url;
-        return loginPrameters;
+        loginParameters.Url = url;
+        return loginParameters;
     }
 
     public async Task<byte[]> GetCaptchaImage(LoginParameters loginParameters)
@@ -194,6 +194,17 @@ public class ApiService
 
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/signin");
         var response = await this.HttpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != request.RequestUri)
+        {
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
+            response = await this.HttpClient.SendAsync(redirectRequest);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Can not login with reason: {response.ReasonPhrase}");
+        }
 
         var newsInfo = await response.GetEncapsulatedData<NewsInfo, LoginProblem>((error) =>
         {

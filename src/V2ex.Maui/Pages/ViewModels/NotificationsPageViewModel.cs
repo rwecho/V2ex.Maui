@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using V2ex.Api;
 using V2ex.Maui.Services;
 
@@ -7,71 +8,78 @@ namespace V2ex.Maui.Pages.ViewModels;
 
 public partial class NotificationsPageViewModel : BaseViewModel, IQueryAttributable
 {
-    [ObservableProperty]
-    private NotificationViewModel? _notification;
-
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
     }
 
-    [RelayCommand(CanExecute = nameof(CanCurrentStateChange))]
-    public async Task LoadMore(CancellationToken cancellationToken = default)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LoadAll))]
+    private int _currentPage, _maximumPage;
+
+    [ObservableProperty]
+    private int _total;
+
+    [ObservableProperty]
+    private bool _isLoading;
+
+    [ObservableProperty]
+    private ObservableCollection<NotificationItemViewModel> _items = new();
+    public bool LoadAll
     {
-        // not triggered on Windows, https://github.com/dotnet/maui/issues/9935 fixed in the 8.0.0-preview.5.8529
-        try
+        get
         {
-            this.CurrentState = StateKeys.Loading;
-            if (this.Notification == null)
-            {
-                throw new InvalidOperationException("未加载数据");
-            }
-
-            if (this.Notification.CurrentPage >= this.Notification.MaximumPage)
-            {
-                return;
-            }
-
-            var page = this.Notification.CurrentPage + 1;
-            var notificationInfo = await this.ApiService.GetNotifications(page) ?? throw new InvalidOperationException("获取我的消息失败");
-
-            foreach (var item in notificationInfo.Items)
-            {
-                this.Notification.Items.Add(InstanceActivator.Create<NotificationItemViewModel>(item));
-            }
-            this.Notification.CurrentPage = page;
-            this.CurrentState = StateKeys.Success;
-        }
-        catch (Exception exception)
-        {
-            this.Exception = exception;
-            this.CurrentState = StateKeys.Error;
+            return this.CurrentPage >= this.MaximumPage;
         }
     }
-
     protected override async Task OnLoad(CancellationToken cancellationToken)
     {
         var notificationInfo = await this.ApiService.GetNotifications() ?? throw new InvalidOperationException("获取我的消息失败");
-        this.Notification = new(notificationInfo);
-    }
-}
-
-public partial class NotificationViewModel : ObservableObject
-{
-    public NotificationViewModel(NotificationInfo notificationInfo)
-    {
-        this.Total = notificationInfo.Total;
         this.CurrentPage = notificationInfo.CurrentPage;
         this.MaximumPage = notificationInfo.MaximumPage;
-        this.Items = notificationInfo.Items
-            .Select(o => InstanceActivator.Create<NotificationItemViewModel>(o))
-            .ToList();
+        this.Total = notificationInfo.Total;
+
+        foreach (var item in notificationInfo.Items)
+        {
+            this.Items.Add(InstanceActivator.Create<NotificationItemViewModel>(item));
+        }
     }
 
-    [ObservableProperty]
-    private int _total, _currentPage, _maximumPage;
 
-    [ObservableProperty]
-    public List<NotificationItemViewModel> _items;
+    [RelayCommand]
+    public async Task RemainingReached(CancellationToken cancellationToken)
+    {
+        if (this.CurrentPage == this.MaximumPage || !this.Items.Any())
+        {
+            return;
+        }
+
+        var nextPage = this.CurrentPage + 1;
+        NotificationInfo? notificationInfo;
+
+        try
+        {
+            this.IsLoading = true;
+            notificationInfo = await this.ApiService.GetNotifications(nextPage);
+        }
+        finally
+        {
+            this.IsLoading = false;
+        }
+
+        if (notificationInfo == null)
+        {
+            throw new InvalidOperationException($"Can not get next page {nextPage} of notifications.");
+        }
+
+        this.CurrentPage = notificationInfo.CurrentPage;
+        this.MaximumPage = notificationInfo.MaximumPage;
+        this.Total = notificationInfo.Total;
+
+        foreach (var item in notificationInfo.Items)
+        {
+            this.Items.Add(InstanceActivator.Create<NotificationItemViewModel>(item));
+        }
+    }
 }
 
 public partial class NotificationItemViewModel : ObservableObject

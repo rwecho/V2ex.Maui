@@ -53,6 +53,21 @@
                          Margin="0,4"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
+
+        <DataTemplate x:Key="FooterTemplate" x:DataType="viewModels:NotificationsPageViewModel">
+            <HorizontalStackLayout Margin="16" HorizontalOptions="Center">
+                <Label Text="全部加载完成"
+                    IsVisible="{Binding LoadAll}"
+                    TextColor="{StaticResource Gray400}"
+                    FontSize="Caption"/>
+
+                <ActivityIndicator 
+                   Color="{StaticResource Violet900}"
+                   IsRunning="{Binding IsLoading}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
@@ -68,9 +83,12 @@
                          HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
                          RefreshColor="{StaticResource Violet900}"
                          Command="{Binding LoadCommand}">
-                <CollectionView ItemsSource="{Binding Notification.Items}"
+                <CollectionView ItemsSource="{Binding Items}"
                                 ItemTemplate="{StaticResource NotificationTemplate}"
-                                ItemSizingStrategy="MeasureFirstItem"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                Footer="{Binding .}"
+                                FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout ItemSpacing="3"

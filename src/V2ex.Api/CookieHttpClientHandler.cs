@@ -31,9 +31,10 @@ public class CookieHttpClientHandler : HttpClientHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var response = await base.SendAsync(request, cancellationToken);
+        var fragment = request.RequestUri.Fragment;
         if (request.RequestUri?.LocalPath == "/signin"
             && request.Method == HttpMethod.Post
-            && response.IsSuccessStatusCode)
+            && response.StatusCode == HttpStatusCode.Found)
         {
             // serialize cookies to json, save to cookies.json
             var cookies = this.CookieContainer.GetCookies(request.RequestUri)
