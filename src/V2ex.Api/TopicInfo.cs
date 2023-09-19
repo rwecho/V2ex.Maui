@@ -127,7 +127,7 @@ public class TopicInfo
         [XPath("//td//span[@class='no']")]
         public int Floor { get; init; }
 
-        [XPath("//td/span[contains(@class, 'small fade')]")]
+        [XPath("//td/span[contains(@class, 'small fade')]/text()")]
         [SkipNodeNotFound]
         public string? AlreadyThanked { get; init; }
     }

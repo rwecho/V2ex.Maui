@@ -68,7 +68,7 @@
 	  <None Remove="Resources\Fonts\feathericon.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
-	  <None Remove="Resources\Raw\MarkdownContainer.html" />
+	  <None Remove="Resources\Raw\HtmlContainer.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -108,13 +108,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\MarkdownContainer.html">
+	  <MauiAsset Update="Resources\Raw\HtmlContainer.html">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
 	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Components\HtmlLabel.xaml">
+	  <MauiXaml Update="Pages\Components\HtmlView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Components\TopicRowView.xaml">

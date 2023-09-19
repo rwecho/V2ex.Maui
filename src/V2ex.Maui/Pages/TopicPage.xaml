@@ -26,7 +26,6 @@
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter"></toolkit:IsListNotNullOrEmptyConverter>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-        <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
             <VerticalStackLayout Background="transparent">
                 <Grid Margin="8">
@@ -36,14 +35,20 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Source="{Binding Avatar}" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Column="0"  Grid.Row="0" Source="{Binding Avatar}" 
                            HeightRequest="32" WidthRequest="32" 
                            Aspect="AspectFill">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
+                    <VerticalStackLayout Grid.Column="1"  Grid.Row="0" Margin="8,0" HorizontalOptions="Start">
                         <Label Text="{Binding UserName}" />
                         <Label TextColor="{StaticResource Gray400}" >
                             <Label.FormattedText>
@@ -59,13 +64,31 @@
                         </VerticalStackLayout.GestureRecognizers>
                     </VerticalStackLayout>
 
-                    <Grid Grid.Column="2" VerticalOptions="Start" >
+                    <Grid Grid.Column="2"  Grid.Row="0" VerticalOptions="Start" >
                         <BoxView Style="{StaticResource RoundBadge}"/>
-                        <Label Margin="8,4" Text="{Binding Floor}" FontSize="Caption"></Label>
+                        <Label Margin="4,2" Text="{Binding Floor}" FontSize="Small" TextColor="{StaticResource Zinc400}"></Label>
                     </Grid>
+                    <components:HtmlView Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Content}" Margin="8"></components:HtmlView>
+
+                    <HorizontalStackLayout Grid.Column="1" Grid.Row="2" Margin="8,0">
+                        <Label VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span FontSize="Small" Text="{Binding AlreadyThanked}"  TextColor="{StaticResource Zinc400}"></Span>
+                                    <Span Text=" "></Span>
+                                    <Span FontSize="Small" Text="{x:Static fonts:Fi.HeartO }"  FontFamily="Fi"
+                                          TextColor="{StaticResource Zinc400}">
+                                    </Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                    <Label Grid.Column="2" Grid.Row="2" Text="{x:Static fonts:MdOutlined.More_vert }" 
+                        FontFamily="MdOutlined"
+                        TextColor="{StaticResource Zinc400}"></Label>
                 </Grid>
 
-                <components:HtmlLabel Margin="8" Text="{Binding Content}"></components:HtmlLabel>
 
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
@@ -109,7 +132,7 @@
                 </Grid>
                 <Label Margin="8,4" Text="{Binding Title, Converter={StaticResource HtmlDecodeConverter}}" >
                 </Label>
-                <components:HtmlLabel Margin="8,4" Text="{Binding Content}"></components:HtmlLabel>
+                <components:HtmlView Text="{Binding Content}" Margin="8,4"></components:HtmlView>
 
                 <VerticalStackLayout BackgroundColor="#fffff9" 
                       IsVisible="{Binding Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
@@ -168,7 +191,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <components:HtmlLabel Text="{Binding Content}"></components:HtmlLabel>
+                <components:HtmlView Text="{Binding Content}" ></components:HtmlView>
             </toolkit:DockLayout>
         </DataTemplate>
     </ContentPage.Resources>
