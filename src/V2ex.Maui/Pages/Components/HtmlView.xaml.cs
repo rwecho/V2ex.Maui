@@ -4,6 +4,7 @@ namespace V2ex.Maui.Pages.Components;
 
 public partial class HtmlView : ContentView
 {
+    private bool _isHtml;
     public HtmlView()
     {
         InitializeComponent();
@@ -12,10 +13,21 @@ public partial class HtmlView : ContentView
     public static readonly BindableProperty TextProperty = BindableProperty.Create(
       nameof(Text),
       typeof(string),
-      typeof(HtmlView), propertyChanged: TextChanged);
+      typeof(HtmlView), propertyChanged: TextChanged, propertyChanging: TextChanging);
+
+    private static void TextChanging(BindableObject bindable, object oldValue, object newValue)
+    {
+        if(bindable is not HtmlView htmlView)
+        {
+            return;
+        }
+
+        htmlView.IsHtml = CheckIsHtml(newValue?.ToString());
+    }
 
     private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
     {
+
     }
 
     public event EventHandler<string>? UrlTapped;
@@ -24,6 +36,39 @@ public partial class HtmlView : ContentView
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
+    }
+
+    private static bool CheckIsHtml(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return false;
+        }
+
+        if (value.Contains("<html") || value.Contains("<div") || value.Contains("<p") || value.Contains("<pre")
+            || value.Contains("<a"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsHtml
+    {
+        get
+        {
+            return _isHtml;
+        }
+        set
+        {
+            if (value == _isHtml)
+            {
+                return;
+            }
+            _isHtml = value;
+            OnPropertyChanged();
+        }
     }
 
     public ResourcesService? ResourcesService { get; }
@@ -40,21 +85,9 @@ public partial class HtmlView : ContentView
         e.Cancel = true;
     }
 
-    private async void WebView_Loaded(object sender, EventArgs e)
+    private void WebView_Loaded(object sender, EventArgs e)
     {
-        try
-        {
-
-            if (int.TryParse(await this.WebView.EvaluateJavaScriptAsync($"document.body.scrollHeight"), out var clientHeight) && clientHeight > 0)
-            {
-                this.WebView.HeightRequest = clientHeight;
-
-            }
-        }
-        catch (Exception exception)
-        {
-
-        }
+        // todo: how to set the WebView to fit the content height?
     }
 
 }

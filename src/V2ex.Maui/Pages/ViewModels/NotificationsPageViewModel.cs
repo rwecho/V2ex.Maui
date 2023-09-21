@@ -87,9 +87,6 @@ public partial class NotificationItemViewModel : ObservableObject
     public NotificationItemViewModel(NotificationInfo.NotificationItemInfo item,
         NavigationManager navigationManager)
     {
- 
-     
-        
         
         this.UserLink = item.UserLink;
         this.Avatar = item.Avatar;
