@@ -7,7 +7,7 @@
     <ContentView.Resources>
         <converters:HtmlContainerConverter x:Key="HtmlContainerConverter"></converters:HtmlContainerConverter>
     </ContentView.Resources>
-    <WebView x:Name="WebView" Navigated="WebView_Navigated" Navigating="WebView_Navigating">
+    <WebView x:Name="WebView" Navigated="WebView_Navigated" Navigating="WebView_Navigating" Loaded="WebView_Loaded">
         <WebView.Source>
             <HtmlWebViewSource Html="{Binding Source={x:Reference Root}, Path=Text, Converter={StaticResource HtmlContainerConverter}}">
             </HtmlWebViewSource>

@@ -18,6 +18,8 @@ public partial class HtmlView : ContentView
     {
     }
 
+    public event EventHandler<string>? UrlTapped;
+
     public string? Text
     {
         get => (string)GetValue(TextProperty);
@@ -28,10 +30,31 @@ public partial class HtmlView : ContentView
 
     private void WebView_Navigated(object sender, WebNavigatedEventArgs e)
     {
+
     }
 
     private void WebView_Navigating(object sender, WebNavigatingEventArgs e)
     {
+        var url = e.Url;
+        this.UrlTapped?.Invoke(this, url);
         e.Cancel = true;
     }
+
+    private async void WebView_Loaded(object sender, EventArgs e)
+    {
+        try
+        {
+
+            if (int.TryParse(await this.WebView.EvaluateJavaScriptAsync($"document.body.scrollHeight"), out var clientHeight) && clientHeight > 0)
+            {
+                this.WebView.HeightRequest = clientHeight;
+
+            }
+        }
+        catch (Exception exception)
+        {
+
+        }
+    }
+
 }

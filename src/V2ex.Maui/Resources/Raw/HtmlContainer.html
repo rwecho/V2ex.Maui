@@ -6,22 +6,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Html Container</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+   
     <style type="text/css">
 
-        body{
+        body {
             overflow: hidden;
             margin: 0;
             word-wrap: break-word;
         }
 
         .container {
+            overflow: hidden;
             font-size: 14px;
             line-height: 1.6;
         }
 
-        .container img{
-            width: 100%;
+            .container img {
+                width: 100%;
+            }
+
+        .container {
+            line-height: 1.6;
+            word-break: break-word;
         }
+
+    .container a {
+                color: #778087;
+                text-decoration: none;
+                word-break: break-word;
+            }
+
+    .container pre {
+                font-size: 13px;
+                letter-spacing: 0.15em;
+                line-height: 120%;
+                white-space: pre;
+                overflow: auto;
+                background-color: #f5f5f5;
+                word-break: normal;
+                overflow-wrap: normal;
+                padding: .5em;
+            }
     </style>
 </head>
 
@@ -31,8 +57,10 @@
     </div>
 
     <script type="text/javascript">
-      
+
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script defer>hljs.initHighlightingOnLoad();</script>
 </body>
 
 </html>
