@@ -10,6 +10,7 @@ public class NodesNavInfo
 {
     [XPath("//td/span[@class='fade']/../..", ReturnType.OuterHtml)]
     public List<ItemInfo> Items { get; set; } = new();
+    public string Url { get; internal set; } = null!;
 
     private string DebuggerDisplay
     {

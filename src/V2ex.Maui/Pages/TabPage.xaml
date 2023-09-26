@@ -20,14 +20,14 @@
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
         <toolkit:StateContainer.StateViews>
             <ActivityIndicator toolkit:StateView.StateKey="Loading"  
-                               Color="{StaticResource Primary}"
+                               Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
             <RefreshView VerticalOptions="FillAndExpand"
                         toolkit:StateView.StateKey="Success"
                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
-                        RefreshColor="{StaticResource Primary}"
+                        RefreshColor="{StaticResource Violet900}"
                         IsRefreshing="{Binding IsReloading}"
                         Command="{Binding ReloadCommand}">
                 <CollectionView ItemsSource="{Binding NewsInfo.Items}" 

@@ -43,6 +43,7 @@ public class MemberPageInfo
     [XPath("//div[@class='reply_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
     public List<string> ReplyContents { get; init; } = new();
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{Title}-{UserName}")]

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:service="clr-namespace:V2ex.Maui.Services"
+             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             x:Class="V2ex.Maui.Pages.ThemeSettingsPage"
+             x:DataType="viewModels:ThemeSettingsViewModel"
+             Title="{service:L Text=ThemeSettingsPageTitle}">
+    <ContentPage.Resources>
+        <converters:NightModeBooleanConverter x:Key="NightModeBooleanConverter" />
+    </ContentPage.Resources>
+    <VerticalStackLayout Margin="16" Spacing="4">
+        <RadioButton Content="{service:L Text=Open}" RadioButtonGroup.GroupName="ThemeSettings"
+                    IsChecked="{Binding NightMode, Converter={StaticResource NightModeBooleanConverter}, ConverterParameter=1 }" ></RadioButton>
+        <BoxView Style="{StaticResource HorizontalSeparator}" Margin="0,2"></BoxView>
+        <RadioButton Content="{service:L Text=Close}" RadioButtonGroup.GroupName="ThemeSettings"
+                     IsChecked="{Binding NightMode, Converter={StaticResource NightModeBooleanConverter}, ConverterParameter=0 }" ></RadioButton>
+        <BoxView Style="{StaticResource HorizontalSeparator}" Margin="0,2"></BoxView>
+        <RadioButton Content="{service:L Text=FollowBySystem}" RadioButtonGroup.GroupName="ThemeSettings"
+                     IsChecked="{Binding NightMode, Converter={StaticResource NightModeBooleanConverter}, ConverterParameter=2 }" ></RadioButton>
+    </VerticalStackLayout>
+</ContentPage>

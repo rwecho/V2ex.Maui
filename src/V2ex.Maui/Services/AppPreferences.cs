@@ -1,29 +1,31 @@
 ﻿
-using Microsoft.Extensions.Localization;
+
+using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Services;
+
+public enum NightMode
+{
+    Close,
+    Open,
+    FollowBySystem
+}
 
 public class AppPreferences
 {
     public string? LatestTabName { get; set; }
+
+    public NightMode NightMode { get; set; }
 }
 
-public class L : IMarkupExtension<string>
+
+public record AppState(string? HtmlContainer);
+public static class AppStateManager
 {
-    public string? Text { get; set; }
+    public static AppState AppState { get; private set; } = new AppState(null);
 
-    public string ProvideValue(IServiceProvider serviceProvider)
+    public static void SetHtmlContainer(string html)
     {
-        if (string.IsNullOrEmpty(Text))
-        {
-            return string.Empty;
-        }
-        var localizer = InstanceActivator.Create<IStringLocalizer<MauiResource>>();
-        return localizer[Text];
-    }
-
-    object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
-    {
-        return (this as IMarkupExtension<string>).ProvideValue(serviceProvider);
+        AppState = new AppState(html);
     }
 }

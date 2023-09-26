@@ -18,15 +18,16 @@
                          BindingContext="{Binding Source={x:Reference Root}, Path=Topic }"
                          WidthRequest="{Binding Source={x:Reference Root}, Path=Width}"
                          x:DataType="local:TopicRowViewModel">
-        <Grid Margin="8">
+        <Grid Margin="8" x:Name="Grid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0" Source="{Binding Avatar}"
-                HeightRequest="32" WidthRequest="32"
+                   WidthRequest="32"
+                   HeightRequest="32"
                 Aspect="AspectFill">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
@@ -49,15 +50,14 @@
                         </toolkit:AnimationBehavior.AnimationType>
                     </toolkit:AnimationBehavior>
                 </VerticalStackLayout.Behaviors>
-                <Label Text="{Binding UserName}" >
-
+                <Label Text="{Binding UserName}" FontSize="{StaticResource XS}" >
                 </Label>
                 <HorizontalStackLayout Spacing="8" >
-                    <Label TextColor="{StaticResource Gray400}" >
+                    <Label  TextColor="{StaticResource Gray400}" >
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding CreatedText}" FontSize="Caption"></Span>
-                                <Span Text=" " FontSize="Caption"></Span>
+                                <Span Text="{Binding CreatedText}" FontSize="{StaticResource XS}"></Span>
+                                <Span Text=" " FontSize="{StaticResource XS}"></Span>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -66,9 +66,9 @@
                         <Label.FormattedText>
                             <FormattedString>
 
-                                <Span Text="{services:L Text=Replies}" FontSize="Caption"></Span>
-                                <Span Text=" " FontSize="Caption"></Span>
-                                <Span Text="{Binding Replies}" FontSize="Caption"></Span>
+                                <Span Text="{services:L Text=Replies}" FontSize="{StaticResource XS}"></Span>
+                                <Span Text=" " FontSize="{StaticResource XS}"></Span>
+                                <Span Text="{Binding Replies}" FontSize="{StaticResource XS}"></Span>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -83,7 +83,7 @@
                   VerticalOptions="Start"
                   IsVisible="{Binding NodeName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
                 <BoxView Style="{StaticResource RoundBadge}"/>
-                <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="Caption"></Label>
+                <Label  Margin="8,4" Text="{Binding NodeName}" FontSize="{StaticResource XS}"></Label>
                 <Grid.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapNodeCommand}"/>
                 </Grid.GestureRecognizers>
@@ -101,7 +101,7 @@
                VerticalOptions="Start"
                IsVisible="{Binding NodeName, Converter={StaticResource IsStringNullOrEmptyConverter}}">
                 <BoxView Style="{StaticResource RoundBadge}"/>
-                <Label  Margin="8,4" Text="{Binding Replies}" FontSize="Caption"></Label>
+                <Label  Margin="8,4" Text="{Binding Replies}" FontSize="{StaticResource XS}"></Label>
             </Grid>
         </Grid>
         <Label Margin="8" Text="{Binding Title, Converter={StaticResource Key=HtmlDecodeConverter}}">

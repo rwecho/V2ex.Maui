@@ -36,6 +36,13 @@
     "MinutesAgo": "{0} 分钟前",
     "HoursAgo": "{0} 小时前",
     "DaysAgo": "{0} 天前",
-    "Replies": "评论"
+    "Replies": "评论",
+
+    "ThemeSettingsPageTitle": "夜间模式",
+    "Open": "打开",
+    "Close": "关闭",
+    "DarkTheme": "Dark Theme",
+    "LightTheme": "Light Theme",
+    "FollowBySystem": "跟随系统"
   }
 }

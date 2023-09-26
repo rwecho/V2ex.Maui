@@ -47,7 +47,8 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
+		<!-- issue: https://github.com/dotnet/maui/issues/5652#issuecomment-1148861158 -->
+		<!-- <MauiImage Include="Resources\Images\*" /> -->
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
@@ -67,7 +68,7 @@
 	  <None Remove="Resources\Fonts\feathericon.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
 	  <None Remove="Resources\Fonts\MaterialIconsOutlined-Regular.otf" />
-	  <None Remove="Resources\Raw\MarkdownContainer.html" />
+	  <None Remove="Resources\Raw\HtmlContainer.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -79,6 +80,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="DebounceThrottle" Version="2.0.0" />
 		<PackageReference Include="Fedandburk.Serilog.Sinks.AppCenter" Version="1.0.3" />
 		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="5.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.5.23280.8" />
@@ -106,13 +108,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\MarkdownContainer.html">
+	  <MauiAsset Update="Resources\Raw\HtmlContainer.html">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
 	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Components\HtmlLabel.xaml">
+	  <MauiXaml Update="Pages\Components\HtmlView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Components\TopicRowView.xaml">
@@ -145,14 +147,14 @@
 	  <MauiXaml Update="Pages\TagPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\ThemeSettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.0-preview.5.8529" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-preview.5.8529" />
+		<PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-rc.1.9171" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.1.9171" />
 	</ItemGroup>
 
 </Project>

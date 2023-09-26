@@ -25,6 +25,7 @@ public class NotificationInfo
     [XPath("//div[contains(@id, 'n_')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<NotificationItemInfo> Items { get; set; } = new();
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{DebuggerDisplay, nq}")]

@@ -12,6 +12,7 @@ public class SoV2EXSearchResultInfo
     public int Total { get; set; }
 
     public HitInfo[]? Hits { get; set; }
+    public string Url { get; internal set; } = null!;
 
     [DebuggerDisplay("{Source}")]
     public class HitInfo

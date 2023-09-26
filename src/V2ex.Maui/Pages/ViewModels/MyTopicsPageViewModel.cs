@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using V2ex.Api;
 using V2ex.Maui.Pages.Components;
 using V2ex.Maui.Services;
 
@@ -19,7 +20,19 @@ public partial class MyTopicsPageViewModel : BaseViewModel, IQueryAttributable
     }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(LoadAll))]
     private int _currentPage, _maximumPage;
+
+    [ObservableProperty]
+    private bool _isLoading;
+
+    public bool LoadAll
+    {
+        get
+        {
+            return this.CurrentPage >= this.MaximumPage;
+        }
+    }
 
     [ObservableProperty]
     private List<TopicRowViewModel> _topics = new();
@@ -52,5 +65,48 @@ public partial class MyTopicsPageViewModel : BaseViewModel, IQueryAttributable
                 Utilities.ParseId(o.NodeLink),
                 o.Replies))
             .ToList();
+    }
+
+    [RelayCommand]
+    public async Task RemainingReached(CancellationToken cancellationToken)
+    {
+        if (this.CurrentPage == this.MaximumPage || !this.Topics.Any())
+        {
+            return;
+        }
+
+        var nextPage = this.CurrentPage + 1;
+        FavoriteTopicsInfo? favoriteTopics;
+
+        try
+        {
+            this.IsLoading = true;
+            favoriteTopics = await this.ApiService.GetFavoriteTopics(nextPage);
+        }
+        finally
+        {
+            this.IsLoading = false;
+        }
+
+        if (favoriteTopics == null)
+        {
+            throw new InvalidOperationException($"Can not get next page {nextPage} of my favorite topics.");
+        }
+
+        this.CurrentPage = favoriteTopics.CurrentPage;
+        this.MaximumPage = favoriteTopics.MaximumPage;
+
+        foreach (var item in favoriteTopics.Items)
+        {
+            this.Topics.Add(TopicRowViewModel.Create(item.TopicTitle,
+                item.Avatar,
+                item.UserName,
+                item.CreatedText,
+                item.NodeName,
+                item.LastReplyUserName,
+                Utilities.ParseId(item.TopicLink),
+                Utilities.ParseId(item.NodeLink),
+                item.Replies));
+        }
     }
 }

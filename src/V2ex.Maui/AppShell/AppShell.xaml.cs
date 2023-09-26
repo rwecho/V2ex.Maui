@@ -20,11 +20,17 @@ public partial class AppShell : Shell, ITransientDependency
         this.BindingContext =this.ViewModel = viewModel;
         InitializeDefaultFlyoutItem();
 
+        Application.Current!.RequestedThemeChanged += Current_RequestedThemeChanged;
         var flyoutHeader = InstanceActivator.Create<FlyoutHeader>();
         flyoutHeader.ViewModel.OnNavigationChanged += FlyoutHeader_OnNavigationChanged;
         this.FlyoutHeader = flyoutHeader;
 
         this.FlyoutFooter = InstanceActivator.Create<FlyoutFooter>();
+    }
+
+    private void Current_RequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
+    {
+        //todo: how to change the theme of the app?
     }
 
     private void FlyoutHeader_OnNavigationChanged(object? sender, EventArgs e)

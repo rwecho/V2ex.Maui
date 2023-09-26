@@ -13,6 +13,7 @@ public class FavoriteNodeInfo
 {
     [XPath("//a[contains(@class, 'av-node')]", ReturnType.OuterHtml)]
     public List<ItemInfo> Items { get; init; } = new();
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{Name,nq}")]

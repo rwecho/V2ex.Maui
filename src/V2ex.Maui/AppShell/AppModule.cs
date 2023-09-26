@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Http.Logging;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using V2ex.Api;
@@ -11,6 +10,7 @@ using Volo.Abp.BlobStoring;
 using Volo.Abp.BlobStoring.FileSystem;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.Threading;
 using Volo.Abp.VirtualFileSystem;
 
 namespace V2ex.Maui.AppShell;
@@ -96,5 +96,14 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(DailyHotPage), typeof(DailyHotPage));
         routingManager.Register(nameof(MyFavoritePage), typeof(MyFavoritePage));
         routingManager.Register(nameof(NodesPage), typeof(NodesPage));
+        routingManager.Register(nameof(ThemeSettingsPage), typeof(ThemeSettingsPage));
+
+        AsyncHelper.RunSync(async () =>
+        {
+            // initialize the data of app.
+            var resourcesService = context.ServiceProvider.GetRequiredService<ResourcesService>();
+            var html = await resourcesService.GetHtmlContainerAsync();
+            AppStateManager.SetHtmlContainer(html);
+        });
     }
 }

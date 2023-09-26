@@ -21,6 +21,7 @@ public class NodePageInfo
     [XPath("//div[@id='TopicsNode']//div[contains(@class,'cell')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
+    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{UserName,nq} {TopicTitle,nq}")]

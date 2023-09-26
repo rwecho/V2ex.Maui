@@ -37,7 +37,7 @@
                         </Label.FormattedText>
                     </Label>
                 </toolkit:DockLayout>
-                <components:HtmlLabel Text="{Binding Content}" Margin="8"></components:HtmlLabel>
+                <components:HtmlView Text="{Binding Content}" Margin="8"></components:HtmlView>
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
@@ -50,7 +50,7 @@
 
             <toolkit:StateContainer.StateViews>
                 <ActivityIndicator toolkit:StateView.StateKey="Loading" 
-                               Color="{StaticResource Primary}"
+                               Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />

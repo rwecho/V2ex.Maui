@@ -9,6 +9,8 @@ public class DailyInfo
     public string Title { get; init; } = null!;
     public string ContinuousLoginDay { get; init; } = null!;
     public string CheckInUrl { get; init; } = null!;
+    public string Url { get; internal set; } = null!;
+
     internal static DailyInfo Parse(string html)
     {
         var document = new HtmlDocument();

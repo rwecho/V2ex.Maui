@@ -21,6 +21,7 @@ public class LoginParameters
 
     [XPath("//td/img[@id='captcha-image']", "src")]
     public string Captcha { get; init; } = null!;
+    public string Url { get; internal set; } = null!;
 }
 
 [HasXPath]

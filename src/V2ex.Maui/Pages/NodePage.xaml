@@ -9,12 +9,29 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:NodePageViewModel"
-             Title="{services:L Text=NodePageTitle}">
+             Title="{Binding Title}">
     <ContentPage.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
 
         <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
             <components:TopicRowView Topic="{Binding .}"></components:TopicRowView>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FooterTemplate" x:DataType="viewModels:TopicPageViewModel">
+
+            <HorizontalStackLayout Margin="16" HorizontalOptions="Center">
+                <Label Text="全部加载完成"
+                  
+                  IsVisible="{Binding LoadAll}"
+                  TextColor="{StaticResource Gray400}"
+                  FontSize="Caption"/>
+
+                <ActivityIndicator 
+                    Color="{StaticResource Violet900}"
+                    IsRunning="{Binding IsLoading}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
     <Grid x:Name="StateContainer" 
@@ -23,16 +40,20 @@
 
         <toolkit:StateContainer.StateViews>
             <ActivityIndicator toolkit:StateView.StateKey="Loading" 
-                               Color="{StaticResource Primary}"
+                               Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
             <RefreshView toolkit:StateView.StateKey="Success"
                          HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
-                         RefreshColor="{StaticResource Primary}"
+                         RefreshColor="{StaticResource Violet900}"
                          Command="{Binding LoadCommand}">
                 <CollectionView ItemsSource="{Binding Topics}"
                                 ItemTemplate="{StaticResource TopicRowTemplate}"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                Footer="{Binding .}"
+                                FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                 </CollectionView>
             </RefreshView>

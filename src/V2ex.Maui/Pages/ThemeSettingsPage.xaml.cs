@@ -3,20 +3,18 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Pages;
 
-public partial class SettingsPage : ContentPage, ITransientDependency
+public partial class ThemeSettingsPage : ContentPage, ITransientDependency
 {
-	public SettingsPage(SettingsPageViewModel viewModel)
+	public ThemeSettingsPage(ThemeSettingsViewModel viewModel)
 	{
 		InitializeComponent();
-		this.BindingContext = this.ViewModel = viewModel;
+		BindingContext = this.ViewModel = viewModel;
 	}
 
-    private SettingsPageViewModel ViewModel { get; }
+    public ThemeSettingsViewModel ViewModel { get; }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        base.OnNavigatedTo(args);
-
         if (this.ViewModel.CurrentState == StateKeys.Success)
         {
             return;
