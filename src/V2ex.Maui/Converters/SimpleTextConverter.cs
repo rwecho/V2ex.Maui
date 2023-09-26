@@ -1,16 +1,19 @@
 ﻿using System.Globalization;
-using System.Web;
 
 namespace V2ex.Maui.Converters;
-public class HtmlDecodeConverter : IValueConverter
+
+public class SimpleTextConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string text)
+        var text = value?.ToString();
+
+        if (!string.IsNullOrEmpty(text))
         {
-            return HttpUtility.HtmlDecode(text);
+            text.Replace("<br/>", "\r\n").Replace("<br>", "\r\n");
         }
-        return value;
+
+        return text;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

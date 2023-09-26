@@ -13,6 +13,7 @@
         <toolkit:IsNullConverter x:Key="IsNullConverter"></toolkit:IsNullConverter>
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <toolkit:IsStringNullOrEmptyConverter x:Key="IsStringNullOrEmptyConverter"></toolkit:IsStringNullOrEmptyConverter>
+        
     </ContentView.Resources>
     <VerticalStackLayout Background="transparent"
                          BindingContext="{Binding Source={x:Reference Root}, Path=Topic }"
@@ -26,9 +27,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0" Source="{Binding Avatar}"
-                   WidthRequest="32"
-                   HeightRequest="32"
-                Aspect="AspectFill">
+                   Style="{StaticResource Avatar}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                 </Image.GestureRecognizers>
@@ -104,7 +103,7 @@
                 <Label  Margin="8,4" Text="{Binding Replies}" FontSize="{StaticResource XS}"></Label>
             </Grid>
         </Grid>
-        <Label Margin="8" Text="{Binding Title, Converter={StaticResource Key=HtmlDecodeConverter}}">
+        <Label Margin="8" TextColor="{StaticResource LightPrimaryColor}" Text="{Binding Title, Converter={StaticResource Key=HtmlDecodeConverter}}">
 
         </Label>
         <BoxView Margin="0,4,0,0" HeightRequest="1" Style="{StaticResource HorizontalSeparator}" />

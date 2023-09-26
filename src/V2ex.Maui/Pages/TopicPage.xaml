@@ -29,21 +29,18 @@
         <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
             <VerticalStackLayout Background="transparent">
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <Image Grid.Column="0" Source="{Binding Avatar}" 
-                           HeightRequest="32" WidthRequest="32" 
+                <Grid Margin="8"
+                      ColumnDefinitions="auto,*,auto"
+                      RowDefinitions="auto, auto, auto">
+                    <Image Grid.Column="0"  Grid.Row="0" Source="{Binding Avatar}"
+                           HeightRequest="32" WidthRequest="32"
                            Aspect="AspectFill">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <VerticalStackLayout Grid.Column="1" Margin="8,0" HorizontalOptions="Start">
+                    <VerticalStackLayout Grid.Column="1"  Grid.Row="0"
+                                         Margin="8,0" HorizontalOptions="Start">
                         <Label Text="{Binding UserName}" />
                         <Label TextColor="{StaticResource Gray400}" >
                             <Label.FormattedText>
@@ -65,8 +62,6 @@
                     </Grid>
                 </Grid>
 
-                <components:HtmlLabel Margin="8" Text="{Binding Content}"></components:HtmlLabel>
-
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
@@ -79,8 +74,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Source="{Binding Avatar}" 
-                        HeightRequest="32" WidthRequest="32" 
+                    <Image Grid.Column="0" Source="{Binding Avatar}"
+                        HeightRequest="32" WidthRequest="32"
                         Aspect="AspectFill">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
@@ -111,7 +106,7 @@
                 </Label>
                 <components:HtmlLabel Margin="8,4" Text="{Binding Content}"></components:HtmlLabel>
 
-                <VerticalStackLayout BackgroundColor="#fffff9" 
+                <VerticalStackLayout BackgroundColor="#fffff9"
                       IsVisible="{Binding Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Supplements}"
                           BindableLayout.ItemTemplate="{StaticResource SupplementTemplate}">
@@ -125,15 +120,58 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="2" Text="{Binding TopicStats, Converter={StaticResource HtmlDecodeConverter}}" FontSize="Caption"
-                            TextColor="{StaticResource Gray400}" >
-                    </Label>
+
+                    <HorizontalStackLayout Grid.Column="0" Spacing="12" VerticalOptions="Center">
+                        <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                             VerticalOptions="End"
+                               IsVisible="{Binding Views, Converter={StaticResource IntToBoolConverter}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Views}"></Span>
+                                    <Span Text=" "></Span>
+                                    <Span Text="{x:Static fonts:MdOutlined.Visibility}" FontFamily="MdOutlined"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <HorizontalStackLayout>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                   Text="{Binding Likes}"
+                                   IsVisible="{Binding Likes, Converter={StaticResource IntToBoolConverter}}">
+                            </Label>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                   Text="{x:Static fonts:FaSolid.ThumbsUp}"  FontFamily="FaSolid"
+                                   IsVisible="{Binding Liked}"></Label>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                   Text="{x:Static fonts:MdOutlined.Thumb_up_alt }"  FontFamily="MdOutlined"
+                                   IsVisible="{Binding Liked, Converter={StaticResource InvertedBoolConverter}}"></Label>
+
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TapLikeCommand}"></TapGestureRecognizer>
+                            </HorizontalStackLayout.GestureRecognizers>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                   Text="{Binding Thanks}"
+                                   IsVisible="{Binding Thanks, Converter={StaticResource IntToBoolConverter}}">
+                            </Label>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                    Text="{x:Static fonts:Fi.Heart }"  FontFamily="Fi"
+                                    IsVisible="{Binding Thanked}"></Label>
+                            <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                                   Text="{x:Static fonts:Fi.HeartO }"  FontFamily="Fi"
+                                   IsVisible="{Binding Thanked, Converter={StaticResource InvertedBoolConverter}}"></Label>
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TapThankCommand}"></TapGestureRecognizer>
+                            </HorizontalStackLayout.GestureRecognizers>
+                        </HorizontalStackLayout>
+                    </HorizontalStackLayout>
                 </Grid>
 
                 <BoxView Margin="0,4,0,0"  Style="{StaticResource HorizontalSeparator}" ></BoxView>
             </VerticalStackLayout>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="FooterTemplate" x:DataType="viewModels:TopicPageViewModel">
 
             <HorizontalStackLayout HorizontalOptions="Center">
@@ -142,21 +180,20 @@
                        IsVisible="{Binding LoadAll}"
                        TextColor="{StaticResource Gray400}"
                        FontSize="Caption"/>
-
-                <ActivityIndicator 
+                <ActivityIndicator
                     Color="{StaticResource Violet900}"
                     IsRunning="{Binding IsLoading}"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" />
             </HorizontalStackLayout>
         </DataTemplate>
-        
+
 
         <DataTemplate x:Key="SupplementTemplate" x:DataType="viewModels:SupplementViewModel">
 
             <toolkit:DockLayout Margin="8" VerticalSpacing="8" HorizontalSpacing="8">
-                <BoxView toolkit:DockLayout.DockPosition="Left" 
-                         Style="{StaticResource VerticalSeparator}" 
+                <BoxView toolkit:DockLayout.DockPosition="Left"
+                         Style="{StaticResource VerticalSeparator}"
                          WidthRequest="4"></BoxView>
                 <Label toolkit:DockLayout.DockPosition="Top">
                     <Label.FormattedText>
@@ -177,7 +214,7 @@
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
 
         <toolkit:StateContainer.StateViews>
-            <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+            <ActivityIndicator toolkit:StateView.StateKey="Loading"
                                Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
@@ -198,7 +235,7 @@
                 </CollectionView>
             </RefreshView>
             <Label toolkit:StateView.StateKey="Error"
-                   Text="{Binding Exception}" 
+                   Text="{Binding Exception}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"></Label>
         </toolkit:StateContainer.StateViews>

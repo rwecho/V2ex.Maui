@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/AppStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <StyleSheet  Source="Resources/Styles/App.css" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
