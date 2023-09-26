@@ -30,19 +30,9 @@
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
             <VerticalStackLayout Background="transparent">
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-
+                <Grid Margin="8"
+                      ColumnDefinitions="auto,*,auto"
+                      RowDefinitions="auto, auto, auto">
                     <Image Grid.Column="0"  Grid.Row="0" Source="{Binding Avatar}" 
                            HeightRequest="32" WidthRequest="32" 
                            Aspect="AspectFill">
@@ -50,7 +40,8 @@
                             <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <VerticalStackLayout Grid.Column="1"  Grid.Row="0" Margin="8,0" HorizontalOptions="Start">
+                    <VerticalStackLayout Grid.Column="1"  Grid.Row="0" 
+                                         Margin="8,0" HorizontalOptions="Start">
                         <Label Text="{Binding UserName}" />
                         <Label TextColor="{StaticResource Gray400}" >
                             <Label.FormattedText>
@@ -102,7 +93,6 @@
                         FontFamily="MdOutlined"
                         TextColor="{StaticResource Zinc400}"></Label>
                 </Grid>
-
 
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
             </VerticalStackLayout>
@@ -209,7 +199,6 @@
                             </HorizontalStackLayout.GestureRecognizers>
                         </HorizontalStackLayout>
                     </HorizontalStackLayout>
-                   
                 </Grid>
 
                 <BoxView Margin="0,4,0,0"  Style="{StaticResource HorizontalSeparator}" ></BoxView>
@@ -224,7 +213,6 @@
                        IsVisible="{Binding LoadAll}"
                        TextColor="{StaticResource Gray400}"
                        FontSize="Caption"/>
-
                 <ActivityIndicator 
                     Color="{StaticResource Violet900}"
                     IsRunning="{Binding IsLoading}"
