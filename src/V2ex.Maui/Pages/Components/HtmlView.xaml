@@ -8,10 +8,11 @@
     <ContentView.Resources>
         <converters:HtmlContainerConverter x:Key="HtmlContainerConverter"></converters:HtmlContainerConverter>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"></toolkit:InvertedBoolConverter>
+        <converters:SimpleTextConverter x:Key="SimpleTextConverter"></converters:SimpleTextConverter>
     </ContentView.Resources>
 
     <Grid >
-        <Label Text="{Binding Source={x:Reference Root},Path=Text}"
+        <Label Text="{Binding Source={x:Reference Root},Path=Text, Converter={StaticResource SimpleTextConverter}}"
                IsVisible="{Binding Source={x:Reference Root}, Path=IsHtml,Converter={StaticResource InvertedBoolConverter}}"></Label>
         <WebView x:Name="WebView" Navigated="WebView_Navigated" Navigating="WebView_Navigating" Loaded="WebView_Loaded"
                IsVisible="{Binding Source={x:Reference Root}, Path=IsHtml}">

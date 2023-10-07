@@ -1,19 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--Light colors-->
+    <Color x:Key="LightPrimaryColor">Violet</Color>
+    <!--Dark colors-->
+    <Color x:Key="DarkPrimaryColor">Teal</Color>
+
+    <Style x:Key="Title" TargetType="Label">
+        <Setter Property="FontSize" Value="{StaticResource MD}"></Setter>
+        <Setter Property="VerticalOptions" Value="Center"></Setter>
+        <Setter Property="TextColor" Value="{DynamicResource LightPrimaryColor}"></Setter>
+    </Style>
+
     <Style x:Key="HorizontalSeparator" TargetType="BoxView">
-        <Setter Property="BackgroundColor" Value="{StaticResource Gray100}"></Setter>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray100}"></Setter>
         <Setter Property="HeightRequest" Value="1"></Setter>
     </Style>
 
     <Style x:Key="VerticalSeparator" TargetType="BoxView">
-        <Setter Property="BackgroundColor" Value="{StaticResource Gray100}"></Setter>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray100}"></Setter>
         <Setter Property="WidthRequest" Value="1"></Setter>
     </Style>
 
     <Style x:Key="RoundBadge" TargetType="BoxView">
-        <Setter Property="Color" Value="{StaticResource Gray100}"></Setter>
+        <Setter Property="Color" Value="{DynamicResource Gray100}"></Setter>
         <Setter Property="BackgroundColor" Value="Transparent"></Setter>
         <Setter Property="CornerRadius" Value="4"></Setter>
+    </Style>
+
+    <Style x:Key="Avatar" TargetType="Image">
+        <Setter Property="WidthRequest" Value="32"></Setter>
+        <Setter Property="HeightRequest" Value="32"></Setter>
+        <Setter Property="Aspect" Value="AspectFill"></Setter>
     </Style>
 </ResourceDictionary>

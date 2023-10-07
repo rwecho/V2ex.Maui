@@ -274,9 +274,6 @@
     <Color x:Key="Rose900">#881337</Color>
     <Color x:Key="Rose950">#4c0519</Color>
 
-
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Violet900}"/>
-
     <SolidColorBrush Color="{StaticResource White}"  x:Key="WhiteBrush" />
     <SolidColorBrush Color="{StaticResource Black}"  x:Key="BlackBrush" />
     <SolidColorBrush Color="{StaticResource Slate50}" x:Key="Slate50Brush"/>
