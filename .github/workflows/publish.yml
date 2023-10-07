@@ -17,7 +17,7 @@ env:
 jobs:
 # MAUI Android Build
   build-android:
-    runs-on: windows-2022
+    runs-on: ubuntu-22.04
     name: Android Build
     steps:
 
@@ -38,7 +38,9 @@ jobs:
           include-prerelease: true
 
       - name: Install MAUI Workload
-        run: dotnet workload install maui --ignore-failed-sources
+        run: |
+          dotnet workload install android --ignore-failed-sources
+          dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
         run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
