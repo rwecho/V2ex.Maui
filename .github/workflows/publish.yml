@@ -27,7 +27,7 @@ jobs:
           Get-ChildItem Env:
           $TAG=$ENV:GITHUB_REF_NAME
           $VERSION= [System.Version]::new($TAG.Substring(1))
-          $APP_VERSION=$VERSION.Major.ToString()
+          $APP_VERSION=($VERSION.Major * 1000000 + $VERSION.Minor * 1000 + $VERSION.Build).ToString()
           $APP_DISPLAY_VERSION=$VERSION.ToString()
           echo "APP_VERSION=$APP_VERSION" >> $Env:GITHUB_ENV
           echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $Env:GITHUB_ENV
@@ -40,7 +40,6 @@ jobs:
           echo $env:APP_VERSION
           echo $env:APP_DISPLAY_VERSION
         shell: pwsh
-
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
