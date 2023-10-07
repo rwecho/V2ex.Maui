@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!--Light colors-->
-    <Color x:Key="LightPrimaryColor">Teal</Color>
-    <Color x:Key="LightSecondayColor">#f4f4f5</Color>
+    <Color x:Key="LightPrimaryColor">Violet</Color>
     <!--Dark colors-->
     <Color x:Key="DarkPrimaryColor">Teal</Color>
 

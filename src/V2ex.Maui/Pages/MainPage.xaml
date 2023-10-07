@@ -2,120 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
-             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
-             xmlns:styles="clr-namespace:V2ex.Maui.Styles"
              x:Class="V2ex.Maui.Pages.MainPage"
              Shell.NavBarIsVisible="True"
             Title="{services:L Text=V2ex}">
-    <ContentPage.Resources>
-        <Style TargetType="Button">
-            <Setter Property="MinimumHeightRequest" Value="0"></Setter>
-            <Setter Property="MinimumWidthRequest" Value="0"></Setter>
-            <Setter Property="VerticalOptions" Value="Center"></Setter>
-            <Setter Property="CornerRadius" Value="{StaticResource Medium}"/>
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Teal900}}" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Teal900}, Dark={StaticResource White}}" />
-            <Setter Property="FontFamily" Value="OpenSansRegular"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Property="Opacity" Value="0.65" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="PointerOver" >
-                            <VisualState.Setters>
-                                <Setter Property="Opacity" Value="0.85" />
-                                <Setter Property="Scale" Value="1.02" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Pressed">
-                            <VisualState.Setters>
-                                <Setter Property="Opacity" Value="0.75" />
-                                <Setter Property="Scale" Value="1.02" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-        <Style x:Key="ExtraSmall" TargetType="Button" >
-            <Setter Property="Padding" Value="8,6"></Setter>
-            <Setter Property="FontSize" Value="{StaticResource XS}"></Setter>
-        </Style>
-        <Style x:Key="Small" TargetType="Button">
-            <Setter Property="Padding" Value="12,10"></Setter>
-            <Setter Property="FontSize" Value="{StaticResource SM}"></Setter>
-        </Style>
-        <Style x:Key="Medium" TargetType="Button">
-            <Setter Property="Padding" Value="16,12"></Setter>
-            <Setter Property="FontSize" Value="{StaticResource MD}"></Setter>
-        </Style>
-        <Style x:Key="Large" TargetType="Button">
-            <Setter Property="Padding" Value="20,16"></Setter>
-            <Setter Property="FontSize" Value="{StaticResource LG}"></Setter>
-        </Style>
-        <Style x:Key="ExtraLarge" TargetType="Button">
-            <Setter Property="Padding" Value="24,18"></Setter>
-            <Setter Property="FontSize" Value="{StaticResource XL}"></Setter>
-        </Style>
-
-        <Style x:Key="Outline" TargetType="Button" >
-            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Teal900}, Dark={StaticResource White}}" />
-            <Setter Property="BorderWidth" Value="1"></Setter>
-            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"></Setter>
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Pressed">
-                            <VisualState.Setters>
-                                <Setter Property="Scale" Value="1.02" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-
-        <Style x:Key="Ghost" TargetType="Button" >
-            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Teal900}, Dark={StaticResource White}}" />
-        </Style>
-
-        <Style x:Key="Blue" TargetType="Button" >
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Blue900}, Dark={StaticResource White}}"></Setter>
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Blue900}}" />
-        </Style>
-    </ContentPage.Resources>
-    <VerticalStackLayout Padding="8" Spacing="10">
-        <HorizontalStackLayout Spacing="10">
-            <Button Text="Button" Style="{styles:Compound Medium Blue}"></Button>
-            <Button Text="Button" Style="{styles:Compound Medium Outline Blue}"></Button>
-            <Button Text="Button" Style="{styles:Compound Medium Ghost}"></Button>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Spacing="10">
-            <Button Text="Button"  Style="{StaticResource ExtraSmall}"></Button>
-            <Button Text="Button" Style="{StaticResource Small}"></Button>
-            <Button Text="Button" Style="{StaticResource Medium}"></Button>
-            <Button Text="Button" Style="{StaticResource Large}"></Button>
-            <Button Text="Button" Style="{StaticResource ExtraLarge}"></Button>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Spacing="10">
-            <Button Text="Button"  Style="{styles:Compound ExtraSmall Outline}" ></Button>
-            <Button Text="Button" Style="{styles:Compound Small Outline}" ></Button>
-            <Button Text="Button" Style="{styles:Compound Medium Outline}" ></Button>
-            <Button Text="Button" Style="{styles:Compound Large Outline}" ></Button>
-            <Button Text="Button" Style="{styles:Compound ExtraLarge Outline}" ></Button>
-        </HorizontalStackLayout>
+    <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-
     </VerticalStackLayout>
 </ContentPage>

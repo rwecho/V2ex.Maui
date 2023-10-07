@@ -42,47 +42,6 @@
         <On Platform="WinUI" Value="24" />
     </OnPlatform>
 
-
-    <OnPlatform x:Key="ExtraSmall" x:TypeArguments="x:Double">
-        <On Platform="iOS" Value="12" />
-        <On Platform="Android" Value="12" />
-        <On Platform="UWP" Value="12" />
-        <On Platform="MacOS" Value="12" />
-        <On Platform="WinUI" Value="12" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="Small" x:TypeArguments="x:Double">
-        <On Platform="iOS" Value="16" />
-        <On Platform="Android" Value="16" />
-        <On Platform="UWP" Value="16" />
-        <On Platform="MacOS" Value="16" />
-        <On Platform="WinUI" Value="16" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="Medium" x:TypeArguments="x:Double">
-        <On Platform="iOS" Value="18" />
-        <On Platform="Android" Value="18" />
-        <On Platform="UWP" Value="18" />
-        <On Platform="MacOS" Value="18" />
-        <On Platform="WinUI" Value="18" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="Large" x:TypeArguments="x:Double">
-        <On Platform="iOS" Value="20" />
-        <On Platform="Android" Value="20" />
-        <On Platform="UWP" Value="20" />
-        <On Platform="MacOS" Value="20" />
-        <On Platform="WinUI" Value="20" />
-    </OnPlatform>
-
-    <OnPlatform x:Key="ExtraLarge" x:TypeArguments="x:Double">
-        <On Platform="iOS" Value="24" />
-        <On Platform="Android" Value="24" />
-        <On Platform="UWP" Value="24" />
-        <On Platform="MacOS" Value="24" />
-        <On Platform="WinUI" Value="24" />
-    </OnPlatform>
-
     <OnPlatform x:Key="2XL" x:TypeArguments="x:Double">
         <On Platform="iOS" Value="28" />
         <On Platform="Android" Value="28" />
