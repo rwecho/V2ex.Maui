@@ -10,7 +10,7 @@ public class SimpleTextConverter : IValueConverter
 
         if (!string.IsNullOrEmpty(text))
         {
-            text.Replace("<br/>", "\r\n").Replace("<br>", "\r\n");
+            text = text.Replace("<br/>", "\r\n").Replace("<br>", "\r\n");
         }
 
         return text;

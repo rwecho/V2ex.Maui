@@ -89,5 +89,4 @@ public partial class HtmlView : ContentView
     {
         // todo: how to set the WebView to fit the content height?
     }
-
 }
