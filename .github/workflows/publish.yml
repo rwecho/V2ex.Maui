@@ -25,7 +25,7 @@ jobs:
       - name: Write release version
         run: |
           Get-ChildItem Env:
-          $TAG=$GITHUB_REF_NAME
+          $TAG=$ENV:GITHUB_REF_NAME
           $VERSION=$TAG.Substring(1)
           echo $VERSION
           echo "VERSION=$VERSION" >> $GITHUB_ENV
