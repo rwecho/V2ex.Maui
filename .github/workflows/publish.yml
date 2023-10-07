@@ -28,7 +28,7 @@ jobs:
           $TAG=$ENV:GITHUB_REF_NAME
           $VERSION=$TAG.Substring(1)
           echo $VERSION
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $Env:GITHUB_ENV
         shell: pwsh
 
 
