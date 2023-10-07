@@ -26,9 +26,11 @@ jobs:
         run: |
           Get-ChildItem Env:
           $TAG=$ENV:GITHUB_REF_NAME
-          $VERSION=$TAG.Substring(1)
-          echo $VERSION
-          echo "VERSION=$VERSION" >> $Env:GITHUB_ENV
+          $VERSION= [System.Version]::new($TAG.Substring(1))
+          $APP_VERSION=$VERSION.Major.ToString()
+          $APP_DISPLAY_VERSION=$VERSION.ToString()
+          echo "APP_VERSION=$APP_VERSION" >> $Env:GITHUB_ENV
+          echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $Env:GITHUB_ENV
           echo $env:VERSION
         shell: pwsh
 
@@ -57,7 +59,7 @@ jobs:
         shell: pwsh
 
       - name: Build MAUI Android
-        run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:VERSION} -p:ApplicationVersion=${env:VERSION}
+        run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
         shell: pwsh
 
       - name: Upload Android Artifact
