@@ -17,16 +17,19 @@ env:
 jobs:
 # MAUI Android Build
   build-android:
-    runs-on: ubuntu-22.04
+    runs-on: windows-2022
     name: Android Build
     steps:
 
         # Store the version, stripping any v-prefix
       - name: Write release version
         run: |
-          TAG=${{ github.event.release.tag_name }}
-          echo Version: $TAG
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          $TAG=${{ github.event.release.tag_name }}
+          $VERSION=$TAG.Substring(1)
+          echo $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        shell: pwsh
+
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
@@ -38,14 +41,16 @@ jobs:
           include-prerelease: true
 
       - name: Install MAUI Workload
-        run: |
-          dotnet workload install maui --ignore-failed-sources
+        run: dotnet workload install maui --ignore-failed-sources
+        shell: pwsh
 
       - name: Restore Dependencies
         run: dotnet restore src/V2ex.Maui/V2ex.Maui.csproj
+        shell: pwsh
 
       - name: Build MAUI Android
         run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${VERSION}
+        shell: pwsh
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
