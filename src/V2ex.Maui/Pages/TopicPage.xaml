@@ -12,21 +12,22 @@
              x:DataType="viewModels:TopicPageViewModel"
              Title="{services:L Text=TopicPageTitle}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{services:L Text=OpenInBrowser}"
+        <!--<ToolbarItem Text="{services:L Text=OpenInBrowser}"
              Command="{Binding OpenInBrowserCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{x:Static fonts:MdOutlined.Open_in_browser}"
                    FontFamily="MdOutlined"
                    Color="#c6c6c6"/>
             </ToolbarItem.IconImageSource>
-        </ToolbarItem>
+        </ToolbarItem>-->
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"></toolkit:InvertedBoolConverter>
+        <toolkit:IntToBoolConverter x:Key="IntToBoolConverter"></toolkit:IntToBoolConverter>
         <toolkit:IsEqualConverter x:Key="IsEqualConverter"></toolkit:IsEqualConverter>
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter"></toolkit:IsListNotNullOrEmptyConverter>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-        <converters:MarkdownContainerConverter x:Key="MarkdownContainerConverter" />
         <DataTemplate x:Key="ReplyCard" x:DataType="viewModels:ReplyViewModel">
             <VerticalStackLayout Background="transparent">
                 <Grid Margin="8"
@@ -56,10 +57,41 @@
                         </VerticalStackLayout.GestureRecognizers>
                     </VerticalStackLayout>
 
-                    <Grid Grid.Column="2" VerticalOptions="Start" >
+                    <Grid Grid.Column="2"  Grid.Row="0" VerticalOptions="Start" HorizontalOptions="Center" >
                         <BoxView Style="{StaticResource RoundBadge}"/>
-                        <Label Margin="8,4" Text="{Binding Floor}" FontSize="Caption"></Label>
+                        <Label Margin="4,2" Text="{Binding Floor}" FontSize="10" TextColor="{StaticResource Zinc400}"></Label>
                     </Grid>
+                    <components:HtmlView Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Content}" Margin="8"></components:HtmlView>
+
+                    <HorizontalStackLayout Grid.Column="1" Grid.Row="2" Margin="8,0" Spacing="0">
+                        <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                               IsVisible="{Binding AlreadyThanked, Converter={StaticResource IntToBoolConverter}}"
+                               VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding AlreadyThanked}"></Span>
+                                    <Span Text=" "></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label IsVisible="{Binding Thanked}"
+                               Text="{x:Static fonts:Fi.Heart }"  FontFamily="Fi"
+                                          TextColor="{StaticResource Zinc400}"
+                               VerticalTextAlignment="Center"></Label>
+                        <Label IsVisible="{Binding Thanked, Converter={StaticResource InvertedBoolConverter}}"
+                               FontSize="Small" Text="{x:Static fonts:Fi.HeartO }"  FontFamily="Fi"
+                                          TextColor="{StaticResource Zinc400}"
+                               VerticalTextAlignment="Center">
+                        </Label>
+
+                        <HorizontalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapThankCommand}"/>
+                        </HorizontalStackLayout.GestureRecognizers>
+                    </HorizontalStackLayout>
+
+                    <Label Grid.Column="2" Grid.Row="2" Text="{x:Static fonts:MdOutlined.More_vert }"
+                        FontFamily="MdOutlined"
+                        TextColor="{StaticResource Zinc400}"></Label>
                 </Grid>
 
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
@@ -104,7 +136,7 @@
                 </Grid>
                 <Label Margin="8,4" Text="{Binding Title, Converter={StaticResource HtmlDecodeConverter}}" >
                 </Label>
-                <components:HtmlLabel Margin="8,4" Text="{Binding Content}"></components:HtmlLabel>
+                <components:HtmlView Text="{Binding Content}" Margin="8,4"></components:HtmlView>
 
                 <VerticalStackLayout BackgroundColor="#fffff9"
                       IsVisible="{Binding Supplements, Converter={StaticResource IsListNotNullOrEmptyConverter}}">
@@ -114,7 +146,8 @@
                 </VerticalStackLayout>
 
 
-                <Grid Margin="8,4" IsVisible="{Binding TopicStats, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                <Grid Margin="8,4"
+                      VerticalOptions="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
@@ -205,7 +238,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <components:HtmlLabel Text="{Binding Content}"></components:HtmlLabel>
+                <components:HtmlView Text="{Binding Content}" ></components:HtmlView>
             </toolkit:DockLayout>
         </DataTemplate>
     </ContentPage.Resources>

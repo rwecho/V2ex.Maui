@@ -23,7 +23,7 @@ namespace V2ex.Maui
             if (OperatingSystem.IsAndroidVersionAtLeast(26))
             {
                 Microsoft.Maui.Handlers.WebViewHandler.Mapper.ModifyMapping(
-                    nameof(Android.Webkit.WebView.WebChromeClient),
+                    nameof(Android.Webkit.WebChromeClient),
                     (handler, view, args) => handler.PlatformView.SetWebChromeClient(new CustomWebChromeClient(handler)));
             }
 

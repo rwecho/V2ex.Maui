@@ -79,10 +79,11 @@ public static class HttpResponseMessageExtensions
         return result;
     }
 
-    public static async Task<T> GetEncapsulatedData<T, TError>(this HttpResponseMessage response, 
+    public static async Task<T> GetEncapsulatedData<T, TError>(this HttpResponseMessage response,
         Action<TError> handleError,
         ILogger? logger = null)
     {
+        logger ??= NullLogger.Instance;
         CheckStatusCode(response);
         var datetime1 = DateTime.Now;
         logger.LogDebug("Reading content of request {Url} as string", response.RequestMessage.RequestUri);

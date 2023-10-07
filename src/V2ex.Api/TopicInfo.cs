@@ -19,7 +19,7 @@ public class TopicInfo
 
     [XPath("//div[@id='Main']//div[@class='header']/small/a", "href")]
     [SkipNodeNotFound]
-    public string UserLink { get; set; } = null!;   
+    public string UserLink { get; set; } = null!;
 
     [XPath("//div[@id='Main']//div[@class='header']/div[@class='fr']//img", "src")]
     [SkipNodeNotFound]
@@ -27,7 +27,7 @@ public class TopicInfo
 
     [XPath("//div[@id='Main']//div[@class='header']/small/span", "title", NodeReturnType = ReturnType.InnerHtml)]
     [SkipNodeNotFound]
-    public DateTime Created{ get; set; }
+    public DateTime Created { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='header']/small/span")]
     [SkipNodeNotFound]
@@ -36,6 +36,14 @@ public class TopicInfo
     [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[contains(@class, 'topic_stats')]")]
     [SkipNodeNotFound]
     public string? TopicStats { get; set; }
+
+    [XPath("//div[@id='Main']//div[@class='topic_buttons']/a[contains(@class, 'tb')][1]")]
+    [SkipNodeNotFound]
+    public string? Liked { get; set; }
+
+    [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[@id='topic_thank']/span")]
+    [SkipNodeNotFound]
+    public string? Thanked { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='cell']/div[@class='topic_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
@@ -122,14 +130,20 @@ public class TopicInfo
 
         [XPath("//td/badges")]
         [SkipNodeNotFound]
-        public string? Badges { get; init; } 
+        public string? Badges { get; init; }
 
         [XPath("//td//span[@class='no']")]
         public int Floor { get; init; }
 
-        [XPath("//td/span[contains(@class, 'small fade')]")]
+        [XPath("//td/span[contains(@class, 'small fade')]/text()")]
         [SkipNodeNotFound]
         public string? AlreadyThanked { get; init; }
+
+        [XPath("//td//div[contains(@class, 'thanked')]/text()")]
+        [SkipNodeNotFound]
+        public string? Thanked { get; init; }
+
+
+
     }
 }
- 
