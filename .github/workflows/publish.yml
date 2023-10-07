@@ -36,7 +36,8 @@ jobs:
 
       - name: read release version
         run: |
-          echo $env:VERSION
+          echo $env:APP_VERSION
+          echo $env:APP_DISPLAY_VERSION
         shell: pwsh
 
 
