@@ -31,7 +31,8 @@ jobs:
           $APP_DISPLAY_VERSION=$VERSION.ToString()
           echo "APP_VERSION=$APP_VERSION" >> $Env:GITHUB_ENV
           echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $Env:GITHUB_ENV
-          echo $env:VERSION
+          echo $env:APP_VERSION
+          echo $env:APP_DISPLAY_VERSION
         shell: pwsh
 
       - name: read release version
@@ -39,7 +40,6 @@ jobs:
           echo $env:APP_VERSION
           echo $env:APP_DISPLAY_VERSION
         shell: pwsh
-
 
 
       - name: Checkout
