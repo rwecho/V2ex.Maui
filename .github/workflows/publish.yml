@@ -29,7 +29,14 @@ jobs:
           $VERSION=$TAG.Substring(1)
           echo $VERSION
           echo "VERSION=$VERSION" >> $Env:GITHUB_ENV
+          echo $env:VERSION
         shell: pwsh
+
+      - name: read release version
+        run: |
+          echo $env:VERSION
+        shell: pwsh
+
 
 
       - name: Checkout
@@ -50,7 +57,7 @@ jobs:
         shell: pwsh
 
       - name: Build MAUI Android
-        run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${VERSION}
+        run: dotnet publish src/V2ex.Maui/V2ex.Maui.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:VERSION} -p:ApplicationVersion=${env:VERSION}
         shell: pwsh
 
       - name: Upload Android Artifact
