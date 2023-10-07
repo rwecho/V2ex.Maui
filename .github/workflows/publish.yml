@@ -24,7 +24,8 @@ jobs:
         # Store the version, stripping any v-prefix
       - name: Write release version
         run: |
-          $TAG=${{ github.event.release.tag_name }}
+          Get-ChildItem Env:
+          $TAG=${{ GITHUB_REF_NAME }}
           $VERSION=$TAG.Substring(1)
           echo $VERSION
           echo "VERSION=$VERSION" >> $GITHUB_ENV
