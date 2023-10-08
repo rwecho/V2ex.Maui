@@ -2,11 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MyTopicsPage"
-             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
-             xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:components="clr-namespace:V2ex.Maui.Components"
+             xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
-             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyTopicsPageViewModel"
              Title="{services:L Text=MyTopicsPageTitle}">
@@ -67,6 +69,9 @@
                                 RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
                                 Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}">
+                    <CollectionView.Behaviors>
+                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                    </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>
 

@@ -1,27 +1,16 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using V2ex.Maui.Pages;
 using V2ex.Maui.Pages.ViewModels;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
-namespace V2ex.Maui.Pages.Components;
+namespace V2ex.Maui.Components;
 
-public partial class TopicRowView : ContentView
+public static class Controls
 {
-    public TopicRowView()
+    public static void Init()
     {
-        InitializeComponent();
-    }
-
-    public static readonly BindableProperty TopicProperty = BindableProperty.Create(
-        nameof(Topic),
-        typeof(TopicRowViewModel),
-        typeof(TopicRowView));
-
-    public TopicRowViewModel? Topic
-    {
-        get => (TopicRowViewModel)GetValue(TopicProperty);
-        set => SetValue(TopicProperty, value);
     }
 }
 

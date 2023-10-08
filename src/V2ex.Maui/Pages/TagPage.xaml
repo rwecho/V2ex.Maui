@@ -2,9 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.TagPage"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
+             xmlns:components="clr-namespace:V2ex.Maui.Components"
+             xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
-             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:TagPageViewModel"
@@ -50,6 +52,9 @@
                                 Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}"
                                 >
+                    <CollectionView.Behaviors>
+                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                    </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>
 

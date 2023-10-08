@@ -233,15 +233,17 @@ public partial class TopicViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task TapLike(CancellationToken cancellationToken)
+    public Task TapLike(CancellationToken cancellationToken)
     {
         // todo: Implement like action.
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
-    public async Task TapThank(CancellationToken cancellationToken)
+    public Task TapThank(CancellationToken cancellationToken)
     {
         // todo: implement thank action.
+        return Task.CompletedTask;
     }
 }
 
@@ -309,8 +311,9 @@ public partial class ReplyViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task TapThank(CancellationToken cancellationToken)
+    public Task TapThank(CancellationToken cancellationToken)
     {
         //todo: confirm & cancel thank status to reply.
+        return Task.CompletedTask;
     }
 }

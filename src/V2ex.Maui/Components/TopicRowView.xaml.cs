@@ -1,16 +1,16 @@
-namespace V2ex.Maui.Pages.Components;
+namespace V2ex.Maui.Components;
 
-public partial class TopicRowView2 : ContentView
+public partial class TopicRowView : ContentView
 {
-	public TopicRowView2()
-	{
-		InitializeComponent();
-	}
+    public TopicRowView()
+    {
+        InitializeComponent();
+    }
 
     public static readonly BindableProperty TopicProperty = BindableProperty.Create(
-     nameof(Topic),
-     typeof(TopicRowViewModel),
-     typeof(TopicRowView));
+        nameof(Topic),
+        typeof(TopicRowViewModel),
+        typeof(TopicRowView));
 
     public TopicRowViewModel? Topic
     {

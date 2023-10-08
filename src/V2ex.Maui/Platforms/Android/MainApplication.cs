@@ -24,7 +24,8 @@ namespace V2ex.Maui
             {
                 Microsoft.Maui.Handlers.WebViewHandler.Mapper.ModifyMapping(
                     nameof(Android.Webkit.WebChromeClient),
-                    (handler, view, args) => handler.PlatformView.SetWebChromeClient(new CustomWebChromeClient(handler)));
+                    (handler, view, args) => 
+                        handler.PlatformView.SetWebChromeClient(new CustomWebChromeClient(handler)));
             }
 
             var app = MauiProgram.CreateMauiApp(FilesDir!.AbsolutePath);

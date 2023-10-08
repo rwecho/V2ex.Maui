@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
-using V2ex.Maui.Pages.Components;
+using V2ex.Maui.Components;
 
 namespace V2ex.Maui.Pages.ViewModels;
 

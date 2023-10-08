@@ -5,11 +5,11 @@ namespace V2ex.Maui.Pages;
 
 public partial class MyTopicsPage : ContentPage, ITransientDependency
 {
-	public MyTopicsPage(MyTopicsPageViewModel viewModel)
-	{
-		InitializeComponent();
+    public MyTopicsPage(MyTopicsPageViewModel viewModel)
+    {
+        InitializeComponent();
         this.BindingContext = this.ViewModel = viewModel;
-	}
+    }
 
     private MyTopicsPageViewModel ViewModel { get; }
 

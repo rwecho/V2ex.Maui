@@ -16,7 +16,9 @@
 		<ApplicationTitle>V2ex.Maui</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>top.rwecho.v2ex.maui</ApplicationId>
+        <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+        <ApplicationVersion Condition="$(DefineConstants.Contains('DEBUG'))">10000000</ApplicationVersion>
+
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

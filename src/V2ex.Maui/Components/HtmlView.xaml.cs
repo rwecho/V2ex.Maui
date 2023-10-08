@@ -1,6 +1,6 @@
 using V2ex.Maui.Services;
 
-namespace V2ex.Maui.Pages.Components;
+namespace V2ex.Maui.Components;
 
 public partial class HtmlView : ContentView
 {
@@ -87,6 +87,5 @@ public partial class HtmlView : ContentView
 
     private void WebView_Loaded(object sender, EventArgs e)
     {
-        // todo: how to set the WebView to fit the content height?
     }
 }

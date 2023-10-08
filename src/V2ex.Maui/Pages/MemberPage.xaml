@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Maui.Pages.MemberPage"
              Shell.NavBarIsVisible="True"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
              xmlns:viewModels="clr-namespace:V2ex.Maui.Pages.ViewModels"
-             xmlns:components="clr-namespace:V2ex.Maui.Pages.Components"
+             xmlns:components="clr-namespace:V2ex.Maui.Components"
+             xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MemberPageViewModel"
              Title="{services:L Text=MemberPageTitle}">
@@ -13,9 +16,9 @@
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
 
         <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
-            <components:TopicRowView2 Topic="{Binding .}"></components:TopicRowView2>
+            <components:TopicRowView Topic="{Binding .}"></components:TopicRowView>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="ReplyDataTemplate" x:DataType="viewModels:MemberPageReplyViewModel">
             <VerticalStackLayout >
                 <toolkit:DockLayout HorizontalSpacing="8" Margin="8">

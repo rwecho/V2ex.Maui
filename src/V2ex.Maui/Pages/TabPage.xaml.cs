@@ -28,9 +28,4 @@ public partial class TabPage : ContentPage, ITransientDependency
         this.AppPreferencesManager.Set(appPreferences);
         Task.Run(() => this.ViewModel!.Load());
     }
-
-    private void CollectionView_Scrolled(object sender, ItemsViewScrolledEventArgs e)
-    {
-        // todo: how to hide/show nav bar when scrolling?
-    }
 }

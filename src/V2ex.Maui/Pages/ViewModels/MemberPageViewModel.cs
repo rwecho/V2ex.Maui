@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using V2ex.Api;
-using V2ex.Maui.Pages.Components;
+using V2ex.Maui.Components;
 using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages.ViewModels;
