@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              x:Class="V2ex.Maui.Pages.TabPage"
              Shell.NavBarIsVisible="{Binding NavBarIsVisible}"
+             x:Name="Root"
              x:DataType="viewModels:TabPageViewModel">
     <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"></toolkit:InvertedBoolConverter>
@@ -49,7 +50,7 @@
                                 Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}">
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>

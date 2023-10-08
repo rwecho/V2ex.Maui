@@ -11,6 +11,7 @@
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyTopicsPageViewModel"
+             x:Name="Root"
              Title="{services:L Text=MyTopicsPageTitle}">
     <ContentPage.Resources>
         <DataTemplate x:Key="TopicRowTemplate" x:DataType="components:TopicRowViewModel">
@@ -70,7 +71,7 @@
                                 Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}">
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>

@@ -12,6 +12,7 @@
              x:Class="V2ex.Maui.Pages.TopicPage"
              Shell.NavBarIsVisible="True"
              x:DataType="viewModels:TopicPageViewModel"
+             x:Name="Root"
              Title="{services:L Text=TopicPageTitle}">
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Text="{services:L Text=OpenInBrowser}"
@@ -268,7 +269,7 @@
                                 Footer="{Binding .}"
                                 FooterTemplate="{StaticResource FooterTemplate}">
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>

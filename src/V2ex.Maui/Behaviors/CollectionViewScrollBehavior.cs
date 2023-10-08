@@ -2,21 +2,27 @@
 
 public class CollectionViewScrollBehavior : Behavior<CollectionView>
 {
+    public Page ParentPage
+    {
+        get { return (Page)GetValue(ParentPageProperty); }
+        set { SetValue(ParentPageProperty, value); }
+    }
+
+    public static readonly BindableProperty ParentPageProperty =
+        BindableProperty.Create(nameof(ParentPage), typeof(Page), typeof(CollectionViewScrollBehavior));
+
     protected override void OnAttachedTo(CollectionView bindable)
     {
-        bindable.Scrolled += CollectionView_Scrolled;
-        _parentPage = FindAncestorPage(bindable);
         base.OnAttachedTo(bindable);
+        bindable.Scrolled += CollectionView_Scrolled;
     }
 
     private bool _isAnimating = false;
     private IDispatcherTimer? _debounceTimer;
-    private ContentPage _parentPage = null!;
 
     private void CollectionView_Scrolled(object? sender, ItemsViewScrolledEventArgs e)
     {
         // ref: https://stackoverflow.com/questions/76767407/how-to-implement-title-bar-hide-show-when-scrollbar-up-down-in-android/76937302#76937302
-
         var collectionView = (CollectionView)sender!;
         var delta = e.VerticalDelta;
         var offset = e.VerticalOffset;
@@ -48,29 +54,20 @@ public class CollectionViewScrollBehavior : Behavior<CollectionView>
 
     private void HideNavigationBar()
     {
-        Shell.SetNavBarIsVisible(_parentPage, false);
+        if(ParentPage == null)
+        {
+            throw new InvalidOperationException("Parent page can not binding.");
+        }
+        Shell.SetNavBarIsVisible(ParentPage, false);
     }
 
     private void ShowNavigationBar()
     {
-
-        Shell.SetNavBarIsVisible(_parentPage, true);
-    }
-
-    private static ContentPage FindAncestorPage(CollectionView collectionView)
-    {
-        var parent = collectionView.Parent;
-        while (parent is not Page)
+        if (ParentPage == null)
         {
-            parent = parent?.Parent;
+            throw new InvalidOperationException("Parent page can not binding.");
         }
-
-        if (parent == null)
-        {
-            throw new InvalidOperationException("ContentPage not found.");
-        }
-
-        return (ContentPage)parent;
+        Shell.SetNavBarIsVisible(ParentPage, true);
     }
 
     protected override void OnDetachingFrom(CollectionView bindable)

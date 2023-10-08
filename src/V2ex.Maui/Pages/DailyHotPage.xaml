@@ -9,6 +9,7 @@
              xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
              xmlns:services="clr-namespace:V2ex.Maui.Services"
              x:DataType="viewModels:DailyHotPageViewModel"
+             x:Name="Root"
              Title="{services:L Text=DailyHotPageTitle}">
     <ContentPage.Resources>
         <DataTemplate x:Key="ItemTemplate" x:DataType="components:TopicRowViewModel">
@@ -32,7 +33,7 @@
                 <CollectionView ItemsSource="{Binding Items}"
                             ItemTemplate="{StaticResource ItemTemplate}">
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>

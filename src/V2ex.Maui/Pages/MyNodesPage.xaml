@@ -10,6 +10,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyNodesPageViewModel"
              x:Class="V2ex.Maui.Pages.MyNodesPage"
+             x:Name="Root"
              Shell.NavBarIsVisible="True"
              Title="{services:L Text=MyNodesPageTitle}">
     <ContentPage.Resources>
@@ -70,7 +71,7 @@
                         Span="4" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>

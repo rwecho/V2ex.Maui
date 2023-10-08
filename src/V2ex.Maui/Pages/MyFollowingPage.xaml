@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModels:MyFollowingPageViewModel"
+             x:Name="Root"
              Title="{services:L Text=MyFollowingPageTitle}">
     <ContentPage.Resources>
         <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
@@ -106,7 +107,7 @@
                                 FooterTemplate="{StaticResource FooterTemplate}"
                                 >
                     <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior></behaviors:CollectionViewScrollBehavior>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
                     </CollectionView.Behaviors>
                 </CollectionView>
             </RefreshView>
