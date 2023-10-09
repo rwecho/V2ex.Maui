@@ -81,6 +81,10 @@ public class TopicInfo
     [SkipNodeNotFound]
     public List<ReplyInfo> Replies { get; set; } = new();
 
+    [XPath("//div[@id='Main']//input[@id='once']", "value")]
+    [SkipNodeNotFound]
+    public string? Once { get; set; }
+
     public string NodeId
     {
         get
@@ -142,8 +146,5 @@ public class TopicInfo
         [XPath("//td//div[contains(@class, 'thanked')]/text()")]
         [SkipNodeNotFound]
         public string? Thanked { get; init; }
-
-
-
     }
 }

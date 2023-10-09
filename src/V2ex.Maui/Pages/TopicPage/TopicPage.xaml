@@ -58,7 +58,7 @@
                     <components:HtmlView Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Content}" Margin="8"></components:HtmlView>
 
                     <HorizontalStackLayout Grid.Column="1" Grid.Row="2" Margin="8,0" Spacing="0">
-                        <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                        <Label FontSize="{StaticResource XS}" TextColor="{StaticResource Zinc400}"
                                IsVisible="{Binding AlreadyThanked, Converter={StaticResource IntToBoolConverter}}"
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
@@ -69,11 +69,13 @@
                             </Label.FormattedText>
                         </Label>
                         <Label IsVisible="{Binding Thanked}"
-                               Text="{x:Static fonts:FaSolid.Heart }"  FontFamily="Heart"
-                                          TextColor="{StaticResource Zinc400}"
+                               FontSize="{StaticResource XS}"
+                               Text="{x:Static fonts:FaSolid.Heart }"  
+                               FontFamily="FaSolid"
+                               TextColor="{AppThemeBinding Light={StaticResource Red500}, Dark={StaticResource Red300}}"
                                VerticalTextAlignment="Center"></Label>
                         <Label IsVisible="{Binding Thanked, Converter={StaticResource InvertedBoolConverter}}"
-                               FontSize="Small" Text="{x:Static fonts:FaRegular.Heart }"  FontFamily="FaRegular"
+                               FontSize="{StaticResource XS}" Text="{x:Static fonts:FaRegular.Heart }"  FontFamily="FaRegular"
                                           TextColor="{StaticResource Zinc400}"
                                VerticalTextAlignment="Center">
                         </Label>
@@ -141,43 +143,65 @@
                 </VerticalStackLayout>
                 <BoxView Style="{StaticResource HorizontalSeparator}"></BoxView>
                 <HorizontalStackLayout Margin="8" Spacing="12" VerticalOptions="Center" HorizontalOptions="End">
-                    <Label FontSize="Small" TextColor="{StaticResource Zinc400}"
+                    <Label
                         VerticalOptions="End"
                         IsVisible="{Binding Views, Converter={StaticResource IntToBoolConverter}}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Views}"></Span>
+                                <Span Text="{Binding Views}"  FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"></Span>
                                 <Span Text=" "></Span>
-                                <Span Text="{x:Static fonts:FaSolid.Eye}" FontFamily="FaSolid"></Span>
+                                <Span Text="{x:Static fonts:FaSolid.Eye}" FontFamily="FaSolid"
+                                       FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"></Span>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
 
-                    <HorizontalStackLayout>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
-                              Text="{Binding Likes}"
-                              IsVisible="{Binding Likes, Converter={StaticResource IntToBoolConverter}}">
+                    <HorizontalStackLayout VerticalOptions="Center">
+                        <Label IsVisible="{Binding Likes, Converter={StaticResource IntToBoolConverter}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Likes}" 
+                                          FontSize="{StaticResource SM}" 
+                                          TextColor="{StaticResource Zinc400}"></Span>
+                                    <Span Text=" "></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
                         </Label>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
-                              Text="{x:Static fonts:FaSolid.ThumbsUp}"  FontFamily="FaSolid"
-                              IsVisible="{Binding Liked}"></Label>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
-                              Text="{x:Static fonts:FaRegular.ThumbsUp }"  FontFamily="FaRegular"
+                        <Label FontSize="{StaticResource SM}" 
+                               TextColor="{AppThemeBinding Light={StaticResource Red500}, Dark={StaticResource Red300}}"
+                               Text="{x:Static fonts:FaSolid.ThumbsUp}" 
+                               FontFamily="FaSolid"
+                               VerticalTextAlignment="Center"
+                               IsVisible="{Binding Liked}"></Label>
+                        <Label FontSize="{StaticResource SM}" 
+                               TextColor="{StaticResource Zinc400}"
+                               Text="{x:Static fonts:FaRegular.ThumbsUp }"  FontFamily="FaRegular"
+                               VerticalTextAlignment="Center"
                               IsVisible="{Binding Liked, Converter={StaticResource InvertedBoolConverter}}"></Label>
                         <HorizontalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TapLikeCommand}"></TapGestureRecognizer>
                         </HorizontalStackLayout.GestureRecognizers>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
-                              Text="{Binding Thanks}"
-                              IsVisible="{Binding Thanks, Converter={StaticResource IntToBoolConverter}}">
+                        <Label IsVisible="{Binding Thanks, Converter={StaticResource IntToBoolConverter}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Thanks}" 
+                                        FontSize="{StaticResource SM}" 
+                                        TextColor="{StaticResource Zinc400}"></Span>
+                                    <Span Text=" "></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
                         </Label>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
+                        <Label FontSize="{StaticResource SM}"
+                               TextColor="{AppThemeBinding Light={StaticResource Red500}, Dark={StaticResource Red300}}"
                                Text="{x:Static fonts:FaSolid.Heart }"  FontFamily="FaSolid"
+                               VerticalTextAlignment="Center"
                                IsVisible="{Binding Thanked}"></Label>
-                        <Label FontSize="{StaticResource SM}" TextColor="{StaticResource Zinc400}"
-                              Text="{x:Static fonts:FaRegular.Heart }"  FontFamily="FaRegular"
+                        <Label FontSize="{StaticResource SM}" 
+                               TextColor="{StaticResource Zinc400}"
+                               Text="{x:Static fonts:FaRegular.Heart }"  FontFamily="FaRegular"
+                               VerticalTextAlignment="Center"
                               IsVisible="{Binding Thanked, Converter={StaticResource InvertedBoolConverter}}"></Label>
                         <HorizontalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TapThankCommand}"></TapGestureRecognizer>

@@ -44,6 +44,9 @@
     "DarkTheme": "Dark Theme",
     "LightTheme": "Light Theme",
     "FollowBySystem": "Follow by system",
-    "Supplement": "Supplement"
+    "Supplement": "Supplement",
+    "ThanksHaveBeenSent": "Thanks have been sent to {0} successfully",
+    "TopicLikeSuccess": "This topic has been add to my favorite list",
+    "TopicThankSuccess": "Thanks has been sent successfully"
   }
 }

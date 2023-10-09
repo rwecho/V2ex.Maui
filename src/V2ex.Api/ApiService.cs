@@ -203,6 +203,8 @@ public class ApiService
         }
         else
         {
+            var content = await response.Content.ReadAsStringAsync();
+
             throw new InvalidOperationException($"Can not login with reason: {response.ReasonPhrase}");
         }
 
@@ -405,13 +407,22 @@ public class ApiService
         return result;
     }
 
-    public async Task<UnitInfo> ThanksCreator(string replyId, string once)
+    public async Task<ThanksResult?> ThanksCreator(string topicId, string once)
     {
-        var url = $"/thank/topic/{replyId}?once={once}";
+        var url = $"/thank/topic/{topicId}?once={once}";
         var response = await this.HttpClient.PostAsync(url, null);
-        var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
+        var result = await response.ReadFromJson<ThanksResult>();
         return result;
+    }
+
+    public async Task LikesCreator(string topicId, string once)
+    {
+        var url = $"/favorite/topic/{topicId}?once={once}";
+        var response = await this.HttpClient.GetAsync(url);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found)
+        {
+            return;
+        }
     }
 
     public async Task<ThanksInfo> ThanksMoney()
@@ -419,18 +430,6 @@ public class ApiService
         var url = "/ajax/money";
         var response = await this.HttpClient.PostAsync(url, null);
         var result = await response.GetEncapsulatedData<ThanksInfo>(this.Logger);
-        result.Url = url;
-        return result;
-    }
-
-    public async Task<TopicInfo> FavoriteTopic(string topicId, string once)
-    {
-        var url = $"/favorite/topic/{topicId}?once={once}";
-
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
-        var response = await this.HttpClient.SendAsync(request);
-        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         result.Url = url;
         return result;
     }

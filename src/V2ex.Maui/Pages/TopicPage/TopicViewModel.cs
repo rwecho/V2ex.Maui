@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using V2ex.Api;
@@ -9,8 +11,12 @@ namespace V2ex.Maui.Pages;
 
 public partial class TopicViewModel : ObservableObject
 {
-    public TopicViewModel(TopicInfo topic, NavigationManager navigationManager)
+    public TopicViewModel(TopicInfo topic, NavigationManager navigationManager,
+        ICurrentUser currentUser,
+        ApiService apiService,
+        IStringLocalizer<MauiResource> localizer)
     {
+        this.Once = topic.Once;
         this.Title = topic.Title;
         this.Content = topic.Content;
         this.UserName = topic.UserName;
@@ -22,7 +28,10 @@ public partial class TopicViewModel : ObservableObject
         this.NodeName = topic.NodeName;
         this.NodeLink = topic.NodeLink;
         this.NodeId = topic.NodeId;
-        ParseTopicStats(topic.TopicStats);
+        var (views, likes, thanks) = ParseTopicStats(topic.TopicStats);
+        this.Views = views;
+        this.Likes = likes;
+        this.Thanks = thanks;
         this.Tags = topic.Tags;
         this.CurrentPage = topic.CurrentPage;
         this.MaximumPage = topic.MaximumPage;
@@ -30,19 +39,37 @@ public partial class TopicViewModel : ObservableObject
             .Select((o, index) => new SupplementViewModel(index, o))
             .ToList();
         this.Replies = new ObservableCollection<ReplyViewModel>(
-            topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x)));
+            topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x, this.Once ?? "")));
         this.NavigationManager = navigationManager;
-
+        this.CurrentUser = currentUser;
+        this.ApiService = apiService;
+        this.Localizer = localizer;
         this.Url = UrlUtilities.CompleteUrl(topic.Url);
+        this.Id = ParseTopicId(topic.Url);
         this.Thanked = topic.Thanked == "感谢已发送";
         this.Liked = topic.Liked == "取消收藏";
     }
 
-    private void ParseTopicStats(string? topicStats)
+    private static string ParseTopicId(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            throw new InvalidOperationException("url is null");
+        }
+        var idRegex = new Regex("/t/(\\d+)");
+        var match = idRegex.Match(url);
+        if (!match.Success)
+        {
+            throw new InvalidOperationException("url is invalid");
+        }
+        return match.Groups[1].Value;
+    }
+
+    private static (int Views, int Likes, int Thanks) ParseTopicStats(string? topicStats)
     {
         if (string.IsNullOrEmpty(topicStats))
         {
-            return;
+            return (0, 0, 0);
         }
 
         var viewsRegex = new Regex("(\\d+)\\s+views");
@@ -50,22 +77,25 @@ public partial class TopicViewModel : ObservableObject
         var thanksRegex = new Regex("(\\d+)\\s+人");
 
         var viewsMatch = viewsRegex.Match(topicStats);
+        int views = 0, likes = 0, thanks = 0;
         if (viewsMatch.Success)
         {
-            this.Views = int.Parse(viewsMatch.Groups[1].Value);
+            views = int.Parse(viewsMatch.Groups[1].Value);
         }
 
         var likesMatch = likesRegex.Match(topicStats);
         if (likesMatch.Success)
         {
-            this.Likes = int.Parse(likesMatch.Groups[1].Value);
+            likes = int.Parse(likesMatch.Groups[1].Value);
         }
 
         var thanksMatch = thanksRegex.Match(topicStats);
         if (thanksMatch.Success)
         {
-            this.Thanks = int.Parse(thanksMatch.Groups[1].Value);
+            thanks = int.Parse(thanksMatch.Groups[1].Value);
         }
+
+        return (views, likes, thanks);
     }
 
     internal void AddNextPage(TopicInfo topic)
@@ -82,34 +112,14 @@ public partial class TopicViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _title, _nodeId;
+    private string _id, _title, _nodeId, _userName, _url, _userLink,
+        _avatar, _createdText, _nodeName, _nodeLink;
 
     [ObservableProperty]
-    private string? _content;
-
-    [ObservableProperty]
-    private string _userName, _url;
-
-    [ObservableProperty]
-    private string _userLink;
-
-    [ObservableProperty]
-    private string _avatar;
+    private string? _content, _once, _replyStats;
 
     [ObservableProperty]
     private DateTime _created;
-
-    [ObservableProperty]
-    private string _createdText;
-
-    [ObservableProperty]
-    private string? _replyStats;
-
-    [ObservableProperty]
-    private string _nodeName;
-
-    [ObservableProperty]
-    private string _nodeLink;
 
     [ObservableProperty]
     private List<string> _tags;
@@ -126,7 +136,9 @@ public partial class TopicViewModel : ObservableObject
     private ObservableCollection<ReplyViewModel> _replies;
 
     private NavigationManager NavigationManager { get; }
-
+    private ICurrentUser CurrentUser { get; }
+    private ApiService ApiService { get; }
+    private IStringLocalizer<MauiResource> Localizer { get; }
 
     [RelayCommand]
     public async Task TapNode(CancellationToken cancellationToken)
@@ -147,16 +159,46 @@ public partial class TopicViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public Task TapLike(CancellationToken cancellationToken)
+    public async Task TapLike(CancellationToken cancellationToken)
     {
-        // todo: Implement like action.
-        return Task.CompletedTask;
+        if (string.IsNullOrEmpty(this.Id) ||
+         string.IsNullOrEmpty(this.Once) ||
+         !this.CurrentUser.IsAuthorized() ||
+         this.Liked)
+        {
+            return;
+        }
+
+        await this.ApiService.LikesCreator(this.Id, this.Once);
+
+        this.Liked = true;
+        this.Likes += 1;
+
+        await Toast.Make(string.Format(this.Localizer["TopicLikeSuccess"])).Show();
     }
 
     [RelayCommand]
-    public Task TapThank(CancellationToken cancellationToken)
+    public async Task TapThank(CancellationToken cancellationToken)
     {
-        // todo: implement thank action.
-        return Task.CompletedTask;
+        if (string.IsNullOrEmpty(this.Id) ||
+            string.IsNullOrEmpty(this.Once) ||
+            !this.CurrentUser.IsAuthorized() ||
+            this.Thanked)
+        {
+            return;
+        }
+
+        var result = await this.ApiService.ThanksCreator(this.Id, this.Once);
+        if (result?.Success == true)
+        {
+            this.Thanked = true;
+            this.Thanks += 1;
+
+            await Toast.Make(string.Format(this.Localizer["TopicThankSuccess"])).Show();
+        }
+        else if(result!= null && result.Message !=null)
+        {
+            await Toast.Make(result.Message).Show();
+        }
     }
 }

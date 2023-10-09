@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using V2ex.Api;
 using V2ex.Maui.Components;
+using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages;
 
@@ -34,7 +35,7 @@ public partial class TabPageViewModel : BaseViewModel, IQueryAttributable
         try
         {
             this.IsReloading = true;
-            this.NewsInfo = new NewsInfoViewModel(await this.ApiService.GetTabTopics(this.TabName));
+            this.NewsInfo = InstanceActivator.Create<NewsInfoViewModel>(await this.ApiService.GetTabTopics(this.TabName));
         }
         catch (Exception)
         {
@@ -48,6 +49,6 @@ public partial class TabPageViewModel : BaseViewModel, IQueryAttributable
 
     protected override async Task OnLoad(CancellationToken cancellationToken)
     {
-        this.NewsInfo = new NewsInfoViewModel(await this.ApiService.GetTabTopics(this.TabName));
+        this.NewsInfo = InstanceActivator.Create<NewsInfoViewModel>(await this.ApiService.GetTabTopics(this.TabName));
     }
 }

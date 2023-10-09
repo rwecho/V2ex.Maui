@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using V2ex.Api;
 using V2ex.Maui.Services;
 
@@ -7,8 +9,14 @@ namespace V2ex.Maui.Pages;
 
 public partial class ReplyViewModel : ObservableObject
 {
-    public ReplyViewModel(TopicInfo.ReplyInfo reply, NavigationManager navigationManager)
+    public ReplyViewModel(TopicInfo.ReplyInfo reply,
+        string? once,
+        NavigationManager navigationManager, ICurrentUser currentUser,
+        ApiService apiService,
+        IStringLocalizer<MauiResource> localizer)
     {
+        this.Once = once;
+        this.Id = reply.Id.Replace("r_", "");
         this.Content = reply.Content;
         this.UserName = reply.UserName;
         this.UserLink = reply.UserLink;
@@ -20,17 +28,20 @@ public partial class ReplyViewModel : ObservableObject
         this.Thanked = reply.Thanked != null;
         this.AlreadyThanked = reply.AlreadyThanked == null ? 0 : int.Parse(reply.AlreadyThanked);
         this.NavigationManager = navigationManager;
+        this.CurrentUser = currentUser;
+        this.ApiService = apiService;
+        this.Localizer = localizer;
     }
 
     [ObservableProperty]
-    private string _content, _userName, _userLink, _avatar, _replyTimeText;
+    private string _id, _content, _userName, _userLink, _avatar, _replyTimeText;
 
 
     [ObservableProperty]
     private DateTime _replyTime;
 
     [ObservableProperty]
-    private string? _badges;
+    private string? _badges, _once;
 
     [ObservableProperty]
     private int _floor, _alreadyThanked;
@@ -40,6 +51,9 @@ public partial class ReplyViewModel : ObservableObject
 
 
     private NavigationManager NavigationManager { get; }
+    private ICurrentUser CurrentUser { get; }
+    private ApiService ApiService { get; }
+    private IStringLocalizer<MauiResource> Localizer { get; }
 
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
@@ -51,9 +65,20 @@ public partial class ReplyViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public Task TapThank(CancellationToken cancellationToken)
+    public async Task TapThank(CancellationToken cancellationToken)
     {
-        //todo: confirm & cancel thank status to reply.
-        return Task.CompletedTask;
+        if (string.IsNullOrEmpty(this.Id) ||
+            string.IsNullOrEmpty(this.Once) ||
+            !this.CurrentUser.IsAuthorized() ||
+            this.Thanked)
+        {
+            return;
+        }
+
+        await this.ApiService.ThanksReplier(this.Id, this.Once);
+        this.Thanked = true;
+        this.AlreadyThanked += 1;
+
+        await Toast.Make(string.Format(this.Localizer["ThanksHaveBeenSent"], this.UserName)).Show();
     }
 }

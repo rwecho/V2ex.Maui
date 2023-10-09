@@ -41,8 +41,8 @@
                 </VerticalStackLayout>
                 <ActivityIndicator 
                                Color="{StaticResource Violet900}"
-                               IsRunning="{Binding IsLogining}"
-                               IsVisible="{Binding IsLogining}"
+                               IsRunning="{Binding IsLoggingIn}"
+                               IsVisible="{Binding IsLoggingIn}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
             </Grid>

@@ -14,12 +14,6 @@
     x:Name="ShellMain"
     FlyoutIsPresented="{Binding FlyoutIsPresented}"
     Title="V2ex.Maui">
-    <!--<Shell.TitleView>
-        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="{Binding Path=CurrentPage.Title, Source={x:Reference ShellMain}}"  />
-        </HorizontalStackLayout>
-    </Shell.TitleView>-->
-   
     <FlyoutItem Title="MainFlyoutItem" x:Name="MainFlyoutItem"
                 Shell.FlyoutBehavior="Flyout"
                 Shell.FlyoutItemIsVisible="False">
@@ -30,16 +24,16 @@
         <MenuItem.IconImageSource>
             <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
                              FontFamily="FaSolid"
-                             Color="#c6c6c6"/>
+                             Color="{StaticResource Zinc400}"/>
         </MenuItem.IconImageSource>
     </MenuItem>
 
     <MenuItem Text="{services:L Text=MyFavoriteMenuText}"
               Command="{Binding GotoMyFavoritePageCommand}">
         <MenuItem.IconImageSource>
-            <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Star}"
                              FontFamily="FaSolid"
-                             Color="#c6c6c6"></FontImageSource>
+                             Color="{StaticResource Zinc400}"></FontImageSource>
         </MenuItem.IconImageSource>
     </MenuItem>
 
@@ -48,7 +42,7 @@
         <MenuItem.IconImageSource>
             <FontImageSource Glyph="{x:Static fonts:FaSolid.Fire}"
                              FontFamily="FaSolid"
-                             Color="#c6c6c6"></FontImageSource>
+                             Color="{StaticResource Zinc400}"></FontImageSource>
         </MenuItem.IconImageSource>
     </MenuItem>
 
@@ -57,7 +51,7 @@
         <MenuItem.IconImageSource>
             <FontImageSource Glyph="{x:Static fonts:FaSolid.ShareNodes}"
                              FontFamily="FaSolid"
-                             Color="#c6c6c6"></FontImageSource>
+                             Color="{StaticResource Zinc400}"></FontImageSource>
         </MenuItem.IconImageSource>
     </MenuItem>
 
@@ -66,7 +60,7 @@
         <MenuItem.IconImageSource>
             <FontImageSource Glyph="{x:Static fonts:FaSolid.Gears}"
                              FontFamily="FaSolid"
-                             Color="#c6c6c6"/>
+                             Color="{StaticResource Zinc400}"/>
         </MenuItem.IconImageSource>
     </MenuItem>
 

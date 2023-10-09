@@ -23,7 +23,6 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
         this.NavigationManager = navigationManager;
     }
 
-
     [ObservableProperty]
     private byte[] _captchaImage;
 
@@ -39,9 +38,9 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
     private NavigationManager NavigationManager { get; }
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-    private bool _isLogining;
+    private bool _isLoggingIn;
 
-    public bool CanLoginCommandExecute => !IsLogining
+    public bool CanLoginCommandExecute => !IsLoggingIn
         && !string.IsNullOrWhiteSpace(this.UserName)
         && !string.IsNullOrWhiteSpace(this.Password);
 
@@ -50,7 +49,7 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
     {
         try
         {
-            this.IsLogining = true;
+            this.IsLoggingIn = true;
 
             if (string.IsNullOrEmpty(this.UserName) || string.IsNullOrEmpty(this.Password) || string.IsNullOrEmpty(this.Captcha))
             {
@@ -77,7 +76,7 @@ public partial class LoginViewModel : ObservableObject, ITransientDependency
         }
         finally
         {
-            this.IsLogining = false;
+            this.IsLoggingIn = false;
         }
     }
 
