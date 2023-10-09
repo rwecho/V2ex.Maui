@@ -9,13 +9,4 @@ public partial class MainPage : ContentPage, ITransientDependency
     {
         InitializeComponent();
     }
-
-    protected override void OnAppearing()
-    {
-        this.HtmlView.Text = AppStateManager.AppState.HtmlContainer;
-    }
-
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-    }
 }

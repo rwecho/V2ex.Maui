@@ -37,8 +37,8 @@
         <ToolbarItem Text="{services:L Text=Following}"
                      Command="{Binding GotoMyFollowingPageCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{x:Static fonts:MdOutlined.Favorite}"
-                   FontFamily="MdOutlined"
+                <FontImageSource Glyph="{x:Static fonts:FaSolid.Star}"
+                   FontFamily="FaSolid"
                    Color="#c6c6c6"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>

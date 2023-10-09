@@ -251,7 +251,7 @@ public partial class SupplementViewModel : ObservableObject
 {
     public SupplementViewModel(int index, TopicInfo.SupplementInfo item)
     {
-        this.Index = index;
+        this.Index = index+1;
         this.Content = item.Content;
         this.Created = item.Created;
         this.CreatedText = item.CreatedText;

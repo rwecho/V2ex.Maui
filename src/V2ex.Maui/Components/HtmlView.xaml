@@ -4,7 +4,8 @@
              xmlns:converts="using:V2ex.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="V2ex.Maui.Components.HtmlView"
-             x:Name="Root">
+            
+            x:Name="Root">
     <ContentView.Resources>
         <converts:HtmlContainerConverter x:Key="HtmlContainerConverter"></converts:HtmlContainerConverter>
         <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"></toolkit:InvertedBoolConverter>
@@ -18,7 +19,8 @@
                  Navigating="WebView_Navigating" 
                  Loaded="WebView_Loaded"
                  HeightRequest="10"
-                 IsVisible="{Binding Source={x:Reference Root}, Path=IsHtml}">
+                 IsVisible="{Binding Source={x:Reference Root}, Path=IsHtml}"
+                 BackgroundColor="Transparent">
             <WebView.Source>
                 <HtmlWebViewSource Html="{Binding Source={x:Reference Root}, Path=Text, Converter={StaticResource HtmlContainerConverter}}">
                 </HtmlWebViewSource>

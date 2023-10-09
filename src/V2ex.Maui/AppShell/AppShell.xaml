@@ -28,8 +28,8 @@
     <MenuItem Text="{services:L Text=NotificationsMenuText}"
               Command="{Binding GotoNotificationsPageCommand}">
         <MenuItem.IconImageSource>
-            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Notifications}"
-                             FontFamily="MdOutlined"
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
+                             FontFamily="FaSolid"
                              Color="#c6c6c6"/>
         </MenuItem.IconImageSource>
     </MenuItem>
@@ -37,8 +37,8 @@
     <MenuItem Text="{services:L Text=MyFavoriteMenuText}"
               Command="{Binding GotoMyFavoritePageCommand}">
         <MenuItem.IconImageSource>
-            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Favorite}"
-                             FontFamily="MdOutlined"
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
+                             FontFamily="FaSolid"
                              Color="#c6c6c6"></FontImageSource>
         </MenuItem.IconImageSource>
     </MenuItem>
@@ -64,8 +64,8 @@
     <MenuItem Text="{services:L Text=SettingsMenuText}"
               Command="{Binding GotoSettingsPageCommand}">
         <MenuItem.IconImageSource>
-            <FontImageSource Glyph="{x:Static fonts:MdOutlined.Settings}"
-                             FontFamily="MdOutlined"
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Gears}"
+                             FontFamily="FaSolid"
                              Color="#c6c6c6"/>
         </MenuItem.IconImageSource>
     </MenuItem>

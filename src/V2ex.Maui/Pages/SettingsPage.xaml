@@ -36,8 +36,8 @@
                         <HorizontalStackLayout Grid.Column="1"
                                HorizontalOptions="End">
                             <Label Text="{Binding NightModeText}" TextColor="{StaticResource Zinc400}"></Label>
-                            <Label Text="{x:Static fonts:MdOutlined.Chevron_right }" 
-                                   FontFamily="MdOutlined"
+                            <Label Text="{x:Static fonts:FaSolid.ChevronRight }" 
+                                   FontFamily="FaSolid"
                                    VerticalTextAlignment="Center"
                                    TextColor="{StaticResource Zinc400}"></Label>
                         </HorizontalStackLayout>

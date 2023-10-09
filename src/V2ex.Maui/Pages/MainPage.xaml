@@ -11,7 +11,8 @@
              Shell.NavBarIsVisible="True"
             Title="{services:L Text=V2ex}">
     <VerticalStackLayout>
-        <components:HtmlView x:Name="HtmlView" ></components:HtmlView>
-        <Button Text="click" Clicked="Button_Clicked"></Button>
+        <Image Source="dotnet_bot.png" />
+        <Label Text="hello"> </Label>
+
     </VerticalStackLayout>
 </ContentPage>
