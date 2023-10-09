@@ -5,7 +5,6 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.Extensions.Options;
-using V2ex.Maui.AppShell;
 using V2ex.Maui.Platforms.Android;
 
 namespace V2ex.Maui

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="V2ex.Maui.Pages.SettingsPage"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:components="clr-namespace:V2ex.Maui.Components"
+             xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="True"
+             x:DataType="pages:SettingsPageViewModel"
+             Title="{services:L Text=SettingsPageTitle}">
+    <Grid VerticalOptions="FillAndExpand"
+                         x:Name="StateContainer"
+        toolkit:StateContainer.CurrentState="{Binding CurrentState}"
+        toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+        <toolkit:StateContainer.StateViews>
+            <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+                               Color="{StaticResource Violet900}"
+                               IsRunning="True"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+            <ScrollView toolkit:StateView.StateKey="Success" Margin="16">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto"
+                          RowSpacing="8">
+                        <Label Text="{services:L Text=NightMode}" 
+                               FontSize="Body"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"></Label>
+                        <HorizontalStackLayout Grid.Column="1"
+                               HorizontalOptions="End">
+                            <Label Text="{Binding NightModeText}" TextColor="{StaticResource Zinc400}"></Label>
+                            <Label Text="{x:Static fonts:FaSolid.ChevronRight }" 
+                                   FontFamily="FaSolid"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource Zinc400}"></Label>
+                        </HorizontalStackLayout>
+                        
+                        <BoxView Grid.Row="1" Grid.ColumnSpan="2"
+                                 Style="{StaticResource HorizontalSeparator}" ></BoxView>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoThemePageCommand}"></TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                        
+                    </Grid>
+
+                    <Button Text="退出" TextColor="{StaticResource Zinc700}" 
+                            BackgroundColor="{StaticResource Gray100}"
+                            Command="{Binding LogoutCommand}"></Button>
+                </VerticalStackLayout>
+            </ScrollView>
+            <Label toolkit:StateView.StateKey="Error"
+                   Text="{Binding Exception}" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"></Label>
+        </toolkit:StateContainer.StateViews>
+    </Grid>
+</ContentPage>

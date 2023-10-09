@@ -21,12 +21,9 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
-                fonts.AddFont("MaterialIcons-Regular.otf", "Md");
-                fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MdOutlined");
-                fonts.AddFont("feathericon.ttf", "Fi");
+                fonts.AddFont("apple-logo.ttf", "Apple");
                 fonts.AddFont("fa-brands-400.ttf", "FaBrands");
                 fonts.AddFont("fa-regular-400.ttf", "FaRegular");
-                fonts.AddFont("apple-logo.ttf", "Apple");
                 fonts.AddFont("fa-solid-900.ttf", "FaSolid");
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -36,7 +33,7 @@ public static class MauiProgram
         builder.Logging.AddSerilog(dispose: true);
         ConfigureConfiguration(builder);
 
-        builder.Services.AddApplication<AppShell.AppModule>(options =>
+        builder.Services.AddApplication<AppModule>(options =>
         {
             options.Services.ReplaceConfiguration(builder.Configuration);
         });

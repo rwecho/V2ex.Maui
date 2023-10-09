@@ -8,10 +8,9 @@ public partial class App : Application
 {
     public App(IServiceProvider serviceProvider)
     {
-        Controls.Init();
         InitializeComponent();
         InstanceActivator.Initialize(serviceProvider);
-        MainPage = serviceProvider.GetRequiredService<AppShell.AppShell>();
+        MainPage = serviceProvider.GetRequiredService<AppShell>();
         //MainPage = serviceProvider.GetRequiredService<MainPage>();
     }
 }

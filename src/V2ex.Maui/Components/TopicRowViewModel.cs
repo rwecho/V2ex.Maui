@@ -1,18 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using V2ex.Maui.Pages;
-using V2ex.Maui.Pages.ViewModels;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Maui.Components;
-
-public static class Controls
-{
-    public static void Init()
-    {
-    }
-}
 
 public partial class TopicRowViewModel : ObservableObject, ITransientDependency
 {

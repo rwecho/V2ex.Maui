@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="V2ex.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+    xmlns:local="clr-namespace:V2ex.Maui"
+    xmlns:services="clr-namespace:V2ex.Maui.Services"
+    xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+    xmlns:components="clr-namespace:V2ex.Maui.Components"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="True"
+    x:DataType="local:AppShellViewModel"
+    x:Name="ShellMain"
+    FlyoutIsPresented="{Binding FlyoutIsPresented}"
+    Title="V2ex.Maui">
+    <!--<Shell.TitleView>
+        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="{Binding Path=CurrentPage.Title, Source={x:Reference ShellMain}}"  />
+        </HorizontalStackLayout>
+    </Shell.TitleView>-->
+   
+    <FlyoutItem Title="MainFlyoutItem" x:Name="MainFlyoutItem"
+                Shell.FlyoutBehavior="Flyout"
+                Shell.FlyoutItemIsVisible="False">
+    </FlyoutItem>
+
+    <MenuItem Text="{services:L Text=NotificationsMenuText}"
+              Command="{Binding GotoNotificationsPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"/>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=MyFavoriteMenuText}"
+              Command="{Binding GotoMyFavoritePageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Bell}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=DailyHotMenuText}"
+              Command="{Binding GotoDailyHotPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Fire}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=NodesMenuText}"
+              Command="{Binding GotoNodesPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.ShareNodes}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="{services:L Text=SettingsMenuText}"
+              Command="{Binding GotoSettingsPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.Gears}"
+                             FontFamily="FaSolid"
+                             Color="#c6c6c6"/>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+</Shell>

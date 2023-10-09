@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:components="clr-namespace:V2ex.Maui.Components"
+             xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
+             xmlns:services="clr-namespace:V2ex.Maui.Services"
+             xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="V2ex.Maui.Pages.NotificationsPage"
+             x:Name="Root"
+             Title="{services:L Text=NotificationPageTitle}"
+             x:DataType="pages:NotificationsPageViewModel">
+    <ContentPage.Resources>
+        <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
+        <DataTemplate x:Key="NotificationTemplate" x:DataType="pages:NotificationItemViewModel">
+            <VerticalStackLayout Spacing="0" >
+                <HorizontalStackLayout Margin="8,0"
+                    Spacing="8" VerticalOptions="Center" >
+                    <Image HeightRequest="32" 
+                        WidthRequest="32"
+                        Source="{Binding Avatar}">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <HorizontalStackLayout VerticalOptions="Center">
+                        <Label Text="{Binding UserName}" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label LineBreakMode="WordWrap">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding PreTitle}" TextColor="{StaticResource Gray400}"></Span>
+                                    <Span Text="{Binding TopicTitle}"></Span>
+                                    <Span Text="{Binding PostTitle}" TextColor="{StaticResource Gray400}"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Created}" HorizontalOptions="End" TextColor="{StaticResource Gray400}"></Label>
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Margin="8,4" Spacing="8">
+                    <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
+                    <Label Text="{Binding Payload}"></Label>
+                </HorizontalStackLayout>
+                
+                <BoxView Style="{StaticResource HorizontalSeparator}"
+                         Margin="0,4"></BoxView>
+            </VerticalStackLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FooterTemplate" x:DataType="pages:NotificationsPageViewModel">
+            <HorizontalStackLayout Margin="16" HorizontalOptions="Center">
+                <Label Text="全部加载完成"
+                    IsVisible="{Binding LoadAll}"
+                    TextColor="{StaticResource Gray400}"
+                    FontSize="Caption"/>
+
+                <ActivityIndicator 
+                   Color="{StaticResource Violet900}"
+                   IsRunning="{Binding IsLoading}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <Grid x:Name="StateContainer"
+        toolkit:StateContainer.CurrentState="{Binding CurrentState}"
+        toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+
+        <toolkit:StateContainer.StateViews>
+            <ActivityIndicator toolkit:StateView.StateKey="Loading" 
+                               Color="{StaticResource Violet900}"
+                               IsRunning="True"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+            <RefreshView toolkit:StateView.StateKey="Success"
+                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
+                         RefreshColor="{StaticResource Violet900}"
+                         Command="{Binding LoadCommand}">
+                <CollectionView ItemsSource="{Binding Items}"
+                                ItemTemplate="{StaticResource NotificationTemplate}"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                Footer="{Binding .}"
+                                FooterTemplate="{StaticResource FooterTemplate}"
+                                >
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="3"
+                               Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.Behaviors>
+                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
+                    </CollectionView.Behaviors>
+                </CollectionView>
+            </RefreshView>
+
+            <Label toolkit:StateView.StateKey="Error"
+                   Text="{Binding Exception}" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"></Label>
+        </toolkit:StateContainer.StateViews>
+    </Grid>
+</ContentPage>
