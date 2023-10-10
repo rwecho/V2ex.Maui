@@ -55,6 +55,8 @@ public partial class ReplyViewModel : ObservableObject
     private ApiService ApiService { get; }
     private IStringLocalizer<MauiResource> Localizer { get; }
 
+    public EventHandler<CallOutEventArgs>? CallOut;
+
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
     {
@@ -80,5 +82,28 @@ public partial class ReplyViewModel : ObservableObject
         this.AlreadyThanked += 1;
 
         await Toast.Make(string.Format(this.Localizer["ThanksHaveBeenSent"], this.UserName)).Show();
+    }
+
+    [RelayCommand]
+    public Task UrlTap(string url)
+    {
+        var handler = new TapUrlHandler(url);
+        switch (handler.Target)
+        {
+            case TapTarget.User:
+                if(!string.IsNullOrEmpty(handler.UserName))
+                {
+                    this.CallOut?.Invoke(this, new CallOutEventArgs(this.UserName, handler.UserName, this.Floor));
+                }
+                break;
+            case TapTarget.Image:
+                break;
+            case TapTarget.Link:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return Task.CompletedTask;
     }
 }

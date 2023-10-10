@@ -30,7 +30,34 @@ public class CookieHttpClientHandler : HttpClientHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var response = await base.SendAsync(request, cancellationToken);
+        HttpResponseMessage response;
+        if(request.Method != HttpMethod.Get)
+        {
+            response = await base.SendAsync(request, cancellationToken);
+        }
+        else
+        {
+            var url = request.RequestUri.ToString();
+            var contentString = this.Preferences.Get(url, "");
+            if (string.IsNullOrEmpty(contentString))
+            {
+                response = await base.SendAsync(request, cancellationToken);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    this.Preferences.Set(url, content);
+                }
+            }
+            else
+            {
+                response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    RequestMessage = request,
+                    Content = new StringContent(contentString)
+                };
+            }
+
+        }
         var fragment = request.RequestUri.Fragment;
         if (request.RequestUri?.LocalPath == "/signin"
             && request.Method == HttpMethod.Post

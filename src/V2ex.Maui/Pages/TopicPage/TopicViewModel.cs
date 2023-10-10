@@ -39,7 +39,7 @@ public partial class TopicViewModel : ObservableObject
             .Select((o, index) => new SupplementViewModel(index, o))
             .ToList();
         this.Replies = new ObservableCollection<ReplyViewModel>(
-            topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x, this.Once ?? "")));
+            topic.Replies.Select(CreateReplyViewModel));
         this.NavigationManager = navigationManager;
         this.CurrentUser = currentUser;
         this.ApiService = apiService;
@@ -106,9 +106,20 @@ public partial class TopicViewModel : ObservableObject
 
         foreach (var item in topic.Replies)
         {
-            var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item);
-            this.Replies.Add(replyViewModel);
+            this.Replies.Add(CreateReplyViewModel(item));
         }
+    }
+
+    private ReplyViewModel CreateReplyViewModel(TopicInfo.ReplyInfo item)
+    {
+        var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item, this.Once ?? "");
+        replyViewModel.CallOut += this.CallOut;
+        return replyViewModel;
+    }
+
+    private void CallOut(object? sender, CallOutEventArgs e)
+    {
+
     }
 
     [ObservableProperty]
