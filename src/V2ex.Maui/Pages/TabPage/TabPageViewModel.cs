@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using V2ex.Api;
-using V2ex.Maui.Components;
 using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Pages;

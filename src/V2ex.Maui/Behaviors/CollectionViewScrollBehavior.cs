@@ -26,7 +26,7 @@ public class CollectionViewScrollBehavior : Behavior<CollectionView>
         var collectionView = (CollectionView)sender!;
         var delta = e.VerticalDelta;
         var offset = e.VerticalOffset;
-        if (_isAnimating || delta == 0)
+        if (_isAnimating || delta == 0 || Math.Abs(delta) < 50)
         {
             return;
         }
@@ -45,7 +45,6 @@ public class CollectionViewScrollBehavior : Behavior<CollectionView>
             {
                 ShowNavigationBar();
             }
-
             _isAnimating = false;
             _debounceTimer.Stop();
         };
