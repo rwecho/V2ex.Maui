@@ -16,13 +16,11 @@
 		<ApplicationTitle>V2ex.Maui</ApplicationTitle>
 
 		<!-- App Identifier -->
-        <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
-        <ApplicationVersion Condition="$(DefineConstants.Contains('DEBUG'))">10000000</ApplicationVersion>
-
+		<ApplicationId>top.rwecho.v2ex.maui</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1000000</ApplicationVersion>
 
 		<!-- AOT is not working in action -->
 		<!-- <PublishAot Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">true</PublishAot>
