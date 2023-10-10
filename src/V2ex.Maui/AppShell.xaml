@@ -55,13 +55,13 @@
         </MenuItem.IconImageSource>
     </MenuItem>
 
-    <MenuItem Text="{services:L Text=SettingsMenuText}"
+    <!--<MenuItem Text="{services:L Text=SettingsMenuText}"
               Command="{Binding GotoSettingsPageCommand}">
         <MenuItem.IconImageSource>
             <FontImageSource Glyph="{x:Static fonts:FaSolid.Gears}"
                              FontFamily="FaSolid"
                              Color="{StaticResource Zinc400}"/>
         </MenuItem.IconImageSource>
-    </MenuItem>
+    </MenuItem>-->
 
 </Shell>
