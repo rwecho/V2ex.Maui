@@ -407,7 +407,7 @@ public class ApiService
         return result;
     }
 
-    public async Task<ThanksResult?> ThanksCreator(string topicId, string once)
+    public async Task<ThanksResult?> ThankCreator(string topicId, string once)
     {
         var url = $"/thank/topic/{topicId}?once={once}";
         var response = await this.HttpClient.PostAsync(url, null);
@@ -415,15 +415,7 @@ public class ApiService
         return result;
     }
 
-    public async Task LikesCreator(string topicId, string once)
-    {
-        var url = $"/favorite/topic/{topicId}?once={once}";
-        var response = await this.HttpClient.GetAsync(url);
-        if (response.StatusCode == System.Net.HttpStatusCode.Found)
-        {
-            return;
-        }
-    }
+ 
 
     public async Task<ThanksInfo> ThanksMoney()
     {
@@ -470,15 +462,26 @@ public class ApiService
         return result;
     }
 
-    public async Task<TopicInfo> UnfavoriteTopic(string topicId, string once)
+    public async Task UnfavoriteTopic(string topicId, string once)
     {
         var url = $"/unfavorite/topic/{topicId}?once={once}";
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
-        var response = await this.HttpClient.SendAsync(request);
-        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
-        return result;
+        var response = await this.HttpClient.GetAsync(url);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found)
+        {
+            return;
+        }
+        throw new InvalidOperationException(response.ReasonPhrase);
+    }
+
+    public async Task FavoriteTopic(string topicId, string once)
+    {
+        var url = $"/favorite/topic/{topicId}?once={once}";
+        var response = await this.HttpClient.GetAsync(url);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found)
+        {
+            return;
+        }
+        throw new InvalidOperationException(response.ReasonPhrase);
     }
 
     public async Task<UnitInfo> UpTopic(string topicId, string once)

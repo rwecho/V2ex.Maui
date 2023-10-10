@@ -163,18 +163,25 @@ public partial class TopicViewModel : ObservableObject
     {
         if (string.IsNullOrEmpty(this.Id) ||
          string.IsNullOrEmpty(this.Once) ||
-         !this.CurrentUser.IsAuthorized() ||
-         this.Liked)
+         !this.CurrentUser.IsAuthorized() )
         {
             return;
         }
 
-        await this.ApiService.LikesCreator(this.Id, this.Once);
-
-        this.Liked = true;
-        this.Likes += 1;
-
-        await Toast.Make(string.Format(this.Localizer["TopicLikeSuccess"])).Show();
+        if (this.Liked)
+        {
+            await this.ApiService.UnfavoriteTopic(this.Id, this.Once);
+            this.Liked = false;
+            this.Likes = Math.Max(0, this.Likes - 1);
+            await Toast.Make(string.Format(this.Localizer["TopicUnfavoriteSuccess"])).Show();
+        }
+        else
+        {
+            await this.ApiService.FavoriteTopic(this.Id, this.Once);
+            this.Liked = true;
+            this.Likes += 1;
+            await Toast.Make(string.Format(this.Localizer["TopicFavoriteSuccess"])).Show();
+        }
     }
 
     [RelayCommand]
@@ -188,7 +195,7 @@ public partial class TopicViewModel : ObservableObject
             return;
         }
 
-        var result = await this.ApiService.ThanksCreator(this.Id, this.Once);
+        var result = await this.ApiService.ThankCreator(this.Id, this.Once);
         if (result?.Success == true)
         {
             this.Thanked = true;

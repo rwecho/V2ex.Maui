@@ -46,7 +46,8 @@
     "FollowBySystem": "Follow by system",
     "Supplement": "Supplement",
     "ThanksHaveBeenSent": "Thanks have been sent to {0} successfully",
-    "TopicLikeSuccess": "This topic has been add to my favorite list",
+    "TopicFavoriteSuccess": "This topic has been added to my favorite list",
+    "TopicUnfavoriteSuccess": "This topic has been removed from my favorite list",
     "TopicThankSuccess": "Thanks has been sent successfully"
   }
 }

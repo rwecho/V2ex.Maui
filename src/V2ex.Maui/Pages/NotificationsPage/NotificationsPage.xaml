@@ -14,48 +14,48 @@
     <ContentPage.Resources>
         <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
         <DataTemplate x:Key="NotificationTemplate" x:DataType="pages:NotificationItemViewModel">
-            <VerticalStackLayout Spacing="0" >
-                <HorizontalStackLayout Margin="8,0"
-                    Spacing="8" VerticalOptions="Center" >
+            <Grid Margin="8" RowDefinitions="Auto,Auto,Auto" >
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8" RowDefinitions="Auto,Auto" >
                     <Image HeightRequest="32" 
-                        WidthRequest="32"
-                        Source="{Binding Avatar}">
+                           WidthRequest="32"
+                           Source="{Binding Avatar}"
+                           VerticalOptions="Center">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
                         </Image.GestureRecognizers>
                     </Image>
-                    <HorizontalStackLayout VerticalOptions="Center">
-                        <Label Text="{Binding UserName}" >
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GotoUserCommand}"></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>
 
-                        <Label LineBreakMode="WordWrap">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding PreTitle}" TextColor="{StaticResource Gray400}"></Span>
-                                    <Span Text="{Binding TopicTitle}"></Span>
-                                    <Span Text="{Binding PostTitle}" TextColor="{StaticResource Gray400}"></Span>
-                                </FormattedString>
-                            </Label.FormattedText>
+                    <Label Grid.Column="1" LineBreakMode="WordWrap" TextColor="{StaticResource Gray400}"
+                           FontSize="{StaticResource SM}" >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding UserName}" TextColor="{StaticResource Gray700}"></Span>
+                                <Span Text="{Binding PreTitle}" ></Span>
+                                <Span Text="{Binding TopicTitle}"></Span>
+                                <Span Text="{Binding PostTitle}" ></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
 
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding Created}" HorizontalOptions="End" TextColor="{StaticResource Gray400}"></Label>
-                    </HorizontalStackLayout>
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Margin="8,4" Spacing="8">
-                    <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
-                    <Label Text="{Binding Payload}"></Label>
-                </HorizontalStackLayout>
-                
-                <BoxView Style="{StaticResource HorizontalSeparator}"
-                         Margin="0,4"></BoxView>
-            </VerticalStackLayout>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Grid Grid.Column="1" Grid.Row="1" Margin="0,4" ColumnDefinitions="Auto,*" ColumnSpacing="8"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}"
+                          IsVisible="{Binding Payload, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                        <BoxView Style="{StaticResource VerticalSeparator}" WidthRequest="4"></BoxView>
+                        <components:HtmlView Grid.Column="1" Text="{Binding Payload}"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoTopicCommand}"></TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Grid>
+                <Label Grid.Row="1" Text="{Binding Created}" HorizontalOptions="End"
+                       FontSize="{StaticResource SM}"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray600}}"></Label>
+                <BoxView Grid.Row="2"  Style="{StaticResource HorizontalSeparator}"
+                         Margin="0,4,0,0"></BoxView>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="FooterTemplate" x:DataType="pages:NotificationsPageViewModel">

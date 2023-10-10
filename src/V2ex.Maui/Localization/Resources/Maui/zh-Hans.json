@@ -46,7 +46,8 @@
     "FollowBySystem": "跟随系统",
     "Supplement": "附言",
     "ThanksHaveBeenSent": "感谢已经发送给 {0}",
-    "TopicLikeSuccess": "话题收藏成功",
-    "TopicThankSuccess": "话题感谢成功",
+    "TopicFavoriteSuccess": "话题收藏成功",
+    "TopicUnfavoriteSuccess": "话题已经取消收藏",
+    "TopicThankSuccess": "话题感谢成功"
   }
 }
