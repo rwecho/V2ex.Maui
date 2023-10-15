@@ -14,7 +14,8 @@ public class CollectionViewScrollBehavior : Behavior<CollectionView>
     protected override void OnAttachedTo(CollectionView bindable)
     {
         base.OnAttachedTo(bindable);
-        bindable.Scrolled += CollectionView_Scrolled;
+        // todo: disable the scroll behavior when it became more effectively.
+        //bindable.Scrolled += CollectionView_Scrolled;
     }
 
     private bool _isAnimating = false;
@@ -71,7 +72,8 @@ public class CollectionViewScrollBehavior : Behavior<CollectionView>
 
     protected override void OnDetachingFrom(CollectionView bindable)
     {
-        bindable.Scrolled -= CollectionView_Scrolled;
+        // todo: disable the scroll behavior when it became more effectively.
+        //bindable.Scrolled -= CollectionView_Scrolled;
         base.OnDetachingFrom(bindable);
     }
 }

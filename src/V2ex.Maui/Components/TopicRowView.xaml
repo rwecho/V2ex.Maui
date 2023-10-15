@@ -25,10 +25,13 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="0" Source="{Binding Avatar}"
+            <Image Grid.Column="0"
                    Margin="0,0,8,0"
                    Style="{StaticResource Avatar}"
                    IsVisible="{Binding Avatar, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                <Image.Source>
+                    <UriImageSource Uri="{Binding Avatar}" CacheValidity="10:00:00:00"/>
+                </Image.Source>
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapUserCommand}"/>
                 </Image.GestureRecognizers>

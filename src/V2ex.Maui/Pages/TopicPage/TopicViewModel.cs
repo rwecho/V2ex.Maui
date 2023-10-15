@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Localization;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
@@ -112,14 +113,18 @@ public partial class TopicViewModel : ObservableObject
 
     private ReplyViewModel CreateReplyViewModel(TopicInfo.ReplyInfo item)
     {
-        var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item, this.Once ?? "");
+        var isOp = this.UserName == item.UserName;
+        var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item, this.Once ?? "",
+            isOp);
         replyViewModel.CallOut += this.CallOut;
         return replyViewModel;
     }
 
     private void CallOut(object? sender, CallOutEventArgs e)
     {
-
+        var replies = this.Replies.Where(o => o.UserName == e.Target && o.Floor < e.Floor)
+            .ToArray();
+        WeakReferenceMessenger.Default.Send(new CallOutRepliesMessage(replies));
     }
 
     [ObservableProperty]

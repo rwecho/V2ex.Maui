@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>V2ex.Maui</ApplicationTitle>
+		<ApplicationTitle>V2ex MAUI</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>top.rwecho.v2ex.maui</ApplicationId>
@@ -94,6 +94,18 @@
 	<ItemGroup>
 		<PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-rc.1.9171" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.1.9171" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\TopicPage\RepliesPopup.xaml.cs">
+	    <DependentUpon>RepliesPopup.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\TopicPage\RepliesPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

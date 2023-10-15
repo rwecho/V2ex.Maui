@@ -36,7 +36,21 @@
                     </Image>
                     <VerticalStackLayout Grid.Column="1"  Grid.Row="0"
                                          Margin="8,0" HorizontalOptions="Start">
-                        <Label Text="{Binding UserName}" />
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="{Binding UserName}" />
+                            <Border Background="Transparent" 
+                                    Stroke="{AppThemeBinding Light={StaticResource Blue400}}"
+                                    Padding="2"
+                                    VerticalOptions="Center"
+                                    IsVisible="{Binding IsOp}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="4" />
+                                </Border.StrokeShape>
+                                <Label Text="OP" IsVisible="{Binding IsOp}" 
+                                       TextColor="{AppThemeBinding Light={StaticResource Blue400}}"
+                                       FontSize="8"/>
+                            </Border>
+                        </HorizontalStackLayout>
                         <Label TextColor="{StaticResource Gray400}" >
                             <Label.FormattedText>
                                 <FormattedString>
