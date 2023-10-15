@@ -21,7 +21,7 @@
                       ColumnSpacing="8">
                     <Label Text="{Binding Floor}"
                            VerticalOptions="Start"
-                           FontSize="{Binding SM}"></Label>
+                           FontSize="{StaticResource SM}"></Label>
                     <components:HtmlView Grid.Column="1" Text="{Binding Content}"></components:HtmlView>
                     <Label Grid.Row="1" Grid.Column="1" 
                            Text="{Binding ReplyTimeText}"
