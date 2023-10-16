@@ -65,13 +65,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="DebounceThrottle" Version="2.0.0" />
 		<PackageReference Include="Fedandburk.Serilog.Sinks.AppCenter" Version="1.0.3" />
 		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="5.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.5.23280.8" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-preview.5.23280.8" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="7.3.0-rc.3" />

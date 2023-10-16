@@ -11,7 +11,6 @@
              x:DataType="pages:RepliesPopupViewModel">
     <Grid WidthRequest="{Binding Source={x:RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}, Path=Width}"
           MaximumHeightRequest="350"
-          RowDefinitions="auto,auto,auto"
           Padding="8"
           BackgroundColor="{AppThemeBinding Light={StaticResource White}}">
         <Grid.Resources>
@@ -29,22 +28,31 @@
                            FontSize="{StaticResource SM}"></Label>
                 </Grid>
             </DataTemplate>
+
+            <DataTemplate x:Key="HeaderTemplate" x:DataType="pages:RepliesPopupViewModel">
+                <Grid RowDefinitions="auto,auto">
+                    <Label Grid.Row="0"
+                           Margin="0,8"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Start" >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding UserName}"></Span>
+                                <Span Text=" "></Span>
+                                <Span Text="之前的回复"></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <BoxView Margin="0,8" Grid.Row="1" Style="{StaticResource HorizontalSeparator}"></BoxView>
+                </Grid>
+            </DataTemplate>
         </Grid.Resources>
-        <Label Grid.Row="0"
-               Margin="0,8"
-            VerticalOptions="Center" 
-            HorizontalOptions="Start" >
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="{Binding UserName}"></Span>
-                    <Span Text=" "></Span>
-                    <Span Text="之前的回复"></Span>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-        <BoxView Margin="0,8" Grid.Row="1" Style="{StaticResource HorizontalSeparator}"></BoxView>
-        <!--the collection view is not fully displayed.-->
+      
         <CollectionView Grid.Row="2" ItemsSource="{Binding Replies}"
-                        ItemTemplate="{StaticResource ReplyTemplate}"></CollectionView>
+                        ItemTemplate="{StaticResource ReplyTemplate}"
+                        VerticalScrollBarVisibility="Always"
+                        MaximumHeightRequest="334"
+                        Header="{Binding .}"
+                        HeaderTemplate="{StaticResource HeaderTemplate}"></CollectionView>
     </Grid>
 </toolkit:Popup>
