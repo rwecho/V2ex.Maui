@@ -21,7 +21,8 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     private TopicViewModel? _topic;
 
-    public TopicPageViewModel(ResourcesService resourcesService, NavigationManager navigationManager)
+    public TopicPageViewModel(ResourcesService resourcesService, 
+        NavigationManager navigationManager)
     {
         this.ResourcesService = resourcesService;
         this.NavigationManager = navigationManager;

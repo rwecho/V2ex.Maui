@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static V2ex.Api.MemberPageInfo;
 
 namespace V2ex.Api;
 
@@ -101,11 +100,13 @@ public class ApiService
 
     public async Task<SoV2EXSearchResultInfo?> Search(string keyword, int from = 0, string sort = "created")
     {
+        // https://github.com/bynil/sov2ex/blob/v2/API.md
         var queryString = new Dictionary<string, string>
         {
             { "q", keyword },
             { "from", from.ToString() },
-            { "sort", sort }
+            { "sort", sort },
+            { "size", 50.ToString() }
         };
 
         var url = $"https://www.sov2ex.com/api/search?{EncodeQuerystring(queryString)}";
@@ -203,18 +204,11 @@ public class ApiService
         }
         else
         {
-            var content = await response.Content.ReadAsStringAsync();
-
-            throw new InvalidOperationException($"Can not login with reason: {response.ReasonPhrase}");
+            var problem = await response.GetEncapsulatedData<LoginProblem>(this.Logger);
+            throw new InvalidOperationException(string.Join(" ", problem.Errors));
         }
 
-        var newsInfo = await response.GetEncapsulatedData<NewsInfo, LoginProblem>((error) =>
-        {
-            if (error.HasProblem())
-            {
-                throw new InvalidOperationException(string.Join("\r\n", error.Errors));
-            }
-        }, this.Logger);
+        var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
 
         newsInfo.Url = url;
         return newsInfo;

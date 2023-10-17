@@ -97,6 +97,7 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(MyFavoritePage), typeof(MyFavoritePage));
         routingManager.Register(nameof(NodesPage), typeof(NodesPage));
         routingManager.Register(nameof(ThemeSettingsPage), typeof(ThemeSettingsPage));
+        routingManager.Register(nameof(SearchPage), typeof(SearchPage));
 
         AsyncHelper.RunSync(async () =>
         {

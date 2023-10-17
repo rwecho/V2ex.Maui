@@ -10,6 +10,7 @@
     "password": "password",
     "captcha": "captcha",
 
+    "LogOut": "Log Out",
     "Login": "Login",
     "LoginPageTitle": "Login",
     "NotificationsPageTitle": "Notifications",
@@ -31,6 +32,7 @@
     "MyFavoriteMenuText": "Favorite",
     "DailyHotMenuText": "Daily Hot",
     "NodesMenuText": "Nodes",
+    "SearchMenuText": "Search",
     "JustNow": "Just now",
     "SecondsAgo": "{0} seconds ago",
     "MinutesAgo": "{0} minutes ago",

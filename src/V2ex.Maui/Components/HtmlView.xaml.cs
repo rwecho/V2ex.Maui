@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using V2ex.Maui.Services;
 
 namespace V2ex.Maui.Components;
@@ -11,9 +12,20 @@ public partial class HtmlView : ContentView
     }
 
     public static readonly BindableProperty TextProperty = BindableProperty.Create(
-      nameof(Text),
-      typeof(string),
-      typeof(HtmlView), propertyChanged: TextChanged, propertyChanging: TextChanging);
+        nameof(Text),
+        typeof(string),
+        typeof(HtmlView), propertyChanged: TextChanged, propertyChanging: TextChanging);
+
+
+
+    public ICommand TapCommand
+    {
+        get { return (ICommand)GetValue(TapCommandProperty); }
+        set { SetValue(TapCommandProperty, value); }
+    }
+
+    public static readonly BindableProperty TapCommandProperty =
+        BindableProperty.Create(nameof(TapCommand), typeof(ICommand), typeof(HtmlView));
 
     private static void TextChanging(BindableObject bindable, object oldValue, object newValue)
     {
@@ -81,6 +93,10 @@ public partial class HtmlView : ContentView
     private void WebView_Navigating(object sender, WebNavigatingEventArgs e)
     {
         var url = e.Url;
+        if (TapCommand != null && TapCommand.CanExecute(url))
+        {
+            TapCommand.Execute(url);
+        }
         this.UrlTapped?.Invoke(this, url);
         e.Cancel = true;
     }

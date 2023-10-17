@@ -52,4 +52,11 @@ public partial class AppShellViewModel : ObservableObject, ITransientDependency
         await this.NavigationManager.GoToAsync(nameof(NodesPage), true);
         this.FlyoutIsPresented = false;
     }
-}
+
+    [RelayCommand]
+    public async Task GotoSearchPage(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(SearchPage), true);
+        this.FlyoutIsPresented = false;
+    }
+    }

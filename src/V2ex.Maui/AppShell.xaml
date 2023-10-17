@@ -55,6 +55,16 @@
         </MenuItem.IconImageSource>
     </MenuItem>
 
+    <MenuItem Text="{services:L Text=SearchMenuText}"
+           Command="{Binding GotoSearchPageCommand}">
+        <MenuItem.IconImageSource>
+            <FontImageSource Glyph="{x:Static fonts:FaSolid.MagnifyingGlass}"
+                          FontFamily="FaSolid"
+                          Color="{StaticResource Zinc400}"></FontImageSource>
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+
     <!--<MenuItem Text="{services:L Text=SettingsMenuText}"
               Command="{Binding GotoSettingsPageCommand}">
         <MenuItem.IconImageSource>

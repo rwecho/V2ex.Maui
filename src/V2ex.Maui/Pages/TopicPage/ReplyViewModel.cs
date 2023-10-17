@@ -11,10 +11,12 @@ public partial class ReplyViewModel : ObservableObject
 {
     public ReplyViewModel(TopicInfo.ReplyInfo reply,
         string? once,
+        bool isOp,
         NavigationManager navigationManager, ICurrentUser currentUser,
         ApiService apiService,
         IStringLocalizer<MauiResource> localizer)
     {
+        this.IsOp = isOp;
         this.Once = once;
         this.Id = reply.Id.Replace("r_", "");
         this.Content = reply.Content;
@@ -47,13 +49,15 @@ public partial class ReplyViewModel : ObservableObject
     private int _floor, _alreadyThanked;
 
     [ObservableProperty]
-    private bool _thanked;
+    private bool _thanked, _isOp;
 
 
     private NavigationManager NavigationManager { get; }
     private ICurrentUser CurrentUser { get; }
     private ApiService ApiService { get; }
     private IStringLocalizer<MauiResource> Localizer { get; }
+
+    public EventHandler<CallOutEventArgs>? CallOut;
 
     [RelayCommand]
     public async Task TapUser(CancellationToken cancellationToken)
@@ -80,5 +84,28 @@ public partial class ReplyViewModel : ObservableObject
         this.AlreadyThanked += 1;
 
         await Toast.Make(string.Format(this.Localizer["ThanksHaveBeenSent"], this.UserName)).Show();
+    }
+
+    [RelayCommand]
+    public Task UrlTap(string url)
+    {
+        var handler = new TapUrlHandler(url);
+        switch (handler.Target)
+        {
+            case TapTarget.User:
+                if(!string.IsNullOrEmpty(handler.UserName))
+                {
+                    this.CallOut?.Invoke(this, new CallOutEventArgs(this.UserName, handler.UserName, this.Floor));
+                }
+                break;
+            case TapTarget.Image:
+                break;
+            case TapTarget.Link:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return Task.CompletedTask;
     }
 }

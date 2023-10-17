@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>V2ex.Maui</ApplicationTitle>
+		<ApplicationTitle>V2ex MAUI</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>top.rwecho.v2ex.maui</ApplicationId>
@@ -65,13 +65,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="DebounceThrottle" Version="2.0.0" />
 		<PackageReference Include="Fedandburk.Serilog.Sinks.AppCenter" Version="1.0.3" />
 		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="5.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.5.23280.8" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-preview.5.23280.8" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="7.3.0-rc.3" />
@@ -92,8 +92,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-rc.1.9171" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.1.9171" />
+		<PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-rc.2.9373" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.2.9373" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\TopicPage\RepliesPopup.xaml.cs">
+	    <DependentUpon>RepliesPopup.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\SearchPage\SearchPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TopicPage\RepliesPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

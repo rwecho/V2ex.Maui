@@ -9,7 +9,7 @@
     "username": "用户名",
     "password": "密码",
     "captcha": "验证码",
-
+    "LogOut": "登出",
     "Login": "登录",
     "LoginPageTitle": "登录",
     "NotificationsPageTitle": "消息",
@@ -31,6 +31,7 @@
     "MyFavoriteMenuText": "收藏",
     "DailyHotMenuText": "今日热议",
     "NodesMenuText": "节点",
+    "SearchMenuText": "搜索",
     "JustNow": "刚刚",
     "SecondsAgo": "{0} 秒前",
     "MinutesAgo": "{0} 分钟前",

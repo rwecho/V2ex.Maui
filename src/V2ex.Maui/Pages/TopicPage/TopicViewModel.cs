@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Localization;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
@@ -39,7 +40,7 @@ public partial class TopicViewModel : ObservableObject
             .Select((o, index) => new SupplementViewModel(index, o))
             .ToList();
         this.Replies = new ObservableCollection<ReplyViewModel>(
-            topic.Replies.Select(x => InstanceActivator.Create<ReplyViewModel>(x, this.Once ?? "")));
+            topic.Replies.Select(CreateReplyViewModel));
         this.NavigationManager = navigationManager;
         this.CurrentUser = currentUser;
         this.ApiService = apiService;
@@ -106,9 +107,24 @@ public partial class TopicViewModel : ObservableObject
 
         foreach (var item in topic.Replies)
         {
-            var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item);
-            this.Replies.Add(replyViewModel);
+            this.Replies.Add(CreateReplyViewModel(item));
         }
+    }
+
+    private ReplyViewModel CreateReplyViewModel(TopicInfo.ReplyInfo item)
+    {
+        var isOp = this.UserName == item.UserName;
+        var replyViewModel = InstanceActivator.Create<ReplyViewModel>(item, this.Once ?? "",
+            isOp);
+        replyViewModel.CallOut += this.CallOut;
+        return replyViewModel;
+    }
+
+    private void CallOut(object? sender, CallOutEventArgs e)
+    {
+        var replies = this.Replies.Where(o => o.UserName == e.Target && o.Floor < e.Floor)
+            .ToArray();
+        WeakReferenceMessenger.Default.Send(new CallOutRepliesMessage(replies));
     }
 
     [ObservableProperty]
