@@ -28,6 +28,9 @@
                         <Span Text="耗时: "></Span>
                         <Span Text="{Binding Took}"></Span>
                         <Span Text="ms"></Span>
+                        <Span Text=" 约 "></Span>
+                        <Span Text="{Binding Total}"></Span>
+                        <Span Text=" 条"></Span>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -62,6 +65,8 @@
         <CollectionView Grid.Row="1" ItemsSource="{Binding SearchItems}"
                         ItemTemplate="{StaticResource SearchItemTemplate}"
                         Header="{Binding .}"
-                        HeaderTemplate="{StaticResource SearchHeaderTemplate}"></CollectionView>
+                        HeaderTemplate="{StaticResource SearchHeaderTemplate}"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"></CollectionView>
     </Grid>
 </ContentPage>

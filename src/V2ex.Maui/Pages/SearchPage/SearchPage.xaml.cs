@@ -15,5 +15,6 @@ public partial class SearchPage : ContentPage, ITransientDependency
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         Task.Run(() => this.ViewModel!.Load());
+
     }
 }
