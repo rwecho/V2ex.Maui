@@ -40,16 +40,16 @@
                                    VerticalTextAlignment="Center"
                                    TextColor="{StaticResource Zinc400}"></Label>
                         </HorizontalStackLayout>
-                        
+
                         <BoxView Grid.Row="1" Grid.ColumnSpan="2"
                                  Style="{StaticResource HorizontalSeparator}" ></BoxView>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GotoThemePageCommand}"></TapGestureRecognizer>
                         </Grid.GestureRecognizers>
-                        
+
                     </Grid>
 
-                    <Button Text="退出" TextColor="{StaticResource Zinc700}" 
+                    <Button Text="{services:L Text=LogOut}" TextColor="{StaticResource Zinc700}" 
                             BackgroundColor="{StaticResource Gray100}"
                             Command="{Binding LogoutCommand}"></Button>
                 </VerticalStackLayout>

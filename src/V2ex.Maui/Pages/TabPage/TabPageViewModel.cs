@@ -16,7 +16,7 @@ public partial class TabPageViewModel : BaseViewModel, IQueryAttributable
     private NewsInfoViewModel? _newsInfo;
 
     [ObservableProperty]
-    private bool _navBarIsVisible = false, _isReloading = false;
+    private bool _navBarIsVisible = true, _isReloading = false;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {

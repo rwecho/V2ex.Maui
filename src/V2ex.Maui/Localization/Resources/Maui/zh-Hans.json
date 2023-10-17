@@ -9,7 +9,7 @@
     "username": "用户名",
     "password": "密码",
     "captcha": "验证码",
-
+    "LogOut": "登出",
     "Login": "登录",
     "LoginPageTitle": "登录",
     "NotificationsPageTitle": "消息",

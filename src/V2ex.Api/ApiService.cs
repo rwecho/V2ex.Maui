@@ -203,18 +203,11 @@ public class ApiService
         }
         else
         {
-            var content = await response.Content.ReadAsStringAsync();
-
-            throw new InvalidOperationException($"Can not login with reason: {response.ReasonPhrase}");
+            var problem = await response.GetEncapsulatedData<LoginProblem>(this.Logger);
+            throw new InvalidOperationException(string.Join(" ", problem.Errors));
         }
 
-        var newsInfo = await response.GetEncapsulatedData<NewsInfo, LoginProblem>((error) =>
-        {
-            if (error.HasProblem())
-            {
-                throw new InvalidOperationException(string.Join("\r\n", error.Errors));
-            }
-        }, this.Logger);
+        var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
 
         newsInfo.Url = url;
         return newsInfo;
