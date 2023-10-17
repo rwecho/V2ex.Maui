@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="V2ex.Maui.Pages.SearchPage"
+             Title="SearchPage"
+             Shell.NavBarIsVisible="False"
+             x:DataType="pages:SearchPageViewModel">
+    <ContentPage.Resources>
+        <toolkit:IsStringNullOrEmptyConverter x:Key="IsStringNullOrEmptyConverter"></toolkit:IsStringNullOrEmptyConverter>
+        <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"></toolkit:IsStringNotNullOrEmptyConverter>
+
+        <DataTemplate x:Key="HistoryItemTemplate">
+            <Grid ColumnDefinitions="auto,*,auto" >
+                <Label Grid.Column="0" Text="{Binding .}" VerticalOptions="Center" ></Label>
+                <Label Grid.Column="2" Text="{x:Static fonts:FaSolid.Share }" 
+                                   FontFamily="FaSolid"></Label>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchHeaderTemplate" x:DataType="pages:SearchPageViewModel">
+            <Label  TextColor="{AppThemeBinding Light={StaticResource Zinc400}}"
+                   HorizontalOptions="End"
+                    FontSize="{StaticResource XS}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="耗时: "></Span>
+                        <Span Text="{Binding Took}"></Span>
+                        <Span Text="ms"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplate" x:DataType="pages:SearchItemViewModel">
+            <Grid RowDefinitions="auto,auto,auto,auto">
+                <Label Text="{Binding Title}"></Label>
+                <Label Grid.Row="1" Text="{Binding Content}" MaxLines="3" FontSize="{StaticResource SM}"></Label>
+                <Label Grid.Row="2"  FontSize="{StaticResource XS}" TextColor="{AppThemeBinding Light={StaticResource Zinc400}}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Creator}"></Span>
+                            <Span Text=" 于 "></Span>
+                            <Span Text="{Binding Created}"></Span>
+                            <Span Text=" 发表 "></Span>
+                            <Span Text="{Binding Replies}"></Span>
+                            <Span Text=" 回复"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <BoxView Grid.Row="3" Style="{StaticResource HorizontalSeparator}" Margin="0,8"></BoxView>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapTopicCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <Grid Padding="8" RowDefinitions="auto,*">
+        <Entry Text="{Binding SearchText}" ReturnType="Search" ReturnCommand="{Binding SearchCommand}" ></Entry>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding SearchItems}"
+                        ItemTemplate="{StaticResource SearchItemTemplate}"
+                        Header="{Binding .}"
+                        HeaderTemplate="{StaticResource SearchHeaderTemplate}"></CollectionView>
+    </Grid>
+</ContentPage>

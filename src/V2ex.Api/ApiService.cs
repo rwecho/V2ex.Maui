@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static V2ex.Api.MemberPageInfo;
 
 namespace V2ex.Api;
 
@@ -101,11 +100,13 @@ public class ApiService
 
     public async Task<SoV2EXSearchResultInfo?> Search(string keyword, int from = 0, string sort = "created")
     {
+        // https://github.com/bynil/sov2ex/blob/v2/API.md
         var queryString = new Dictionary<string, string>
         {
             { "q", keyword },
             { "from", from.ToString() },
-            { "sort", sort }
+            { "sort", sort },
+            { "size", 50.ToString() }
         };
 
         var url = $"https://www.sov2ex.com/api/search?{EncodeQuerystring(queryString)}";
