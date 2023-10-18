@@ -508,6 +508,13 @@ public class ApiService
             })
         };
         var response = await this.HttpClient.SendAsync(request);
+
+        if (response.StatusCode != System.Net.HttpStatusCode.Found)
+        {
+            throw new InvalidOperationException("Reply a topic success must be a redirect response.");
+        }
+        var newUrl = response.Headers.Location.ToString();
+        response = await this.HttpClient.GetAsync(newUrl);
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         result.Url = url;
         return result;

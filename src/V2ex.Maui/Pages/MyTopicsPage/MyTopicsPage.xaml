@@ -37,15 +37,17 @@
                      Command="{Binding GotoMyFollowingPageCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{x:Static fonts:FaSolid.Star}"
-                   FontFamily="FaSolid"
-                   Color="#c6c6c6"/>
+                                 Size="16"
+                                 FontFamily="FaSolid"
+                                 Color="{AppThemeBinding Light={StaticResource Zinc400}, Dark={StaticResource Zinc700}}"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{services:L Text=Nodes}" Command="{Binding GotoMyNodesPageCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{x:Static fonts:FaSolid.CircleNodes}"
-                    FontFamily="FaSolid"
-                    Color="#c6c6c6"/>  
+                                 FontFamily="FaSolid"
+                                 Size="16"
+                                 Color="{AppThemeBinding Light={StaticResource Zinc400}, Dark={StaticResource Zinc700}}"/>  
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

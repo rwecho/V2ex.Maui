@@ -152,7 +152,7 @@ public partial class TopicViewModel : ObservableObject
     private ObservableCollection<ReplyViewModel> _replies;
 
     [ObservableProperty]
-    private string? _inputText = "hello world";
+    private string? _inputText = "";
 
     private NavigationManager NavigationManager { get; }
     private ICurrentUser CurrentUser { get; }
@@ -236,7 +236,19 @@ public partial class TopicViewModel : ObservableObject
             return;
         }
 
-        await this.ApiService.ReplyTopic(this.Id, this.InputText, this.Once);
+        var newTopic = await this.ApiService.ReplyTopic(this.Id, this.InputText, this.Once);
+
+        await Toast.Make(this.Localizer["ReplyTopicSuccess"]).Show(cancellationToken);
         this.InputText = string.Empty;
+
+        // todo: how to display the new reply? and highlight it
+        this.Replies.Clear();
+        this.CurrentPage = newTopic.CurrentPage;
+        this.MaximumPage = newTopic.MaximumPage;
+        this.ReplyStats = newTopic.ReplyStats;
+        foreach (var item in newTopic.Replies)
+        {
+            this.Replies.Add(CreateReplyViewModel(item));
+        }
     }
 }
