@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using V2ex.Api;
 using V2ex.Maui.Services;
 
@@ -21,12 +23,15 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     private TopicViewModel? _topic;
 
-    public TopicPageViewModel(ResourcesService resourcesService, 
+    public TopicPageViewModel(ResourcesService resourcesService,
         NavigationManager navigationManager)
     {
         this.ResourcesService = resourcesService;
         this.NavigationManager = navigationManager;
+
+        WeakReferenceMessenger.Default.Register<ShowReplyInputWithUserNameMessage>(this, this.ShowReplyInputWithUserNameHandler);
     }
+
 
     private ResourcesService ResourcesService { get; }
     private NavigationManager NavigationManager { get; }
@@ -89,5 +94,32 @@ public partial class TopicPageViewModel : BaseViewModel, IQueryAttributable
         this.MaximumPage = topicInfo.MaximumPage;
         this.LoadAll = this.CurrentPage >= this.MaximumPage;
         this.Topic = InstanceActivator.Create<TopicViewModel>(topicInfo);
+    }
+
+    [RelayCommand]
+    public Task ShowReplyPopup(CancellationToken cancellationToken)
+    {
+        if (this.Topic == null)
+        {
+            return Task.CompletedTask;
+        }
+
+        WeakReferenceMessenger.Default.Send(new ShowReplyInputMessage(this.Topic));
+
+        return Task.CompletedTask;
+    }
+
+
+    private void ShowReplyInputWithUserNameHandler(object recipient, ShowReplyInputWithUserNameMessage message)
+    {
+        if(this.Topic == null)
+        {
+            return;
+        }
+
+        // Add the @username to the header of the input box
+        this.Topic.InputText = $"@{message.Value} ";
+
+        WeakReferenceMessenger.Default.Send(new ShowReplyInputMessage(this.Topic));
     }
 }

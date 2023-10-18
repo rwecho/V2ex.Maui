@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
+             x:Class="V2ex.Maui.Pages.ReplyPopup"
+             VerticalOptions="End"
+             HorizontalOptions="Fill"
+             CanBeDismissedByTappingOutsideOfPopup="True"
+             x:DataType="pages:TopicViewModel">
+    <Grid WidthRequest="{Binding Source={x:RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}, Path=Width}" 
+          ColumnDefinitions="*,auto"
+          Padding="8"
+          BackgroundColor="{AppThemeBinding Light={StaticResource White}}">
+        <Entry Grid.Column="0" Text="{Binding  InputText}"></Entry>
+        <Button Grid.Column="1" Text="{x:Static fonts:FaSolid.PaperPlane}"
+                FontFamily="FaSolid"
+                TextColor="{AppThemeBinding Light={StaticResource Zinc700}, Dark={StaticResource Zinc400 } }"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                Command="{Binding SubmitReplyCommand}"
+                Clicked="Button_Clicked"></Button>
+    </Grid>
+</toolkit:Popup>

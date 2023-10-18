@@ -146,10 +146,13 @@ public partial class TopicViewModel : ObservableObject
     [ObservableProperty]
     private int _currentPage, _maximumPage, _thanks, _views, _likes;
     [ObservableProperty]
-    private bool _liked, _thanked;
+    private bool _liked, _thanked, _isInputting; // the IsInputting represents the ReplyPopup is showing and accepting input
 
     [ObservableProperty]
     private ObservableCollection<ReplyViewModel> _replies;
+
+    [ObservableProperty]
+    private string? _inputText = "hello world";
 
     private NavigationManager NavigationManager { get; }
     private ICurrentUser CurrentUser { get; }
@@ -223,5 +226,17 @@ public partial class TopicViewModel : ObservableObject
         {
             await Toast.Make(result.Message).Show();
         }
+    }
+
+    [RelayCommand]
+    public async Task SubmitReply(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(this.InputText) || string.IsNullOrEmpty(this.Once))
+        {
+            return;
+        }
+
+        await this.ApiService.ReplyTopic(this.Id, this.InputText, this.Once);
+        this.InputText = string.Empty;
     }
 }

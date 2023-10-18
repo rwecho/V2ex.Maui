@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Localization;
 using V2ex.Api;
 using V2ex.Maui.Services;
@@ -51,7 +53,6 @@ public partial class ReplyViewModel : ObservableObject
     [ObservableProperty]
     private bool _thanked, _isOp;
 
-
     private NavigationManager NavigationManager { get; }
     private ICurrentUser CurrentUser { get; }
     private ApiService ApiService { get; }
@@ -93,7 +94,7 @@ public partial class ReplyViewModel : ObservableObject
         switch (handler.Target)
         {
             case TapTarget.User:
-                if(!string.IsNullOrEmpty(handler.UserName))
+                if (!string.IsNullOrEmpty(handler.UserName))
                 {
                     this.CallOut?.Invoke(this, new CallOutEventArgs(this.UserName, handler.UserName, this.Floor));
                 }
@@ -106,6 +107,57 @@ public partial class ReplyViewModel : ObservableObject
                 throw new ArgumentOutOfRangeException();
         }
 
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    public Task ShowMore(CancellationToken cancellationToken)
+    {
+        WeakReferenceMessenger.Default.Send(new ShowMoreReplyActionsMessage(this));
+
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    public async Task Copy(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(this.Content))
+        {
+            return;
+        }
+        // parse inner text of the content.
+        var doc = new HtmlDocument();
+        doc.LoadHtml(this.Content);
+        var innerText = doc.DocumentNode.InnerText;
+
+        await Clipboard.SetTextAsync(innerText);
+        await Toast.Make(string.Format(this.Localizer["CopySuccess"], innerText)).Show(cancellationToken);
+    }
+
+    [RelayCommand]
+    public async Task GotoReplierPage(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(MemberPage), true, new Dictionary<string, object>
+        {
+            { MemberPageViewModel.QueryUserNameKey, this.UserName }
+        });
+    }
+
+    [RelayCommand]
+    public async Task Ignore(CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(this.Once))
+        {
+            return;
+        }
+        await this.ApiService.IgnoreReply(this.Id, this.Once);
+        await Toast.Make(string.Format(this.Localizer["IgnoreSuccess"], this.UserName)).Show(cancellationToken);
+    }
+
+    [RelayCommand]
+    public Task Reply(CancellationToken cancellationToken)
+    {
+        WeakReferenceMessenger.Default.Send(new ShowReplyInputWithUserNameMessage(this.UserName));
         return Task.CompletedTask;
     }
 }

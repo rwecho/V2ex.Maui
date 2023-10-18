@@ -22,17 +22,6 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource Gray100}"></Setter>
         <Setter Property="WidthRequest" Value="1"></Setter>
     </Style>
-
-
-
-
-
-    public static class Controls
-    {
-        public static void Init()
-        {
-        }
-    }
     <Style x:Key="RoundBadge" TargetType="BoxView">
         <Setter Property="Color" Value="{DynamicResource Gray100}"></Setter>
         <Setter Property="BackgroundColor" Value="Transparent"></Setter>

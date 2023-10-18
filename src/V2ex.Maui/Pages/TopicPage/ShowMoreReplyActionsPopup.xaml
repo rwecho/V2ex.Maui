@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:V2ex.Maui.Pages"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="V2ex.Maui.Pages.ShowMoreReplyActionsPopup"
+             VerticalOptions="End"
+             HorizontalOptions="Fill"
+             CanBeDismissedByTappingOutsideOfPopup="True"
+             x:DataType="pages:ReplyViewModel">
+    <VerticalStackLayout WidthRequest="{Binding Source={x:RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}, Path=Width}"
+          MaximumHeightRequest="350"
+          Padding="8"
+          BackgroundColor="{AppThemeBinding Light={StaticResource White}}">
+        <Button Text="回复评论" VerticalOptions="Center"
+                TextColor="{AppThemeBinding Light={StaticResource Zinc600}, Dark={StaticResource Zinc400}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                Command="{Binding ReplyCommand}"
+                Clicked="Reply_Clicked"></Button>
+        <BoxView Style="{StaticResource HorizontalSeparator}"></BoxView>
+        <Button Text="拷贝评论" VerticalOptions="Center"
+                TextColor="{AppThemeBinding Light={StaticResource Zinc600}, Dark={StaticResource Zinc400}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                Command="{Binding CopyCommand}"
+                Clicked="Copy_Clicked"></Button>
+        <BoxView Style="{StaticResource HorizontalSeparator}"></BoxView>
+        <Button Text="忽略评论" VerticalOptions="Center"
+                TextColor="{AppThemeBinding Light={StaticResource Zinc600}, Dark={StaticResource Zinc400}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                Command="{Binding IgnoreCommand}"
+                Clicked="Ignore_Clicked"></Button>
+        <BoxView Style="{StaticResource HorizontalSeparator}"></BoxView>
+        <Button Text="他的主页" VerticalOptions="Center"
+                TextColor="{AppThemeBinding Light={StaticResource Zinc600}, Dark={StaticResource Zinc400}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                Command="{Binding GotoReplierPageCommand}"
+                Clicked="GotoReplierPage_Clicked"></Button>
+    </VerticalStackLayout>
+</toolkit:Popup>

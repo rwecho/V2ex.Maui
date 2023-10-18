@@ -105,7 +105,11 @@
 
                     <Label Grid.Column="2" Grid.Row="2" Text="{x:Static fonts:FaSolid.EllipsisVertical }"
                         FontFamily="FaSolid"
-                        TextColor="{StaticResource Zinc400}"></Label>
+                        TextColor="{StaticResource Zinc400}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowMoreCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </Grid>
 
                 <BoxView Margin="0,4,0,0" Style="{StaticResource HorizontalSeparator}"></BoxView>
@@ -274,34 +278,57 @@
     <Grid x:Name="StateContainer"
         toolkit:StateContainer.CurrentState="{Binding CurrentState}"
         toolkit:StateContainer.CanStateChange="{Binding CanCurrentStateChange}">
+
         <toolkit:StateContainer.StateViews>
             <ActivityIndicator toolkit:StateView.StateKey="Loading"
                                Color="{StaticResource Violet900}"
                                IsRunning="True"
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
-            <RefreshView toolkit:StateView.StateKey="Success"
-                         HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
-                         RefreshColor="{StaticResource Violet900}"
-                         Command="{Binding LoadCommand}">
-                <CollectionView ItemsSource="{Binding Topic.Replies}"
-                                SelectionMode="None"
-                                ItemTemplate="{StaticResource ReplyCard}"
-                                RemainingItemsThreshold="5"
-                                RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
-                                Header="{Binding Topic}"
-                                HeaderTemplate="{StaticResource HeaderTemplate}"
-                                Footer="{Binding .}"
-                                FooterTemplate="{StaticResource FooterTemplate}">
-                    <CollectionView.Behaviors>
-                        <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
-                    </CollectionView.Behaviors>
-                </CollectionView>
-            </RefreshView>
+
+            <Grid toolkit:StateView.StateKey="Success">
+                <RefreshView 
+                             HeightRequest="{Binding Height, Source={x:Reference StateContainer}}"
+                             RefreshColor="{StaticResource Violet900}"
+                             Command="{Binding LoadCommand}">
+                    <CollectionView ItemsSource="{Binding Topic.Replies}"
+                                    SelectionMode="None"
+                                    ItemTemplate="{StaticResource ReplyCard}"
+                                    RemainingItemsThreshold="5"
+                                    RemainingItemsThresholdReachedCommand="{Binding RemainingReachedCommand}"
+                                    Header="{Binding Topic}"
+                                    HeaderTemplate="{StaticResource HeaderTemplate}"
+                                    Footer="{Binding .}"
+                                    FooterTemplate="{StaticResource FooterTemplate}">
+                        <CollectionView.Behaviors>
+                            <behaviors:CollectionViewScrollBehavior ParentPage="{Binding Source={x:Reference Root}}"></behaviors:CollectionViewScrollBehavior>
+                        </CollectionView.Behaviors>
+                    </CollectionView>
+                </RefreshView>
+                <Button VerticalOptions="End"
+                        HorizontalOptions="End" 
+                        ZIndex="999"
+                        Margin="0,0,16,48"
+                        Text="{x:Static fonts:FaSolid.CommentDots}"
+                        FontFamily="FaSolid"
+                        TextColor="{AppThemeBinding Light={StaticResource Zinc700}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}}"
+                        CornerRadius="40"
+                        Command="{Binding ShowReplyPopupCommand}"
+                        IsVisible="{Binding Topic.IsInputting, Converter={StaticResource InvertedBoolConverter}}"
+                    >
+                    <Button.Shadow>
+                        <Shadow Brush="{StaticResource Gray500Brush}"
+                                Offset="10,10"
+                                Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+            </Grid>
             <Label toolkit:StateView.StateKey="Error"
                    Text="{Binding Exception}"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"></Label>
         </toolkit:StateContainer.StateViews>
+
     </Grid>
 </ContentPage>
