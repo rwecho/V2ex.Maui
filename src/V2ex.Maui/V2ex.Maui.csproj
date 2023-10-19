@@ -44,7 +44,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" BaseSize="64,64"  ForegroundScale="0.55"/>
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="256,192" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="192,96" />
 
 		<!-- Images -->
 		<!-- issue: https://github.com/dotnet/maui/issues/5652#issuecomment-1148861158 -->
