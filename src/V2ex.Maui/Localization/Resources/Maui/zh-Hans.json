@@ -49,6 +49,9 @@
     "ThanksHaveBeenSent": "感谢已经发送给 {0}",
     "TopicFavoriteSuccess": "话题收藏成功",
     "TopicUnfavoriteSuccess": "话题已经取消收藏",
-    "TopicThankSuccess": "话题感谢成功"
+    "TopicThankSuccess": "话题感谢成功",
+    "NightMode": "夜间模式",
+    "HomeSettings": "首页设置",
+    "HomeSettingPageTitle": "首页设置"
   }
 }

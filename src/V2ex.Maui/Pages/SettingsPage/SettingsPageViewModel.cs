@@ -55,9 +55,15 @@ public partial class SettingsPageViewModel : BaseViewModel, IQueryAttributable
     }
 
     [RelayCommand]
-    public async Task GotoThemePage(CancellationToken cancellation)
+    public async Task GotoThemePage(CancellationToken cancellationToken)
     {
         await this.NavigationManager.GoToAsync(nameof(ThemeSettingsPage), true);
+    }
+
+    [RelayCommand]
+    public async Task GotoHomeSettingPage(CancellationToken cancellationToken)
+    {
+        await this.NavigationManager.GoToAsync(nameof(HomeSettingPage), true);
     }
 
     protected override Task OnLoad(CancellationToken cancellationToken)

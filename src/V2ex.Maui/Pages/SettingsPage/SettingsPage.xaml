@@ -23,33 +23,37 @@
                                HorizontalOptions="Center"
                                VerticalOptions="Center" />
 
-            <ScrollView toolkit:StateView.StateKey="Success" Margin="16">
+            <ScrollView toolkit:StateView.StateKey="Success" Margin="0,16">
                 <VerticalStackLayout Spacing="8">
-                    <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto"
-                          RowSpacing="8">
-                        <Label Text="{services:L Text=NightMode}" 
-                               FontSize="Body"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Start"
-                               VerticalOptions="Center"></Label>
-                        <HorizontalStackLayout Grid.Column="1"
-                               HorizontalOptions="End">
-                            <Label Text="{Binding NightModeText}" TextColor="{StaticResource Zinc400}"></Label>
-                            <Label Text="{x:Static fonts:FaSolid.ChevronRight }" 
-                                   FontFamily="FaSolid"
-                                   VerticalTextAlignment="Center"
-                                   TextColor="{StaticResource Zinc400}"></Label>
-                        </HorizontalStackLayout>
-
-                        <BoxView Grid.Row="1" Grid.ColumnSpan="2"
-                                 Style="{StaticResource HorizontalSeparator}" ></BoxView>
+                    <Grid ColumnDefinitions="auto,*,auto" Margin="16,0" ColumnSpacing="8">
+                        <Label Text="{services:L Text=NightMode}"></Label>
+                        <Label Grid.Column="1" HorizontalTextAlignment="End"
+                               Text="{Binding NightModeText}" TextColor="{StaticResource Zinc400}"></Label>
+                        <Label Grid.Column="2" Text="{x:Static fonts:FaSolid.AngleRight }" 
+                           FontFamily="FaSolid"
+                           VerticalTextAlignment="Center"
+                           TextColor="{StaticResource Zinc400}"></Label>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GotoThemePageCommand}"></TapGestureRecognizer>
                         </Grid.GestureRecognizers>
-
                     </Grid>
 
-                    <Button Text="{services:L Text=LogOut}" TextColor="{StaticResource Zinc700}" 
+                    <BoxView Style="{StaticResource HorizontalSeparator}" ></BoxView>
+
+                    <Grid ColumnDefinitions="auto,*" Margin="16,0">
+                        <Label Text="{services:L Text=HomeSettings}"></Label>
+                        <Label Grid.Column="1" Text="{x:Static fonts:FaSolid.AngleRight}"
+                               FontFamily="FaSolid"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="End"
+                               TextColor="{AppThemeBinding Light={StaticResource Zinc400}}"></Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoHomeSettingPageCommand}"></TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <BoxView Style="{StaticResource HorizontalSeparator}" ></BoxView>
+
+                    <Button Margin="16,0" Text="{services:L Text=LogOut}" TextColor="{StaticResource Zinc700}" 
                             BackgroundColor="{StaticResource Gray100}"
                             Command="{Binding LogoutCommand}"></Button>
                 </VerticalStackLayout>

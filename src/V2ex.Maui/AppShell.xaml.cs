@@ -3,16 +3,19 @@ using V2ex.Maui.Components;
 using V2ex.Maui.Pages;
 using V2ex.Maui.Services;
 using Volo.Abp.DependencyInjection;
+using IPreferences = V2ex.Api.IPreferences;
 
 namespace V2ex.Maui;
 
 public partial class AppShell : Shell, ITransientDependency
 {
     public AppShell(IServiceProvider serviceProvider, AppShellViewModel viewModel,
-        AppPreferencesManager appPreferencesManager)
+        AppPreferencesManager appPreferencesManager,
+        IPreferences preferences)
     {
         this.ServiceProvider = serviceProvider;
         this.AppPreferencesManager = appPreferencesManager;
+        this.Preferences = preferences;
         InitializeComponent();
         this.BindingContext =this.ViewModel = viewModel;
         InitializeDefaultFlyoutItem();
@@ -36,6 +39,7 @@ public partial class AppShell : Shell, ITransientDependency
     }
     private IServiceProvider ServiceProvider { get; }
     public AppPreferencesManager AppPreferencesManager { get; }
+    public IPreferences Preferences { get; }
     private AppShellViewModel ViewModel { get; }
 
     protected override bool OnBackButtonPressed()
@@ -47,7 +51,11 @@ public partial class AppShell : Shell, ITransientDependency
 
     private void InitializeDefaultFlyoutItem()
     {
-        var tabDefinitions = TabDefinition.GetTabDefinitions();
+        const string TabDefinitionsKey = "TabDefinitionsKey";
+        var tabDefinitions = this.Preferences.Get(TabDefinitionsKey, TabDefinition.GetTabDefinitions())
+            .Where(o => o.IsVisible)
+            .OrderBy(o => o.Order)
+            .ToArray();
 
 #if ANDROID || IOS
         var tab = new Tab

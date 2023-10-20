@@ -98,6 +98,7 @@ public class AppModule : AbpModule
         routingManager.Register(nameof(NodesPage), typeof(NodesPage));
         routingManager.Register(nameof(ThemeSettingsPage), typeof(ThemeSettingsPage));
         routingManager.Register(nameof(SearchPage), typeof(SearchPage));
+        routingManager.Register(nameof(HomeSettingPage), typeof(HomeSettingPage));
 
         AsyncHelper.RunSync(async () =>
         {

@@ -6,12 +6,14 @@
               xmlns:behaviors="clr-namespace:V2ex.Maui.Behaviors"
               xmlns:services="clr-namespace:V2ex.Maui.Services"
               xmlns:converters="clr-namespace:V2ex.Maui.Converters"
+             xmlns:fonts="clr-namespace:V2ex.Maui.Services.Fonts"
              x:Class="V2ex.Maui.Pages.MainPage"
              Shell.NavBarIsVisible="True"
             Title="{services:L Text=V2ex}">
     <VerticalStackLayout>
         <Image Source="dotnet_bot.png" />
-        <Label Text="hello"> </Label>
+        <Label Text="{x:Static fonts:FaSolid.ChevronRight}" FontFamily="FaSolid"> </Label>
 
+        <Button Text="Hello world"></Button>
     </VerticalStackLayout>
 </ContentPage>
