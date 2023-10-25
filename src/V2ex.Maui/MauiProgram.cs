@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
+#if ! IOS
 using SByteDev.Serilog.Sinks.AppCenter;
+#endif
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
@@ -52,7 +54,9 @@ public static class MauiProgram
         .MinimumLevel.Verbose()
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .Enrich.FromLogContext()
+#if ! IOS
         .WriteTo.AppCenter(LogEventLevel.Information)
+#endif
         .WriteTo.File(logFilePath)
         .CreateLogger();
     }

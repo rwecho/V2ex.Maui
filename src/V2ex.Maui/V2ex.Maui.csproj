@@ -22,14 +22,6 @@
 		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1000000</ApplicationVersion>
 
-		<!-- AOT is not working in action -->
-		<!-- <PublishAot Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">true</PublishAot>
-		<PublishAot Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">true</PublishAot>
-
-		<IsAotCompatible Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">true</IsAotCompatible>
-		<IsAotCompatible Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">true</IsAotCompatible> -->
-
-		<PublishReadyToRun Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">true</PublishReadyToRun>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
@@ -68,10 +60,8 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="DebounceThrottle" Version="2.0.0" />
-		<PackageReference Include="Fedandburk.Serilog.Sinks.AppCenter" Version="1.0.3" />
-		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="5.0.2" />
+
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Volo.Abp.Autofac" Version="7.3.0-rc.3" />
@@ -79,8 +69,27 @@
 		<PackageReference Include="Volo.Abp.Localization" Version="7.3.0-rc.3" />
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionV2exMauiHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarV2exMauiHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionV2exMauiHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'ios'">
+	    <PackageReference Include="Fedandburk.Serilog.Sinks.AppCenter" Version="1.0.3" />
+		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="5.0.2" />
+    </ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
+	</ItemGroup>
+
+	<!-- Build Properties must be defined within these property groups to ensure successful publishing
+       to the Mac App Store. See: https://aka.ms/maui-publish-app-store#define-build-properties-in-your-project-file -->
+    <!-- <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Debug'">
+        <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.Debug.plist</CodesignEntitlements>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Release'">
+        <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.Release.plist</CodesignEntitlements>
+        <UseHardenedRuntime>true</UseHardenedRuntime>
+    </PropertyGroup> -->
 	<ItemGroup>
 	  <ProjectReference Include="..\V2ex.Api\V2ex.Api.csproj" />
 	</ItemGroup>
@@ -89,11 +98,6 @@
 	  <MauiAsset Update="Resources\Raw\HtmlContainer.html">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
 	  </MauiAsset>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.0-rc.2.9373" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.2.9373" />
 	</ItemGroup>
 
 	<ItemGroup>
