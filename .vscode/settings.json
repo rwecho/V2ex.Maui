@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "V2ex.Maui.sln"
+  "dotnet.defaultSolution": "V2ex.Maui.sln",
+  "cSpell.words": ["Blazor", "flowbite", "tailwindcss", "V2ex"]
 }

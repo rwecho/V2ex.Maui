@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+<div class="flex flex-col w-full h-screen">
+    <NavBar></NavBar>
+    <Tabs></Tabs>
+
+    <div class="flex-auto bg-yellow-100 overflow-x-hidden overflow-y-auto">
+        @Body
+
+        @for (var i = 0; i < 2; i++)
+        {
+            <div>@i</div>
+        }
+    </div>
+
+</div>
