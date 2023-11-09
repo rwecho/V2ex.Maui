@@ -14,14 +14,13 @@
 @code {
 
     [Inject]
-    public IJSRuntime JSRuntime { get; set; } = null!;
+    public MainJsInterop MainJsInterop { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            // Initialize Flowbite, reference https://flowbite.com/docs/getting-started/quickstart/#init-functions
-            await JSRuntime.InvokeVoidAsync("initFlowbite");
+            await this.MainJsInterop.Initialize();
         }
     }
 }

@@ -6,7 +6,23 @@
       "task": "watch V2ex.Web",
       "file": "src/V2ex.Web",
       "problemMatcher": ["$msCompile"],
-      "label": "dotnet: watch V2ex.Web"
+      "label": "dotnet: watch V2ex.Web",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "command": "pnpm watch:css",
+      "label": "shell: pnpm watch",
+      "options": {
+        "cwd": "${workspaceFolder}/src/V2ex.Blazor.Shared"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     }
   ]
 }
