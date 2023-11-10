@@ -1,38 +1,25 @@
 ﻿@page "/"
+@page "/tab"
 
-<PageTitle>My First Page</PageTitle>
+<PageTitle>Tab</PageTitle>
+<Tabs></Tabs>
 
-<!-- Slider main container -->
-<div class="swiper swiper-test">
-    <!-- Additional required wrapper -->
-    <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide">Slide 1</div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
-        <div class="swiper-slide">Slide 4</div>
-        <div class="swiper-slide">Slide 5</div>
-        <div class="swiper-slide">Slide 6</div>
-        <div class="swiper-slide">Slide 7</div>
-        <div class="swiper-slide">Slide 8</div>
-        <div class="swiper-slide">Slide 9</div>
-        <div class="swiper-slide">Slide 120</div>
-    </div>
-</div>
 
 @code
 {
-    [Inject]private IJSRuntime JsRuntime { get; set;} = null!;
-    protected override void OnInitialized()
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "tab")]
+    public string? Tab { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
     {
+
     }
 
     override protected async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            var module = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Pages/Home.razor.js");
-        }
+
     }
 }

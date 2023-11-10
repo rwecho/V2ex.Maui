@@ -19,9 +19,8 @@
 
                 <li @key="copyIndex" @ref="TabRef" class="swiper-slide mr-2 snap-center">
                     <a class="@className"
-                        @onclick="()=>{
-                            SelectedIndex=copyIndex;
-                        }">
+                        onclick:preventDefault="true"
+                        @onclick="()=>ClickTab(copyIndex)">
                         @tab.Description
                     </a>
                 </li>
@@ -34,6 +33,7 @@
 {
     [Inject] private UtilsJsInterop Utils { get; set; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
     private IReadOnlyList<TabDefinition> tabs = null!;
     private int _selectedIndex;
@@ -73,5 +73,13 @@
             var module = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/V2ex.Blazor.Shared/Components/Shared/Tabs.razor.js");
         }
+    }
+
+    private Task ClickTab(int index)
+    {
+        SelectedIndex=index;
+        var tab = tabs[index];
+        NavigationManager.NavigateTo($"/?tab={tab.Name}");
+        return Task.CompletedTask;
     }
 }
