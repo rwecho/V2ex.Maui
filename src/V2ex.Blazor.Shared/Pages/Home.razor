@@ -1,25 +1,39 @@
 ﻿@page "/"
 @page "/tab"
+@rendermode InteractiveServer
+@using System.Diagnostics
 
 <PageTitle>Tab</PageTitle>
-<Tabs></Tabs>
+<Tabs tab="@Tab" ></Tabs>
+<div>hello world!!!!!!!!!</div>
 
+<button @onclick="Click">hello  click</button>
 
 @code
 {
-
     [Parameter]
     [SupplyParameterFromQuery(Name = "tab")]
     public string? Tab { get; set; }
 
-
-    protected override async Task OnInitializedAsync()
+    [Inject]private ApiService ApiService { get; set; } = null!;
+    protected override async Task OnParametersSetAsync()
     {
+        Console.WriteLine($"Tab: {Tab}");
+        Debug.WriteLine($"Tab: {Tab}");
+
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var tabTopics  = await this.ApiService.GetTabTopics(this.Tab);
+        Console.WriteLine($"tabTopics: {tabTopics.Items.Count}");
 
     }
 
-    override protected async Task OnAfterRenderAsync(bool firstRender)
+    private void Click()
     {
-
+        Console.WriteLine("click");
+        
     }
 }

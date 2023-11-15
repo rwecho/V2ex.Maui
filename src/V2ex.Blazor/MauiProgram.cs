@@ -16,8 +16,11 @@ public static class MauiProgram
 
 		builder.Services.AddMauiBlazorWebView();
 
+        builder.Services.AddBlazorShared();
+        builder.Services.AddTransient<Api.IPreferences, Services.MauiPreferences>();
+
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 

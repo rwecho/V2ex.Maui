@@ -28,7 +28,8 @@ public class CookieHttpClientHandler : HttpClientHandler
         }
 
 #if DEBUG
-        // add the cloudflare cookie
+        // add the cloud flare cookie, the cf_clearance cookie is required to bypass the cloud flare protection
+        // we can get the cookie from the browser or POSTMAN
         this.CookieContainer.Add(new Cookie("cf_clearance", "P_UFJcVWLvAAnpiEnxbozvcLLdRJaFZMCMJ9EL6I9FY-1699942796-0-1-7084b968.1423aadb.2785e688-160.0.0", "/", "v2ex.com"));
 #endif
     }

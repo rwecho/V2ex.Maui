@@ -1,3 +1,4 @@
+@using System.Diagnostics
 <div class="w-full bg-white border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="swiper swiper-tabs w-full">
         <ul class="swiper-wrapper text-sm font-medium text-center text-gray-500 dark:text-gray-400">
@@ -29,14 +30,17 @@
     </div>
 </div>
 
+@Tab
+
 @code
 {
+    [Parameter]
+    public string? Tab { get; set; }
     [Inject] private UtilsJsInterop Utils { get; set; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
     private IReadOnlyList<TabDefinition> tabs = null!;
-    private int _selectedIndex;
 
     private List<ElementReference> tabRefs = new();
 
@@ -48,23 +52,33 @@
         }
     }
 
-    private int SelectedIndex
-    {
-        get
-        {
-            return _selectedIndex;
-        }
-        set
-        {
-            _selectedIndex = value;
-            Utils.ScrollToElement(tabRefs[_selectedIndex]);
-        }
-    }
-
+    private int SelectedIndex {get;set;}
     protected override void OnInitialized()
     {
         tabs = TabDefinition.GetTabDefinitions();
     }
+
+    protected override void OnParametersSet()
+    {
+        if(Tab is null)
+        {
+            SelectedIndex = 0;
+            return;
+        }
+        else
+        {
+            var index = tabs.ToList().FindIndex(x => x.Name == Tab);
+            if(index!=-1)
+            {
+                SelectedIndex = index;
+            }
+            else
+            {
+                SelectedIndex = 0;
+            }
+        }
+    }
+
 
     override protected async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -79,6 +93,12 @@
     {
         SelectedIndex=index;
         var tab = tabs[index];
+
+        if(tabRefs.Count>index)
+        {
+            Utils.ScrollToElement(tabRefs[index]);
+        }
+
         NavigationManager.NavigateTo($"/?tab={tab.Name}");
         return Task.CompletedTask;
     }

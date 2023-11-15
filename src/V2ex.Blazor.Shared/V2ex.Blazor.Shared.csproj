@@ -7,27 +7,13 @@
       <RootNamespace>V2ex.Blazor</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Components\Shared\Tabs.razor.css" />
-    <None Remove="Components\Shared\Tabs.razor.js" />
-    <None Remove="Pages\Home.razor.css" />
-    <None Remove="Pages\Home.razor.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\Shared\Tabs.razor.js" />
-    <Content Include="Components\Shared\Tabs.razor.css" />
-    <Content Include="Pages\Home.razor.js" />
-    <Content Include="Pages\Home.razor.css" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-rc.2.23480.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
