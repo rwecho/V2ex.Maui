@@ -9,11 +9,11 @@ namespace V2ex.Api;
 
 public class ApiService
 {
-    private const string WAP_Android_USER_AGENT = "Mozilla/5.0 (Linux; Android 9.0; V2er Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36";
-
-    private const string WAP_IOS_USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1";
-
-    private const string WEB_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.79";
+#if DEBUG
+    private const string USER_AGENT     = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0";
+#else
+    private const string USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.79";
+#endif
 
     public ApiService(IHttpClientFactory httpClientFactory, ILogger<ApiService> logger)
     {
@@ -22,7 +22,7 @@ public class ApiService
         if (this.HttpClient.BaseAddress == null)
         {
             this.HttpClient.BaseAddress = new Uri(UrlUtilities.BASE_URL);
-            this.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(WEB_USER_AGENT);
+            this.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(USER_AGENT);
         }
 
         this.Logger = logger;
@@ -125,8 +125,11 @@ public class ApiService
 
     public async Task<NewsInfo> GetTabTopics(string? tab= null)
     {
+        var request = new HttpRequestMessage(HttpMethod.Get, "/?tab=" + tab);
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/");
+        var response = await this.HttpClient.SendAsync(request);
         var url = tab == null ? "/" : "/?tab=" + tab;
-        var response = await this.HttpClient.GetAsync(url);
+        //var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
         newsInfo.Url = url;
         return newsInfo;

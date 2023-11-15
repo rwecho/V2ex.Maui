@@ -26,6 +26,11 @@ public class CookieHttpClientHandler : HttpClientHandler
         {
             this.CookieContainer.Add(cookie);
         }
+
+#if DEBUG
+        // add the cloudflare cookie
+        this.CookieContainer.Add(new Cookie("cf_clearance", "P_UFJcVWLvAAnpiEnxbozvcLLdRJaFZMCMJ9EL6I9FY-1699942796-0-1-7084b968.1423aadb.2785e688-160.0.0", "/", "v2ex.com"));
+#endif
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
