@@ -1104,6 +1104,10 @@ input:checked + .toggle-bg {
   z-index: 50;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -1112,6 +1116,26 @@ input:checked + .toggle-bg {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.-mx-2 {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.-my-2 {
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .mb-1 {
@@ -1136,10 +1160,6 @@ input:checked + .toggle-bg {
 
 .mr-2 {
   margin-right: 0.5rem;
-}
-
-.mr-3 {
-  margin-right: 0.75rem;
 }
 
 .mt-2 {
@@ -1186,6 +1206,10 @@ input:checked + .toggle-bg {
   height: 2.5rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-3 {
   height: 0.75rem;
 }
@@ -1218,24 +1242,16 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
-.h-16 {
-  height: 4rem;
-}
-
-.h-1 {
-  height: 0.25rem;
-}
-
-.h-12 {
-  height: 3rem;
-}
-
 .w-1\/2 {
   width: 50%;
 }
 
 .w-10 {
   width: 2.5rem;
+}
+
+.w-12 {
+  width: 3rem;
 }
 
 .w-3 {
@@ -1264,14 +1280,6 @@ input:checked + .toggle-bg {
 
 .w-full {
   width: 100%;
-}
-
-.w-16 {
-  width: 4rem;
-}
-
-.w-12 {
-  width: 3rem;
 }
 
 .flex-1 {
@@ -1384,8 +1392,8 @@ input:checked + .toggle-bg {
   flex-direction: column;
 }
 
-.place-items-start {
-  place-items: start;
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .items-start {
@@ -1442,6 +1450,12 @@ input:checked + .toggle-bg {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
 .divide-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-x-reverse: 0;
   border-right-width: calc(2px * var(--tw-divide-x-reverse));
@@ -1452,6 +1466,18 @@ input:checked + .toggle-bg {
   --tw-divide-y-reverse: 0;
   border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-x > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 0;
+  border-right-width: calc(1px * var(--tw-divide-x-reverse));
+  border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+}
+
+.divide-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 0;
+  border-right-width: calc(4px * var(--tw-divide-x-reverse));
+  border-left-width: calc(4px * calc(1 - var(--tw-divide-x-reverse)));
 }
 
 .divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
@@ -1515,6 +1541,14 @@ input:checked + .toggle-bg {
   border-width: 0px;
 }
 
+.border-4 {
+  border-width: 4px;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1561,6 +1595,11 @@ input:checked + .toggle-bg {
   border-color: transparent;
 }
 
+.border-blue-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(195 221 253 / var(--tw-border-opacity));
+}
+
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(225 239 254 / var(--tw-bg-opacity));
@@ -1579,6 +1618,11 @@ input:checked + .toggle-bg {
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
 .bg-gray-400 {
@@ -1615,11 +1659,6 @@ input:checked + .toggle-bg {
   background-color: rgb(253 253 234 / var(--tw-bg-opacity));
 }
 
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -1644,6 +1683,11 @@ input:checked + .toggle-bg {
   padding: 1rem;
 }
 
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1662,6 +1706,11 @@ input:checked + .toggle-bg {
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .py-1 {
@@ -1687,16 +1736,6 @@ input:checked + .toggle-bg {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.px-1 {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
 }
 
 .pt-14 {
@@ -1882,6 +1921,10 @@ input:checked + .toggle-bg {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.first\:m-2:first-child {
+  margin: 0.5rem;
 }
 
 .hover\:border-gray-300:hover {

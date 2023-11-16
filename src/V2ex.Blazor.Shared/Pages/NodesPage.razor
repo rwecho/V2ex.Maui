@@ -1,0 +1,41 @@
+@page "/nodes"
+
+@if (nodesNavInfo != null)
+{
+    <div class="flex flex-col px-4 py-2 space-y-4 select-none">
+        @foreach (var item in nodesNavInfo.Items)
+        {
+            <div>
+                <div class="flex flex-row ">
+                    <div class="border-2 border-gray-200"></div>
+                    <span class="ml-2">@item.Category</span>
+                </div>
+
+                <div class="flex flex-wrap justify-items-center">
+                    @foreach (var node in item.Nodes)
+                    {
+                        <a href="@node.Link" class="bg-gray-300 text-sm px-2 py-1 rounded-full mx-2 my-1">
+                            <span class="">@node.Name</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+
+    [Inject] private ApiService ApiService { get; set; } = default!;
+
+    private NodesNavInfo? nodesNavInfo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        nodesNavInfo = await this.ApiService.GetNodesNavInfo();
+
+        await base.OnInitializedAsync();
+    }
+
+}
