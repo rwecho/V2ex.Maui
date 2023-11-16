@@ -3,11 +3,17 @@
 @rendermode InteractiveServer
 @using System.Diagnostics
 
-<PageTitle>Tab</PageTitle>
-<Tabs tab="@Tab" ></Tabs>
-<div>hello world!!!!!!!!!</div>
-
-<button @onclick="Click">hello  click</button>
+<PageTitle>@Tab</PageTitle>
+<Tabs tab="@Tab"></Tabs>
+@if (viewModel != null)
+{
+    <div class="grid grid-cols-1 divide-y">
+        @foreach (var topic in viewModel.Topics)
+        {
+            <Topic ViewModel="@topic"></Topic>
+        }
+    </div>
+}
 
 @code
 {
@@ -15,25 +21,20 @@
     [SupplyParameterFromQuery(Name = "tab")]
     public string? Tab { get; set; }
 
-    [Inject]private ApiService ApiService { get; set; } = null!;
+    [Inject] private ApiService ApiService { get; set; } = null!;
+
+    private HomeViewModel? viewModel;
+
     protected override async Task OnParametersSetAsync()
     {
-        Console.WriteLine($"Tab: {Tab}");
-        Debug.WriteLine($"Tab: {Tab}");
-
         await LoadAsync();
     }
 
     private async Task LoadAsync()
     {
-        var tabTopics  = await this.ApiService.GetTabTopics(this.Tab);
-        Console.WriteLine($"tabTopics: {tabTopics.Items.Count}");
+        var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
 
-    }
-
-    private void Click()
-    {
-        Console.WriteLine("click");
-        
+        if (tabTopics != null)
+            viewModel = new HomeViewModel(tabTopics);
     }
 }

@@ -1,0 +1,157 @@
+@page "/t/{Id:int}"
+@if (viewModel != null)
+{
+    <div class="grid grid-cols-1 divide-y ">
+        <div class="flex flex-col">
+            <div class="flex flex-row justify-center select-none px-4 py-2 ">
+                <a href="@viewModel.UserLink" class="flex flex-row items-center">
+                    <img class="w-10 h-10" src="@viewModel.Avatar" alt="avatar">
+                </a>
+
+                <div class="flex flex-col flex-1 mx-2 justify-center">
+                    <div class="flex flex-row">
+                        <a href="@viewModel.UserLink">
+                            <span class="text-sm text-gray-900">@viewModel.UserName</span>
+                        </a>
+                    </div>
+
+                    <div class="flex flex-row">
+                        <span class="text-sm text-gray-500 ">评论 @viewModel.CreatedText</span>
+                    </div>
+                </div>
+                <div class="flex items-center ">
+                    <a href="@viewModel.NodeLink">
+                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-row select-auto px-4 py-2">
+                <a href="@viewModel.NodeId">
+                    <span class="text-md text-gray-900">@viewModel.Title</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex flex-col divide-y">
+            <div class="flex flex-col select-auto px-4 py-2">
+                <span class="text-md text-gray-900">@viewModel.Content</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    @if (viewModel.Supplements.Any())
+    {
+        <div class="flex flex-col divide-y divide-x-2">
+            <div></div>
+            @for (int i = 0; i < viewModel.Supplements.Count; i++)
+            {
+                var supplement = viewModel.Supplements[i];
+                <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
+                    <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @supplement.CreatedText</span>
+                    <span class="text-md text-gray-900">@supplement.Content</span>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="flex flex-row justify-between items-center justify-items-center p-4  bg-gray-100">
+        <div>@viewModel.ReplyStats</div>
+        <div class="hidden md:flex">
+            @if (viewModel.Tags.Any())
+            {
+                <div class="flex flex-row select-auto space-x-2">
+                    @foreach (var tag in viewModel.Tags)
+                    {
+                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+    @if (viewModel.Replies.Any())
+    {
+        <div class="grid grid-cols-1 divide-y">
+            @foreach (var reply in viewModel.Replies)
+            {
+                <Reply @key="reply.Id" ViewModel="@reply" />
+            }
+        </div>
+    }
+
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "title")]
+    public string? Title { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject]
+    private ApiService ApiService { get; set; } = null!;
+
+    private TopicPageViewModel? viewModel;
+
+    protected override void OnParametersSet()
+    {
+        if (Id == 0)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    override protected async Task OnInitializedAsync()
+    {
+        var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString());
+
+        if (topicInfo != null)
+            viewModel = new TopicPageViewModel(
+            topicInfo.NodeId,
+            topicInfo.Title,
+            topicInfo.UserName,
+            topicInfo.UserLink,
+            topicInfo.Avatar,
+            topicInfo.Created,
+            topicInfo.CreatedText,
+            topicInfo.TopicStats,
+            topicInfo.Liked,
+            topicInfo.Thanked,
+            topicInfo.Content == null ? null : new MarkupString(topicInfo.Content),
+            topicInfo.Supplements.Select(o => new SupplementViewModel(
+            o.Created,
+            o.CreatedText,
+            o.Content == null ? null : new MarkupString(o.Content)
+            )).ToList(),
+            topicInfo.NodeName,
+            topicInfo.NodeLink,
+            topicInfo.ReplyStats == null ? null : new MarkupString(topicInfo.ReplyStats),
+            topicInfo.Tags,
+            topicInfo.CurrentPage,
+            topicInfo.MaximumPage,
+            topicInfo.Replies.Select(o => new ReplyViewModel(o.Id,
+            o.Content == null ? null : new MarkupString(o.Content),
+            o.UserName,
+            o.UserLink,
+            o.Avatar,
+            o.ReplyTime,
+            o.ReplyTimeText, o.Badges,
+            o.Floor,
+            o.Thanked,
+            o.AlreadyThanked)).ToList(),
+            topicInfo.Once,
+            topicInfo.Url
+            );
+    }
+
+}

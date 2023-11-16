@@ -1,0 +1,27 @@
+<div class="flex flex-col px-4 py-2 ">
+
+    <div class="flex flex-row justify-start items-start ">
+        <a href="@ViewModel.Avatar" class="flex flex-row items-start justify-start justify-items-start ">
+            <img class="w-12 h-12" src="@ViewModel.Avatar" alt="avatar">
+        </a>
+
+        <div class="flex flex-col flex-1 mx-2 space-y-2 ">
+            <div class="flex flex-row select-none">
+                <a href="@ViewModel.UserLink" class=" ">
+                    <span class="text-sm text-gray-900">@ViewModel.UserName</span>
+                </a>
+                <span class="text-sm text-gray-500 ml-2">@ViewModel.ReplyTimeText</span>
+            </div>
+
+            <div>@ViewModel.Content</div>
+        </div>
+
+        <span class="rounded-full text-gray-50 bg-gray-300 px-1 py-0 text-sm">@ViewModel.Floor</span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public ReplyViewModel ViewModel { get; set; } = null!;
+
+}

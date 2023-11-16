@@ -3,10 +3,12 @@
   "tasks": [
     {
       "type": "dotnet",
-      "task": "watch V2ex.Web",
-      "file": "src/V2ex.Web",
-      "problemMatcher": ["$msCompile"],
-      "label": "dotnet: watch V2ex.Web",
+      "task": "watch V2ex.Blazor.Server",
+      "file": "src/V2ex.Blazor.Server",
+      "problemMatcher": [
+        "$msCompile"
+      ],
+      "label": "dotnet: watch V2ex.Blazor.Server",
       "group": {
         "kind": "build",
         "isDefault": true

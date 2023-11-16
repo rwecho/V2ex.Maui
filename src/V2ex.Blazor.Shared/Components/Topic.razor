@@ -1,0 +1,43 @@
+<div class="flex flex-col px-4 py-2 ">
+    <div class="flex flex-row justify-center select-none">
+        <a href="@ViewModel.AvatarLink" class="flex flex-row items-center">
+            <img class="w-10 h-10" src="@ViewModel.Avatar" alt="avatar">
+        </a>
+
+        <div class="flex flex-col flex-1 mx-2 justify-center">
+            <div class="flex flex-row">
+                <a href="@ViewModel.UserLink">
+                    <span class="text-sm text-gray-900">@ViewModel.UserName</span>
+                </a>
+            </div>
+
+            <div class="flex flex-row">
+                <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
+                <span class="text-sm text-gray-500 ml-2">评论 @ViewModel.Replies</span>
+            </div>
+        </div>
+
+        <div class="flex items-center ">
+            <a href="@ViewModel.NodeLink">
+                <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@ViewModel.NodeName</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="flex flex-row py-2 select-auto">
+        <a href="@ViewModel.Link">
+            <span class="text-md text-gray-900">@ViewModel.Title</span>
+        </a>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public TopicViewModel ViewModel { get; set; } = null!;
+
+    override protected void OnInitialized()
+    {
+    }
+
+}
