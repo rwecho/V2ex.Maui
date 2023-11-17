@@ -13,14 +13,25 @@
 
             <div class="flex flex-row">
                 <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
-                <span class="text-sm text-gray-500 ml-2">评论 @ViewModel.Replies</span>
+
+                @if (ViewModel.NodeName != null)
+                {
+                    <span class="text-sm text-gray-500 ml-2">评论 @ViewModel.Replies</span>
+                }
             </div>
         </div>
 
         <div class="flex items-center ">
-            <a href="@ViewModel.NodeLink">
-                <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@ViewModel.NodeName</span>
-            </a>
+            @if (ViewModel.NodeName != null)
+            {
+                <a href="@ViewModel.NodeLink">
+                    <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@ViewModel.NodeName</span>
+                </a>
+            }
+            else
+            {
+                <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@ViewModel.Replies</span>
+            }
         </div>
     </div>
 

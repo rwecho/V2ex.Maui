@@ -1,0 +1,44 @@
+@page "/hottest"
+
+
+@if (topics != null)
+{
+
+    foreach (var topic in topics)
+    {
+        <Topic ViewModel="topic"></Topic>
+    }
+}
+
+@code {
+
+    [Inject] private ApiService ApiService { get; set; } = null!;
+    private IReadOnlyList<TopicViewModel>? topics;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var items = await ApiService.GetDailyHot();
+
+
+        if (items is not null)
+        {
+            topics = items.Select(o => new TopicViewModel(
+            o.Id.ToString(),
+            o.Node?.Id.ToString(),
+            o.Title,
+            $"/t/{o.Id}",
+            o.Member?.AvatarLarge,
+            o.Member == null ? "" : $"/member/{o.Member?.Id}",
+            o.Member == null ? "" : o.Member?.UserName,
+            o.Member == null ? "" : $"/member/{o.Member?.Id}",
+            DateTimeOffset.FromUnixTimeSeconds(o.Created)
+            .ToLocalTime().DateTime,
+            $"{o.LastReplyBy}",
+            "",
+            o.Node?.Name,
+            $"/go/{o.Node?.Name}",
+            o.Replies
+            )).ToList();
+        }
+    }
+}

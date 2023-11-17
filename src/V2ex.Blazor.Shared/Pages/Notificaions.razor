@@ -1,0 +1,40 @@
+@page "/notifications"
+@attribute [Authorize]
+
+<div>hello world</div>
+
+@code {
+
+    [Inject] private ApiService ApiService { get; set; } = default!;
+
+    private NotificationsPageViewModel? viewModel;
+    protected override async Task OnInitializedAsync()
+    {
+        var info = await ApiService.GetNotifications();
+
+        if (info is not null)
+        {
+            viewModel = new NotificationsPageViewModel(
+            info.CurrentPage,
+            info.MaximumPage,
+            info.Total,
+            info.Items.Select(o => new NotificationItemViewModel(
+            o.UserName,
+            o.UserLink,
+            o.Avatar,
+            o.TopicLink,
+            o.TopicTitle,
+            o.PreTitle,
+            o.PostTitle,
+            o.Created,
+            o.Payload,
+            GetTopicId(o.TopicLink))).ToList()
+            );
+        }
+    }
+
+    private string GetTopicId(string link)
+    {
+        return link.Split('/').Last();
+    }
+}

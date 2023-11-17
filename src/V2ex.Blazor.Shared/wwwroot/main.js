@@ -3,6 +3,8 @@ export function disableRightClick() {
   document.addEventListener("contextmenu", function (e) {
     e.preventDefault();
   });
+
+  console.log("Right click disabled");
 }
 
 export function initialize() {
@@ -14,5 +16,6 @@ export function initialize() {
   // Initialize Flowbite, reference https://flowbite.com/docs/getting-started/quickstart/#init-functions
   if (initFlowbite) {
     initFlowbite();
+    console.log("Flowbite initialized");
   }
 }

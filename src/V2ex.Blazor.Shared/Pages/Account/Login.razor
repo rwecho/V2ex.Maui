@@ -1,0 +1,25 @@
+@page "/account/login"
+@rendermode InteractiveServer
+
+<div>hello world</div>
+
+<button @onclick="LoginAsync">Login @count</button>
+
+<a href="/">home</a>
+
+@code {
+
+    [Inject]
+    private Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+    {
+        get;
+        set;
+    } = null!;
+
+    int count = 0;
+    private async Task LoginAsync()
+    {
+        count++;
+        await ((V2exAuthenticationStateProvider)AuthenticationStateProvider).LoginAsync("hello", "world");
+    }
+}

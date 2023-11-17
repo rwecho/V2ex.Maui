@@ -2,8 +2,33 @@ using V2ex.Api;
 using V2ex.Blazor;
 using V2ex.Blazor.Components;
 using V2ex.Blazor.Services;
+using Serilog;
+using Serilog.Events;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
+
+Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .WriteTo.Console()
+    .CreateLogger();
+
+Log.Information("Starting up");
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
+
+builder.Services.AddSingleton<IAuthorizationService,AlwaysAllowAuthorizationService>();
+
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddOptions();
 
 builder.Services.AddBlazorShared();
 
@@ -29,6 +54,8 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

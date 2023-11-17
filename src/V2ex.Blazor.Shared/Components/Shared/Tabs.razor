@@ -37,6 +37,7 @@
     [Inject] private UtilsJsInterop Utils { get; set; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] private Microsoft.Extensions.Logging.ILogger<Tabs> Logger { get; set; } = null!;
 
     private IReadOnlyList<TabDefinition> tabs = null!;
 
@@ -84,6 +85,8 @@
         {
             var module = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/V2ex.Blazor.Shared/Components/Shared/Tabs.razor.js");
+
+            this.Logger.LogInformation("Initializing swiper");
         }
     }
 

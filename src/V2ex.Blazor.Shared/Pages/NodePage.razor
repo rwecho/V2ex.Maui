@@ -1,8 +1,57 @@
 @page "/go/{node}"
 
-<div>hello</div>
+@if (viewModel != null)
+{
+    @if (viewModel.Topics.Any())
+    {
+        <div class="grid grid-cols-1 divide-y">
+            @foreach (var topic in viewModel.Topics)
+            {
+                <Topic ViewModel="topic"></Topic>
+            }
+        </div>
+    }
+}
 
 @code {
+
+    [Inject]
+    private ApiService ApiService { get; set; } = null!;
     [Parameter]
     public string Node { get; set; } = null!;
+
+    private NodePageViewModel? viewModel;
+    protected override async Task OnInitializedAsync()
+    {
+        var nodePageInfo = await ApiService.GetNodePageInfo(this.Node);
+
+        if (nodePageInfo != null)
+            viewModel = new NodePageViewModel(
+            nodePageInfo.CurrentPage,
+            nodePageInfo.MaximumPage,
+            nodePageInfo.Url,
+            nodePageInfo.Items.Select(o => new TopicViewModel(
+            GetTopicId(o.TopicLink),
+            Node,
+            o.TopicTitle,
+            o.TopicLink,
+            o.Avatar,
+            o.UserLink,
+            o.UserName,
+            o.UserLink,
+            o.Created,
+            o.CreatedText,
+            o.LastReplyUserName,
+            null,
+            null,
+            o.Replies
+            )).ToList()
+            );
+    }
+
+    private static string GetTopicId(string topicLink)
+    {
+        var index = topicLink.LastIndexOf('/');
+        return topicLink.Substring(index + 1);
+    }
 }

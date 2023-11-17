@@ -11,6 +11,5 @@ public class Preferences : IPreferences
 
     public void Set<T>(string key, T value)
     {
-        
     }
 }

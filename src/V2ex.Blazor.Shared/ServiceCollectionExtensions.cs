@@ -1,6 +1,5 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http.Logging;
-using Microsoft.Extensions.Logging;
 using V2ex.Api;
 using V2ex.Blazor.Services;
 
@@ -19,11 +18,13 @@ public static class ServiceCollectionExtensions
              {
                  return new CookieHttpClientHandler(sp.GetRequiredService<IPreferences>());
              })
-            .AddHttpMessageHandler((sp) =>
-            {
-                return new LoggingHttpMessageHandler(sp.GetRequiredService<ILogger<ApiService>>());
-            });
+            // .AddHttpMessageHandler((sp) =>
+            // {
+            //     return new LoggingHttpMessageHandler(sp.GetRequiredService<ILogger<ApiService>>());
+            // })
+            ;
 
+        services.AddScoped<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         services.AddScoped<MainJsInterop>();

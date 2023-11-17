@@ -1,6 +1,19 @@
-﻿<Router AppAssembly="@typeof(Main).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<Router AppAssembly="@typeof(Main).Assembly">
+
+
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <div>正在加载用户数据...</div>
+            </Authorizing>
+            <NotAuthorized>
+				<div>没有登录</div>
+            </NotAuthorized>
+         </AuthorizeRouteView>
+
+        @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>

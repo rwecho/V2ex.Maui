@@ -3,7 +3,6 @@ using Microsoft.JSInterop;
 
 public class MainJsInterop : IAsyncDisposable
 {
-
     private readonly Lazy<Task<IJSObjectReference>> moduleTask;
 
     public MainJsInterop(IJSRuntime jsRuntime)
