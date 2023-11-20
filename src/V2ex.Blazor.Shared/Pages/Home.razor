@@ -1,6 +1,5 @@
 ﻿@page "/"
 @page "/tab"
-@attribute [Authorize]
 @using System.Diagnostics
 
 <PageTitle>@Tab</PageTitle>
@@ -32,6 +31,7 @@
 
     private async Task LoadAsync()
     {
+        throw new NotImplementedException();    
         var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
 
         if (tabTopics != null)

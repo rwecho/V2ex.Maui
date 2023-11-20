@@ -16,8 +16,7 @@ public class V2exAuthenticationStateProvider : AuthenticationStateProvider
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var identity = new ClaimsIdentity();
-
-        //if (_isAuthenticated)
+        if (_isAuthenticated)
         {
             identity = new ClaimsIdentity(new[]
             {
@@ -25,18 +24,9 @@ public class V2exAuthenticationStateProvider : AuthenticationStateProvider
                 new Claim("sub", "test"),
                 new Claim(ClaimTypes.Name, "test"),
                 new Claim(ClaimTypes.Role, "Administrator"),
-
-            }, "Fake authentication type" );
+            }, "v2ex");
         }
-
-        var state = new AuthenticationState(new ClaimsPrincipal(identity));
-
-        var user = state.User;
-
-
-
-
-        return state;
+        return new AuthenticationState(new ClaimsPrincipal(identity));
     }
 
 
