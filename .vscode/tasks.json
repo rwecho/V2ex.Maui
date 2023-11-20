@@ -2,13 +2,15 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "dotnet",
-      "task": "watch V2ex.Blazor.Server",
-      "file": "src/V2ex.Blazor.Server",
+      "type": "shell",
+      "command": "dotnet watch --project V2ex.Blazor.Server.csproj run",
+      "label": "dotnet: watch V2ex.Blazor.Server",
+      "options": {
+        "cwd": "${workspaceFolder}/src/V2ex.Blazor.Server"
+      },
       "problemMatcher": [
         "$msCompile"
       ],
-      "label": "dotnet: watch V2ex.Blazor.Server",
       "group": {
         "kind": "build",
         "isDefault": true
