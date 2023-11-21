@@ -1,0 +1,43 @@
+﻿@using DebounceThrottle
+@if (childContent == null)
+{
+    @Loading
+}
+else
+{
+    @childContent
+}
+
+@code {
+    [Parameter]
+    public Func<Task> Load { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment Loading { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment Content { get; set; } = null!;
+
+    private RenderFragment? childContent;
+
+    private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(500);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await InvokeAsync();
+    }
+
+    public async Task InvokeAsync()
+    {
+        childContent = null;
+
+        this.StateHasChanged();
+
+        await debounceDispatcher.DebounceAsync(async () =>
+        {
+            await Load();
+        });
+
+        childContent = this.Content;
+    }
+}

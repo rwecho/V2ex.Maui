@@ -1,0 +1,31 @@
+﻿<NavigationLock ConfirmExternalNavigation="true" OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+@ChildContent
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Inject]
+    private INavigator Navigator { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject]
+    private INavigationInterceptorService NavigationInterceptorService { get; set; } = null!;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        this.Navigator.RaiseCurrentChanged();
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        // todo how to handle the navigation?
+        // return this.NavigationInterceptorService.Intercept(context);
+
+        return Task.CompletedTask;
+    }
+}
+

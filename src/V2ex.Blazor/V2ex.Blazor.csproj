@@ -72,6 +72,12 @@
       <ProjectReference Include="..\V2ex.Blazor.Shared\V2ex.Blazor.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <MauiXaml Update="Pages\ReturnPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
+
   <!-- Build Properties must be defined within these property groups to ensure successful publishing
        to the Mac App Store. See: https://aka.ms/maui-publish-app-store#define-build-properties-in-your-project-file -->
   <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Debug'">

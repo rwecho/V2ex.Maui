@@ -1,4 +1,4 @@
-<div class="flex flex-col px-4 py-2" @onclick="GotoTopic">
+<div class="flex flex-col px-4 py-2" @onclick="GoToTopic">
     <div class="flex flex-row justify-center select-none">
         <a href="@ViewModel.AvatarLink" class="flex flex-row items-center" @onclick:stopPropagation="true">
             <img class="w-10 h-10" src="@ViewModel.Avatar" alt="avatar">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="flex flex-row py-2 select-auto cursor-pointer">
-        <span class="text-md text-gray-900">@ViewModel.Title @ViewModel.Link</span>
+        <span class="text-md text-gray-900">@ViewModel.Title</span>
     </div>
 </div>
 
@@ -55,13 +55,10 @@
     }
 
 
-    private void GotoTopic()
+    private void GoToTopic()
     {
         var link = ViewModel.Link;
-        this.NavigationManager.NavigateTo(link, true);
-
-
-        this.Logger.LogInformation($"GotoTopic {link}");
-
+        this.NavigationManager.NavigateTo(link);
+        this.Logger.LogInformation($"GoToTopic {link}");
     }
 }

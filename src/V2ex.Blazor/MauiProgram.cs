@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using V2ex.Blazor.Services;
 
 namespace V2ex.Blazor;
 
@@ -17,7 +18,8 @@ public static class MauiProgram
 		builder.Services.AddMauiBlazorWebView();
         builder.Services.AddBlazorShared();
         builder.Services.AddAuthorizationCore();
-        builder.Services.AddTransient<Api.IPreferences, Services.MauiPreferences>();
+        builder.Services.AddTransient<Api.IPreferences, MauiPreferences>();
+        builder.Services.AddScoped<INavigationInterceptorService, NavigationInterceptorService>();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

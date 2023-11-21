@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         services.AddScoped<MainJsInterop>();
+        services.AddScoped<INavigator, Navigator>();
         return services;
     }
 }

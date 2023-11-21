@@ -4,6 +4,37 @@
     <SideBar></SideBar>
 
     <div class="flex-auto overflow-x-hidden overflow-y-auto sm:ml-64">
-        @Body
+
+        <ErrorBoundary>
+            <ChildContent>
+                @Body
+            </ChildContent>
+            <ErrorContent Context="ex">
+                @{
+                    OnError(@ex);
+                }
+
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    @if (AppConstants.IsDebug)
+                    {
+                        <p class="errorUI">😈 @ex.Message</p>
+                    }
+                    else
+                    {
+                        <p class="errorUI">😈 Unhandled error, Sorry!</p>
+                    }
+                </div>
+            </ErrorContent>
+        </ErrorBoundary>
     </div>
 </div>
+
+
+@code{
+    [Inject]
+    private ILogger<Main> Logger { get; set; } = null!;
+    private void OnError(Exception ex)
+    {
+        this.Logger.LogError(ex, "OnError");
+    }
+}

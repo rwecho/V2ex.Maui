@@ -1,19 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-<Router AppAssembly="@typeof(Main).Assembly">
-    <Found Context="routeData">
-
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-            <Authorizing>
-                <div>正在加载用户数据...</div>
-            </Authorizing>
-            <NotAuthorized>
-				<div>没有登录</div>
-            </NotAuthorized>
-         </AuthorizeRouteView>
-
-        @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
+<Router AppAssembly="@typeof(Main).Assembly" >
+        <Found Context="routeData">
+            <Navigation>
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ReturnLayout)">
+                    <Authorizing>
+                        <div>正在加载用户数据...</div>
+                    </Authorizing>
+                    <NotAuthorized>
+				        <div>没有登录</div>
+                    </NotAuthorized>
+                    </AuthorizeRouteView>
+                @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Navigation>
+        </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
@@ -24,8 +24,24 @@
 
 @code {
 
+    [Parameter]
+    public string? Url { get; set; }
+
     [Inject]
-    public MainJsInterop MainJsInterop { get; set; } = null!;
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject]
+    private MainJsInterop MainJsInterop { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Url))
+        {
+            // Router
+            // this.NavigationManager.NavigateTo(this.Url, true);
+        }
+    }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

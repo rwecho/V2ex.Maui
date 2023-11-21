@@ -1,18 +1,22 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
-<button @onclick="IncrementCount">Click me</button>
+<button @onclick="IncrementCountAsync">Click me</button>
 
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async Task IncrementCountAsync()
     {
-        currentCount++;
+        for (int i = 0; i < 100; i++)
+        {
+            currentCount++;
+            this.StateHasChanged();
+            await Task.Delay(100);
+        }
     }
 }
