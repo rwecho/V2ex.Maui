@@ -1,11 +1,70 @@
-@page "/account/login"
+﻿@page "/account/login"
 
-<div class="h-screen top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 text-start">hello login</div>
-<div>hello login</div>
+<LoadingBox Load="LoadAsync">
+    <Loading>
 
-<button @onclick="LoginAsync">Login @count</button>
+    </Loading>
+    <Content>
+        <section class="bg-gray-50 dark:bg-gray-900 h-full">
+            <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-full lg:py-0">
+                <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                    <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
+                    V2ex
+                </a>
+                <div
+                    class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                            登录你的账号
+                        </h1>
+                        <form class="space-y-4 md:space-y-6">
+                            <div>
+                                <label for="username"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">用户名</label>
+                                <input type="text" name="username" id="username"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="用户名" required=""
+                                    @bind="UserName">
+                            </div>
+                            <div>
+                                <label for="password"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">密码</label>
+                                <input type="password" name="password" id="password" placeholder="••••••••"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required=""
+                                    @bind="Password">
+                            </div>
 
-<a href="/">home</a>
+                            <div>
+                                <label for="captcha"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">验证码</label>
+
+                                <div class="flex flex-row justify-between items-center space-x-2">
+                                    <input type="captcha"
+                                        class="h-auto bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        name="captcha" 
+                                        id="captcha"
+                                        placeholder="" required=""
+                                        @bind="Captcha">
+                                    <img class="w-1/2 my-2.5 cursor:pointer" 
+                                         @onclick="RefreshCaptcha"
+                                         src="@captchaImageBase64" />
+                                </div>
+                            </div>
+                            <button type="button"
+                                class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                @onclick="LoginAsync">登录</button>
+                            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                                Don’t have an account yet? <a href="#"
+                                    class="font-medium text-blue-600 hover:underline dark:text-blue-500">注册</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </Content>
+</LoadingBox>
 
 @code {
 
@@ -16,10 +75,75 @@
         set;
     } = null!;
 
-    int count = 0;
+    [Inject]
+    private ApiService ApiService { get; set; } = null!;
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+    [Inject]
+    private ILogger<Login> Logger { get; set; } = null!;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    private string? UserName{ get; set; }
+    private string? Password { get; set; }
+    private string? Captcha { get; set; }
+
+    private string? Error { get; set; }
+
+    private LoginParameters? loginParameters;
+
+    private string? captchaImageBase64;
+
+    private async Task LoadAsync()
+    {
+        loginParameters = await ApiService.GetLoginParameters();
+        await RefreshCaptcha();
+    }
+
+    private async Task RefreshCaptcha()
+    {
+        if(loginParameters == null)
+        {
+            return;
+        }
+        var imageBytes = await this.ApiService.GetCaptchaImage(loginParameters);
+        captchaImageBase64 = $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
+    }
+
     private async Task LoginAsync()
     {
-        count++;
-        await ((V2exAuthenticationStateProvider)AuthenticationStateProvider).LoginAsync("hello", "world");
+        if(loginParameters == null)
+        {
+            return;
+        }
+        if(string.IsNullOrEmpty(UserName)||
+            string.IsNullOrEmpty(Password)||
+            string.IsNullOrEmpty(Captcha))
+        {
+            this.Error = "用户名、密码不能为空";
+
+            return;
+        }
+
+        try
+        {
+            var result = await ApiService.Login(loginParameters, UserName, Password, Captcha);
+
+            if(result.CurrentUser == null)
+            {
+                throw new InvalidOperationException("Can not get user info.");
+            }
+            await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LoginAsync(
+                  result.CurrentUser
+            );
+            this.NavigationManager.NavigateTo(this.ReturnUrl ?? "/");
+        }
+        catch(Exception exception)
+        {
+            this.Logger.LogWarning(exception, "Login error");
+            this.Error = exception.Message;
+        }
     }
 }
