@@ -30,14 +30,6 @@
                         bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">@CurrentUser.Notifications</span>
                     }
                 </a>
-
-                <a href="/favorites"
-                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-6 h-6 text-gray-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
-                        <path d="M13 20a1 1 0 0 1-.64-.231L7 15.3l-5.36 4.469A1 1 0 0 1 0 19V2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v17a1 1 0 0 1-1 1Z" />
-                    </svg>
-                    <span class="flex-1 ml-3 whitespace-nowrap">收藏</span>
-                </a>
             </li>
 
         </ul>
@@ -74,20 +66,25 @@
             @if (CurrentUser.IsAuthenticated)
             {
                 <div class="grid grid-cols-3 divide-x">
-                    <div class="flex flex-col items-center space-y-2">
-                        <span class="text-gray-800">@CurrentUser.Nodes</span>
-                        <span class="text-gray-400">节点收藏</span>
-                    </div>
+                    <a href="/favorite/nodes" class="group">
+                        <div class="flex flex-col items-center space-y-2">
+                            <span class="text-gray-800">@CurrentUser.Nodes</span>
+                            <span class="text-gray-400">节点收藏</span>
+                        </div>
+                    </a>
+                    <a href="/favorite/topics" class="group">
+                        <div class="flex flex-col items-center space-y-2">
+                            <span class="text-gray-800">@CurrentUser.Topics</span>
+                            <span class="text-gray-400" >主题收藏</span>
+                        </div>
+                    </a>
 
-                    <div class="flex flex-col items-center space-y-2">
-                        <span class="text-gray-800">@CurrentUser.Topics</span>
-                        <span class="text-gray-400" >主题收藏</span>
-                    </div>
-
-                    <div class="flex flex-col items-center space-y-2">
-                        <span class="text-gray-800">@CurrentUser.Following</span>
-                        <span class="text-gray-400">特别关注</span>
-                    </div>
+                    <a href="/favorite/following" class="group">
+                        <div class="flex flex-col items-center space-y-2">
+                            <span class="text-gray-800">@CurrentUser.Following</span>
+                            <span class="text-gray-400">特别关注</span>
+                        </div>
+                    </a>
                 </div>
 
             }
