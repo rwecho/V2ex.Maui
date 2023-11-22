@@ -51,11 +51,16 @@
             await loadingBoxRef.InvokeAsync();
         }
     }
-    
+
     private async Task LoadAsync()
     {
         var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
         if (tabTopics != null)
             viewModel = new HomeViewModel(tabTopics);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
     }
 }

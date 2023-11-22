@@ -32,6 +32,7 @@ builder.Services.AddOptions();
 
 builder.Services.AddBlazorShared();
 
+builder.Services.AddScoped<INavigationInterceptorService, NavigationInterceptorService>();
 builder.Services.AddScoped<IPreferences, Preferences>();
 
 // Add services to the container.

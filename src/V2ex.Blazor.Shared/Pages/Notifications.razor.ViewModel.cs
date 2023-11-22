@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace V2ex.Blazor.Pages;
 
 public record NotificationsPageViewModel(int CurrentPage,
@@ -16,6 +18,6 @@ string TopicTitle,
 string? PreTitle,
 string? PostTitle,
 string? Created,
-string? Payload,
+MarkupString? Payload,
 string Id
 );

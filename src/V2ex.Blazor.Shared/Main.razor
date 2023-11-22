@@ -17,7 +17,7 @@
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <NotFoundView></NotFoundView>
         </LayoutView>
     </NotFound>
 </Router>
@@ -29,25 +29,4 @@
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
-
-    [Inject]
-    private MainJsInterop MainJsInterop { get; set; } = null!;
-
-    protected override void OnInitialized()
-    {
-        if (!string.IsNullOrEmpty(Url))
-        {
-            // Router
-            // this.NavigationManager.NavigateTo(this.Url, true);
-        }
-    }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await this.MainJsInterop.Initialize();
-        }
-    }
 }

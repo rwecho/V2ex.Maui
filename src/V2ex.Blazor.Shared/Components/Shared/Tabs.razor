@@ -40,7 +40,7 @@
     [Inject] private Microsoft.Extensions.Logging.ILogger<Tabs> Logger { get; set; } = null!;
 
     private IReadOnlyList<TabDefinition> tabs = null!;
-
+    private IJSObjectReference? interopModule;
     private List<ElementReference> tabRefs = new();
 
     private ElementReference TabRef
@@ -59,6 +59,7 @@
 
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
         if(Tab is null)
         {
             SelectedIndex = 0;
@@ -78,14 +79,24 @@
         }
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
 
-    override protected async Task OnAfterRenderAsync(bool firstRender)
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            var module = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
+            interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/V2ex.Blazor.Shared/Components/Shared/Tabs.razor.js");
 
+        }
+
+        if (interopModule is not null)
+        {
+            await interopModule.InvokeVoidAsync("initializeSwiper");
             this.Logger.LogInformation("Initializing swiper");
         }
     }

@@ -33,8 +33,25 @@
 @code{
     [Inject]
     private ILogger<Main> Logger { get; set; } = null!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+    private IJSObjectReference? interopModule;
+
     private void OnError(Exception ex)
     {
         this.Logger.LogError(ex, "OnError");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Components/Shared/MainLayout.razor.js");
+        }
+
+        if(interopModule is not null)
+        {
+            await interopModule.InvokeVoidAsync("initialize");
+        }
     }
 }
