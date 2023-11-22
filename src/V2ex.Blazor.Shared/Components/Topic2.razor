@@ -1,0 +1,49 @@
+<div class="flex flex-col px-4 py-2" @onclick="GoToTopic">
+    <div class="flex flex-row justify-center select-none">
+        <div class="flex flex-col flex-1 justify-center">
+            <div class="flex flex-row space-x-2">
+                <a href="@ViewModel.NodeLink" @onclick:stopPropagation="true">
+                    <span class="text-sm text-gray-400 bg-gray-100 rounded-md px-2 py-1">@ViewModel.NodeName</span>
+                </a>
+                <span class="text-sm text-gray-400">•</span>
+                <a href="@ViewModel.UserLink" @onclick:stopPropagation="true">
+                    <span class="text-sm text-gray-900">@ViewModel.UserName</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-row py-2 select-auto cursor-pointer justify-between">
+        <span class="text-md text-gray-900">@ViewModel.Title</span>
+        <span
+            class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1 h-auto self-start">@ViewModel.Replies</span>
+    </div>
+
+    <div class="flex flex-row space-x-2">
+        <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
+        <span class="text-sm text-gray-500">@ViewModel.LastRepliedBy</span>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public TopicViewModel ViewModel { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject]
+    private ILogger<Topic> Logger { get; set; } = null!;
+    override protected void OnInitialized()
+    {
+    }
+
+
+    private void GoToTopic()
+    {
+        var link = ViewModel.Link;
+        this.NavigationManager.NavigateTo(link);
+        this.Logger.LogInformation($"GoToTopic {link}");
+    }
+}
