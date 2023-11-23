@@ -27,7 +27,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
-        services.AddScoped<INavigator, Navigator>();
         services.AddScoped<CurrentUser>();
         return services;
     }

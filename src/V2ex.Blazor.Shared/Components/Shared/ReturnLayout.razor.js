@@ -16,3 +16,7 @@ export function initialize() {
     console.log("Flowbite initialized");
   }
 }
+
+export function goBack() {
+    window.history.back();
+}

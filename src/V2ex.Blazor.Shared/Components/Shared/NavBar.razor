@@ -2,6 +2,18 @@
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start">
+                @if (ShowBackButton)
+                {
+                    <button @onclick="GoBack"
+                            class="px-4 inline-flex items-center text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 1 1 5l4 4" />
+                        </svg>
+                    </button>
+                }
+
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
                     type="button"
                     class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -47,10 +59,21 @@
 </nav>
 
 @code {
-
+    [Parameter]
+    public bool ShowBackButton { get; set; } = false;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
     [Inject]
     private CurrentUser CurrentUser { get; set; } = null!;
+    private IJSObjectReference? interopModule;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
+            "./_content/V2ex.Blazor.Shared/Components/Shared/NavBar.razor.js");
+        }
+    }
 
     private string Avatar
     {
@@ -62,5 +85,16 @@
             }
             return "https://cdn.v2ex.com/gravatar/0f9c0b0d7f0f3f0f9c0b0d7f0f3f0f9c?s=48&d=retro";
         }
+    }
+
+    
+    private async Task GoBack()
+    {
+        if (interopModule== null)
+        {
+            return;
+        }
+
+        await interopModule.InvokeVoidAsync("goBack");
     }
 }
