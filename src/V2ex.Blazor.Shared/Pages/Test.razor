@@ -1,0 +1,8 @@
+﻿@page "/test"
+
+<InfiniteList MaximumPage="10" CurrentPage="@CurrentPage"></InfiniteList>
+
+@code{
+
+    private int CurrentPage {get;set;} = 1;
+}

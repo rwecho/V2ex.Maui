@@ -1,13 +1,13 @@
-@page "/hottest"
+﻿@page "/hottest"
 
 
 @if (topics != null)
 {
-
     foreach (var topic in topics)
     {
         <Topic ViewModel="topic"></Topic>
     }
+
 }
 
 @code {
@@ -18,7 +18,6 @@
     protected override async Task OnInitializedAsync()
     {
         var items = await ApiService.GetDailyHot();
-
 
         if (items is not null)
         {
