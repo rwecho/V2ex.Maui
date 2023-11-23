@@ -1,8 +1,9 @@
 ﻿@implements IDisposable
+@typeparam T
 <div id="infinite-list" class="h-full overflow-x-hidden overflow-y-auto">
     @foreach (var item in items)
     {
-        <div>hello world @item</div>
+        @ItemContent(item)
     }
 
     <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
@@ -17,7 +18,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         }
-        @if(CurrentPage == MaximumPage)
+        else if(CurrentPage == MaximumPage)
         {
             <div>全部加载完成</div>
         }
@@ -36,17 +37,17 @@
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
     [Inject]
-    private ILogger<InfiniteList> Logger { get; set; } = null!;
+    private ILogger<InfiniteList<T>> Logger { get; set; } = null!;
+    private int CurrentPage { get; set; } = 1;
+    private int MaximumPage { get; set; } = 0;
     [Parameter]
-    public int CurrentPage { get; set; } = 1;
-
+    public Func<int, Task<(int CurrentPage, int MaximumPage,IReadOnlyList<T>)>> LoadAsync { get; set; } = null!;
     [Parameter]
-    public int MaximumPage { get; set; } = 0;
+    public RenderFragment<T> ItemContent { get; set; } = null!;
 
-    private DotNetObjectReference<InfiniteList>? objRef;
+    private DotNetObjectReference<InfiniteList<T>>? objRef;
     private IJSObjectReference? interopModule;
-    private List<int> items = new List<int>();
-
+    private List<T> items = new List<T>();
 
     private bool isLoadingMore = false;
     private Exception? error;
@@ -64,11 +65,7 @@
                 "./_content/V2ex.Blazor.Shared/Components/InfiniteList.razor.js");
 
             await interopModule.InvokeVoidAsync("initialize", objRef);
-
-            if (CurrentPage < MaximumPage)
-            {
-                await LoadPageAsync(CurrentPage);
-            }
+            await InternalLoadPageAsync(1);
         }
     }
 
@@ -82,7 +79,7 @@
                 return;
             }
             CurrentPage++;
-            await LoadPageAsync(CurrentPage);
+            await InternalLoadPageAsync(CurrentPage);
         }
         catch (Exception exception)
         {
@@ -96,11 +93,10 @@
     {
         error = null;
         this.StateHasChanged();
-        await Task.Delay(1000);
         await LoadMore();
     }
 
-    private async Task LoadPageAsync(int page)
+    private async Task InternalLoadPageAsync(int page)
     {
         try
         {
@@ -108,12 +104,10 @@
             this.Logger.LogInformation($"Loading {page} page data.");
             this.StateHasChanged();
 
-            if (page == 7)
-            {
-                throw new NotImplementedException();
-            }
-            await Task.Delay(500);
-            items.AddRange(Enumerable.Range((page - 1) * 10 + 1, 10));
+            var (currentPage, maximumPage, items) = await LoadAsync(page);
+            this.CurrentPage = currentPage;
+            this.MaximumPage = maximumPage;
+            this.items.AddRange(items);
         }
         finally
         {
