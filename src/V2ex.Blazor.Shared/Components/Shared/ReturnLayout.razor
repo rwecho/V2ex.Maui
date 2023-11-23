@@ -62,10 +62,6 @@
         {
             interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
             "./_content/V2ex.Blazor.Shared/Components/Shared/ReturnLayout.razor.js");
-        }
-
-        if (interopModule is not null)
-        {
             await interopModule.InvokeVoidAsync("initialize");
         }
     }
