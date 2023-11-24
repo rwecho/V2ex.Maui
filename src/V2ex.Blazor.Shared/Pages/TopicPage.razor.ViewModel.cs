@@ -21,13 +21,21 @@ public record TopicPageViewModel(
     string NodeLink,
     MarkupString? ReplyStats,
     List<string> Tags,
-    int CurrentPage,
-    int MaximumPage,
-    List<ReplyViewModel> Replies,
     string? Once,
     string Url
     )
 {
+    public int CurrentPage { get; protected set; } = 1;
+    public int MaximumPage { get; protected set; } = 0;
+
+    public List<ReplyViewModel> Replies { get; } = [];
+
+    public void UpdatePage(int currentPage, int maximumPage, IReadOnlyList<ReplyViewModel> replies)
+    {
+        CurrentPage = currentPage;
+        MaximumPage = maximumPage;
+        Replies.AddRange(replies);
+    }
 }
 
 public record SupplementViewModel(
