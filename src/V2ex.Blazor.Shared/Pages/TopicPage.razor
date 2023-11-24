@@ -69,7 +69,10 @@
             </div>
         </Header>
         <ItemContent Context="item">
-            <Reply @key="item.Id" ViewModel="@item" />
+            @{
+                var isOp = item.UserName == viewModel.UserName;
+                <Reply @key="item.Id" ViewModel="@item" IsOp="isOp" />
+            }
         </ItemContent>
         <Footer>
             @if (viewModel.CurrentPage == viewModel.MaximumPage)
@@ -189,7 +192,7 @@ else{
     {
         var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
 
-        if (topicInfo == null)
+        if (topicInfo == null || this.viewModel == null)
         { return; }
 
         var replies = topicInfo.Replies.Select(o => new ReplyViewModel(o.Id,
@@ -198,10 +201,14 @@ else{
             o.UserLink,
             o.Avatar,
             o.ReplyTime,
-            o.ReplyTimeText, o.Badges,
-            o.Floor,
-            o.Thanked,
-            o.AlreadyThanked)).ToList();
+            o.ReplyTimeText,
+            o.Badges,
+            o.Floor)
+            {
+                Thanked = o.Thanked != null,
+                AlreadyThanked = int.TryParse(o.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0,
+                Once = this.viewModel.Once
+            }).ToList();
 
         var supplements = topicInfo.Supplements.Select(o => new SupplementViewModel(
             o.Created,

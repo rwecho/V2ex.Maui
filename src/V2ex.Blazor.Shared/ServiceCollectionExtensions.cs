@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
             // })
             ;
 
+        services.AddScoped<IToast, DefaultToast>();
         services.AddScoped<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
