@@ -13,10 +13,10 @@ else
     public Func<Task> Load { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment Loading { get; set; } = null!;
+    public RenderFragment? Loading { get; set; }
 
     [Parameter]
-    public RenderFragment Content { get; set; } = null!;
+    public RenderFragment? Content { get; set; }
 
     private RenderFragment? childContent;
 

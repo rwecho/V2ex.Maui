@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Apple Logo";
+    src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
+}
+
+body {
+    font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
+}
+
  .no-scrollbar::-webkit-scrollbar {
      display: none;
  }

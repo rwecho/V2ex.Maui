@@ -68,30 +68,6 @@
         return (currentPage, maximumPage, items);
     }
 
-    // private async Task LoadAsync()
-    // {
-    //     var info = await ApiService.GetNotifications();
-    //     if (info is not null)
-    //     {
-    //         viewModel = new NotificationsPageViewModel(
-    //         info.CurrentPage,
-    //         info.MaximumPage,
-    //         info.Total,
-    //         info.Items.Select(o => new NotificationItemViewModel(
-    //         o.UserName,
-    //         o.UserLink,
-    //         o.Avatar,
-    //         o.TopicLink,
-    //         o.TopicTitle,
-    //         o.PreTitle,
-    //         o.PostTitle,
-    //         o.Created,
-    //         o.Payload == null ? null : new MarkupString(o.Payload),
-    //         GetTopicId(o.TopicLink))).ToList()
-    //         );
-    //     }
-    // }
-
     private Task GoToUser(string userName)
     {
         NavigationManager.NavigateTo($"/member/{userName}");

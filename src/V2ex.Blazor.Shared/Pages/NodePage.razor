@@ -1,17 +1,9 @@
 @page "/go/{node}"
-
-@if (viewModel != null)
-{
-    @if (viewModel.Topics.Any())
-    {
-        <div class="grid grid-cols-1 divide-y">
-            @foreach (var topic in viewModel.Topics)
-            {
-                <Topic ViewModel="topic"></Topic>
-            }
-        </div>
-    }
-}
+<InfiniteList T="TopicViewModel" LoadAsync="LoadAsync">
+    <ItemContent>
+        <Topic ViewModel="context"></Topic>
+    </ItemContent>
+</InfiniteList>
 
 @code {
 
@@ -20,38 +12,39 @@
     [Parameter]
     public string Node { get; set; } = null!;
 
-    private NodePageViewModel? viewModel;
-    protected override async Task OnInitializedAsync()
-    {
-        var nodePageInfo = await ApiService.GetNodePageInfo(this.Node);
-
-        if (nodePageInfo != null)
-            viewModel = new NodePageViewModel(
-            nodePageInfo.CurrentPage,
-            nodePageInfo.MaximumPage,
-            nodePageInfo.Url,
-            nodePageInfo.Items.Select(o => new TopicViewModel(
-            GetTopicId(o.TopicLink),
-            Node,
-            o.TopicTitle,
-            o.TopicLink,
-            o.Avatar,
-            o.UserLink,
-            o.UserName,
-            o.UserLink,
-            o.Created,
-            o.CreatedText,
-            o.LastReplyUserName,
-            null,
-            null,
-            o.Replies
-            )).ToList()
-            );
-    }
-
     private static string GetTopicId(string topicLink)
     {
         var index = topicLink.LastIndexOf('/');
         return topicLink.Substring(index + 1);
+    }
+
+    private async Task<(int CurrentPage, int MaximumPage, IReadOnlyList<TopicViewModel> Topics)> LoadAsync(int page)
+    {
+        var nodePageInfo = await ApiService.GetNodePageInfo(this.Node, page);
+
+        if (nodePageInfo == null)
+        {
+            throw new InvalidOperationException("Can not get node page info");
+        }
+
+        var currentPage = nodePageInfo.CurrentPage;
+        var maximumPage = nodePageInfo.MaximumPage;
+        var topics = nodePageInfo.Items.Select(o => new TopicViewModel(
+                            GetTopicId(o.TopicLink),
+                            Node,
+                            o.TopicTitle,
+                            o.TopicLink,
+                            o.Avatar,
+                            o.UserLink,
+                            o.UserName,
+                            o.UserLink,
+                            o.Created,
+                            o.CreatedText,
+                            o.LastReplyUserName,
+                            null,
+                            null,
+                            o.Replies
+                            )).ToList();
+        return new(currentPage, maximumPage, topics);
     }
 }

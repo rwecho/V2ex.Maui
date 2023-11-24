@@ -1500,10 +1500,6 @@ input:checked + .toggle-bg {
   flex-wrap: wrap;
 }
 
-.content-center {
-  align-content: center;
-}
-
 .items-start {
   align-items: flex-start;
 }
@@ -1599,10 +1595,6 @@ input:checked + .toggle-bg {
 
 .self-center {
   align-self: center;
-}
-
-.justify-self-end {
-  justify-self: end;
 }
 
 .overflow-hidden {
@@ -2121,6 +2113,16 @@ input:checked + .toggle-bg {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@font-face {
+  font-family: "Apple Logo";
+
+  src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
+}
+
+body {
+  font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
 }
 
 .no-scrollbar::-webkit-scrollbar {

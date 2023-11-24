@@ -54,13 +54,13 @@
                 </div>
                 @foreach (var topic in memberInfo.Topics)
                 {
-                    var viewModle = new TopicViewModel(
+                    var viewModel = new TopicViewModel(
                     "", // id
                     "", // node id
                     topic.Title,
                     topic.Link,
                     "", // avatar
-                    "", // avarar linm
+                    "", // avatar link
                     topic.UserName,
                     "", // user link
                     topic.Created,
@@ -70,7 +70,7 @@
                     topic.NodeLink,
                     topic.Replies
                     );
-                    <Topic2 ViewModel="@viewModle"></Topic2>
+                    <Topic2 ViewModel="@viewModel"></Topic2>
                 }
 
 

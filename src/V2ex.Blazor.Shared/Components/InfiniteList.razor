@@ -1,10 +1,17 @@
 ﻿@implements IDisposable
 @typeparam T
 <div id="infinite-list" class="h-full overflow-x-hidden overflow-y-auto">
-    @foreach (var item in items)
+    @if (Header != null)
     {
-        @ItemContent(item)
+        @Header
     }
+
+    <div class="grid grid-cols-1 divide-y">
+        @foreach (var item in items)
+        {
+            @ItemContent(item)
+        }
+    </div>
 
     <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
         @if (isLoadingMore)
@@ -32,6 +39,12 @@
             </button>
         }
     </div>
+
+
+    @if (Footer != null)
+    {
+        @Footer
+    }
 </div>
 @code {
     [Inject]
@@ -44,6 +57,12 @@
     public Func<int, Task<(int CurrentPage, int MaximumPage,IReadOnlyList<T>)>> LoadAsync { get; set; } = null!;
     [Parameter]
     public RenderFragment<T> ItemContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
 
     private DotNetObjectReference<InfiniteList<T>>? objRef;
     private IJSObjectReference? interopModule;
