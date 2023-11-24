@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,27 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
       <RootNamespace>V2ex.Blazor</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Components\Shared\MainLayout.razor.js" />
-    <None Remove="Components\Shared\NavBar.razor.js" />
-    <None Remove="Components\Shared\ReturnLayout.razor.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\Shared\NavBar.razor.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Components\Shared\ReturnLayout.razor.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Components\Shared\MainLayout.razor.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
 
 
   <ItemGroup>

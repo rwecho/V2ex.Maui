@@ -14,13 +14,13 @@
 }
 
 export function initialize(dotNetHelper) {
-    const container = document.querySelector("#infinite-list");
+    const container = document.querySelector("#collection-view");
     if (!container) {
         return
     }
 
     const loadMoreThrottle = throttle(() => {
-        dotNetHelper.invokeMethodAsync("LoadMore");
+        dotNetHelper.invokeMethodAsync("RemainingReachedJsInvoke");
     }, 300);
 
     let lastScrollHeight = 0;
@@ -43,21 +43,8 @@ export function initialize(dotNetHelper) {
         // if the scroll bar is close to the bottom, load more content
         const heightToBottom = scrollHeight - scrollTop - clientHeight;
         if (heightToBottom < offset) {
-            console.log("load more", heightToBottom);
+            console.log("The scorll remaining reached", heightToBottom);
             loadMoreThrottle();
         }
     });
-}
-
-export function ensureLoadComplete(dotNetHelper) {
-    const container = document.querySelector("#infinite-list");
-    if (!container) {
-        return
-    }
-
-    // if the scroll bar is not show, load more content
-    if (container.scrollHeight <= container.clientHeight) {
-        console.log("the scroll bar is not show, load more");
-        dotNetHelper.invokeMethodAsync("LoadMore");
-    }
 }
