@@ -8,4 +8,6 @@ public class AppConstants
 #else
     public const bool IsDebug = false;
 #endif
+
+    public const string BlazorHybridHost = "0.0.0.0";
 }

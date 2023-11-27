@@ -1,162 +1,195 @@
 @page "/t/{Id:int}"
-@if (viewModel != null)
-{
-    <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
-        <Header>
+<div @ref="containerRef">
+    @if (viewModel != null)
+    {
+        <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
+            <Header>
+                <div class="grid grid-cols-1 divide-y ">
+                    <div class="flex flex-col">
+                        <div class="flex flex-row justify-center select-none px-4 py-2 ">
+                            <a href="@viewModel.UserLink" class="flex flex-row items-center">
+                                <img class="w-10 h-10" src="@viewModel.Avatar" alt="avatar">
+                            </a>
+                            <div class="flex flex-col flex-1 mx-2 justify-center">
+                                <div class="flex flex-row">
+                                    <a href="@viewModel.UserLink">
+                                        <span class="text-sm text-gray-900">@viewModel.UserName</span>
+                                    </a>
+                                </div>
+
+                                <div class="flex flex-row">
+                                    <span class="text-sm text-gray-500 ">评论 @viewModel.CreatedText</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center ">
+                                <a href="@viewModel.NodeLink">
+                                    <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row select-auto px-4 py-2">
+                            <span class="text-md text-gray-900">@viewModel.Title</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col divide-y">
+                        <div class="flex flex-col select-auto px-4 py-2 text-start">
+                            <MarkupStringView Content="viewModel.Content"></MarkupStringView>
+                        </div>
+                    </div>
+                </div>
+                @if (viewModel.Supplements.Any())
+                {
+                    <div class="flex flex-col divide-y divide-x-2">
+                        <div></div>
+                        @for (int i = 0; i < viewModel.Supplements.Count; i++)
+                        {
+                            var supplement = viewModel.Supplements[i];
+                            <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
+                                <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @supplement.CreatedText</span>
+                                <span class="text-md text-gray-900">@supplement.Content</span>
+                            </div>
+                        }
+                    </div>
+                }
+
+                <div class="flex flex-row justify-between items-center justify-items-center p-4  bg-gray-100">
+                    <div>@viewModel.ReplyStats</div>
+                    <div class="hidden md:flex">
+                        @if (viewModel.Tags.Any())
+                        {
+                            <div class="flex flex-row select-auto space-x-2">
+                                @foreach (var tag in viewModel.Tags)
+                                {
+                                    <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </Header>
+            <ItemContent Context="item">
+                @{
+                    var isOp = item.UserName == viewModel.UserName;
+                    <Reply @key="item.Id" ViewModel="@item" IsOp="isOp" CallupCallback="OnCallupAsync" />
+                }
+            </ItemContent>
+            <Footer>
+                @if (viewModel.CurrentPage == viewModel.MaximumPage)
+                {
+                    <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
+                        <div>全部加载完成</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="flex flex-row place-content-center items-center text-gray-400 text-sm mt-4 mb-10 space-x-2">
+                        <div role="status">
+                            <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                      fill="currentColor" />
+                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                      fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div>加载中...</div>
+                    </div>
+                }
+            </Footer>
+        </CollectionView>
+    }
+    else{
+        <div class="animate-pulse">
             <div class="grid grid-cols-1 divide-y ">
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-center select-none px-4 py-2 ">
-                        <a href="@viewModel.UserLink" class="flex flex-row items-center">
-                            <img class="w-10 h-10" src="@viewModel.Avatar" alt="avatar">
+                        <a href="#" class="flex flex-row items-center">
+                            <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                            </svg>
                         </a>
-                        <div class="flex flex-col flex-1 mx-2 justify-center">
+                        <div class="flex flex-col flex-1 mx-2 justify-center space-y-2">
                             <div class="flex flex-row">
-                                <a href="@viewModel.UserLink">
-                                    <span class="text-sm text-gray-900">@viewModel.UserName</span>
-                                </a>
+                                <div class="w-20 h-2.5 bg-gray-300 rounded-full dark:bg-gray-700"></div>
                             </div>
 
                             <div class="flex flex-row">
-                                <span class="text-sm text-gray-500 ">评论 @viewModel.CreatedText</span>
+                                <div class="w-32 h-2.5 bg-gray-300 rounded-full dark:bg-gray-700"></div>
                             </div>
                         </div>
                         <div class="flex items-center ">
-                            <a href="@viewModel.NodeLink">
-                                <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
-                            </a>
+                            <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-6 py-4"></span>
                         </div>
                     </div>
 
                     <div class="flex flex-row select-auto px-4 py-2">
-                        <span class="text-md text-gray-900">@viewModel.Title</span>
+                        <span class="text-md w-full text-gray-900">
+                            <div class="text-sm w-3/4 h-4 p-4 text-gray-50 bg-gray-300 rounded-full px-2 py-1">
+                            </div>
+                        </span>
                     </div>
                 </div>
 
                 <div class="flex flex-col divide-y">
-                    <div class="flex flex-col select-auto px-4 py-2 text-start">
-                        @viewModel.Content
+                    <div class="flex flex-col select-auto px-4 py-2 text-start space-y-2">
+                        <div class="text-sm w-1/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
+                        <div class="text-sm w-3/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
+                        <div class="text-sm w-4/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
+                        <div class="text-sm w-2/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
                     </div>
                 </div>
             </div>
-            @if (viewModel.Supplements.Any())
-            {
-                <div class="flex flex-col divide-y divide-x-2">
-                    <div></div>
-                    @for (int i = 0; i < viewModel.Supplements.Count; i++)
-                    {
-                        var supplement = viewModel.Supplements[i];
-                        <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
-                            <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @supplement.CreatedText</span>
-                            <span class="text-md text-gray-900">@supplement.Content</span>
-                        </div>
-                    }
-                </div>
-            }
 
             <div class="flex flex-row justify-between items-center justify-items-center p-4  bg-gray-100">
-                <div>@viewModel.ReplyStats</div>
-                <div class="hidden md:flex">
-                    @if (viewModel.Tags.Any())
-                    {
-                        <div class="flex flex-row select-auto space-x-2">
-                            @foreach (var tag in viewModel.Tags)
+                <div class="text-sm w-2/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
+            </div>
+
+            <div class="grid grid-cols-1 divide-y">
+                @for (var i = 0; i < 20; i++)
+                {
+                    <ReplySkeleton />
+                }
+            </div>
+        </div>
+    }
+
+
+    <!-- Callup user modal -->
+    <div id="callupUserModal" tabindex="-1" aria-hidden="true" 
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                <!-- Modal header -->
+                <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                    <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                            @if(callupReplies.Count>0)
                             {
-                                <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                <h3 class="font-semibold ">
+                                    @callupReplies.First().UserName 之前的回复
+                                </h3>
                             }
-                        </div>
-                    }
-                </div>
-            </div>
-        </Header>
-        <ItemContent Context="item">
-            @{
-                var isOp = item.UserName == viewModel.UserName;
-                <Reply @key="item.Id" ViewModel="@item" IsOp="isOp" />
-            }
-        </ItemContent>
-        <Footer>
-            @if (viewModel.CurrentPage == viewModel.MaximumPage)
-            {
-                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
-                    <div>全部加载完成</div>
-                </div>
-            }
-            else
-            {
-                <div class="flex flex-row place-content-center items-center text-gray-400 text-sm mt-4 mb-10 space-x-2">
-                    <div role="status">
-                        <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                  fill="currentColor" />
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                  fill="currentFill" />
-                        </svg>
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <div>加载中...</div>
-                </div>
-            }
-        </Footer>
-    </CollectionView>
-}
-else{
-    <div class="animate-pulse">
-        <div class="grid grid-cols-1 divide-y ">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-center select-none px-4 py-2 ">
-                    <a href="#" class="flex flex-row items-center">
-                        <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
-                        </svg>
-                    </a>
-                    <div class="flex flex-col flex-1 mx-2 justify-center space-y-2">
-                        <div class="flex flex-row">
-                            <div class="w-20 h-2.5 bg-gray-300 rounded-full dark:bg-gray-700"></div>
-                        </div>
-
-                        <div class="flex flex-row">
-                            <div class="w-32 h-2.5 bg-gray-300 rounded-full dark:bg-gray-700"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center ">
-                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-6 py-4"></span>
                     </div>
                 </div>
-
-                <div class="flex flex-row select-auto px-4 py-2">
-                    <span class="text-md w-full text-gray-900">
-                        <div class="text-sm w-3/4 h-4 p-4 text-gray-50 bg-gray-300 rounded-full px-2 py-1">
-                        </div>
-                    </span>
+                <!-- Modal body -->
+                <div class="-mx-4">
+                    <div class="grid grid-cols-1 divide-y">
+                        @foreach(var item in callupReplies)
+                        {
+                            var isOp = item.UserName == viewModel?.UserName;
+                            <Reply @key="item.Id" ViewModel="@item" IsOp="isOp" CallupCallback="OnCallupAsync" />
+                        }
+                    </div>
                 </div>
             </div>
-
-            <div class="flex flex-col divide-y">
-                <div class="flex flex-col select-auto px-4 py-2 text-start space-y-2">
-                    <div class="text-sm w-1/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
-                    <div class="text-sm w-3/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
-                    <div class="text-sm w-4/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
-                    <div class="text-sm w-2/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-row justify-between items-center justify-items-center p-4  bg-gray-100">
-            <div class="text-sm w-2/6 h-4 p-2 text-gray-50 bg-gray-200 rounded-full px-2 py-1" />
-        </div>
-
-        <div class="grid grid-cols-1 divide-y">
-            @for (var i = 0; i < 20; i++)
-            {
-                <ReplySkeleton />
-            }
         </div>
     </div>
-}
-
+</div>
 
 @code {
 
@@ -173,7 +206,18 @@ else{
     [Inject]
     private ApiService ApiService { get; set; } = null!;
 
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
     private TopicPageViewModel? viewModel;
+
+    private DotNetObjectReference<TopicPage>? thisRef;
+    private ElementReference? containerRef;
+    private IJSObjectReference? interopModule;
+    private IJSObjectReference? modalReference;
+
+    private List<ReplyViewModel> callupReplies = new();
+
 
     protected override void OnParametersSet()
     {
@@ -185,14 +229,26 @@ else{
 
     protected override Task OnInitializedAsync()
     {
+        thisRef = DotNetObjectReference.Create(this);
         return this.LoadAsync(1);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
+
+            modalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal", containerRef, thisRef);
+        }
     }
 
     private async Task LoadAsync(int page)
     {
         var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
 
-        if (topicInfo == null || this.viewModel == null)
+        if (topicInfo == null)
         { return; }
 
         var replies = topicInfo.Replies.Select(o => new ReplyViewModel(o.Id,
@@ -207,7 +263,7 @@ else{
             {
                 Thanked = o.Thanked != null,
                 AlreadyThanked = int.TryParse(o.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0,
-                Once = this.viewModel.Once
+                Once = topicInfo.Once
             }).ToList();
 
         var supplements = topicInfo.Supplements.Select(o => new SupplementViewModel(
@@ -253,5 +309,23 @@ else{
             return;
         }
         await this.LoadAsync(this.viewModel.CurrentPage + 1);
+    }
+
+    private async Task OnCallupAsync(CallupModel model)
+    {
+        if (interopModule == null || viewModel == null || modalReference == null)
+        {
+            return;
+        }
+        callupReplies.Clear();
+        foreach (var reply in this.viewModel.Replies)
+        {
+            if(reply.Floor < model.Floor && reply.UserName == model.UserName)
+            {
+                callupReplies.Add(reply);
+            }
+        }
+
+        await interopModule.InvokeVoidAsync("showModal", modalReference);
     }
 }

@@ -1,3 +1,24 @@
 ﻿@page "/test"
 
-<div>hello world</div>
+<div><a href="/test1">test1</a></div>
+@if(markup1!=null)
+{
+    <MarkupStringView Content="@markup1.Value"></MarkupStringView>
+}
+
+@if(markup2!=null)
+{
+    <MarkupStringView Content="@markup2.Value"></MarkupStringView>
+}
+
+@code {
+    private MarkupString? markup1;
+    private MarkupString? markup2;
+
+    protected override Task OnInitializedAsync()
+    {
+        this.markup1 = new MarkupString("<div>hello world <a href='/home'>test2</a></div>");
+        this.markup2 = new MarkupString("<div>hello world <a href='/home'>test3</a></div>");
+        return Task.CompletedTask;
+    }
+}

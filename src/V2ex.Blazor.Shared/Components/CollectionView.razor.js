@@ -1,18 +1,4 @@
-﻿function throttle(callback, limit) {
-    let waiting = false;
-    return function () {
-        if (!waiting) {
-            callback.apply(this, arguments);
-            waiting = true;
-            setTimeout(function () {
-                waiting = false;
-            }, limit);
-        } else {
-            console.log("throttle");
-        }
-    }
-}
-
+﻿import { throttle } from "../utils.js"
 export function initialize(dotNetHelper) {
     const container = document.querySelector("#collection-view");
     if (!container) {

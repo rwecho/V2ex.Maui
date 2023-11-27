@@ -18,3 +18,5 @@ public record ReplyViewModel(string Id,
 
     public int AlreadyThanked { get; set; }
 };
+
+public record CallupModel(string UserName, int Floor);

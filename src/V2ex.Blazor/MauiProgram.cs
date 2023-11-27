@@ -18,6 +18,7 @@ public static class MauiProgram
 		builder.Services.AddMauiBlazorWebView();
         builder.Services.AddBlazorShared();
         builder.Services.AddAuthorizationCore();
+        builder.Services.AddTransient<Services.IBrowser, Services.NativeBrowser>();
         builder.Services.AddTransient<Api.IPreferences, MauiPreferences>();
         builder.Services.AddScoped<INavigationInterceptorService, NavigationInterceptorService>();
 

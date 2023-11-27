@@ -7,6 +7,14 @@
       <RootNamespace>V2ex.Blazor</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Components\MarkupStringView.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\MarkupStringView.razor.css" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />

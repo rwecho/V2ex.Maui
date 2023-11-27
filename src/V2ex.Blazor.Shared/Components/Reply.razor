@@ -18,7 +18,7 @@
                 <span class="text-sm text-gray-500">@ViewModel.ReplyTimeText</span>
             </div>
 
-            <div>@ViewModel.Content</div>
+            <MarkupStringView Content="ViewModel.Content" MemberClickedCallback="OnCallupAsync"></MarkupStringView>
 
             <div class="text-gray-400 text-sm select-none">@ViewModel.Floor 楼</div>
         </div>
@@ -58,6 +58,9 @@
     [Parameter]
     public bool IsOp { get; set; }
 
+    [Parameter]
+    public EventCallback<CallupModel> CallupCallback { get; set; }
+
     [Inject]
     public CurrentUser CurrentUser{ get; set; } = null!;
 
@@ -93,5 +96,10 @@
 
             // this.Toast.
         }
+    }
+
+    private Task OnCallupAsync(string username)
+    {
+        return CallupCallback.InvokeAsync(new(username,this.ViewModel.Floor));
     }
 }

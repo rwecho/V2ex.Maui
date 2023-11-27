@@ -1,0 +1,93 @@
+﻿<div class="markup-container" @ref="containerRef">
+    @Content
+</div>
+
+@code {
+    [Parameter]
+    public MarkupString? Content { get; set; }
+
+    [Parameter]
+    public EventCallback<string> MemberClickedCallback{ get; set; }
+
+    [Parameter]
+    public EventCallback<string> ImageClickedCallback{ get; set; }
+
+    [Parameter]
+    public EventCallback<Uri> ExternalLinkClickedCallback{ get; set; }
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    private IJSObjectReference? interopModule;
+
+    private ElementReference? containerRef;
+    private DotNetObjectReference<MarkupStringView>? thisRef;
+
+    protected override void OnInitialized()
+    {
+        thisRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Components/MarkupStringView.razor.js");
+            await interopModule.InvokeVoidAsync("initialize", containerRef, thisRef);
+        }
+    }
+
+    [JSInvokable]
+    public async Task AnchorClickedJsInvoke(string href)
+    {
+        if (string.IsNullOrEmpty(href))
+        {
+            return;
+        }
+
+        var uri = new UriBuilder(href).Uri;
+        if (uri.Host == AppConstants.BlazorHybridHost)
+        {
+            var path = uri.AbsolutePath;
+            if (path.StartsWith("/t/"))
+            {
+                var id = path.Substring(3);
+                NavigationManager.NavigateTo($"/topic/{id}");
+            }
+            else if (path.StartsWith("/member/"))
+            {
+                var username = path.Substring(8);
+                await MemberClickedCallback.InvokeAsync(username);
+            }
+            else if (path.StartsWith("/go/"))
+            {
+                var name = path.Substring(4);
+                NavigationManager.NavigateTo($"/go/{name}");
+            }
+            else if (path.StartsWith("/?"))
+            {
+                var query = uri.Query;
+                if (query.StartsWith("?tab="))
+                {
+                    var tab = query.Substring(5);
+                    NavigationManager.NavigateTo($"/?tab={tab}");
+                }
+            }
+        }
+        else
+        {
+            await ExternalLinkClickedCallback.InvokeAsync(uri);
+        }
+    }
+
+    [JSInvokable]
+    public async Task ImageClickedJsInvoke(string src)
+    {
+        await ImageClickedCallback.InvokeAsync(src);
+    }
+}
+
