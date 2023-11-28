@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using V2ex.Api;
+using V2ex.Blazor.Pages;
 using V2ex.Blazor.Services;
 
 namespace V2ex.Blazor;

@@ -20,6 +20,12 @@ public class NewsInfo
     public UserInfo? CurrentUser { get; init; }
     public string Url { get; internal set; } = null!;
 
+    [XPath("//div[@id='Bottom']//strong/text()[last()]", ReturnType.InnerText)]
+    public string? OnlineUserCount { get;  set; }
+
+    [XPath("//div[@id='Bottom']//strong/following-sibling::span[1]", ReturnType.InnerText)]
+    public string? MaxOnlineUserCount { get;  set; }
+
     [HasXPath]
     [DebuggerDisplay("{Title}-{UserName}")]
     public class Item

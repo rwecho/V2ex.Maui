@@ -23,8 +23,6 @@
     }
 </div>
 
-
-
 @code
 {
     [Parameter]
@@ -35,14 +33,8 @@
 
     private IReadOnlyList<TabDefinition> tabs = null!;
 
-
     protected override void OnInitialized()
     {
         tabs = TabDefinition.GetTabDefinitions();
     }
-
-    protected override async Task OnParametersSetAsync()
-    {
-    }
-
 }

@@ -166,13 +166,13 @@
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
-                <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                <div class="flex justify-between mb-4 rounded-t sm:mb-5 border-b-2 py-2">
                     <div class="text-lg text-gray-900 md:text-xl dark:text-white">
                             @if(callupReplies.Count>0)
                             {
-                                <h3 class="font-semibold ">
+                                <span class="font-semibold ">
                                     @callupReplies.First().UserName 之前的回复
-                                </h3>
+                                </span>
                             }
                     </div>
                 </div>

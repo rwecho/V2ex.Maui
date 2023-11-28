@@ -33,13 +33,16 @@
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
 
+    [CascadingParameter]
+    private Status Status { get; set; } = null!;
+
     private IJSObjectReference? interopModule;
 
     private ElementReference? containerRef;
     private DotNetObjectReference<Home_TabPanel>? thisRef;
     private LoadingBox? loadingBoxRef;
 
-    private HomeViewModel? viewModel;
+    private TabViewModel? viewModel;
 
     protected override void OnInitialized()
     {
@@ -62,7 +65,10 @@
         var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
 
         if (tabTopics != null)
-            viewModel = new HomeViewModel(tabTopics);
+        {
+            viewModel = new TabViewModel(tabTopics);
+            Status.Update(tabTopics);
+        }
     }
 
     [JSInvokable]
