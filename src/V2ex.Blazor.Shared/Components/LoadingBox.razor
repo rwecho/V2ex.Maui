@@ -18,13 +18,19 @@ else
     [Parameter]
     public RenderFragment? Content { get; set; }
 
+    [Parameter]
+    public bool IsManual { get; set; }
+
     private RenderFragment? childContent;
 
     private DebounceDispatcher debounceDispatcher = new DebounceDispatcher(500);
 
     protected override async Task OnInitializedAsync()
     {
-        await InvokeAsync();
+        if (!IsManual)
+        {
+            await InvokeAsync();
+        }
     }
 
     public async Task InvokeAsync()
@@ -39,5 +45,7 @@ else
         });
 
         childContent = this.Content;
+
+        this.StateHasChanged();
     }
 }

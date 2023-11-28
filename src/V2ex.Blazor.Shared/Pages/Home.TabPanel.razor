@@ -1,0 +1,78 @@
+﻿<div class="hidden rounded-lg bg-gray-50 dark:bg-gray-800" @ref="containerRef" id="@Tab" role="tabpanel" aria-labelledby="@(Tab+"-tab")">
+    <LoadingBox Load="LoadAsync" @ref="loadingBoxRef" IsManual="true">
+        <Loading>
+            @for (int i = 0; i < 15; i++)
+            {
+                <TopicSkeleton />
+            }
+        </Loading>
+        <Content>
+            @if (viewModel != null)
+            {
+                <div class="grid grid-cols-1 divide-y">
+                    @foreach (var topic in viewModel.Topics)
+                    {
+                        <Topic ViewModel="@topic"></Topic>
+                    }
+                </div>
+                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
+                    <div>全部加载完成</div>
+                </div>
+            }
+        </Content>
+    </LoadingBox>
+</div>
+
+@code {
+    [Parameter]
+    public string Tab { get; set; } = null!;
+
+    [Inject]
+    private ApiService ApiService { get; set; } = null!;
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
+    private IJSObjectReference? interopModule;
+
+    private ElementReference? containerRef;
+    private DotNetObjectReference<Home_TabPanel>? thisRef;
+    private LoadingBox? loadingBoxRef;
+
+    private HomeViewModel? viewModel;
+
+    protected override void OnInitialized()
+    {
+        thisRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Pages/Home.TabPanel.razor.js");
+
+            await interopModule.InvokeVoidAsync("initialize", containerRef, thisRef);
+        }
+    }
+
+    private async Task LoadAsync()
+    {
+        var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
+
+        if (tabTopics != null)
+            viewModel = new HomeViewModel(tabTopics);
+    }
+
+    [JSInvokable]
+    public async Task OnShowAsync()
+    {
+        if (viewModel != null || this.loadingBoxRef == null)
+        {
+            return;
+        }
+
+        await this.loadingBoxRef.InvokeAsync();
+    }
+}

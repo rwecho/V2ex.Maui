@@ -4,29 +4,26 @@
 @using System.Diagnostics
 
 <PageTitle>@Tab</PageTitle>
-<Tabs tab="@Tab"></Tabs>
-<LoadingBox Load="LoadAsync" @ref="loadingBoxRef">
-    <Loading>
-        @for (int i = 0; i < 15; i++)
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"> 
+        @foreach(var tab in tabs )
         {
-            <TopicSkeleton />
+            var id = $"{tab.Name}-tab";
+            var target = "#" + tab.Name;
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target" type="button" role="tab" aria-controls="@tab.Name" aria-selected="false">@tab.Description</button>
+            </li>
         }
-    </Loading>
-    <Content>
-        @if (viewModel != null)
-        {
-            <div class="grid grid-cols-1 divide-y">
-                @foreach (var topic in viewModel.Topics)
-                {
-                    <Topic ViewModel="@topic"></Topic>
-                }
-            </div>
-            <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
-                <div>全部加载完成</div>
-            </div>
-        }
-    </Content>
-</LoadingBox>
+    </ul>
+</div>
+<div id="default-tab-content">
+    @foreach (var tab in tabs)
+    {
+        <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
+    }
+</div>
+
+
 
 @code
 {
@@ -36,27 +33,16 @@
 
     [Inject] private ApiService ApiService { get; set; } = null!;
 
-    private LoadingBox? loadingBoxRef;
+    private IReadOnlyList<TabDefinition> tabs = null!;
 
-    private HomeViewModel? viewModel;
+
+    protected override void OnInitialized()
+    {
+        tabs = TabDefinition.GetTabDefinitions();
+    }
 
     protected override async Task OnParametersSetAsync()
     {
-        if (loadingBoxRef != null)
-        {
-            await loadingBoxRef.InvokeAsync();
-        }
     }
 
-    private async Task LoadAsync()
-    {
-        var tabTopics = await this.ApiService.GetTabTopics(this.Tab);
-        if (tabTopics != null)
-            viewModel = new HomeViewModel(tabTopics);
-    }
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        return base.OnAfterRenderAsync(firstRender);
-    }
 }
