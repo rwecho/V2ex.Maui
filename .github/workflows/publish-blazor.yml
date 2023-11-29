@@ -1,4 +1,4 @@
-name: PUBLISH Build
+name: PUBLISH Blazor
 
 on:
   push:
