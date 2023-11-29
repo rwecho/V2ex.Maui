@@ -1,0 +1,76 @@
+name: PUBLISH Build
+
+on:
+  push:
+    tags:
+      - "b[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true # Disable the .NET logo
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
+  DOTNET_CLI_TELEMETRY_OPTOUT: true # Disable sending .NET CLI telemetry
+
+jobs:
+  # Blazor Android Build
+  build-android:
+    runs-on: windows-2022
+    name: Android Build
+    steps:
+      # Store the version, stripping any v-prefix
+      - name: Write release version
+        run: |
+          Get-ChildItem Env:
+          $TAG=$ENV:GITHUB_REF_NAME
+          $VERSION= [System.Version]::new($TAG.Substring(1))
+          $APP_VERSION=($VERSION.Major * 1000000 + $VERSION.Minor * 1000 + $VERSION.Build).ToString()
+          $APP_DISPLAY_VERSION=$VERSION.ToString()
+          echo "APP_VERSION=$APP_VERSION" >> $Env:GITHUB_ENV
+          echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $Env:GITHUB_ENV
+          echo $env:APP_VERSION
+          echo $env:APP_DISPLAY_VERSION
+        shell: pwsh
+
+      - name: read release version
+        run: |
+          echo $env:APP_VERSION
+          echo $env:APP_DISPLAY_VERSION
+        shell: pwsh
+
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+      - name: Setup .NET 8
+        uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
+        with:
+          dotnet-version: 8.0.x
+          include-prerelease: true
+
+      - name: Install Blazor Workload
+        run: dotnet workload install maui --ignore-failed-sources
+        shell: pwsh
+
+      - name: Restore Dependencies
+        run: dotnet restore src/V2ex.Blazor/V2ex.Blazor.csproj
+        shell: pwsh
+
+      - name: Build Blazor Android
+        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.blazor.keystore -p:AndroidSigningKeyAlias=v2ex.blazor -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
+        shell: pwsh
+
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+        with:
+          name: V2ex.Blazor-android-build
+          path: src/V2ex.Blazor/bin/Release/net8.0-android/*Signed.a*
+
+      - name: Publish To AppCenter
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          npm install -g appcenter-cli
+          git log --oneline --decorate > notes.txt
+          cat notes.txt
+          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.blazor-Signed.apk -R notes.txt -a HappyTreeFriends/V2exBlazor  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
