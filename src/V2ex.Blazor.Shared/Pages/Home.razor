@@ -4,23 +4,26 @@
 @using System.Diagnostics
 
 <PageTitle>@Tab</PageTitle>
-<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"> 
-        @foreach(var tab in tabs )
+
+<div class="h-full overflow-y-auto">
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist"> 
+            @foreach(var tab in tabs )
+            {
+                var id = $"{tab.Name}-tab";
+                var target = "#" + tab.Name;
+                <li class="me-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target" type="button" role="tab" aria-controls="@tab.Name" aria-selected="false">@tab.Description</button>
+                </li>
+            }
+        </ul>
+    </div>
+    <div id="default-tab-content">
+        @foreach (var tab in tabs)
         {
-            var id = $"{tab.Name}-tab";
-            var target = "#" + tab.Name;
-            <li class="me-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target" type="button" role="tab" aria-controls="@tab.Name" aria-selected="false">@tab.Description</button>
-            </li>
+            <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
         }
-    </ul>
-</div>
-<div id="default-tab-content">
-    @foreach (var tab in tabs)
-    {
-        <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
-    }
+    </div>
 </div>
 
 @code

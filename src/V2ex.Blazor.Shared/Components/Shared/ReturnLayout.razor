@@ -1,10 +1,10 @@
 ﻿@inherits LayoutComponentBase
-<div class="flex flex-col w-full h-screen antialiased bg-gray-50 dark:bg-gray-900">
+<div class="flex flex-col w-full h-screen antialiased bg-gray-50 dark:bg-gray-900 overflow-hidden">
     <div class="flex flex-row bg-white dark:bg-gray-800">
         <NavBar ShowBackButton="true"></NavBar>
         <SideBar></SideBar>
     </div>
-    <div class="flex-auto overflow-x-hidden overflow-y-auto sm:ml-64">
+    <div class="flex-1 overflow-hidden sm:ml-64">
         <ErrorBoundary>
             <ChildContent>
                 @Body

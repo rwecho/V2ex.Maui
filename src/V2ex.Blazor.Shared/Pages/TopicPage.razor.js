@@ -8,6 +8,7 @@
         closable: true,
         onHide: () => {
             console.log('modal is hidden');
+            document.body.classList.add('overflow-hidden');
         },
         onShow: () => {
             console.log('modal is shown');

@@ -1,5 +1,5 @@
 @page "/t/{Id:int}"
-<div @ref="containerRef">
+<div @ref="containerRef" class="h-full">
     @if (viewModel != null)
     {
         <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
