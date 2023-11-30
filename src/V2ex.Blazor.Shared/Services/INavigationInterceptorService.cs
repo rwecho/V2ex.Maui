@@ -4,5 +4,5 @@ namespace V2ex.Blazor.Services;
 
 public interface INavigationInterceptorService
 {
-    Task Intercept(LocationChangingContext context);
+    Task Intercept(string sourceLocation, LocationChangingContext context);
 }

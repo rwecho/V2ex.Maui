@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Blazor.Pages.ReturnPage"
              xmlns:shared="clr-namespace:V2ex.Blazor;assembly=V2ex.Blazor.Shared"
-             Title="ReturnPage">
+             Title="ReturnPage"
+             NavigationPage.HasNavigationBar="False">
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
             <RootComponent x:Name="RootComponent" Selector="#app" ComponentType="{x:Type shared:Main}"  />

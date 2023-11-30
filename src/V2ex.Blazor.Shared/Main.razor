@@ -27,8 +27,20 @@
 @code {
 
     [Parameter]
-    public string? Url { get; set; }
+    public string? Url  { get; set; }
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(Url))
+        {
+            this.NavigationManager.NavigateTo("/tab");
+        }
+        else
+        {
+            this.NavigationManager.NavigateTo(this.Url);
+        }
+    }
 }

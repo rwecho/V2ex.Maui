@@ -19,10 +19,9 @@
 
     private Task OnBeforeInternalNavigation(LocationChangingContext context)
     {
-        // todo how to handle the navigation?
-        // return this.NavigationInterceptorService.Intercept(context);
-
-        return Task.CompletedTask;
+        var sourceLocation = this.NavigationManager.Uri;
+        
+        return this.NavigationInterceptorService.Intercept(sourceLocation, context);
     }
 }
 

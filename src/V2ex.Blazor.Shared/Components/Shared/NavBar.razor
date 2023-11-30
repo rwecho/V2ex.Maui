@@ -1,8 +1,8 @@
 <nav class="w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-50">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
-            <div class="flex items-center justify-start">
-                @if (ShowBackButton)
+            <div class="flex items-center justify-start md:w-64">
+                @if (ShowBackButton && !OperatingSystem.IsWindows())
                 {
                     <button @onclick="GoBack"
                             class="px-4 py-2 inline-flex items-center text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -30,6 +30,9 @@
                         class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">V2ex</span>
                 </a>
             </div>
+
+            <SectionOutlet SectionName="NavHeader"></SectionOutlet>
+            
             @if (CurrentUser.IsAuthenticated)
             {
                 <div class="flex items-center">
@@ -63,19 +66,10 @@
 @code {
     [Parameter]
     public bool ShowBackButton { get; set; } = false;
-    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
     [Inject]
     private CurrentUser CurrentUser { get; set; } = null!;
-    private IJSObjectReference? interopModule;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
-            "./_content/V2ex.Blazor.Shared/Components/Shared/NavBar.razor.js");
-        }
-    }
+    [Inject]
+    private INativeNavigation Navigation { get; set; } = null!;
 
     private string Avatar
     {
@@ -90,13 +84,8 @@
     }
 
     
-    private async Task GoBack()
+    private Task GoBack()
     {
-        if (interopModule== null)
-        {
-            return;
-        }
-
-        await interopModule.InvokeVoidAsync("goBack");
+       return Navigation.GoBack();
     }
 }

@@ -17,13 +17,22 @@ public class NavigationInterceptorService : INavigationInterceptorService
         }
     }
 
-    public Task Intercept(LocationChangingContext context)
+    public Task Intercept(string sourceLocation, LocationChangingContext context)
     {
+        if (sourceLocation == context.TargetLocation)
+        {
+            return Task.CompletedTask;
+        }
+
+        var path = context.IsNavigationIntercepted
+            ? new Uri(context.TargetLocation).LocalPath
+            : new Uri("http://0.0.0.0" + context.TargetLocation).LocalPath;
+        if (path == "/" || path == "/tab")
+        {
+            return Navigation.PopToRootAsync(true);
+        }
+
         context.PreventNavigation();
-
-        // create a content page and navigate to it
-
-       
         return Navigation.PushAsync(new ReturnPage(context.TargetLocation), true);
     }
 }

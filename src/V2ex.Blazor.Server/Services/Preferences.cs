@@ -17,7 +17,7 @@ public class Preferences : IPreferences
 
 public class NavigationInterceptorService : INavigationInterceptorService
 {
-    public Task Intercept(LocationChangingContext context)
+    public Task Intercept(string sourceLocation, LocationChangingContext context)
     {
         return Task.CompletedTask;
     }

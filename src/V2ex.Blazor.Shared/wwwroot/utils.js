@@ -8,6 +8,11 @@ export function scrollToElement(element) {
     console.log("scrollToElement");
 }
 
+export function triggerClick(element) {
+    element?.click();
+    console.log("triggerClick");
+};
+
 export function throttle(callback, limit) {
     let waiting = false;
     return function () {
