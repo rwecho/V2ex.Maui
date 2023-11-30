@@ -41,7 +41,7 @@
             topics = items.Select(o => new TopicViewModel(
             o.Id.ToString(),
             o.Node?.Id.ToString(),
-            o.Title,
+            new MarkupString( o.Title),
             $"/t/{o.Id}",
             o.Member?.AvatarLarge,
             o.Member == null ? "" : $"/member/{o.Member?.Id}",

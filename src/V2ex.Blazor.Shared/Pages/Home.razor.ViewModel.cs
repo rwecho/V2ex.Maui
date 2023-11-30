@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using System.Data;
 using V2ex.Api;
 using V2ex.Blazor.Components;
@@ -13,7 +14,7 @@ public record TabViewModel(NewsInfo NewsInfo)
     .Select(x => new TopicViewModel(
         x.Id,
         x.NodeId,
-        x.Title,
+        new MarkupString(x.Title),
         x.Link,
         x.Avatar,
         x.AvatarLink,

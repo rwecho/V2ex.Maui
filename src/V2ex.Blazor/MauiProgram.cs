@@ -1,8 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Distribute;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Reflection;
 using V2ex.Blazor.Services;
 
 namespace V2ex.Blazor;
-
 public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
@@ -23,11 +30,32 @@ public static class MauiProgram
         builder.Services.AddScoped<INavigationInterceptorService, NavigationInterceptorService>();
         builder.Services.AddScoped<INativeNavigation, NativeNavigation>();
 
+        ConfigureConfiguration(builder);
+
+        var configuration = builder.Configuration;
+        builder.Services.Configure<AppCenterOptions>(configuration.GetSection("AppCenter"));
+
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
+		var app = builder.Build();
+
+
+        var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
+        AppCenter.Start(appCenterOptions.Value.Secret,
+            typeof(Analytics), typeof(Crashes), typeof(Distribute));
+#if ANDROID
+        Distribute.SetEnabledForDebuggableBuild(true);
+#endif
+        return app;
 	}
+
+    private static void ConfigureConfiguration(MauiAppBuilder builder)
+    {
+        var assembly = typeof(App).GetTypeInfo().Assembly;
+        builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.json", optional: false, false);
+        builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.secrets.json", optional: false, false);
+    }
 }

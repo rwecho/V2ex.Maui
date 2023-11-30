@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Components;
+
 namespace V2ex.Blazor.Components;
 
 public record TopicViewModel(
     string Id,
     string? NodeId,
-    string Title,
+    MarkupString Title,
     string Link,
     string? Avatar,
     string? AvatarLink,

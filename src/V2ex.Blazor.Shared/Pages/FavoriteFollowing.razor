@@ -56,7 +56,7 @@
         var items = info.Items.Select(o => new TopicViewModel(
                 "",
                 "",
-                o.TopicTitle,
+               new MarkupString(o.TopicTitle),
                 o.TopicLink,
                 o.Avatar,
                 o.UserLink,
