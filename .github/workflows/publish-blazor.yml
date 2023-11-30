@@ -73,4 +73,4 @@ jobs:
           npm install -g appcenter-cli
           git log --oneline --decorate > notes.txt
           cat notes.txt
-          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.blazor-Signed.apk -R notes.txt -a HappyTreeFriends/V2exBlazor  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.blazor-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui  --group BlazorExternal --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
