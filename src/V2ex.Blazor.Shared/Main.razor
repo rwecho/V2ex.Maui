@@ -10,7 +10,7 @@
                         <NotAuthorized>
 				            <LoginRedirect></LoginRedirect>
                         </NotAuthorized>
-                        </AuthorizeRouteView>
+                    </AuthorizeRouteView>
                     @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
                     <FocusOnNavigate RouteData="@routeData" Selector="h1" />
                 </Status>
@@ -34,13 +34,6 @@
 
     protected override void OnParametersSet()
     {
-        if (string.IsNullOrEmpty(Url))
-        {
-            this.NavigationManager.NavigateTo("/tab");
-        }
-        else
-        {
-            this.NavigationManager.NavigateTo(this.Url);
-        }
+        
     }
 }
