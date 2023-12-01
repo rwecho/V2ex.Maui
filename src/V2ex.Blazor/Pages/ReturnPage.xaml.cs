@@ -1,3 +1,5 @@
+using Microsoft.JSInterop;
+
 namespace V2ex.Blazor.Pages;
 
 public partial class ReturnPage : ContentPage
@@ -16,7 +18,7 @@ public partial class ReturnPage : ContentPage
     public string TargetLocation
     {
         get;
-        set;
+        private set;
     }
 
     public bool HasNavigationBar
@@ -29,9 +31,20 @@ public partial class ReturnPage : ContentPage
 
     public string PageTitle
     {
-        get
-        {
-            return "";
-        }
+        get;
+        private set;
+    }
+
+    private void OnBlazorWebViewInitialized(object sender, 
+        Microsoft.AspNetCore.Components.WebView.BlazorWebViewInitializedEventArgs e)
+    {
+        //todo: how to retrive the page tile .
+        //var called = await blazorWebView.TryDispatchAsync(async(services )=>
+        //{
+        //    var jsRuntime = services.GetRequiredService<IJSRuntime>();
+
+        //    var pageTitle = await jsRuntime.InvokeAsync<string>("utils.getPageTitle");
+        //    this.PageTitle = pageTitle;
+        //});
     }
 }

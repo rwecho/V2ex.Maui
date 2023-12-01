@@ -27,3 +27,8 @@ export function throttle(callback, limit) {
         }
     }
 }
+
+
+export function getPageTitle() {
+    return document.title;
+}
