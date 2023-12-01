@@ -9,12 +9,7 @@ namespace V2ex.Api;
 
 public class ApiService
 {
-#if DEBUG
-    private const string USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0";
-#else
-    private const string USER_AGENT = "Mozilla/5.0 (Linux; Android 9.0; V2er Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Mobile Safari/537.36";
-#endif
-
+    private const string USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15";
     public ApiService(IHttpClientFactory httpClientFactory, ILogger<ApiService> logger)
     {
         this.HttpClient = httpClientFactory.CreateClient("api");

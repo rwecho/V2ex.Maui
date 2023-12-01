@@ -26,12 +26,6 @@ public class CookieHttpClientHandler : HttpClientHandler
         {
             this.CookieContainer.Add(cookie);
         }
-
-#if DEBUG
-        // add the cloud flare cookie, the cf_clearance cookie is required to bypass the cloud flare protection
-        // we can get the cookie from the browser or POSTMAN
-        this.CookieContainer.Add(new Cookie("cf_clearance", "glzC2MNKUeusXwit5hK.6.kMMqChsvBoO5L9pPDQgAQ-1700533124-0-1-1508b64d.a8ef567f.4209e9ad-150.0.0", "/", "v2ex.com"));
-#endif
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
