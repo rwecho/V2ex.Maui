@@ -84,6 +84,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\V2ex.Blazor.Shared\V2ex.Blazor.Shared.csproj" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

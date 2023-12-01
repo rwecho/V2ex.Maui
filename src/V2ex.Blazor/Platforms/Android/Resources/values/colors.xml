@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#512BD4</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
+    <!--reference: https://stackoverflow.com/questions/75497399/net-maui-android-app-change-navigation-and-status-bar-colors-at-splash-screen -->
+    <color name="colorPrimary">#f3f4f6</color>
+    <color name="colorPrimaryDark">#f3f4f6</color>
+    <color name="colorAccent">#f3f4f6</color>
 </resources>

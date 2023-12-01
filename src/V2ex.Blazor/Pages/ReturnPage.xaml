@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="V2ex.Blazor.Pages.ReturnPage"
              xmlns:shared="clr-namespace:V2ex.Blazor;assembly=V2ex.Blazor.Shared"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding PageTitle, Source={x:Reference Root}}"
              x:Name="Root"
              NavigationPage.HasNavigationBar="{Binding HasNavigationBar, Source={x:Reference Root} }">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#f3f4f6" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
     <BlazorWebView x:Name="blazorWebView" 
                    HostPage="wwwroot/index.html" 
                    StartPath="{Binding TargetLocation, Source={x:Reference Root}}"
