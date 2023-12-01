@@ -1199,6 +1199,10 @@ input:checked + .toggle-bg {
   margin-inline-start: 0.75rem;
 }
 
+.ms-4 {
+  margin-inline-start: 1rem;
+}
+
 .ms-auto {
   margin-inline-start: auto;
 }
@@ -1209,10 +1213,6 @@ input:checked + .toggle-bg {
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.ms-4 {
-  margin-inline-start: 1rem;
 }
 
 .block {
@@ -1880,11 +1880,6 @@ input:checked + .toggle-bg {
   background-color: rgb(244 244 245 / var(--tw-bg-opacity));
 }
 
-.bg-gray-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-}
-
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2300,11 +2295,6 @@ body {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-800:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-}
-
 .hover\:text-blue-600:hover {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
@@ -2670,14 +2660,6 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .lg\:flex {
-    display: flex;
-  }
-
-  .lg\:hidden {
-    display: none;
-  }
-
   .lg\:px-5 {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
