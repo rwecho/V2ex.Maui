@@ -160,9 +160,9 @@
 
 
     <!-- Callup user modal -->
-    <div id="callupUserModal" tabindex="-1" aria-hidden="true" 
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full md:inset-0 h-modal md:h-full">
-        <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+    <div id="callupUserModal" tabindex="-1" aria-hidden="true"
+         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full h-modal !h-full md:inset-0 ">
+        <div class="relative mx-4 mt-8 mb-16 w-full max-w-xl md:h-auto md:m-4">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
@@ -175,6 +175,16 @@
                                 </span>
                             }
                     </div>
+
+
+                    <!-- close button -->
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                        @onclick="HideModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
                 </div>
                 <!-- Modal body -->
                 <div class="-mx-4">
@@ -327,5 +337,14 @@
         }
 
         await interopModule.InvokeVoidAsync("showModal", modalReference);
+    }
+
+    private async Task HideModal()
+    {
+        if (modalReference == null || interopModule == null)
+        {
+            return;
+        }
+        await interopModule.InvokeVoidAsync("toggleModal", modalReference);
     }
 }
