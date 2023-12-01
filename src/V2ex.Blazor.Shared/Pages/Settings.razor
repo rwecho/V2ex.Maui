@@ -1,9 +1,50 @@
 ﻿@page "/settings"
 
-<div class="flex h-full items-center justify-center text-center w-full">
-    <strong>暂未实现</strong>
+<div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4">
+
+    @if(CurrentUser.IsAuthenticated)
+    {
+        <button class="w-full bg-red-600  text-gray-100 rounded-md py-4 font-medium" @onclick="LogOutAsync">退出登录</button>
+    }
+
 </div>
 
 @code {
 
+    [Inject]
+    private Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+    {
+        get;
+        set;
+    } = null!;
+
+    [Inject]
+    private CurrentUser CurrentUser { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject]
+    private IAlterService AlterService { get; set; } = null!;
+
+    private bool isLogging;
+
+    private async Task LogOutAsync()
+    {
+        if (!await AlterService.Confirm("退出登录", "确认退出吗？"))
+        {
+            return;
+        }
+
+        try
+        {
+            isLogging = true;
+            await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LogoutAsync();
+            this.NavigationManager.NavigateTo("/");
+        }
+        finally
+        {
+            isLogging = false;
+        }
+    }
 }

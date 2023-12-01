@@ -19,14 +19,13 @@ public static class ServiceCollectionExtensions
              {
                  return new CookieHttpClientHandler(sp.GetRequiredService<IPreferences>());
              })
-            // .AddHttpMessageHandler((sp) =>
-            // {
-            //     return new LoggingHttpMessageHandler(sp.GetRequiredService<ILogger<ApiService>>());
-            // })
             ;
+        
+        // We register the AuthenticationStateProvider as a singleton
+        // because we want to reuse the same instance for the entire app.
+        services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
 
         services.AddScoped<IToast, DefaultToast>();
-        services.AddScoped<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         services.AddScoped<CurrentUser>();

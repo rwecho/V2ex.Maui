@@ -31,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddTransient<Api.IPreferences, MauiPreferences>();
         builder.Services.AddScoped<INavigationInterceptorService, NavigationInterceptorService>();
         builder.Services.AddScoped<INativeNavigation, NativeNavigation>();
+        builder.Services.AddScoped<IAlterService, NativeAlterService>();
 
         ConfigureConfiguration(builder);
 
