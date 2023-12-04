@@ -13,18 +13,18 @@ using V2ex.Blazor.Services;
 namespace V2ex.Blazor;
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			});
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            });
 
-		builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddMauiBlazorWebView();
         builder.Services.AddBlazorShared();
         builder.Services.AddAuthorizationCore();
         builder.Services.AddTransient<Services.IBrowser, Services.NativeBrowser>();
@@ -41,20 +41,23 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
-		var app = builder.Build();
+        var app = builder.Build();
 
 
+#if ANDROID || WINDOWS
         var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
         AppCenter.Start(appCenterOptions.Value.Secret,
             typeof(Analytics), typeof(Crashes), typeof(Distribute));
+#endif
+
 #if ANDROID
         Distribute.SetEnabledForDebuggableBuild(true);
 #endif
         return app;
-	}
+    }
 
     private static void ConfigureConfiguration(MauiAppBuilder builder)
     {
