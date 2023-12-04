@@ -1,15 +1,15 @@
-<nav class="w-full bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-50">
+<nav class="w-full py-4 bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-50">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start md:w-64">
                 @if (ShowBackButton && !OperatingSystem.IsWindows())
                 {
                     <button @onclick="GoBack"
-                            class="px-4 py-2 inline-flex items-center text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 6 10">
+                        class="px-4 py-2 inline-flex items-center text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 1 1 5l4 4" />
+                                d="M5 1 1 5l4 4" />
                         </svg>
                     </button>
                 }
@@ -32,8 +32,8 @@
             </div>
 
             <SectionOutlet SectionName="NavHeader"></SectionOutlet>
-            
-            @if (currentUser !=null && currentUser.IsAuthenticated)
+
+            @if (currentUser != null && currentUser.IsAuthenticated)
             {
                 <div class="flex items-center">
                     <div class="flex items-center ml-3">
@@ -47,14 +47,14 @@
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                             id="dropdown-user">
-                        
 
-                                <div class="px-4 py-3" role="none">
-                                    <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                        @currentUser.UserName
-                                    </p>
-                                </div>
-                       
+
+                            <div class="px-4 py-3" role="none">
+                                <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                    @currentUser.UserName
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -92,9 +92,9 @@
         }
     }
 
-    
+
     private Task GoBack()
     {
-       return Navigation.GoBack();
+        return Navigation.GoBack();
     }
 }

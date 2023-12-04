@@ -2240,11 +2240,6 @@ input:checked + .toggle-bg {
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(240 82 82 / var(--tw-text-opacity));
-}
-
 .text-red-800 {
   --tw-text-opacity: 1;
   color: rgb(155 28 28 / var(--tw-text-opacity));
@@ -2342,7 +2337,7 @@ input:checked + .toggle-bg {
   src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
 }
 
-body *{
+body * {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
@@ -2350,6 +2345,8 @@ body *{
 
 body {
   font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
+  padding-top: calc(env(safe-area-inset-top,
+                20px) - 5px);
 }
 
 .no-scrollbar::-webkit-scrollbar {

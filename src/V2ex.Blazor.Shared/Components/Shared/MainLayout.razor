@@ -1,10 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.Sections
 @inherits LayoutComponentBase
-<div class="flex flex-col w-full h-screen antialiased bg-gray-50 dark:bg-gray-900 overflow-hidden">
+<div class="flex flex-col w-full h-full antialiased bg-gray-50 dark:bg-gray-900 overflow-hidden">
     <NavBar></NavBar>
     <SideBar></SideBar>
     <div class="flex-1 overflow-hidden sm:ml-64">
-
         <ErrorBoundary>
             <ChildContent>
                 @Body
@@ -30,7 +29,7 @@
 </div>
 
 
-@code{
+@code {
     [Inject]
     private ILogger<Main> Logger { get; set; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
@@ -46,7 +45,7 @@
         if (firstRender)
         {
             interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Components/Shared/MainLayout.razor.js");
+            "./_content/V2ex.Blazor.Shared/Components/Shared/MainLayout.razor.js");
             await interopModule.InvokeVoidAsync("initialize");
         }
     }

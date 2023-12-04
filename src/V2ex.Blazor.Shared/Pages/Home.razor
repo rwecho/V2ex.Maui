@@ -6,35 +6,41 @@
 
 <PageTitle>@Tab</PageTitle>
 <SectionContent SectionName="NavHeader">
-    <ul class="flex flex-1 flex-wrap -mb-px text-sm font-medium text-center hidden md:flex" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+    <ul class="flex flex-1 flex-wrap -mb-px text-sm font-medium text-center hidden md:flex" id="default-tab"
+        data-tabs-toggle="#default-tab-content" role="tablist">
         @foreach (var tab in tabs)
         {
             var id = $"{tab.Name}-tab";
             var target = "#" + tab.Name;
             var active = currentTab?.Name == tab.Name;
             <li class="me-2" role="presentation">
-                <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target" type="button" role="tab" aria-controls="@tab.Name" 
-                    aria-selected="@active"
-                        @onclick="()=>TabClick(tab.Name)">
+                <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target"
+                    type="button" role="tab" aria-controls="@tab.Name" aria-selected="@active"
+                    @onclick="()=>TabClick(tab.Name)">
                     @tab.Description
                 </button>
             </li>
         }
     </ul>
 
-    @if(currentTab!=null)
+    @if (currentTab != null)
     {
         <div class="flex flex-1 ms-4 md:hidden">
             <button id="dropdownDefaultButton" @ref="dropdownButton" data-dropdown-toggle="dropdown"
-                    class="text-gray-900 bg-gray-200 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center" type="button">
-                @currentTab.Description <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                class="text-gray-900 bg-gray-200 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center"
+                type="button">
+                @currentTab.Description <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
                 </svg>
             </button>
 
             <!-- Dropdown menu -->
-            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton" data-tabs-toggle="#default-tab-content" role="tablist">
+            <div id="dropdown"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton"
+                    data-tabs-toggle="#default-tab-content" role="tablist">
                     @foreach (var tab in tabs)
                     {
                         var id = $"{tab.Name}-tab";
@@ -42,7 +48,8 @@
                         var active = currentTab?.Name == tab.Name;
 
                         <li>
-                            <button class="block px-4 py-2 border-b-2 w-full" id="@id" data-tabs-target="@target" type="button" role="tab" aria-controls="@tab.Name" aria-selected="@active" 
+                            <button class="block px-4 py-2 border-b-2 w-full" id="@id" data-tabs-target="@target" type="button"
+                                role="tab" aria-controls="@tab.Name" aria-selected="@active"
                                 @onclick="()=>TabClick(tab.Name)">@tab.Description</button>
                         </li>
                     }
@@ -50,12 +57,11 @@
             </div>
         </div>
     }
-</SectionContent>
+    </SectionContent>
 
-<div class="h-full overflow-y-auto">
-
-    <div id="default-tab-content">
-        @foreach (var tab in tabs)
+    <div class="h-full overflow-y-auto">
+        <div id="default-tab-content">
+            @foreach (var tab in tabs)
         {
             <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
         }

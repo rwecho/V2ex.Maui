@@ -7,26 +7,27 @@
     src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
 }
 
-body *{
+body * {
     user-select: none;
 }
 
-
 body {
     font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
+    padding-top: calc(env(safe-area-inset-top,
+                20px) - 5px);
 }
 
- .no-scrollbar::-webkit-scrollbar {
-     display: none;
- }
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 
- /* Hide scrollbar for IE, Edge and Firefox */
- .no-scrollbar {
-     -ms-overflow-style: none;
-     /* IE and Edge */
-     scrollbar-width: none;
-     /* Firefox */
- }
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
 
 
 .markup-container {
@@ -39,6 +40,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-    .markup-container a {
-        text-decoration: underline;
-    }
+.markup-container a {
+    text-decoration: underline;
+}
