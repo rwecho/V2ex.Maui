@@ -13,8 +13,7 @@ body * {
 
 body {
     font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
-    padding-top: calc(env(safe-area-inset-top,
-                20px) - 5px);
+    padding-top: calc(env(safe-area-inset-top, 20px) - 5px);
 }
 
 .no-scrollbar::-webkit-scrollbar {

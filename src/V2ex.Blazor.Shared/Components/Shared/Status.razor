@@ -2,7 +2,7 @@
     @ChildContent
 </CascadingValue>
 
-@code{
+@code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
@@ -10,12 +10,12 @@
     {
         get
         {
-            if(string.IsNullOrEmpty(newsInfo?.OnlineUserCount))
+            if (string.IsNullOrEmpty(newsInfo?.OnlineUserCount))
             {
                 return 0;
             }
 
-            if(int.TryParse(newsInfo.OnlineUserCount.Split(" ")[2],out var count))
+            if (int.TryParse(newsInfo.OnlineUserCount.Split(" ")[2], out var count))
             {
                 return count;
             }
@@ -44,7 +44,7 @@
 
     public void Update(NewsInfo newsInfo)
     {
-        if(this.newsInfo?.OnlineUserCount == newsInfo.OnlineUserCount)
+        if (this.newsInfo?.OnlineUserCount == newsInfo.OnlineUserCount)
         {
             return;
         }

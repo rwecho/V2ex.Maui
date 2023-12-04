@@ -2111,6 +2111,18 @@ input:checked + .toggle-bg {
   padding-top: 1rem;
 }
 
+.pt-32 {
+  padding-top: 8rem;
+}
+
+.pt-24 {
+  padding-top: 6rem;
+}
+
+.pt-28 {
+  padding-top: 7rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -2345,8 +2357,7 @@ body * {
 
 body {
   font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
-  padding-top: calc(env(safe-area-inset-top,
-                20px) - 5px);
+  padding-top: calc(env(safe-area-inset-top, 20px) - 5px);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -2789,6 +2800,11 @@ body {
 
   .sm\:p-8 {
     padding: 2rem;
+  }
+
+  .sm\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .sm\:text-2xl {

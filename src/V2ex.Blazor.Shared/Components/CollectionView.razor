@@ -2,12 +2,12 @@
 @implements IDisposable
 
 <div id="collection-view" class="h-full overflow-x-hidden overflow-y-auto">
-    @if(Header != null)
+    @if (Header != null)
     {
         @Header
     }
 
-    @if(Items== null)
+    @if (Items == null)
     {
         @Empty
     }
@@ -62,7 +62,7 @@
         if (firstRender)
         {
             interopModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Components/CollectionView.razor.js");
+            "./_content/V2ex.Blazor.Shared/Components/CollectionView.razor.js");
             await interopModule.InvokeVoidAsync("initialize", thisRef);
         }
     }

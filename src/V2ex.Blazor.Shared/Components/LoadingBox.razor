@@ -1,12 +1,12 @@
 ﻿@using DebounceThrottle
 
-@if(errorMessage != null)
+@if (errorMessage != null)
 {
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <span class="font-medium">错误信息!</span>@errorMessage
-        </div>
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <span class="font-medium">错误信息!</span>@errorMessage
     </div>
+</div>
 }
 else
 {
@@ -17,8 +17,8 @@ else
     else
     {
         <div class="h-full overflow-y-auto">
-            @childContent
-        </div>
+    @childContent
+</div>
     }
 }
 
@@ -68,7 +68,7 @@ else
         {
             errorMessage = exception.Message;
         }
-       
+
         this.StateHasChanged();
     }
 }
