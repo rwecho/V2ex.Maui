@@ -19,20 +19,33 @@ public class NavigationInterceptorService : INavigationInterceptorService
 
     public Task Intercept(string sourceLocation, LocationChangingContext context)
     {
-        if (sourceLocation == context.TargetLocation)
+        var sourcePath = GetLocalPath(sourceLocation);
+        var targetPath = GetLocalPath(context.TargetLocation);
+        if (sourcePath == targetPath)
         {
             return Task.CompletedTask;
         }
 
-        var path = context.IsNavigationIntercepted
-            ? new Uri(context.TargetLocation).LocalPath
-            : new Uri("http://0.0.0.0" + context.TargetLocation).LocalPath;
-        if (path == "/" || path == "/tab")
+        if (targetPath == "/" || targetPath == "/tab")
         {
             return Navigation.PopToRootAsync(true);
         }
 
         context.PreventNavigation();
         return Navigation.PushAsync(new ReturnPage(context.TargetLocation), true);
+    }
+
+    private static string GetLocalPath(string url)
+    {
+        Uri uri;
+        if (url.StartsWith("http://") || url.StartsWith("https://"))
+        {
+            uri = new Uri(url);
+        }
+        else
+        {
+            uri = new Uri("https://0.0.0.0"+ url);
+        }
+        return uri.LocalPath;
     }
 }

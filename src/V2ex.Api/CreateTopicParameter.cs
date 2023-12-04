@@ -1,50 +1,27 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 
 namespace V2ex.Api;
 
+[HasXPath]
+[DebuggerDisplay("{Once}")]
 public class CreateTopicParameter
 {
+    [XPath("(//input[@name='once'])[1]", "value")]
     public string Once { get; init; } = null!;
-    public List<string> HotNodes { get; init; } = new();
-    public ProblemInfo? Problem { get; init; }
+
+    [XPath("//div[@class='cell'][5]/a[@class='node']", ReturnType.OuterHtml)]
+    public List<HotNode> HotNodes { get; init; } = new();
+
     public string Url { get; internal set; } = null!;
-
-    internal static CreateTopicParameter Parse(string html)
+    [HasXPath]
+    public class HotNode
     {
-        var document = new HtmlDocument();
-        document.LoadHtml(html);
-        var wrapper = document.DocumentNode.SelectSingleNode("div#Wrapper");
-
-        var once = wrapper.SelectSingleNode("input[name='once']").GetAttributeValue("value", null);
-        var hotTitles = wrapper.SelectNodes("a.node")
-            .Select(o => o.GetAttributeValue("href", null))
-            .ToList();
-        var problem = ProblemInfo.Parse(wrapper.SelectSingleNode("div.problem"));
-
-        return new CreateTopicParameter
-        {
-            Once = once,
-            HotNodes = hotTitles,
-            Problem = problem,
-        };
-    }
-
-    public class ProblemInfo
-    {
+        [XPath("/a", ReturnType.InnerText)]
         public string Title { get; init; } = null!;
-        public List<string> Tips { get; init; } = new();
 
-        internal static ProblemInfo Parse(HtmlNode node)
-        {
-            var title = node.GetAttributeValue("ownText", null);
-            var tips = node.SelectNodes("ul li").Select(o => o.InnerText).ToList();
-            return new ProblemInfo
-            {
-                Title = title,
-                Tips = tips,
-            };
-        }
+        [XPath("/a", "href")]
+        public string Link { get; init; } = null!;
     }
 }

@@ -12,11 +12,10 @@ public record ReplyViewModel(string Id,
     int Floor
 )
 {
-    public string? Once { get; set; }
+
+    public string NormalizedId => Id.Replace("r_", "");
 
     public bool Thanked { get; set; }
 
     public int AlreadyThanked { get; set; }
 };
-
-public record CallupModel(string UserName, int Floor);

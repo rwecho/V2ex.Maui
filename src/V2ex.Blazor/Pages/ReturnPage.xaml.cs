@@ -1,5 +1,3 @@
-using Microsoft.JSInterop;
-
 namespace V2ex.Blazor.Pages;
 
 public partial class ReturnPage : ContentPage

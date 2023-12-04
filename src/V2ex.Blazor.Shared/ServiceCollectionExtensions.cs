@@ -25,7 +25,6 @@ public static class ServiceCollectionExtensions
         // because we want to reuse the same instance for the entire app.
         services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
 
-        services.AddScoped<IToast, DefaultToast>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         services.AddScoped<CurrentUser>();

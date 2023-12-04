@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace V2ex.Api;
 
+public class CreateTopicException: Exception
+{
+    public CreateTopicException(Problem problem) {
+        this.Problem = problem;
+    }
+
+    public Problem Problem { get; }
+}
+
 public class ApiService
 {
     private const string USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15";
@@ -72,6 +81,18 @@ public class ApiService
     public async Task<NodesInfo?> GetNodesInfo()
     {
         var url = "/api/nodes/s2.json";
+        var response = await this.HttpClient.GetAsync(url);
+        var nodesInfo = await response.ReadFromJson<NodesInfo>();
+        if (nodesInfo != null)
+        {
+            nodesInfo.Url = url;
+        }
+        return nodesInfo;
+    }
+
+    public async Task<NodesInfo?> GetNodesInfo2()
+    {
+        var url = "api/nodes/list.json?fields=name,title,topics,aliases&sort_by=topics&reverse=1";
         var response = await this.HttpClient.GetAsync(url);
         var nodesInfo = await response.ReadFromJson<NodesInfo>();
         if (nodesInfo != null)
@@ -348,12 +369,29 @@ public class ApiService
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 { "title", title},
+                { "syntax", "default"},
                 { "content", content },
                 { "node_name", nodeId },
                 { "once", once },
             })
         };
         var response = await this.HttpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != request.RequestUri)
+        {
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
+            response = await this.HttpClient.SendAsync(redirectRequest);
+        }
+        else if( response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            var problem = await response.GetEncapsulatedData<Problem>(this.Logger);
+            throw new CreateTopicException(problem);
+        }
+        else
+        {
+            throw new InvalidOperationException(response.ReasonPhrase);
+        }
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         result.Url = url;
         return result;
@@ -506,6 +544,19 @@ public class ApiService
             })
         };
         var response = await this.HttpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != request.RequestUri)
+        {
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
+            response = await this.HttpClient.SendAsync(redirectRequest);
+        }
+        else
+        {
+            //todo: handle the reply error.
+            throw new InvalidOperationException("Can not reply the topic.");
+        }
+
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         result.Url = url;
         return result;

@@ -1,4 +1,7 @@
-﻿namespace V2ex.Blazor.Services;
+﻿using CommunityToolkit.Maui.Alerts;
+using V2ex.Blazor.Services;
+
+namespace V2ex.Blazor.Services;
 
 public class NativeAlterService : IAlterService
 {

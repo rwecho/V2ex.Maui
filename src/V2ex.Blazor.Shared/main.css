@@ -7,6 +7,11 @@
     src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
 }
 
+body *{
+    user-select: none;
+}
+
+
 body {
     font-family: "Helvetica Neue", "Luxi Sans", "Segoe UI", "Hiragino Sans GB", "Microsoft Yahei", sans-serif, "Apple Logo";
 }

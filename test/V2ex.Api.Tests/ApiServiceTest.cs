@@ -135,4 +135,10 @@ public class ApiServiceTest : AbpIntegratedTest<ApiTestModule>
         var result = await this.ApiService.GetUserPageInfo(username);
         Assert.NotNull(result);
     }
+
+    [Fact]
+    public async Task GetCreateTopicParameterTest()
+    {
+        var result = await this.ApiService.GetCreateTopicParameter();
+    }
 }

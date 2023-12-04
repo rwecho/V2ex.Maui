@@ -53,7 +53,7 @@
             .ToLocalTime().DateTime,
             $"{o.LastReplyBy}",
             "",
-            o.Node?.Name,
+            o.Node?.Title,
             $"/go/{o.Node?.Name}",
             o.Replies
             )).ToList();
