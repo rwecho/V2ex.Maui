@@ -1,13 +1,17 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Logging;
 using V2ex.Api;
 
 namespace V2ex.Blazor.Services;
 
-public class V2exAuthenticationStateProvider(IPreferences preferences) : AuthenticationStateProvider
+public class V2exAuthenticationStateProvider(IPreferences preferences,
+    ILogger<V2exAuthenticationStateProvider> logger) : AuthenticationStateProvider
 {
     private const string UserKey = "user.json";
     private readonly object locker = new();
+
+    private ILogger<V2exAuthenticationStateProvider> Logger { get; } = logger;
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         UserInfo? userInfo;
@@ -18,18 +22,25 @@ public class V2exAuthenticationStateProvider(IPreferences preferences) : Authent
         var identity = new ClaimsIdentity();
         if (userInfo != null)
         {
-            identity = new ClaimsIdentity(new[]
+            try
             {
-                new Claim("sub", userInfo.Name),
-                new Claim("avatar", userInfo.Avatar),
-                new Claim("following", userInfo.Following.ToString()),
-                new Claim("nodes", userInfo.Nodes.ToString()),
-                new Claim("topics", userInfo.Topics.ToString()),
-                new Claim("notifications", userInfo.Notifications?.ToString()??""),
-                new Claim("moneyGold", userInfo.MoneyGold?.ToString()??""),
-                new Claim("moneySilver", userInfo.MoneySilver?.ToString()??""),
-                new Claim("moneyBronze", userInfo.MoneyBronze?.ToString()??""),
-            }, "v2ex");
+                identity = new ClaimsIdentity(new[]
+                {
+                    new Claim("sub", userInfo.Name),
+                    new Claim("avatar", userInfo.Avatar),
+                    new Claim("following", userInfo.Following.ToString()),
+                    new Claim("nodes", userInfo.Nodes.ToString()),
+                    new Claim("topics", userInfo.Topics.ToString()),
+                    new Claim("notifications", userInfo.Notifications?.ToString()??""),
+                    new Claim("moneyGold", userInfo.MoneyGold?.ToString()??""),
+                    new Claim("moneySilver", userInfo.MoneySilver?.ToString()??""),
+                    new Claim("moneyBronze", userInfo.MoneyBronze?.ToString()??""),
+                }, "v2ex");
+            }
+            catch (Exception)
+            {
+                Logger.LogError("Failed to create ClaimsIdentity");
+            }
         }
         return Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
     }

@@ -1,20 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@implements IDisposable
 <Router AppAssembly="@typeof(Main).Assembly" >
         <Found Context="routeData">
-            <Navigation>
-                <Status>
-                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ReturnLayout)">
-                        <Authorizing>
-                            <div>正在加载用户数据...</div>
-                        </Authorizing>
-                        <NotAuthorized>
-				            <LoginRedirect></LoginRedirect>
-                        </NotAuthorized>
-                    </AuthorizeRouteView>
-                    @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
-                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-                </Status>
-            </Navigation>
+            <CascadingAuthenticationState>
+                <Navigation>
+                    <Status>
+                        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ReturnLayout)">
+                            <Authorizing>
+                                <div>正在加载用户数据...</div>
+                            </Authorizing>
+                            <NotAuthorized>
+				                <LoginRedirect></LoginRedirect>
+                            </NotAuthorized>
+                        </AuthorizeRouteView>
+                        @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
+                        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                    </Status>
+                </Navigation>
+            </CascadingAuthenticationState>
         </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -32,8 +35,21 @@
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
 
-    protected override void OnParametersSet()
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    protected override void OnInitialized()
     {
-        
+        this.AuthenticationStateProvider.AuthenticationStateChanged += AuthenticationStateProvider_AuthenticationStateChanged;
+    }                                                                                                                                    
+
+    private void AuthenticationStateProvider_AuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        this.ShouldRender();
+    }
+
+    public void Dispose()
+    {
+        this.AuthenticationStateProvider.AuthenticationStateChanged -= AuthenticationStateProvider_AuthenticationStateChanged;
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace V2ex.Blazor.Services;
 
-public class CurrentUser(AuthenticationStateProvider stateProvider)
+public class CurrentUser(ClaimsPrincipal principal)
 {
-    private Task<AuthenticationState> GetAuthenticationStateTask { get; } = Task.Run(stateProvider.GetAuthenticationStateAsync);
+    private readonly ClaimsPrincipal principal = principal;
 
     public string UserName => this.FindClaimValue("sub");
     public string Avatar => this.FindClaimValue("avatar");
@@ -18,17 +17,9 @@ public class CurrentUser(AuthenticationStateProvider stateProvider)
     public int MoneyBronze => int.TryParse(this.FindClaimValue("moneyBronze"), out var v) ? v : 0;
     public bool IsAuthenticated => !string.IsNullOrEmpty(UserName);
 
-    private AuthenticationState AuthenticationState
-    {
-        get
-        {
-            return this.GetAuthenticationStateTask.Result;
-        }
-    }
-
     public Claim? FindClaim(string claimType)
     {
-        return AuthenticationState.User.Claims.FirstOrDefault(c => c.Type == claimType);
+        return principal.Claims.FirstOrDefault(c => c.Type == claimType);
     }
 
     public string FindClaimValue(string claimType)

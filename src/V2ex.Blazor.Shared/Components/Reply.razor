@@ -73,8 +73,10 @@
     [Parameter]
     public EventCallback<CallupModel> CallupCallback { get; set; }
 
-    [Inject]
-    public CurrentUser CurrentUser{ get; set; } = null!;
+    public CurrentUser? CurrentUser;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
 
     [Inject]
     private ApiService ApiService { get; set; } = null!;
@@ -87,12 +89,17 @@
     [Inject]
     private IBrowser Browser { get; set; } = null!;
 
+    protected override async Task OnParametersSetAsync()
+    {
+        CurrentUser = new CurrentUser((await AuthenticationStateTask).User);
+    }
+
 
     private async Task TapThank()
     {
         if (ViewModel == null || string.IsNullOrEmpty(ViewModel.NormalizedId) ||
            string.IsNullOrEmpty(TopicPageViewModel.Once) ||
-           !this.CurrentUser.IsAuthenticated ||
+           (this.CurrentUser!=null &&!this.CurrentUser.IsAuthenticated) ||
            this.ViewModel.Thanked)
         {
             return;

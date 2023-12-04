@@ -33,7 +33,7 @@
 
             <SectionOutlet SectionName="NavHeader"></SectionOutlet>
             
-            @if (CurrentUser.IsAuthenticated)
+            @if (currentUser !=null && currentUser.IsAuthenticated)
             {
                 <div class="flex items-center">
                     <div class="flex items-center ml-3">
@@ -42,7 +42,7 @@
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full" src="@CurrentUser.Avatar" alt="user photo">
+                                <img class="w-8 h-8 rounded-full" src="@currentUser.Avatar" alt="user photo">
                             </button>
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -51,7 +51,7 @@
 
                                 <div class="px-4 py-3" role="none">
                                     <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                        @CurrentUser.UserName
+                                        @currentUser.UserName
                                     </p>
                                 </div>
                        
@@ -67,17 +67,26 @@
     [Parameter]
     public bool ShowBackButton { get; set; } = false;
     [Inject]
-    private CurrentUser CurrentUser { get; set; } = null!;
-    [Inject]
     private INativeNavigation Navigation { get; set; } = null!;
+
+
+    private CurrentUser? currentUser;
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        currentUser = new CurrentUser((await AuthenticationStateTask).User);
+    }
+
 
     private string Avatar
     {
         get
         {
-            if (this.CurrentUser.IsAuthenticated)
+            if (currentUser != null && currentUser.IsAuthenticated)
             {
-                return CurrentUser.Avatar;
+                return currentUser.Avatar;
             }
             return "https://cdn.v2ex.com/gravatar/0f9c0b0d7f0f3f0f9c0b0d7f0f3f0f9c?s=48&d=retro";
         }

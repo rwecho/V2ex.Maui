@@ -1,12 +1,15 @@
 ﻿@page "/settings"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 
 <div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4">
 
-    @if(CurrentUser.IsAuthenticated)
+    <button class="w-full bg-gray-50  text-gray-600 rounded-md py-4 font-medium" @onclick="TestAsync">Test</button>
+
+    @if (currentUser != null && currentUser.IsAuthenticated)
     {
         <button class="w-full bg-red-600  text-gray-100 rounded-md py-4 font-medium" @onclick="LogOutAsync">退出登录</button>
     }
-
 </div>
 
 @code {
@@ -18,8 +21,9 @@
         set;
     } = null!;
 
-    [Inject]
-    private CurrentUser CurrentUser { get; set; } = null!;
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+    private CurrentUser? currentUser;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
@@ -28,6 +32,11 @@
     private IAlterService AlterService { get; set; } = null!;
 
     private bool isLogging;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        currentUser = new CurrentUser((await AuthenticationStateTask).User);
+    }
 
     private async Task LogOutAsync()
     {
@@ -40,11 +49,29 @@
         {
             isLogging = true;
             await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LogoutAsync();
-            this.NavigationManager.NavigateTo("/");
+            // this.NavigationManager.NavigateTo("/");
         }
         finally
         {
             isLogging = false;
         }
+    }
+
+    private async Task TestAsync()
+    {
+        try
+        {
+            isLogging = true;
+            await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LoginAsync(new UserInfo
+                {
+                    Name = "rwecho",
+                    Avatar = "https://cdn.v2ex.com/avatar/3e3c/9b9c/2353_normal.png?m=1628076543",
+                });
+        }
+        finally
+        {
+            isLogging = false;
+        }
+        
     }
 }

@@ -27,7 +27,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
-        services.AddScoped<CurrentUser>();
         return services;
     }
 }
