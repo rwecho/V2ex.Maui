@@ -2091,10 +2091,6 @@ input:checked + .toggle-bg {
   padding-bottom: 2rem;
 }
 
-.pb-20 {
-  padding-bottom: 5rem;
-}
-
 .pt-0 {
   padding-top: 0px;
 }
@@ -2109,18 +2105,6 @@ input:checked + .toggle-bg {
 
 .pt-4 {
   padding-top: 1rem;
-}
-
-.pt-32 {
-  padding-top: 8rem;
-}
-
-.pt-24 {
-  padding-top: 6rem;
-}
-
-.pt-28 {
-  padding-top: 7rem;
 }
 
 .text-center {
@@ -2802,9 +2786,9 @@ body {
     padding: 2rem;
   }
 
-  .sm\:py-0 {
-    padding-top: 0px;
-    padding-bottom: 0px;
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .sm\:text-2xl {
@@ -2863,6 +2847,11 @@ body {
 
   .md\:p-5 {
     padding: 1.25rem;
+  }
+
+  .md\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
   .md\:text-2xl {

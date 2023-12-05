@@ -22,6 +22,5 @@
                 <RootComponent x:Name="RootComponent" Selector="#app" ComponentType="{x:Type shared:Main}"  />
             </BlazorWebView.RootComponents>
         </BlazorWebView>
-        <Label Text="{Binding PageTitle}"></Label>
     </Grid>
 </ContentPage>

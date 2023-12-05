@@ -2,9 +2,9 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 
-<div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4">
+<HeadTitle Title="设置"></HeadTitle>
 
-    <button class="w-full bg-gray-50  text-gray-600 rounded-md py-4 font-medium" @onclick="TestAsync">Test</button>
+<div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4">
 
     @if (currentUser != null && currentUser.IsAuthenticated)
     {
