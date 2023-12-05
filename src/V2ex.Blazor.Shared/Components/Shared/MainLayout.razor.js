@@ -7,12 +7,19 @@ export function disableRightClick() {
 }
 
 export function initialize() {
-  if (window.document.body.clientWidth < 768) {
-    disableRightClick();
-  }
-  // Initialize Flowbite, reference https://flowbite.com/docs/getting-started/quickstart/#init-functions
-  if (initFlowbite) {
-    initFlowbite();
-    console.log("Flowbite initialized");
-  }
+    if (window.document.body.clientWidth < 768) {
+        disableRightClick();
+    }
+    // Initialize Flowbite, reference https://flowbite.com/docs/getting-started/quickstart/#init-functions
+    if (initFlowbite) {
+
+        // fix the issue: https://github.com/themesberg/flowbite/issues/745
+        // blazor normalize the aria-selected attribute by removing the 'true' value.
+        document.querySelectorAll("ul>li button[aria-selected]").forEach((element) => {
+            element.setAttribute("aria-selected", "true");
+        });
+
+        initFlowbite();
+        console.log("Flowbite initialized");
+    }
 }
