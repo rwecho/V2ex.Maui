@@ -164,6 +164,7 @@
         }
         catch(Exception exception)
         {
+            await this.LoadAsync();
             this.Logger.LogWarning(exception, "Login error");
             this.Error = exception.Message;
         }
