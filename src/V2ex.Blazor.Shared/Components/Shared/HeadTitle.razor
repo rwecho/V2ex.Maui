@@ -1,0 +1,43 @@
+﻿
+@code {
+    // The PageTitle of asp.net core is not working for Maui Blazor.
+    // We create this component to set the title of the content page host by Maui native.
+
+    private string? title;
+
+    [Parameter]
+    public string? Title
+    {
+        get
+        {
+            return title;
+        }
+        set
+        {
+            title = value;
+        }
+    }
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+    private IJSObjectReference? module;
+
+    protected override Task OnParametersSetAsync()
+    {
+        return base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Components/Shared/HeadTitle.razor.js");
+        }
+
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("setTitle", this.Title);
+        }
+    }
+}
