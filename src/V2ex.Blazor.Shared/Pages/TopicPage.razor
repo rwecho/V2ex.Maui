@@ -1,5 +1,5 @@
 @page "/t/{Id:int}"
-
+@implements IDisposable
 <HeadTitle Title="话题"></HeadTitle>
 
 <div @ref="containerRef" class="h-full">
@@ -293,6 +293,7 @@
     private List<ReplyViewModel> callupReplies = new();
 
     private string inputtingText = string.Empty;
+    private string? originUri;
 
 
     protected override void OnParametersSet()
@@ -310,6 +311,7 @@
 
     protected override Task OnInitializedAsync()
     {
+        originUri= NavigationManager.Uri;
         thisRef = DotNetObjectReference.Create(this);
         return this.LoadAsync(1);
     }
@@ -319,12 +321,11 @@
         if (firstRender)
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-            "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
+                "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
 
             modalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal", containerRef, thisRef);
         }
     }
-
     private async Task LoadAsync(int page)
     {
         var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
@@ -407,8 +408,6 @@
         }
 
         await interopModule.InvokeVoidAsync("showModal", modalReference);
-
-        this.NavigationManager.NavigateTo(this.NavigationManager.Uri + $"#modal=callup_{model.UserName}");
     }
 
     private async Task HideModal()
@@ -417,7 +416,24 @@
         {
             return;
         }
-        await interopModule.InvokeVoidAsync("toggleModal", modalReference);
+        await interopModule.InvokeVoidAsync("hideModal", modalReference);
+    }
+
+    [JSInvokable]
+    public Task OnModalShowJsInvoke()
+    {
+        this.NavigationManager.NavigateTo(originUri + $"#modal=callup");
+        return Task.CompletedTask;
+    }
+
+    [JSInvokable]
+    public Task OnModalHideJsInvoke()
+    {
+        callupReplies.Clear();
+        // todo: how to clear the navigation stack? 
+        // if the user click the back button, the page will be navigated to the previous page.
+        this.NavigationManager.NavigateTo(originUri ?? "/", false, true);
+        return Task.CompletedTask;
     }
 
     private async Task SendAsync()
@@ -495,5 +511,9 @@
     private Task OnExternalLickClicked(Uri uri)
     {
         return Browser.OpenAsync(uri);
+    }
+
+    public void Dispose()
+    {
     }
 }

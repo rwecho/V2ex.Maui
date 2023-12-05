@@ -9,9 +9,11 @@
         onHide: () => {
             console.log('modal is hidden');
             document.body.classList.add('overflow-hidden');
+            thisRef.invokeMethodAsync('OnModalHideJsInvoke');
         },
         onShow: () => {
             console.log('modal is shown');
+            thisRef.invokeMethodAsync('OnModalShowJsInvoke');
         },
         onToggle: () => {
             console.log('modal has been toggled');
@@ -25,11 +27,10 @@
 
     return new Modal($modalElement, modalOptions, instanceOptions);
 };
-
-export function toggleModal(modal) {
-    modal.toggle();
-}
-
 export function showModal(modal) {
     modal.show();
+}
+
+export function hideModal(modal) {
+    modal.hide();
 }
