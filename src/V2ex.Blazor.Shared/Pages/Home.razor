@@ -10,11 +10,6 @@
         data-tabs-toggle="#default-tab-content" role="tablist">
         @foreach (var tab in tabs)
         {
-            if (!new[] { "all", "tech", "r2" }.Contains(tab.Name))
-            {
-                continue;
-            }
-
             var id = $"{tab.Name}-tab";
             var target = "#" + tab.Name;
             var active = currentTab?.Name == tab.Name;
@@ -48,11 +43,6 @@
                     data-tabs-toggle="#default-tab-content" role="tablist">
                     @foreach (var tab in tabs)
                     {
-                        if (!new[] { "all", "tech", "r2" }.Contains(tab.Name))
-                        {
-                            continue;
-                        }
-
                         var id = $"{tab.Name}-tab";
                         var target = "#" + tab.Name;
                         var active = (currentTab?.Name == tab.Name);
@@ -72,11 +62,6 @@
         <div id="default-tab-content">
             @foreach (var tab in tabs)
             {
-                if (!new[] { "all", "tech", "r2" }.Contains(tab.Name))
-                {
-                    continue;
-                }
-
                 <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
             }
     </div>
