@@ -3,21 +3,6 @@
   "tasks": [
     {
       "type": "shell",
-      "command": "dotnet watch --project V2ex.Blazor.Server.csproj run",
-      "label": "dotnet: watch V2ex.Blazor.Server",
-      "options": {
-        "cwd": "${workspaceFolder}/src/V2ex.Blazor.Server"
-      },
-      "problemMatcher": [
-        "$msCompile"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "type": "shell",
       "command": "pnpm watch:css",
       "label": "shell: pnpm watch",
       "options": {

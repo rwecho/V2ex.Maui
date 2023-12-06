@@ -1224,10 +1224,6 @@ input:checked + .toggle-bg {
   margin-left: 0.5rem;
 }
 
-.ml-2\.5 {
-  margin-left: 0.625rem;
-}
-
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -2784,11 +2780,6 @@ body {
 
   .sm\:p-8 {
     padding: 2rem;
-  }
-
-  .sm\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 
   .sm\:text-2xl {
