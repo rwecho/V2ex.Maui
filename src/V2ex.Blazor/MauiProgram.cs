@@ -2,11 +2,9 @@
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Distribute;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using V2ex.Blazor.Services;
@@ -52,12 +50,7 @@ public static class MauiProgram
 
 #if ANDROID || WINDOWS
         var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
-        AppCenter.Start(appCenterOptions.Value.Secret,
-            typeof(Analytics), typeof(Crashes), typeof(Distribute));
-#endif
-
-#if ANDROID
-        Distribute.SetEnabledForDebuggableBuild(true);
+        AppCenter.Start(appCenterOptions.Value.Secret, typeof(Analytics), typeof(Crashes));
 #endif
         return app;
     }
