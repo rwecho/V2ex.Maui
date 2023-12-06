@@ -281,6 +281,9 @@
     [Inject]
     private IBrowser Browser { get; set; } = null!;
 
+    [Inject]
+    private UtilsJsInterop UtilsJsInterop { get; set; } = null!;
+
     private TopicPageViewModel? viewModel;
 
     private DotNetObjectReference<TopicPage>? thisRef;
@@ -427,13 +430,11 @@
     }
 
     [JSInvokable]
-    public Task OnModalHideJsInvoke()
+    public async Task OnModalHideJsInvoke()
     {
         callupReplies.Clear();
-        // todo: how to clear the navigation stack? 
-        // if the user click the back button, the page will be navigated to the previous page.
-        this.NavigationManager.NavigateTo(originUri ?? "/", false, true);
-        return Task.CompletedTask;
+        // we should remove the hash from the uri, to clear the navigation history
+        await this.UtilsJsInterop.GoBack();
     }
 
     private async Task SendAsync()

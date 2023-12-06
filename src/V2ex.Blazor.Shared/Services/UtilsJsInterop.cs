@@ -13,6 +13,11 @@ public class UtilsJsInterop
 
     public ValueTask ScrollToElement(ElementReference eleRef)
     {
-        return this.JsRuntime.InvokeVoidAsync("utils.scrollToElement", eleRef, "hello");
+        return this.JsRuntime.InvokeVoidAsync("utils.scrollToElement", eleRef);
+    }
+
+    public ValueTask GoBack()
+    {
+        return this.JsRuntime.InvokeVoidAsync("history.back");
     }
 }
