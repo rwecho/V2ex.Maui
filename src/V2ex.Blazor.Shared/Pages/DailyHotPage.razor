@@ -1,21 +1,24 @@
 ﻿@page "/hottest"
 <HeadTitle Title="今日热议"></HeadTitle>
-<LoadingBox Load="LoadAsync">
-    <Content>
-        @if (topics != null)
-        {
-            <div class="grid grid-cols-1 divide-y">
-                @foreach (var topic in topics)
-                {
-                    <Topic ViewModel="topic"></Topic>
-                }
-            </div>
-            <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
-                <div>全部加载完成</div>
-            </div>
-        }
-    </Content>
-</LoadingBox>
+
+<RefreshView Refresh="LoadAsync">
+    <LoadingBox Load="LoadAsync">
+        <Content>
+            @if (topics != null)
+            {
+                <div class="grid grid-cols-1 divide-y">
+                    @foreach (var topic in topics)
+                    {
+                        <Topic ViewModel="topic"></Topic>
+                    }
+                </div>
+                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
+                    <div>全部加载完成</div>
+                </div>
+            }
+        </Content>
+    </LoadingBox>
+</RefreshView>
 
 
 @code {

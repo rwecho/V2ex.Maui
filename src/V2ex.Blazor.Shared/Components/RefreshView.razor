@@ -1,0 +1,53 @@
+﻿@implements IAsyncDisposable
+<div id="@mainElementId"  class="w-full h-full">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback Refresh { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
+    private IJSObjectReference? module;
+    private IJSObjectReference? pullToRefresh;
+
+    private string mainElementId = $"main_{Guid.NewGuid().ToString("N").Substring(0, 8)}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+ #if DEBUG
+    await JSRuntime.InvokeVoidAsync("import",
+    "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
+
+    await JSRuntime.InvokeVoidAsync("TouchEmulator");
+#endif
+
+            module = await this.JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", 
+                "./_content/V2ex.Blazor.Shared/Components/RefreshView.razor.js");
+
+            pullToRefresh = await module.InvokeAsync<IJSObjectReference>("initialize", mainElementId, DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnRefreshAsync()
+    {
+        await this.Refresh.InvokeAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module != null && pullToRefresh != null)
+        {
+            await module.InvokeVoidAsync("destroy", pullToRefresh);
+            await module.DisposeAsync();
+        }
+    }
+}

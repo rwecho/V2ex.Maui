@@ -1,92 +1,94 @@
 @page "/member/{Id}"
 <HeadTitle Title="@Id"></HeadTitle>
 
-<LoadingBox Load="LoadAsync">
-    <Content>
-        @if (memberInfo != null)
-        {
-            <div class="flex flex-row space-x-2 p-2 bg-white mt-4">
-                <div class="flex flex-col items-center space-y-1">
-                    <img class="w-16 h-16" src="@memberInfo.Avatar" alt="avatar" />
+<RefreshView Refresh="LoadAsync">
+    <LoadingBox Load="LoadAsync">
+        <Content>
+            @if (memberInfo != null)
+            {
+                <div class="flex flex-row space-x-2 p-2 bg-white mt-4">
+                    <div class="flex flex-col items-center space-y-1">
+                        <img class="w-16 h-16" src="@memberInfo.Avatar" alt="avatar" />
 
-                    @if (!string.IsNullOrEmpty(memberInfo.IsOnline))
+                        @if (!string.IsNullOrEmpty(memberInfo.IsOnline))
+                        {
+                            <span class="uppercase bg-green-400 px-2 py-0 text-sm text-white rounded-full">online</span>
+                        }
+                    </div>
+
+                    <div class="flex flex-col space-y-1 text-gray-400">
+                        <span class="text-gray-800 text-lg">@memberInfo.UserName</span>
+                        <span>@memberInfo.Tagline</span>
+                        <span>今日活跃度排名 @memberInfo.TodayActivity</span>
+                    </div>
+                </div>
+                <div class="bg-white mb-4 p-2 flex flex-col">
+                    <span>@memberInfo.CreatedText</span>
+                </div>
+
+
+
+                <div class="grid grid-cols-1 bg-white my-4 divide-y space-y-2">
+                    <div class="flex flex-row justify-between p-4 text-gray-400">
+                        <span> @Id 最近创建了</span>
+
+                        <div class="flex flex-row justify-start space-x-2  px-2">
+                            <a href="/member/@Id/replies">创建的更多主题</a>
+                            <span class="text-gray-600">>></span>
+                        </div>
+                    </div>
+                    @foreach (var topic in memberInfo.Topics)
                     {
-                        <span class="uppercase bg-green-400 px-2 py-0 text-sm text-white rounded-full">online</span>
+                        var viewModel = new TopicViewModel(
+                        "", // id
+                        "", // node id
+                        new MarkupString(topic.Title),
+                        topic.Link,
+                        "", // avatar
+                        "", // avatar link
+                        topic.UserName,
+                        "", // user link
+                        topic.Created,
+                        topic.CreatedText,
+                        topic.LatestReplyBy,
+                        topic.NodeName,
+                        topic.NodeLink,
+                        topic.Replies
+                        );
+                        <Topic2 ViewModel="@viewModel"></Topic2>
+                    }
+
+
+                </div>
+
+
+                <div class="grid grid-cols-1 p-2 bg-white my-4 divide-y space-y-2">
+                    <div class="flex flex-row justify-between py-4 text-gray-400">
+                        <span> @Id 最近回复了</span>
+
+                        <div class="flex flex-row justify-start space-x-2  ">
+                            <a href="/member/@Id/replies">创建的更多回复</a>
+                            <span class="text-gray-600">>></span>
+                        </div>
+                    </div>
+                    @for (var i = 0; i < memberInfo.Replies.Count; i++)
+                    {
+                        var content = new MarkupString(memberInfo.ReplyContents[i]);
+                        var reply = memberInfo.Replies[i];
+                        <div class="w-full flex flex-col space-y-2">
+                            <div class="flex flex-row justify-between py-2">
+                                <div><span>@reply.OpUserName 创建的主题 ></span> @reply.TopicTitle </div>
+                                <div>@reply.ReplyTimeText</div>
+                            </div>
+                            <div class="bg-gray-100 p-2 rounded-sm">@content</div>
+                        </div>
                     }
                 </div>
+            }
 
-                <div class="flex flex-col space-y-1 text-gray-400">
-                    <span class="text-gray-800 text-lg">@memberInfo.UserName</span>
-                    <span>@memberInfo.Tagline</span>
-                    <span>今日活跃度排名 @memberInfo.TodayActivity</span>
-                </div>
-            </div>
-            <div class="bg-white mb-4 p-2 flex flex-col">
-                <span>@memberInfo.CreatedText</span>
-            </div>
-
-
-
-            <div class="grid grid-cols-1 bg-white my-4 divide-y space-y-2">
-                <div class="flex flex-row justify-between p-4 text-gray-400">
-                    <span> @Id 最近创建了</span>
-
-                    <div class="flex flex-row justify-start space-x-2  px-2">
-                        <a href="/member/@Id/replies">创建的更多主题</a>
-                        <span class="text-gray-600">>></span>
-                    </div>
-                </div>
-                @foreach (var topic in memberInfo.Topics)
-                {
-                    var viewModel = new TopicViewModel(
-                    "", // id
-                    "", // node id
-                    new MarkupString(topic.Title),
-                    topic.Link,
-                    "", // avatar
-                    "", // avatar link
-                    topic.UserName,
-                    "", // user link
-                    topic.Created,
-                    topic.CreatedText,
-                    topic.LatestReplyBy,
-                    topic.NodeName,
-                    topic.NodeLink,
-                    topic.Replies
-                    );
-                    <Topic2 ViewModel="@viewModel"></Topic2>
-                }
-
-
-            </div>
-
-
-            <div class="grid grid-cols-1 p-2 bg-white my-4 divide-y space-y-2">
-                <div class="flex flex-row justify-between py-4 text-gray-400">
-                    <span> @Id 最近回复了</span>
-
-                    <div class="flex flex-row justify-start space-x-2  ">
-                        <a href="/member/@Id/replies">创建的更多回复</a>
-                        <span class="text-gray-600">>></span>
-                    </div>
-                </div>
-                @for (var i = 0; i < memberInfo.Replies.Count; i++)
-                {
-                    var content = new MarkupString(memberInfo.ReplyContents[i]);
-                    var reply = memberInfo.Replies[i];
-                    <div class="w-full flex flex-col space-y-2">
-                        <div class="flex flex-row justify-between py-2">
-                            <div><span>@reply.OpUserName 创建的主题 ></span> @reply.TopicTitle </div>
-                            <div>@reply.ReplyTimeText</div>
-                        </div>
-                        <div class="bg-gray-100 p-2 rounded-sm">@content</div>
-                    </div>
-                }
-            </div>
-        }
-
-    </Content>
-</LoadingBox>
+        </Content>
+    </LoadingBox>
+</RefreshView>
 
 @code {
     [Parameter]

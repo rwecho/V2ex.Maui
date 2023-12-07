@@ -3,15 +3,17 @@
         <Content>
             @if (viewModel != null)
             {
-                <div class="grid grid-cols-1 divide-y">
-                    @foreach (var topic in viewModel.Topics)
-                    {
-                        <Topic ViewModel="@topic"></Topic>
-                    }
-                </div>
-                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
-                    <div>全部加载完成</div>
-                </div>
+                <RefreshView Refresh="OnRefresh">
+                    <div class="grid grid-cols-1 divide-y">
+                        @foreach (var topic in viewModel.Topics)
+                        {
+                            <Topic ViewModel="@topic"></Topic>
+                        }
+                    </div>
+                    <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
+                        <div>全部加载完成</div>
+                    </div>
+                </RefreshView>
             }
             else
             {
@@ -35,6 +37,8 @@
 
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
+    [Inject]
+    private IToastService Toast { get; set; } = null!;
 
     [CascadingParameter]
     private Status Status { get; set; } = null!;
@@ -72,6 +76,13 @@
             viewModel = new TabViewModel(tabTopics);
             Status.Update(tabTopics);
         }
+    }
+
+    private async Task OnRefresh()
+    {
+        await LoadAsync();
+
+        await Toast.Show("刷新成功");
     }
 
     [JSInvokable]

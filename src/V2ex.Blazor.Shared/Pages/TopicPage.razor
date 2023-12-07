@@ -5,7 +5,8 @@
 <div @ref="containerRef" class="h-full">
     @if (viewModel != null)
     {
-        <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
+        <RefreshView Refresh="OnRefreshAsync">
+            <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
             <Header>
                 <div class="grid grid-cols-1 divide-y ">
                     <div class="flex flex-col">
@@ -145,6 +146,7 @@
                 }
             </Footer>
         </CollectionView>
+        </RefreshView>
     }
     else
     {
@@ -298,15 +300,6 @@
     private string inputtingText = string.Empty;
     private string? originUri;
 
-
-    protected override void OnParametersSet()
-    {
-        if (Id == 0)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-    }
-
     protected override async Task OnParametersSetAsync()
     {
         currentUser = new CurrentUser((await AuthenticationStateTask).User);
@@ -329,6 +322,14 @@
             modalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal", containerRef, thisRef);
         }
     }
+
+    private async Task OnRefreshAsync()
+    {
+        viewModel = null;
+        await this.LoadAsync(1);
+        await Toast.Show("刷新成功");
+    }
+
     private async Task LoadAsync(int page)
     {
         var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);

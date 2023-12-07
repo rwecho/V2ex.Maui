@@ -58,11 +58,11 @@
     }
     </SectionContent>
 
-    <div class="h-full overflow-y-auto">
+    <div >
         <div id="default-tab-content">
             @foreach (var tab in tabs)
             {
-                <Home_TabPanel Tab="@tab.Name"></Home_TabPanel>
+                <Home_TabPanel Tab="@tab.Name" ></Home_TabPanel>
             }
     </div>
 </div>
@@ -94,7 +94,7 @@
 
     protected override void OnInitialized()
     {
-        tabs = TabDefinition.GetTabDefinitions();
+        tabs = TabDefinition.GetTabDefinitions().ToArray();
 
         var defaultTab = Tab ?? Preferences.Get<string?>(DefaultTab, null);
         currentTab = tabs.FirstOrDefault(x => x.Name == defaultTab) ?? tabs[0];

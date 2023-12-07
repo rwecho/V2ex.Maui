@@ -42,3 +42,32 @@ body {
 .markup-container a {
     text-decoration: underline;
 }
+
+/* PullToRefresh.js */
+.ptr--ptr {
+    box-shadow: none !important;
+}
+
+.ptr--box {
+}
+
+.ptr--pull {
+}
+
+.ptr--text {
+  
+}
+
+.ptr--icon {
+  
+}
+
+/*
+When at the top of the page, disable vertical overscroll so passive touch
+listeners can take over.
+*/
+.ptr--top {
+}
+
+.ptr--release .ptr--icon {
+}
