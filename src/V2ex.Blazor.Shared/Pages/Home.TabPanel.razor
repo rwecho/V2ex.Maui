@@ -1,13 +1,5 @@
 ﻿<div class="hidden rounded-lg bg-gray-50 dark:bg-gray-800" @ref="containerRef" id="@Tab" role="tabpanel" aria-labelledby="@(Tab+"-tab")">
     <LoadingBox Load="LoadAsync" @ref="loadingBoxRef" IsManual="true">
-        <Loading>
-            <div class="grid grid-cols-1 divide-y">
-                @for (int i = 0; i < 15; i++)
-                {
-                    <TopicSkeleton />
-                }
-            </div>
-        </Loading>
         <Content>
             @if (viewModel != null)
             {
@@ -19,6 +11,15 @@
                 </div>
                 <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
                     <div>全部加载完成</div>
+                </div>
+            }
+            else
+            {
+                <div class="grid grid-cols-1 divide-y">
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        <TopicSkeleton />
+                    }
                 </div>
             }
         </Content>
