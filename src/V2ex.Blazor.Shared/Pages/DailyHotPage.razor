@@ -12,9 +12,9 @@
                         <Topic ViewModel="topic"></Topic>
                     }
                 </div>
-                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 mb-10">
-                    <div>全部加载完成</div>
-                </div>
+                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10">
+                <div>全部加载完成</div>
+            </div>
             }
         </Content>
     </LoadingBox>
@@ -35,7 +35,7 @@
             topics = items.Select(o => new TopicViewModel(
             o.Id.ToString(),
             o.Node?.Id.ToString(),
-            new MarkupString( o.Title),
+            new MarkupString(o.Title),
             $"/t/{o.Id}",
             o.Member?.AvatarLarge,
             o.Member == null ? "" : $"/member/{o.Member?.Id}",
