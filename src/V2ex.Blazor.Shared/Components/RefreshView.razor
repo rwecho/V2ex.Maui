@@ -1,5 +1,5 @@
 ﻿@implements IAsyncDisposable
-<div id="@mainElementId"  class="w-full h-full">
+<div id="@mainElementId"  class="w-full h-full overflow-x-hidden overflow-y-auto">
     @ChildContent
 </div>
 
@@ -22,10 +22,10 @@
         if(firstRender)
         {
  #if DEBUG
-    await JSRuntime.InvokeVoidAsync("import",
-    "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
+            await JSRuntime.InvokeVoidAsync("import",
+                "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
 
-    await JSRuntime.InvokeVoidAsync("TouchEmulator");
+            await JSRuntime.InvokeVoidAsync("TouchEmulator");
 #endif
 
             module = await this.JSRuntime.InvokeAsync<IJSObjectReference>(
@@ -46,7 +46,16 @@
     {
         if (module != null && pullToRefresh != null)
         {
-            await module.InvokeVoidAsync("destroy", pullToRefresh);
+            try
+            {
+                await pullToRefresh.InvokeVoidAsync("destroy");
+            }
+            catch (Microsoft.JSInterop.JSException)
+            {
+                // how to check the pullToRefresh has been destroyed when user force refresh on windows?
+                // or is it suitable to use the pullToRefresh.destroy() method here?
+            }
+
             await module.DisposeAsync();
         }
     }

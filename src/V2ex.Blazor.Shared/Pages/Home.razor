@@ -56,15 +56,13 @@
             </div>
         </div>
     }
-    </SectionContent>
+</SectionContent>
 
-    <div >
-        <div id="default-tab-content">
-            @foreach (var tab in tabs)
-            {
-                <Home_TabPanel Tab="@tab.Name" ></Home_TabPanel>
-            }
-    </div>
+<div id="default-tab-content" class="h-full">
+        @foreach (var tab in tabs)
+        {
+            <Home_TabPanel Tab="@tab.Name" ></Home_TabPanel>
+        }
 </div>
 
 @code
