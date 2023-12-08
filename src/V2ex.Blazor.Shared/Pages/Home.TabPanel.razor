@@ -1,19 +1,20 @@
 ﻿<div class="hidden h-full rounded-lg bg-gray-50 dark:bg-gray-800" @ref="containerRef" id="@Tab" role="tabpanel"
     aria-labelledby="@(Tab+"-tab")">
     <LoadingBox Load="LoadAsync" @ref="loadingBoxRef" IsManual="true">
-        <Content>
             @if (viewModel != null)
             {
                 <RefreshView Refresh="OnRefresh">
-                    <div class="grid grid-cols-1 divide-y">
-                        @foreach (var topic in viewModel.Topics)
-                        {
-                            <Topic ViewModel="@topic"></Topic>
-                        }
-                    </div>
-                    <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10">
-                        <div>全部加载完成</div>
-                    </div>
+                    <ScrollView>
+                        <div class="grid grid-cols-1 divide-y">
+                            @foreach (var topic in viewModel.Topics)
+                            {
+                                <Topic ViewModel="@topic"></Topic>
+                            }
+                        </div>
+                        <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10">
+                            <div>全部加载完成</div>
+                        </div>
+                    </ScrollView>
                 </RefreshView>
             }
             else
@@ -25,7 +26,6 @@
                     }
                 </div>
             }
-        </Content>
     </LoadingBox>
 </div>
 

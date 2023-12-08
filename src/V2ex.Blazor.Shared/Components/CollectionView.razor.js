@@ -1,6 +1,6 @@
 ﻿import { throttle } from "../utils.js"
 export function initialize(dotNetHelper) {
-    const container = document.querySelector("#collection-view");
+    const container = document.querySelector("#collection-view #scrollView");
     if (!container) {
         return
     }

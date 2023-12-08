@@ -32,7 +32,7 @@ public class NavigationInterceptorService : INavigationInterceptorService
         }
 
         context.PreventNavigation();
-        return Navigation.PushAsync(new ReturnPage(context.TargetLocation), true);
+        return Navigation.PushAsync(new ReturnPage(context.TargetLocation), false);
     }
 
     private static string GetLocalPath(string url)

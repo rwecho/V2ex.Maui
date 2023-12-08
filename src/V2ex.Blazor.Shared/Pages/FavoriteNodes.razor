@@ -3,26 +3,26 @@
 <HeadTitle Title="关注的节点"></HeadTitle>
 
 <RefreshView Refresh="LoadAsync">
-    <LoadingBox Load="LoadAsync">
-        <Content>
-            @if (nodeInfo != null)
-            {
-                <div class="flex flex-wrap  space-x-4 space-y-4">
-                    @foreach (var item in nodeInfo.Items)
-                    {
-                        <div class="flex flex-col text-center items-center w-24 space-y-2
-                                text-gray-400 first:m-4">
-                            <a href="@item.Link" class="group">
-                                <img class="w-24 h-24" src="@item.Image" alt="node image" />
-                                <div class="text-ellipsis w-24">@item.Name</div>
-                                <div>@item.Topics</div>
-                            </a>
-                        </div>
-                    }
-                </div>
-            }
-        </Content>
-    </LoadingBox>
+    <ScrollView>
+        <LoadingBox Load="LoadAsync">
+                @if (nodeInfo != null)
+                {
+                    <div class="flex flex-wrap  space-x-4 space-y-4">
+                        @foreach (var item in nodeInfo.Items)
+                        {
+                            <div class="flex flex-col text-center items-center w-24 space-y-2
+                                    text-gray-400 first:m-4">
+                                <a href="@item.Link" class="group">
+                                    <img class="w-24 h-24" src="@item.Image" alt="node image" />
+                                    <div class="text-ellipsis w-24">@item.Name</div>
+                                    <div>@item.Topics</div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+        </LoadingBox>
+    </ScrollView>
 </RefreshView>
 @code {
     [Inject]

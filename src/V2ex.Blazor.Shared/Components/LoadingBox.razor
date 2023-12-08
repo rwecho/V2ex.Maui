@@ -11,7 +11,7 @@
 else
 {
     <div class="h-full">
-        @Content
+        @ChildContent
         @if(isLoading)
         {
             <div class="h-full w-full bg-gray-200/10 backdrop-blur-[2px] absolute top-0 left-0">
@@ -34,7 +34,7 @@ else
     public Func<Task> Load { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment? Content { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
     public bool IsManual { get; set; }

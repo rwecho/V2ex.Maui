@@ -7,8 +7,11 @@
             thisRef.invokeMethodAsync('OnRefreshAsync');
        },
        shouldPullToRefresh() {
-           const element = document.querySelector(id);
-           return element && element.scrollTop === 0;
+           const scrollView = document.querySelector(id).querySelector("#scrollView");
+           if (scrollView) {
+               return scrollView.scrollTop === 0;
+           }
+           return true;
        }
     })
 }

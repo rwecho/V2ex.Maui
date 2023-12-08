@@ -2,29 +2,33 @@
 @implements IDisposable
 
 <div id="collection-view" class="h-full">
-    @if (Header != null)
-    {
-        @Header
-    }
-
-    @if (Items == null)
-    {
-        @Empty
-    }
-    else
-    {
-        <div class="grid grid-cols-1 divide-y">
-            @foreach (var item in Items)
+    <ScrollView>
+        <div class="h-full flex flex-col">
+            @if (Header != null)
             {
-                @ItemContent(item)
+                @Header
+            }
+
+            @if (Items == null)
+            {
+                @Empty
+            }
+            else
+            {
+                <div class="grid grid-cols-1 divide-y">
+                    @foreach (var item in Items)
+                    {
+                        @ItemContent(item)
+                    }
+                </div>
+            }
+
+            @if (Footer != null)
+            {
+                @Footer
             }
         </div>
-    }
-
-    @if (Footer != null)
-    {
-        @Footer
-    }
+    </ScrollView>
 </div>
 @code {
 
