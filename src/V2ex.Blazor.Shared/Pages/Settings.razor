@@ -4,11 +4,17 @@
 
 <HeadTitle Title="设置"></HeadTitle>
 
-<div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4">
+<div class="flex flex-col h-full w-full max-w-md mx-auto items-center text-center w-full space-y-4 p-4 divide-y">
+
+    <div class="w-full pt-4 text-end underline underline-offset-2">
+        <a class="text-start w-full" href="https://github.com/rwecho/V2ex.Maui">打开 github 仓库</a>
+    </div>
 
     @if (currentUser != null && currentUser.IsAuthenticated)
     {
-        <button class="w-full bg-red-600  text-gray-100 py-2 rounded-md font-medium" @onclick="LogOutAsync">退出登录</button>
+        <div class="w-full pt-2">
+            <button class="w-full text-gray-800  bg-gray-100 py-2 rounded-md font-medium" @onclick="LogOutAsync">退出登录</button>
+        </div>
     }
 </div>
 

@@ -2159,6 +2159,10 @@ input:checked + .toggle-bg {
   text-align: start;
 }
 
+.text-end {
+  text-align: end;
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -2301,6 +2305,18 @@ input:checked + .toggle-bg {
 
 .underline-offset-1 {
   text-underline-offset: 1px;
+}
+
+.underline-offset-2 {
+  text-underline-offset: 2px;
+}
+
+.underline-offset-8 {
+  text-underline-offset: 8px;
+}
+
+.underline-offset-4 {
+  text-underline-offset: 4px;
 }
 
 .antialiased {
