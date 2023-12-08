@@ -4,7 +4,8 @@
 <HeadTitle Title="创作新主题"></HeadTitle>
 
 <LoadingBox Load="LoadAsync">
-    <div class="max-w-md mx-auto py-8 flex flex-col px-4 md:px-0">
+    <ScrollView>
+        <div class="max-w-md mx-auto py-8 flex flex-col px-4 md:px-0">
         <div class="relative z-0 w-full mb-5 group">
             <input type="text" name="floating_title" id="floating_title"
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -13,7 +14,7 @@
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">标题</label>
         </div>
         <div class="relative z-0 w-full mb-5 group">
-            <textarea rows="20" name="floating_content" id="floating_content" value="@content"
+            <textarea rows="5" name="floating_content" id="floating_content" value="@content"
                 @onchange="(e)=> {content = e.Value?.ToString();}"
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder="如果标题能够表达完整内容，此处可为空。" />
@@ -50,11 +51,11 @@
                 <div class="mt-2 ml-2">最热节点</div>
                 @if (AppConstants.IsDebug)
                 {
-                    <button class="p-2 bg-gray-400 rounded-lg text-gray-50" @onclick="SetSandBoxNode">沙盒</button>
+                        <button class="px-2 py-1 bg-gray-400 rounded-lg text-gray-50 text-sm" @onclick="SetSandBoxNode">沙盒</button>
                 }
                 @foreach (var node in createTopicParameter.HotNodes)
                 {
-                    <button class="p-2 bg-gray-400 rounded-lg text-gray-50"
+                    <button class="px-2  py-1 bg-gray-400 rounded-lg text-gray-50 text-sm"
                         @onclick="()=>ChooseNode(node.Link)">@node.Title</button>
                 }
             </div>
@@ -100,6 +101,7 @@
         }
 
     </div>
+    </ScrollView>
 </LoadingBox>
 
 @code {

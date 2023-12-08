@@ -40,10 +40,38 @@ public class TopicInfo
     [XPath("//div[@id='Main']//div[@class='topic_buttons']/a[contains(@class, 'tb')][1]")]
     [SkipNodeNotFound]
     public string? Liked { get; set; }
+    
+    public bool IsLiked
+    {
+        get
+        {
+            return Liked == "取消收藏";
+        }
+    }
+
+    public bool IsThanked
+    {
+        get
+        {
+            return Thanked == "Thanked";
+        }
+    }
 
     [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[@id='topic_thank']/span")]
     [SkipNodeNotFound]
     public string? Thanked { get; set; }
+
+    public bool IsIgnored
+    {
+        get
+        {
+            return Ignored == "取消忽略";
+        }
+    }
+
+    [XPath("//div[@id='Main']//div[@class='topic_buttons']/a[contains(@class, 'tb')][3]")]
+    [SkipNodeNotFound]
+    public string? Ignored { get; set; }
 
     [XPath("//div[@id='Main']//div[@class='cell']/div[@class='topic_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]

@@ -456,11 +456,49 @@ public class ApiService
         return result;
     }
 
-    public async Task<NewsInfo> IgnoreTopic(string topicId, string once)
+    public async Task<TopicInfo> IgnoreTopic(string topicId, string once)
     {
         var url = $"/ignore/topic/{topicId}?once={once}";
-        var response = await this.HttpClient.GetAsync(url);
-        var result = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
+
+        var response = await this.HttpClient.SendAsync(request);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != null)
+        {
+            var topicUrl = $"{UrlUtilities.BASE_URL}/t/{topicId}";
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, topicUrl);
+            response = await this.HttpClient.SendAsync(redirectRequest);
+        }
+        else
+        {
+            //todo: handle the reply error.
+            throw new InvalidOperationException("Can not reply the topic.");
+        }
+        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
+        result.Url = url;
+        return result;
+    }
+
+    public async Task<TopicInfo> UnignoreTopic(string topicId, string once)
+    {
+        var url = $"/unignore/topic/{topicId}?once={once}";
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        var response = await this.HttpClient.SendAsync(request);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != null)
+        {
+            var topicUrl = $"{UrlUtilities.BASE_URL}/t/{topicId}";
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, topicUrl);
+            response = await this.HttpClient.SendAsync(redirectRequest);
+        }
+        else
+        {
+            //todo: handle the reply error.
+            throw new InvalidOperationException("Can not reply the topic.");
+        }
+        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
         result.Url = url;
         return result;
     }
@@ -492,26 +530,54 @@ public class ApiService
         return result;
     }
 
-    public async Task UnfavoriteTopic(string topicId, string once)
+    public async Task<TopicInfo> UnfavoriteTopic(string topicId, string once)
     {
         var url = $"/unfavorite/topic/{topicId}?once={once}";
-        var response = await this.HttpClient.GetAsync(url);
-        if (response.StatusCode == System.Net.HttpStatusCode.Found)
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
+
+        var response = await this.HttpClient.SendAsync(request);
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != null)
         {
-            return;
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
+            response = await this.HttpClient.SendAsync(redirectRequest);
         }
-        throw new InvalidOperationException(response.ReasonPhrase);
+        else
+        {
+            //todo: handle the reply error.
+            throw new InvalidOperationException("Can not reply the topic.");
+        }
+
+        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
+        result.Url = url;
+        return result;
     }
 
-    public async Task FavoriteTopic(string topicId, string once)
+    public async Task<TopicInfo> FavoriteTopic(string topicId, string once)
     {
         var url = $"/favorite/topic/{topicId}?once={once}";
-        var response = await this.HttpClient.GetAsync(url);
-        if (response.StatusCode == System.Net.HttpStatusCode.Found)
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
+
+        var response = await this.HttpClient.SendAsync(request);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Found
+            && response.Headers.Location != null)
         {
-            return;
+            var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
+            response = await this.HttpClient.SendAsync(redirectRequest);
         }
-        throw new InvalidOperationException(response.ReasonPhrase);
+        else
+        {
+            //todo: handle the reply error.
+            throw new InvalidOperationException("Can not reply the topic.");
+        }
+
+        var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
+        result.Url = url;
+        return result;
     }
 
     public async Task<UnitInfo> UpTopic(string topicId, string once)
