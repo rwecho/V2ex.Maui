@@ -1,31 +1,31 @@
 ﻿@page "/nodes"
 <HeadTitle Title="节点"></HeadTitle>
 <RefreshView Refresh="LoadAsync">
+    <ScrollView>
     <LoadingBox Load="LoadAsync">
             @if (nodesNavInfo != null)
             {
-                <div class="flex flex-col px-4 pt-2 space-y-4 select-none py-32 h-full">
+                <div class="flex flex-col pb-16 pt-2 px-4 space-y-4">
                     @foreach (var item in nodesNavInfo.Items)
                     {
-                        <div>
-                            <div class="flex flex-row ">
-                                <div class="border-2 border-gray-200"></div>
-                                <span class="ml-2">@item.Category</span>
-                            </div>
+                        <div class="flex flex-row ">
+                            <div class="border-2 border-gray-200"></div>
+                            <span class="ml-2">@item.Category</span>
+                        </div>
 
-                            <div class="flex flex-wrap justify-items-center">
-                                @foreach (var node in item.Nodes)
-                                {
-                                    <a href="@node.Link" class="bg-gray-300 text-sm px-2 py-1 rounded-full mx-2 my-1">
-                                        <span class="">@node.Name</span>
-                                    </a>
-                                }
-                            </div>
+                        <div class="flex flex-wrap justify-items-center">
+                            @foreach (var node in item.Nodes)
+                            {
+                            <a href="@node.Link" class="bg-gray-200 text-gray-600 text-sm px-2 py-1 rounded-full mx-2 my-1">
+                                    <span class="">@node.Name</span>
+                                </a>
+                            }
                         </div>
                     }
                 </div>
             }
     </LoadingBox>
+    </ScrollView>
 </RefreshView>
 
 
