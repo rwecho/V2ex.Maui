@@ -7,8 +7,13 @@
     src: url("/_content/V2ex.Blazor.Shared/fonts/apple-logo.ttf") format('truetype')
 }
 
-body * {
+body{
     user-select: none;
+}
+
+.markup-container {
+
+    user-select: text;
 }
 
 body {
