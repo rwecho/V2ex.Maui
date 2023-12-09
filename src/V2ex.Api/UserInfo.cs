@@ -20,7 +20,8 @@ public class UserInfo
     [XPath("//td/a[@href='/my/following']/span")]
     public int Following { get; set; }
 
-    [XPath("//div/a[@href='/notifications']")]
+    [XPath("//div//a[@href='/notifications']")]
+    [SkipNodeNotFound]
     public string? Notifications { get; set; }
 
     [XPath("//div[@id='money']/a/text()[1]")]
