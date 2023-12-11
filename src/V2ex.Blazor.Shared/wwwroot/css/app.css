@@ -1068,6 +1068,14 @@ input:checked + .toggle-bg {
   inset: 0px;
 }
 
+.-end-2 {
+  inset-inline-end: -0.5rem;
+}
+
+.-top-2 {
+  top: -0.5rem;
+}
+
 .bottom-0 {
   bottom: 0px;
 }
@@ -1258,10 +1266,6 @@ input:checked + .toggle-bg {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.me-0 {
-  margin-inline-end: 0px;
 }
 
 .block {
@@ -1859,6 +1863,10 @@ input:checked + .toggle-bg {
   border-top-width: 1px;
 }
 
+.border-b-\[1px\] {
+  border-bottom-width: 1px;
+}
+
 .border-blue-300 {
   --tw-border-opacity: 1;
   border-color: rgb(164 202 254 / var(--tw-border-opacity));
@@ -1887,6 +1895,15 @@ input:checked + .toggle-bg {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-white {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
+.border-b-\[10x\] {
+  border-bottom-color: 10x;
 }
 
 .bg-blue-100 {
@@ -1951,6 +1968,11 @@ input:checked + .toggle-bg {
 .bg-red-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 242 242 / var(--tw-bg-opacity));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 82 82 / var(--tw-bg-opacity));
 }
 
 .bg-transparent {
@@ -2633,6 +2655,11 @@ listeners can take over.
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
 }
 
+:is(.dark .dark\:border-gray-900) {
+  --tw-border-opacity: 1;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity));
+}
+
 :is(.dark .dark\:border-transparent) {
   border-color: transparent;
 }
@@ -2864,16 +2891,16 @@ listeners can take over.
     margin: 1rem;
   }
 
+  .md\:me-4 {
+    margin-inline-end: 1rem;
+  }
+
   .md\:mr-24 {
     margin-right: 6rem;
   }
 
   .md\:mt-0 {
     margin-top: 0px;
-  }
-
-  .md\:me-4 {
-    margin-inline-end: 1rem;
   }
 
   .md\:flex {

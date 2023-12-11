@@ -8,13 +8,13 @@
     <CollectionView TItem="NotificationItemViewModel" Items="viewModel.Items"
         RemainingReachedCallback="OnRemainingReached">
         <Header>
-            <div class="flex flex-row p-2 place-content-end ">
+            <div class="flex flex-row p-2 place-content-end border-b-[1px] ">
                 <span class="text-gray-400">总共收到消息</span>
                 <span class="text-gray-700 ml-2">133</span>
             </div>
         </Header>
         <ItemContent Context="item">
-            <div class="flex flex-row space-x-2 p-2">
+            <div class="flex flex-row space-x-2 p-2" @onclick="()=>GotoTopic(item.Id)">
                 <img class="w-10 h-10 rounded-full" src="@item.Avatar" alt="avatar" />
 
                 <div class="flex flex-col space-y-2 p-2 pt-0 w-full">
@@ -91,6 +91,12 @@
         viewModel = null;
         await LoadAsync(1);
         await Toast.Show("刷新成功");
+    }
+
+    private Task GotoTopic(string topicId)
+    {
+        NavigationManager.NavigateTo($"/t/{topicId}");
+        return Task.CompletedTask;
     }
 
     private async Task LoadAsync(int page)
