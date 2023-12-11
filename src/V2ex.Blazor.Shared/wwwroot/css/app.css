@@ -1260,6 +1260,10 @@ input:checked + .toggle-bg {
   margin-top: 2rem;
 }
 
+.me-0 {
+  margin-inline-end: 0px;
+}
+
 .block {
   display: block;
 }
@@ -1298,10 +1302,6 @@ input:checked + .toggle-bg {
 
 .h-10 {
   height: 2.5rem;
-}
-
-.h-12 {
-  height: 3rem;
 }
 
 .h-16 {
@@ -1382,10 +1382,6 @@ input:checked + .toggle-bg {
 
 .w-10 {
   width: 2.5rem;
-}
-
-.w-12 {
-  width: 3rem;
 }
 
 .w-16 {
@@ -2876,6 +2872,10 @@ listeners can take over.
     margin-top: 0px;
   }
 
+  .md\:me-4 {
+    margin-inline-end: 1rem;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -2894,6 +2894,12 @@ listeners can take over.
 
   .md\:items-center {
     align-items: center;
+  }
+
+  .md\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1rem * var(--tw-space-x-reverse));
+    margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
   }
 
   .md\:space-y-6 > :not([hidden]) ~ :not([hidden]) {

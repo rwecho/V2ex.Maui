@@ -6,7 +6,10 @@
     @if (viewModel != null)
     {
         <RefreshView Refresh="OnRefreshAsync">
-            <CollectionView TItem="ReplyViewModel" Items="viewModel.Replies" RemainingReachedCallback="OnRemainingReached">
+            <CollectionView @ref="collectionView" TItem="ReplyViewModel" 
+                Items="viewModel.Replies" 
+                RemainingReachedCallback="OnRemainingReached"
+                OnScrollCallback="OnScroll">
                 <Header>
                     <div class="grid grid-cols-1 divide-y ">
                         <div class="flex flex-col">
@@ -113,14 +116,14 @@
                     @if (currentUser != null && currentUser.IsAuthenticated)
                     {
                         <div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
-                            <div class="flex flex-row me-4 w-full">
-                                <input type="text" id="reply-text" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-s-lg
+                            <div class="flex flex-row me-2 md:me-4 w-full">
+                                <input type="text" id="reply-text" class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-s-lg
                                     border border-gray-300" placeholder="回复" @bind-value="inputtingText">
 
                                 @if (isSending)
                                 {
                                     <button disabled type="button"
-                                        class="p-2.5 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300">
+                                        class="p-2 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300">
                                         <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -135,7 +138,7 @@
                                 else
                                 {
                                     <button type="button"
-                                        class="p-2.5 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300"
+                                        class="p-2 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300"
                                         @onclick="SendAsync">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
                                             class="fill-gray-400 stroke-gray-400"
@@ -147,41 +150,45 @@
                                 }
                             </div>
 
-                            <div class="flex flex-row space-x-4 ">
+                            <div class="flex flex-row md:space-x-4 ">
 
-                                @if(isIgnoring)
+                                @if(!farFromTop)
                                 {
-                                    <button disabled type="button"
-                                            class="p-2.5 text-sm font-medium text-white bg-gray-50 rounded-lg">
-                                        <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
-                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                  fill="currentColor" />
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                  fill="#1C64F2" />
-                                        </svg>
-                                    </button>
-                                }
-                                else{
-                                    if(viewModel.Ignored){
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                @onclick="UnIgnoreTopic">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
-                                        </button>
-                                    }
-                                    else
+                                    if(isIgnoring)
                                     {
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                @onclick="IgnoreTopic">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
+                                        <button disabled type="button"
+                                                class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                            <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
+                                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                      fill="currentColor" />
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                      fill="#1C64F2" />
+                                            </svg>
                                         </button>
                                     }
+                                    else{
+                                        if(viewModel.Ignored){
+                                            <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                                    @onclick="UnIgnoreTopic">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                                    @onclick="IgnoreTopic">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
+                                            </button>
+                                        }
 
+                                    }
                                 }
+
                                 @if(isFavoriting)
                                 {
                                     <button disabled type="button"
-                                            class="p-2.5 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                            class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
                                         <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
                                              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -195,7 +202,7 @@
                                 {
                                     if(viewModel.Liked)
                                     {
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
                                                 @onclick="UnfavoriteTopic">
                                             <span>2</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
@@ -203,7 +210,7 @@
                                     }
                                     else
                                     {
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
                                                 @onclick="FavoriteTopic">
                                             <span>2</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
@@ -214,7 +221,7 @@
                                 @if(isThanking)
                                 {
                                     <button disabled type="button"
-                                            class="p-2.5 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                            class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
                                         <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
                                              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -228,7 +235,7 @@
                                 {
                                     if(viewModel.Thanked)
                                     {
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
                                                 >
                                             <span>2</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="16" viewBox="0 0 512 512">
@@ -239,7 +246,7 @@
                                     }
                                     else
                                     {
-                                        <button class="text-sm text-gray-400 p-2.5 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
                                                 @onclick="ThankTopic">
                                             <span>2</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="16" viewBox="0 0 512 512">
@@ -248,6 +255,16 @@
                                             </svg>
                                         </button>
                                     }
+                                }
+
+                                @if (farFromTop)
+                                {
+                                    <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                                            @onclick="ScrollToTop"   >
+                                        <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+                                        </svg>
+                                    </button>
                                 }
                             </div>
                         </div>
@@ -400,8 +417,10 @@
     private ElementReference? containerRef;
     private IJSObjectReference? interopModule;
     private IJSObjectReference? modalReference;
+    private CollectionView<ReplyViewModel>? collectionView;
 
     private CurrentUser? currentUser;
+    private bool farFromTop;
     private bool isSending;
     private List<ReplyViewModel> callupReplies = new();
 
@@ -506,6 +525,23 @@
         await this.LoadAsync(this.viewModel.CurrentPage + 1);
     }
 
+    private Task OnScroll(ScrollEventArgs e)
+    {
+        farFromTop = e.ScrollTop >= 100;
+
+        return Task.CompletedTask;
+    }
+
+    private async Task ScrollToTop()
+    {
+        if(collectionView == null)
+        {
+            return;
+        }
+
+        await collectionView.ScrollToTop();
+    }
+
     private async Task OnCallupAsync(CallupModel model)
     {
         if (interopModule == null || viewModel == null || modalReference == null)
@@ -532,6 +568,7 @@
         }
         await interopModule.InvokeVoidAsync("hideModal", modalReference);
     }
+
 
     [JSInvokable]
     public Task OnModalShowJsInvoke()

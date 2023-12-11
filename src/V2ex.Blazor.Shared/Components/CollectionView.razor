@@ -2,7 +2,7 @@
 @implements IDisposable
 
 <div id="collection-view" class="h-full">
-    <ScrollView>
+    <ScrollView @ref="scrollView" OnScrollCallback="OnScroll">
         <div class="h-full flex flex-col">
             @if (Header != null)
             {
@@ -50,8 +50,13 @@
     [Parameter]
     public EventCallback RemainingReachedCallback { get; set; }
 
+    [Parameter] 
+    public EventCallback<ScrollEventArgs> OnScrollCallback { get; set; }
+
+
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
+    private ScrollView? scrollView;
 
     private DotNetObjectReference<CollectionView<TItem>>? thisRef;
     private IJSObjectReference? interopModule;
@@ -77,6 +82,16 @@
         await RemainingReachedCallback.InvokeAsync();
     }
 
+    private async Task OnScroll(ScrollEventArgs e)
+    {
+        await OnScrollCallback.InvokeAsync(e);
+    }
+
+    public async ValueTask ScrollToTop()
+    {
+        if(scrollView == null){ return; }
+        await scrollView.ScrollToTop();
+    }
 
     public void Dispose()
     {

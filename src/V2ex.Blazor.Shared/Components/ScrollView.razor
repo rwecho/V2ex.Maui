@@ -1,8 +1,49 @@
-﻿<div id="scrollView" class="h-full overflow-x-hidden overflow-y-auto">
+﻿<div id="scrollView" class="h-full overflow-x-hidden overflow-y-auto" @ref="containerRef">
     @ChildContent
 </div>
 
 @code{
     [Parameter]
     public RenderFragment ChildContent { get; set; }= null!;
+
+    [Parameter]
+    public EventCallback<ScrollEventArgs> OnScrollCallback { get; set; }
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+    private ElementReference? containerRef;
+    private DotNetObjectReference<ScrollView>? thisRef;
+    private IJSObjectReference? module;
+
+    protected override void OnInitialized()
+    {
+        thisRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Components/ScrollView.razor.js");
+
+            await module.InvokeVoidAsync("initialize", containerRef, thisRef);
+        }
+    }
+
+    public async ValueTask ScrollToTop()
+    {
+        if (module == null)
+        {
+            return;
+        }
+        await module.InvokeVoidAsync("scrollToTop", containerRef);
+    }
+
+
+    [JSInvokable]
+    public async Task OnScrollAsync(double scrollTop, double scrollHeight, double clientHeight)
+    {
+        await this.OnScrollCallback.InvokeAsync(new ScrollEventArgs(scrollTop, scrollHeight, clientHeight));
+    }
 }

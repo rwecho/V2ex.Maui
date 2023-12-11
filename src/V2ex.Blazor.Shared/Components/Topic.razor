@@ -1,9 +1,9 @@
 <div class="flex flex-col px-4 py-2 break-words" @onclick="GoToTopic">
     <div class="flex flex-row justify-center select-none">
-        <a href="@ViewModel.AvatarLink" class="w-10 h-10 flex flex-row items-center mr-2" @onclick:stopPropagation="true">
+        <a href="@ViewModel.AvatarLink" class="w-10 h-10 flex flex-row items-center mr-2 rounded-full shadow-md" @onclick:stopPropagation="true">
             @if (ViewModel.Avatar != null)
             {
-                <img src="@ViewModel.Avatar" alt="avatar" class="rounded-full shadow-md">
+                <img src="@ViewModel.Avatar" alt="avatar" >
             }
         </a>
 
