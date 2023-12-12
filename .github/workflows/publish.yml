@@ -58,7 +58,7 @@ jobs:
         shell: pwsh
 
       - name: Build Blazor Android
-        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.blazor.keystore -p:AndroidSigningKeyAlias=v2ex.blazor -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
+        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.blazor.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
         shell: pwsh
 
       - name: Upload Android Artifact
