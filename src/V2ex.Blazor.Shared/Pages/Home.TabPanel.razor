@@ -1,4 +1,4 @@
-﻿<div class="hidden h-full rounded-lg bg-gray-50 dark:bg-gray-800" @ref="containerRef" id="@Tab" role="tabpanel"
+﻿<div class="h-full rounded-lg bg-gray-50 dark:bg-gray-800 swiper-slide" id="@Tab" role="tabpanel"
     aria-labelledby="@(Tab+"-tab")">
     <LoadingBox Load="LoadAsync" @ref="loadingBoxRef" IsManual="true">
             @if (viewModel != null)
@@ -44,29 +44,11 @@
     [CascadingParameter]
     private Status Status { get; set; } = null!;
 
-    private IJSObjectReference? interopModule;
 
-    private ElementReference? containerRef;
-    private DotNetObjectReference<Home_TabPanel>? thisRef;
     private LoadingBox? loadingBoxRef;
 
     private TabViewModel? viewModel;
 
-    protected override void OnInitialized()
-    {
-        thisRef = DotNetObjectReference.Create(this);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-            "./_content/V2ex.Blazor.Shared/Pages/Home.TabPanel.razor.js");
-
-            await interopModule.InvokeVoidAsync("initialize", containerRef, thisRef);
-        }
-    }
 
     private async Task LoadAsync()
     {
