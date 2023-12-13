@@ -60,13 +60,5 @@ public static class MauiProgram
     {
         var assembly = typeof(App).GetTypeInfo().Assembly;
         builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.json", optional: false, false);
-
-
-        //check if there is a appsettings.secrets.json file
-        if (assembly.GetManifestResourceNames().Contains("appsettings.secrets.json"))
-        {
-            builder.Configuration.AddJsonFile(new EmbeddedFileProvider(assembly), "appsettings.secrets.json", optional: false, false);
-        }
-
     }
 }
