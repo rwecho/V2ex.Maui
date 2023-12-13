@@ -1,7 +1,6 @@
 # V2ex.MAUI
 
 [![PUBLISH Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
-<a href="https://play.google.com/store/apps/details?id=top.rwecho.v2ex.maui"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=60px /></a>
 
 It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is currently only available for Android devices. This app is still under development, the app is still in the early stages of development, and there are still many bugs and incomplete features. If you have any questions or suggestions, please feel free to submit an [issue](https://www.github.com/rwecho/V2ex.MAUI/issues) or [PR](https://www.github.com/rwecho/V2ex.MAUI/pulls).
 
@@ -19,14 +18,12 @@ It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is curr
 <img src="./docs/screenshots/Screenshot_1701842777.png"  width="25%" alt="screenshot5" />
 </div>
 
-## Download (AppCenter.ms)
+## Download
 
-Thanks to [AppCenter](https://appcenter.ms), we can download the latest version of V2ex.MAUI from the following link. The app is currently only available for Android devices.
+| [![Get it on AppCenter](./docs/download-appcenter.png)](https://install.appcenter.ms/orgs/HappyTreeFriends/apps/V2exMAUI/distribution_groups/external) | [![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png)](https://play.google.com/store/apps/details?id=top.rwecho.v2ex.maui) |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-- Click the link below to download the app.
-<div style="text-align:center">
-<a href="https://install.appcenter.ms/orgs/HappyTreeFriends/apps/V2exMAUI/distribution_groups/external"><img alt="Get it on AppCenter" src="./docs/download-appcenter.png" height=60px /></a>
-</div>
+- **AppCenter** downloaded the latest version of the app, which may be unstable.
 
 ## Features
 
