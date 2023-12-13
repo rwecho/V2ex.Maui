@@ -24,7 +24,8 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > ./src/V2ex.Blazor/v2ex.maui.keystore
+          echo "$KEYSTORE_BASE64" | base64 --decode > v2ex.maui.keystore
+          mv v2ex.maui.keystore src/V2ex.Blazor/v2ex.maui.keystore
 
       # Store the version, stripping any v-prefix
       - name: Prepare release version
