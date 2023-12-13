@@ -72,3 +72,11 @@ jobs:
           git log --oneline --decorate > notes.txt
           cat notes.txt
           appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+
+      - name: Publish To Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: top.rwecho.v2ex.maui
+          releaseFiles: src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.aab
+          track: internal
