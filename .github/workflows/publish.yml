@@ -23,20 +23,20 @@ jobs:
       # Store the version, stripping any v-prefix
       - name: Prepare release version
         run: |
-          env
           TAG=$GITHUB_REF_NAME
           VERSION=$(echo $TAG | sed -e 's/^v//')
           APP_VERSION=$(echo $VERSION | sed -e 's/\./ /g' | xargs printf "%d%03d%03d")
           APP_DISPLAY_VERSION=$VERSION
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
           echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $GITHUB_ENV
-          printenv
+          env
 
       - name: Retrieve the secret and decode it to a file
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > src/V2ex.Blazor/v2ex.maui.keystore
+          pwd
+          echo "$KEYSTORE_BASE64" | base64 --decode
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
