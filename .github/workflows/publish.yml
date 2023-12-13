@@ -17,7 +17,7 @@ env:
 jobs:
   # Blazor Android Build
   build-android:
-    runs-on: windows-2022
+    runs-on: macos-latest
     name: Android Build
     steps:
       # Store the version, stripping any v-prefix
@@ -33,6 +33,16 @@ jobs:
           echo $env:APP_VERSION
           echo $env:APP_DISPLAY_VERSION
         shell: pwsh
+
+      - name: Retrieve the secret and decode it to a file
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_PROPERTIES_BASE64: ${{ secrets.KEY_PROPERTIES_BASE64 }}
+          JSON_KEY_FILE_BASE64: ${{ secrets.JSON_KEY_FILE_BASE64 }}
+        run: |
+          echo "$KEY_PROPERTIES_BASE64" | base64 --decode > key.properties
+          echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
+          echo "$JSON_KEY_FILE_BASE64" | base64 --decode > json_key_file.json
 
       - name: read release version
         run: |
@@ -58,7 +68,15 @@ jobs:
         shell: pwsh
 
       - name: Build Blazor Android
-        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.blazor.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
+        run:
+          dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore \
+          -p:AndroidKeyStore=true \
+          -p:AndroidSigningKeyStore=v2ex.blazor.keystore \
+          -p:AndroidSigningKeyAlias=v2ex.maui \
+          -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} \
+          -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} \
+          -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} \
+          -p:ApplicationVersion=${env:APP_VERSION}
         shell: pwsh
 
       - name: Upload Android Artifact
@@ -73,4 +91,9 @@ jobs:
           npm install -g appcenter-cli
           git log --oneline --decorate > notes.txt
           cat notes.txt
-          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk \
+            -R notes.txt \
+            -a HappyTreeFriends/V2exMaui  \
+            --group External \
+            --build-version ${{ github.ref_name }} \
+            --token ${{ secrets.APPCENTER_TOKEN }}
