@@ -53,15 +53,7 @@ jobs:
         run: dotnet restore src/V2ex.Blazor/V2ex.Blazor.csproj
 
       - name: Build Blazor Android
-        run:
-          dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore \
-          -p:AndroidKeyStore=true \
-          -p:AndroidSigningKeyStore=v2ex.maui.keystore \
-          -p:AndroidSigningKeyAlias=v2ex.maui \
-          -p:AndroidSigningKeyPass=$KEY_PASSWORD \
-          -p:AndroidSigningStorePass=$KEY_PASSWORD \
-          -p:ApplicationDisplayVersion=$APP_DISPLAY_VERSION \
-          -p:ApplicationVersion=$APP_VERSION
+        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=$KEY_PASSWORD -p:AndroidSigningStorePass=$KEY_PASSWORD -p:ApplicationDisplayVersion=$APP_DISPLAY_VERSION -p:ApplicationVersion=$APP_VERSION
         env:
           APP_DISPLAY_VERSION: ${{ env.APP_DISPLAY_VERSION }}
           APP_VERSION: ${{ env.APP_VERSION }}
@@ -79,9 +71,4 @@ jobs:
           npm install -g appcenter-cli
           git log --oneline --decorate > notes.txt
           cat notes.txt
-          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk \
-            -R notes.txt \
-            -a HappyTreeFriends/V2exMaui  \
-            --group External \
-            --build-version ${{ github.ref_name }} \
-            --token ${{ secrets.APPCENTER_TOKEN }}
+          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
