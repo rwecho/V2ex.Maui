@@ -73,8 +73,24 @@ async function upload(file) {
     }
 }
 
-export async function handleImageInput(imageInputRef) {
+export async function handleImageInput(imageInputRef, inputbox) {
     console.log(imageInputRef.files)
     if (imageInputRef.files.length == 0) return;
-    return await upload(imageInputRef.files[0])
+    const imgFile = imageInputRef.files[0];
+    let img = document.createElement('img');
+    img.src=URL.createObjectURL(imgFile);
+    inputbox.appendChild(img);
+    const imglink = await upload(imageInputRef.files[0]);
+    URL.revokeObjectURL(img.src);
+    img.src=imglink;
+    const span = document.createElement("span");
+    span.className = "hidden";
+    span.innerText=" " + imglink +" ";
+    inputbox.insertBefore(span, img);
+}
+
+export function getReplyContent(inputbox){
+    const ret = inputbox.textContent;
+    inputbox.innerHTML = "";
+    return ret;
 }
