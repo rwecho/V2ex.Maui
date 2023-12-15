@@ -53,7 +53,7 @@ public static class MauiProgram
         var app = builder.Build();
 
 
-#if ! IOS
+#if (ANDROID && WINDOWS)
         var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
         AppCenter.Start(appCenterOptions.Value.Secret, typeof(Analytics), typeof(Crashes));
 #endif
