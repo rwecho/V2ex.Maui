@@ -1,16 +1,59 @@
 ﻿@page "/test"
+<div class="flex flex-row">
+    <div>
+        <div id="editor">
+            <p>Hello World!</p>
+            <p>Some initial <strong>bold</strong> text</p>
+            <p><br></p>
+        </div>
+    </div>
 
-<RefreshView Refresh="OnRefresh">
-    <div>hello world</div>
-</RefreshView>
+    <div>
+        <button @onclick="Test1">Test</button>
+    </div>
+</div>
+<!-- Initialize Quill editor -->
+<script>
+ 
+</script>
 @code {
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
+    private IJSObjectReference? interopModule;
+    private IJSObjectReference? quillRef;
+
     protected override Task OnInitializedAsync()
     {
+
+        // this.Navigation.NavigateTo("t/997543");
+
         return Task.CompletedTask;
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>(
+                "import", 
+                "./_content/V2ex.Blazor.Shared/Pages/Test.razor.js");
+            quillRef = await interopModule.InvokeAsync<IJSObjectReference>("initialize");
+        }
     }
 
     private async Task OnRefresh()
     {
-        
+
+    }
+
+    private async Task Test1()
+    {
+        var a = await quillRef.InvokeAsync<string>("getText");
+        await interopModule.InvokeVoidAsync("test",quillRef);
     }
 }
