@@ -24,6 +24,18 @@ public class V2exAuthenticationStateProvider(IPreferences preferences,
         {
             try
             {
+
+                var notifications = userInfo.Notifications?.ToString();
+                var unreadMessageCount = 0;
+                if (!string.IsNullOrEmpty(notifications))
+                {
+                    var splits = notifications.Split(" ");
+                    if (splits.Length > 0 && int.TryParse(splits[1], out var count))
+                    {
+                        unreadMessageCount = count;
+                    }
+                }
+
                 identity = new ClaimsIdentity(new[]
                 {
                     new Claim("sub", userInfo.Name),
@@ -31,7 +43,7 @@ public class V2exAuthenticationStateProvider(IPreferences preferences,
                     new Claim("following", userInfo.Following.ToString()),
                     new Claim("nodes", userInfo.Nodes.ToString()),
                     new Claim("topics", userInfo.Topics.ToString()),
-                    new Claim("notifications", userInfo.Notifications?.ToString()??""),
+                    new Claim("notifications", unreadMessageCount.ToString()),
                     new Claim("moneyGold", userInfo.MoneyGold?.ToString()??""),
                     new Claim("moneySilver", userInfo.MoneySilver?.ToString()??""),
                     new Claim("moneyBronze", userInfo.MoneyBronze?.ToString()??""),

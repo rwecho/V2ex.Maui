@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 using V2ex.Api;
 using V2ex.Blazor.Pages;
 using V2ex.Blazor.Services;
@@ -18,8 +19,7 @@ public static class ServiceCollectionExtensions
             .ConfigurePrimaryHttpMessageHandler((sp) =>
              {
                  return new CookieHttpClientHandler(sp.GetRequiredService<IPreferences>());
-             })
-            ;
+             });
         
         // We register the AuthenticationStateProvider as a singleton
         // because we want to reuse the same instance for the entire app.

@@ -1,37 +1,50 @@
 # V2ex.MAUI
 
-[![CI Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/ci.yml) [![PUBLISH Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
+[![PUBLISH Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
 
-I believe this project might seem unnecessary since there are already many excellent apps that everyone is familiar with. However, with the upcoming release of .NET Core 8.0 and the growing interest in the .NET community, I want to seize this opportunity to establish this project. Currently, it remains a rough prototype with only a few basic features, far from being fully functional and user-friendly. But I trust that with a better understanding of app development, I will shape this app into a multi-platform, user-friendly, and feature-rich V2ex application.
+It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is currently only available for Android devices. This app is still under development, the app is still in the early stages of development, and there are still many bugs and incomplete features. If you have any questions or suggestions, please feel free to submit an [issue](https://www.github.com/rwecho/V2ex.MAUI/issues) or [PR](https://www.github.com/rwecho/V2ex.MAUI/pulls).
 
 ## Screenshots
 
 <div style="display: flex; justify-content: space-around;margin:10px">
-<img src="./docs/screenshots/Screenshot_1689848332.png"  width="25%"  alt="screenshot1" />
-<img src="./docs/screenshots/Screenshot_1689848360.png"  width="25%" alt="screenshot2" />
-<img src="./docs/screenshots/Screenshot_1689848386.png"  width="25%" alt="screenshot3" />
+<img src="./docs/screenshots/Screenshot_1701413756.png"  width="25%"  alt="screenshot1" />
+<img src="./docs/screenshots/Screenshot_1701842746.png"  width="25%" alt="screenshot2" />
+<img src="./docs/screenshots/Screenshot_1701842752.png"  width="25%" alt="screenshot3" />
 
 </div>
 <div style="display: flex; justify-content: space-around;margin:10px">
-<img src="./docs/screenshots/Screenshot_1689848397.png"  width="25%" alt="screenshot4" />
-<img src="./docs/screenshots/Screenshot_1689848416.png"  width="25%" alt="screenshot5" />
+<img src="./docs/screenshots/Screenshot_1701842758.png"  width="25%" alt="screenshot4" />
+<img src="./docs/screenshots/Screenshot_1701842768.png"  width="25%" alt="screenshot5" />
+<img src="./docs/screenshots/Screenshot_1701842777.png"  width="25%" alt="screenshot5" />
 </div>
 
-## Download (AppCenter.ms)
+## Download
 
-<div style="text-align:center">
-  <img src="./doc/../docs/download-apk-qrcode.png" alt="qrcode">
-</div>
+| [![Get it on AppCenter](./docs/download-appcenter.png)](https://install.appcenter.ms/orgs/HappyTreeFriends/apps/V2exMAUI/distribution_groups/external) | [![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png)](https://play.google.com/store/apps/details?id=top.rwecho.v2ex.maui) |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+- **AppCenter** downloaded the latest version of the app, which may be unstable.
 
 ## Features
 
-**basic functions**
+1. **basic functions**
 
-- Login
-- Tab topics
-- Topic
-- My Favorites
-- Settings
+   - Login
+   - Tab topics
+   - Topic page
+   - My Favorites
+   - My Nodes
+   - My Notifications
+   - Settings
+
+2. **todo in the future**
+
+   - [x] Search
+   - [x] Animation and gesture
+   - [x] Rich text input
+   - [x] User profile
+   - [x] ChatGPT enhancement
+   - [x] Dark mode
 
 ## Contributes
 
@@ -66,18 +79,22 @@ For details please visit [insights](https://github.com/rwecho/V2ex.Maui/graphs/c
 
 - [V2ex](https://www.v2ex.com)
 
+  V2EX is a community of developers, designers, and creative people. It is also a place for sharing and discovery. V2EX is a place to share knowledge and experience, ask questions, and get answers.
+
 - [V2er](https://github.com/v2er-app/Android)
 
   V2er is my daily app.
 
   > V2er is a mobile app for the V2EX website, a community-driven forum that discusses a wide range of topics such as technology, programming, and lifestyle.
 
-- [Abp](https://github.com/abpframework/abp)
+- [Flowbite](https://flowbite.com/docs/)
 
-  > ABP is an open-source application framework for ASP.NET Core that helps developers create modular and maintainable applications.
+- [Tailwindcss](https://tailwindcss.com/)
 
 - [MAUI](https://github.com/dotnet/maui)
+
 - [CommunityToolkit/Maui](https://github.com/CommunityToolkit/Maui)
+
 - [HtmlAgilityPack](https://github.com/zzzprojects/html-agility-pack)
 
 ## License

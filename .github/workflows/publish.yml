@@ -17,31 +17,34 @@ env:
 jobs:
   # Blazor Android Build
   build-android:
-    runs-on: windows-2022
+    runs-on: macos-latest
     name: Android Build
     steps:
-      # Store the version, stripping any v-prefix
-      - name: Write release version
-        run: |
-          Get-ChildItem Env:
-          $TAG=$ENV:GITHUB_REF_NAME
-          $VERSION= [System.Version]::new($TAG.Substring(1))
-          $APP_VERSION=($VERSION.Major * 1000000 + $VERSION.Minor * 1000 + $VERSION.Build).ToString()
-          $APP_DISPLAY_VERSION=$VERSION.ToString()
-          echo "APP_VERSION=$APP_VERSION" >> $Env:GITHUB_ENV
-          echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $Env:GITHUB_ENV
-          echo $env:APP_VERSION
-          echo $env:APP_DISPLAY_VERSION
-        shell: pwsh
-
-      - name: read release version
-        run: |
-          echo $env:APP_VERSION
-          echo $env:APP_DISPLAY_VERSION
-        shell: pwsh
-
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+      # Store the version, stripping any v-prefix
+      - name: Prepare release version
+        run: |
+          TAG=$GITHUB_REF_NAME
+          VERSION=$(echo $TAG | sed -e 's/^v//')
+          APP_VERSION=$(echo $VERSION | sed -e 's/\./ /g' | xargs printf "%d%03d%03d")
+          APP_DISPLAY_VERSION=$VERSION
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+          echo "APP_DISPLAY_VERSION=$APP_DISPLAY_VERSION" >> $GITHUB_ENV
+          env
+
+      - name: Retrieve the secret and decode it to a file
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > src/V2ex.Blazor/v2ex.maui.keystore
+
+      - uses: microsoft/variable-substitution@v1
+        with:
+          files: "src/V2ex.Blazor/appsettings.json"
+        env:
+          AppCenter.Secret: ${{ secrets.APPCENTER_SECRET }}
 
       - name: Setup .NET 8
         uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
@@ -51,15 +54,16 @@ jobs:
 
       - name: Install Blazor Workload
         run: dotnet workload install maui --ignore-failed-sources
-        shell: pwsh
 
       - name: Restore Dependencies
         run: dotnet restore src/V2ex.Blazor/V2ex.Blazor.csproj
-        shell: pwsh
 
       - name: Build Blazor Android
-        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.blazor.keystore -p:AndroidSigningKeyAlias=v2ex.blazor -p:AndroidSigningKeyPass=${{ secrets.KEY_STORE_PASSWORD }} -p:AndroidSigningStorePass=${{ secrets.KEY_PASSWORD }} -p:ApplicationDisplayVersion=${env:APP_DISPLAY_VERSION} -p:ApplicationVersion=${env:APP_VERSION}
-        shell: pwsh
+        run: dotnet publish src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f net8.0-android --no-restore -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=v2ex.maui.keystore -p:AndroidSigningKeyAlias=v2ex.maui -p:AndroidSigningKeyPass=$KEY_PASSWORD -p:AndroidSigningStorePass=$KEY_PASSWORD -p:ApplicationDisplayVersion=$APP_DISPLAY_VERSION -p:ApplicationVersion=$APP_VERSION
+        env:
+          APP_DISPLAY_VERSION: ${{ env.APP_DISPLAY_VERSION }}
+          APP_VERSION: ${{ env.APP_VERSION }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
@@ -73,4 +77,12 @@ jobs:
           npm install -g appcenter-cli
           git log --oneline --decorate > notes.txt
           cat notes.txt
-          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui  --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+          appcenter distribute release -f src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.apk -R notes.txt -a HappyTreeFriends/V2exMaui --group External --build-version ${{ github.ref_name }} --token ${{ secrets.APPCENTER_TOKEN }}
+
+      - name: Publish To Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: top.rwecho.v2ex.maui
+          releaseFiles: src/V2ex.Blazor/bin/Release/net8.0-android/top.rwecho.v2ex.maui-Signed.aab
+          track: internal

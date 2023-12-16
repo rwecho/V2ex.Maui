@@ -3,20 +3,19 @@
 @layout MainLayout
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Components.Sections
+@implements IAsyncDisposable
 
 <HeadTitle Title="@Tab"></HeadTitle>
 <SectionContent SectionName="NavHeader">
-    <ul class="flex flex-1 flex-wrap -mb-px text-sm font-medium text-center hidden md:flex" id="default-tab"
-        data-tabs-toggle="#default-tab-content" role="tablist">
+    <ul class="hidden flex flex-1 flex-wrap -mb-px text-sm font-medium text-center md:flex" role="tablist">
         @foreach (var tab in tabs)
         {
             var id = $"{tab.Name}-tab";
-            var target = "#" + tab.Name;
-            var active = currentTab?.Name == tab.Name;
+            var activeCss = (currentTab?.Name == tab.Name)
+                ? "inline-block px-4 py-2 border-b-2 rounded-t-lg border-blue-500"
+                : "inline-block px-4 py-2 rounded-t-lg";
             <li class="me-2" role="presentation" @key="tab.Name">
-                <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg" id="@id" data-tabs-target="@target"
-                    type="button" role="tab" aria-controls="@tab.Name" aria-selected="@active"
-                    @onclick="()=>TabClick(tab.Name)">
+                <button class="@activeCss" id="@id" type="button" role="tab" @onclick="()=>TabClick(tab.Name)">
                     @tab.Description
                 </button>
             </li>
@@ -40,16 +39,18 @@
             <div id="dropdown"
                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton"
-                    data-tabs-toggle="#default-tab-content" role="tablist">
+                    role="tablist">
                     @foreach (var tab in tabs)
                     {
                         var id = $"{tab.Name}-tab";
-                        var target = "#" + tab.Name;
-                        var active = (currentTab?.Name == tab.Name);
+                        var activeCss = (currentTab?.Name == tab.Name)
+                        ? "block px-4 py-2 border-b-2 w-full border-blue-500"
+                        : "block px-4 py-2 w-full";
                         <li>
-                            <button class="block px-4 py-2 border-b-2 w-full" id="@id" data-tabs-target="@target" type="button"
-                                role="tab" aria-controls="@tab.Name" aria-selected="@active"
-                                @onclick="()=>TabClick(tab.Name)">@tab.Description</button>
+                            <button class="@activeCss" id="@id" type="button"
+                                role="tab" @onclick="()=>TabClick(tab.Name)">
+                                @tab.Description
+                            </button>
                         </li>
                     }
                 </ul>
@@ -57,12 +58,15 @@
         </div>
     }
 </SectionContent>
-
-<div id="default-tab-content" class="h-full">
+<!-- Slider main container -->
+<div class="swiper" style="height:100%">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
         @foreach (var tab in tabs)
         {
-            <Home_TabPanel Tab="@tab.Name" ></Home_TabPanel>
+            <Home_TabPanel Tab="@tab.Name" @ref="TabPanel"></Home_TabPanel>
         }
+    </div>
 </div>
 
 @code
@@ -84,14 +88,26 @@
     private IPreferences Preferences { get; set; } = null!;
 
     private IReadOnlyList<TabDefinition> tabs = null!;
+    private List<Home_TabPanel> tabPanels = new();
 
     private TabDefinition? currentTab;
     private ElementReference? dropdownButton;
+    private IJSObjectReference? interOpModule, swiperJsRef;
+    private DotNetObjectReference<Home>? thisRef;
+
+    private Home_TabPanel TabPanel
+    {
+        set
+        {
+            tabPanels.Add(value);
+        }
+    }
 
     private const string DefaultTab = nameof(DefaultTab);
 
     protected override void OnInitialized()
     {
+        thisRef = DotNetObjectReference.Create(this);
         tabs = TabDefinition.GetTabDefinitions().ToArray();
 
         var defaultTab = Tab ?? Preferences.Get<string?>(DefaultTab, null);
@@ -103,9 +119,50 @@
         currentTab = tabs.FirstOrDefault(x => x.Name == tabName) ?? tabs[0];
         this.ShouldRender();
 
+        var index = Array.IndexOf(tabs.ToArray(), currentTab);
+
+        this.swiperJsRef?.InvokeVoidAsync("slideTo", index);
+
         // trigger the button dropdownDefaultButton click
         this.JsRuntime.InvokeVoidAsync("utils.triggerClick", dropdownButton);
 
         Preferences.Set(DefaultTab, tabName);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            interOpModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/V2ex.Blazor.Shared/Pages/Home.razor.js");
+
+            var initialSlide = Array.IndexOf(tabs.ToArray(), currentTab);
+            swiperJsRef = await interOpModule.InvokeAsync<IJSObjectReference>("initialize", thisRef, initialSlide);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnSlideChangeAsync(int activeIndex)
+    {
+        currentTab = tabs[activeIndex];
+        await this.InvokeAsync(this.StateHasChanged);
+        await tabPanels[activeIndex].OnShowAsync();
+        Preferences.Set(DefaultTab, currentTab.Name);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (swiperJsRef != null)
+                await swiperJsRef.InvokeVoidAsync("destroy");
+
+            if (interOpModule != null)
+                await interOpModule.DisposeAsync();
+        }
+        catch (JSException)
+        {
+            // todo: handle the exception.
+        }
     }
 }
