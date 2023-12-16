@@ -41,9 +41,7 @@ public static class MauiProgram
         ConfigureConfiguration(builder);
 
         var configuration = builder.Configuration;
-#if ! IOS
         builder.Services.Configure<AppCenterOptions>(configuration.GetSection("AppCenter"));
-#endif
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
@@ -52,10 +50,9 @@ public static class MauiProgram
 
         var app = builder.Build();
 
-
-#if (ANDROID && WINDOWS)
         var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
-        AppCenter.Start(appCenterOptions.Value.Secret, typeof(Analytics), typeof(Crashes));
+#if ANDROID
+        AppCenter.Start(appCenterOptions.Value.AndroidSecret, typeof(Analytics), typeof(Crashes));
 #endif
         return app;
     }

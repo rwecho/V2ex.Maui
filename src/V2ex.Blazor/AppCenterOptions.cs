@@ -2,5 +2,9 @@
 
 public class AppCenterOptions
 {
-    public string? Secret { get; set; }
+    public string? AndroidSecret { get; set; }
+
+    public string? IosSecret { get; set; }
+
+    public string? UwpSecret { get; set; }
 }
