@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+#if ! IOS
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+#endif
 using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -39,7 +41,9 @@ public static class MauiProgram
         ConfigureConfiguration(builder);
 
         var configuration = builder.Configuration;
+#if ! IOS
         builder.Services.Configure<AppCenterOptions>(configuration.GetSection("AppCenter"));
+#endif
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
@@ -49,7 +53,7 @@ public static class MauiProgram
         var app = builder.Build();
 
 
-#if ANDROID || WINDOWS
+#if (ANDROID && WINDOWS)
         var appCenterOptions = app.Services.GetRequiredService<IOptions<AppCenterOptions>>();
         AppCenter.Start(appCenterOptions.Value.Secret, typeof(Analytics), typeof(Crashes));
 #endif
