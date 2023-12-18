@@ -1,21 +1,33 @@
 ﻿@page "/test"
-<div class="flex flex-row">
-    <div>
-        <div id="editor">
-            <p>Hello World!</p>
-            <p>Some initial <strong>bold</strong> text</p>
-            <p><br></p>
-        </div>
+
+
+<div class="w-full flex-col" @ref="containerRef">
+    <div class="flex flex-row w-full" >
+        <div class="h-10 w-full bg-gray-100 border-2 border-gray-200 m-4 p-2 rounded-lg cursor:pointer" @onclick="OnInputClick">回复...</div>
+
     </div>
 
-    <div>
-        <button @onclick="Test1">Test</button>
+    <div class="flex flex-row w-full p-4">
+        <ReplyInput></ReplyInput>
+    </div>
+
+    <!-- Callup user modal -->
+    <div id="replyInputModal" tabindex="-1" aria-hidden="true"
+         class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end w-full h-modal !h-full md:inset-0 ">
+        <div class="relative bg-gray-200/10 p-4 w-full">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                <!-- Modal body -->
+                <div class="-mx-4 overflow-y-auto max-h-64">
+                    <ReplyInput></ReplyInput>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<!-- Initialize Quill editor -->
-<script>
- 
-</script>
+
+
+
 @code {
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
@@ -24,7 +36,10 @@
     private IJSRuntime JsRuntime { get; set; } = null!;
 
     private IJSObjectReference? interopModule;
-    private IJSObjectReference? quillRef;
+    private IJSObjectReference? modalRef;
+    private ElementReference? containerRef;
+    private DotNetObjectReference<Test>? thisRef;
+
 
     protected override Task OnInitializedAsync()
     {
@@ -42,18 +57,13 @@
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>(
                 "import", 
                 "./_content/V2ex.Blazor.Shared/Pages/Test.razor.js");
-            quillRef = await interopModule.InvokeAsync<IJSObjectReference>("initialize");
+            modalRef = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal",
+                containerRef, thisRef);
         }
     }
 
-    private async Task OnRefresh()
+    private async Task OnInputClick()
     {
-
-    }
-
-    private async Task Test1()
-    {
-        var a = await quillRef.InvokeAsync<string>("getText");
-        await interopModule.InvokeVoidAsync("test",quillRef);
+        modalRef?.InvokeVoidAsync("show");
     }
 }

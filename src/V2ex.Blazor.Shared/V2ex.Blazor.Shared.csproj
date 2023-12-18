@@ -8,15 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Components\MarkupStringView.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\MarkupStringView.razor.css" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
@@ -26,8 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
+    <ItemGroup>
 	  <ProjectReference Include="..\V2ex.Api\V2ex.Api.csproj" />
-	</ItemGroup>
-
+    </ItemGroup>
 </Project>

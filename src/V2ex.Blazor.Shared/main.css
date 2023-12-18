@@ -76,3 +76,8 @@ listeners can take over.
 
 .ptr--release .ptr--icon {
 }
+
+.ql-editor img{
+    display: inline;
+    max-height: 200px;
+}
