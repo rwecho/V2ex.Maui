@@ -6,10 +6,10 @@
     @if (viewModel != null)
     {
         <RefreshView Refresh="OnRefreshAsync">
-            <CollectionView @ref="collectionView" TItem="ReplyViewModel" 
-                Items="viewModel.Replies" 
-                RemainingReachedCallback="OnRemainingReached"
-                OnScrollCallback="OnScroll">
+            <CollectionView @ref="collectionView" TItem="ReplyViewModel"
+                            Items="viewModel.Replies"
+                            RemainingReachedCallback="OnRemainingReached"
+                            OnScrollCallback="OnScroll">
                 <Header>
                     <div class="grid grid-cols-1 divide-y ">
                         <div class="flex flex-col">
@@ -30,8 +30,7 @@
                                 </div>
                                 <div class="flex items-center ">
                                     <a href="@viewModel.NodeLink">
-                                        <span
-                                            class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
+                                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
                                     </a>
                                 </div>
                             </div>
@@ -44,7 +43,7 @@
                         <div class="flex flex-col divide-y">
                             <div class="flex flex-col select-auto px-4 py-2 text-start">
                                 <MarkupStringView Content="viewModel.Content"
-                                    ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                                  ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
                             </div>
                         </div>
                     </div>
@@ -85,159 +84,127 @@
                             <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp" CallupCallback="OnCallupAsync" />
                         </CascadingValue>
                     }
-            </ItemContent>
-            <Footer>
-                @if (viewModel.CurrentPage == viewModel.MaximumPage)
-                {
-                    <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10 flex-grow">
-                        <div>全部加载完成</div>
-                    </div>
-                }
-                else
-                {
-                    <div class="flex flex-row flex-grow place-content-center items-center text-gray-400 text-sm mt-4 pb-10 space-x-2">
-                        <div role="status">
-                            <svg aria-hidden="true"
-                                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="currentColor" />
-                                <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                    fill="currentFill" />
-                            </svg>
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <div>加载中...</div>
-                    </div>
-                }
-
-                    @if (currentUser == null || !currentUser.IsAuthenticated)
+                </ItemContent>
+                <Footer>
+                    @if (viewModel.CurrentPage == viewModel.MaximumPage)
                     {
-<div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
-                            <div class="flex flex-row me-2 md:me-4 w-full">
-                                <input type="text" id="reply-text" class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-s-lg
-                                    border border-gray-300" placeholder="回复" @bind-value="inputtingText">
+                        <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10 flex-grow">
+                            <div>全部加载完成</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="flex flex-row flex-grow place-content-center items-center text-gray-400 text-sm mt-4 pb-10 space-x-2">
+                            <div role="status">
+                                <svg aria-hidden="true"
+                                     class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                          fill="currentColor" />
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                          fill="currentFill" />
+                                </svg>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div>加载中...</div>
+                        </div>
+                    }
 
-                                @if (isSending)
-                                {
-                                    <button disabled type="button"
-                                        class="p-2 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300">
-                                        <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
-                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                fill="#1C64F2" />
-                                        </svg>
-                                    </button>
-                                }
-                                else
-                                {
-                                    <button type="button"
-                                        class="p-2 text-sm font-medium text-white bg-gray-50 rounded-e-lg border border-gray-300"
-                                        @onclick="SendAsync">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
-                                            class="fill-gray-400 stroke-gray-400"
-                                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
-                                            <path
-                                                d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z" />
-                                        </svg>
-                                    </button>
-                                }
+                    @if (currentUser != null && currentUser.IsAuthenticated)
+                    {
+                        <div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
+                            <div class="flex flex-row me-2 md:me-4 w-full">
+                                <div @onclick="ShowReplyInput" class="p-2 w-full z-20 text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
                             </div>
 
                             <div class="flex flex-row md:space-x-4 ">
 
-                                @if(!farFromTop)
+                                @if (!farFromTop)
                                 {
-                                    if(isIgnoring)
+                                    if (isIgnoring)
                                     {
                                         <button disabled type="button"
-                                                class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                        class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
                                             <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
-                                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                      fill="currentColor" />
+                                                fill="currentColor" />
                                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                      fill="#1C64F2" />
+                                                fill="#1C64F2" />
                                             </svg>
                                         </button>
                                     }
-                                    else{
-                                        if(viewModel.Ignored){
+                                    else
+                                    {
+                                        if (viewModel.Ignored)
+                                        {
                                             <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                    @onclick="UnIgnoreTopic">
+                                            @onclick="UnIgnoreTopic">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
                                             </button>
                                         }
                                         else
                                         {
                                             <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                    @onclick="IgnoreTopic">
+                                            @onclick="IgnoreTopic">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="20" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zm151 118.3C226 97.7 269.5 80 320 80c65.2 0 118.8 29.6 159.9 67.7C518.4 183.5 545 226 558.6 256c-12.6 28-36.6 66.8-70.9 100.9l-53.8-42.2c9.1-17.6 14.2-37.5 14.2-58.7c0-70.7-57.3-128-128-128c-32.2 0-61.7 11.9-84.2 31.5l-46.1-36.1zM394.9 284.2l-81.5-63.9c4.2-8.5 6.6-18.2 6.6-28.3c0-5.5-.7-10.9-2-16c.7 0 1.3 0 2 0c44.2 0 80 35.8 80 80c0 9.9-1.8 19.4-5.1 28.2zm51.3 163.3l-41.9-33C378.8 425.4 350.7 432 320 432c-65.2 0-118.8-29.6-159.9-67.7C121.6 328.5 95 286 81.4 256c8.3-18.4 21.5-41.5 39.4-64.8L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5zm-88-69.3L302 334c-23.5-5.4-43.1-21.2-53.7-42.3l-56.1-44.2c-.2 2.8-.3 5.6-.3 8.5c0 70.7 57.3 128 128 128c13.3 0 26.1-2 38.2-5.8z" /></svg>
                                             </button>
                                         }
-
                                     }
                                 }
 
-                                @if(isFavoriting)
+                                @if (isFavoriting)
                                 {
                                     <button disabled type="button"
-                                            class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                    class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
                                         <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
-                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                  fill="currentColor" />
+                                            fill="currentColor" />
                                             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                  fill="#1C64F2" />
+                                            fill="#1C64F2" />
                                         </svg>
                                     </button>
                                 }
                                 else
                                 {
-                                    if(viewModel.Liked)
+                                    if (viewModel.Liked)
                                     {
                                         <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                @onclick="UnfavoriteTopic">
-                                            <span>2</span>
+                                        @onclick="UnfavoriteTopic">
+                                            <span>@viewModel.Likes</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
                                         </button>
                                     }
                                     else
                                     {
                                         <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                @onclick="FavoriteTopic">
-                                            <span>2</span>
+                                        @onclick="FavoriteTopic">
+                                            <span>@viewModel.Likes</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 48C0 21.5 21.5 0 48 0l0 48V441.4l130.1-92.9c8.3-6 19.6-6 27.9 0L336 441.4V48H48V0H336c26.5 0 48 21.5 48 48V488c0 9-5 17.2-13 21.3s-17.6 3.4-24.9-1.8L192 397.5 37.9 507.5c-7.3 5.2-16.9 5.9-24.9 1.8S0 497 0 488V48z" /></svg>
                                         </button>
                                     }
                                 }
 
-                                @if(isThanking)
+                                @if (isThanking)
                                 {
                                     <button disabled type="button"
-                                            class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
+                                    class="p-2 text-sm font-medium text-white bg-gray-50 rounded-lg">
                                         <svg aria-hidden="true" role="status" class="animate-spin" height="16" width="16"
-                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                  fill="currentColor" />
+                                            fill="currentColor" />
                                             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                  fill="#1C64F2" />
+                                            fill="#1C64F2" />
                                         </svg>
                                     </button>
                                 }
                                 else
                                 {
-                                    if(viewModel.Thanked)
+                                    if (viewModel.Thanked)
                                     {
-                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                >
-                                            <span>2</span>
+                                        <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg">
+                                            <span>@viewModel.Thanks</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="16" viewBox="0 0 512 512">
                                                 <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                                                 <path d="M323.8 34.8c-38.2-10.9-78.1 11.2-89 49.4l-5.7 20c-3.7 13-10.4 25-19.5 35l-51.3 56.4c-8.9 9.8-8.2 25 1.6 33.9s25 8.2 33.9-1.6l51.3-56.4c14.1-15.5 24.4-34 30.1-54.1l5.7-20c3.6-12.7 16.9-20.1 29.7-16.5s20.1 16.9 16.5 29.7l-5.7 20c-5.7 19.9-14.7 38.7-26.6 55.5c-5.2 7.3-5.8 16.9-1.7 24.9s12.3 13 21.3 13L448 224c8.8 0 16 7.2 16 16c0 6.8-4.3 12.7-10.4 15c-7.4 2.8-13 9-14.9 16.7s.1 15.8 5.3 21.7c2.5 2.8 4 6.5 4 10.6c0 7.8-5.6 14.3-13 15.7c-8.2 1.6-15.1 7.3-18 15.2s-1.6 16.7 3.6 23.3c2.1 2.7 3.4 6.1 3.4 9.9c0 6.7-4.2 12.6-10.2 14.9c-11.5 4.5-17.7 16.9-14.4 28.8c.4 1.3 .6 2.8 .6 4.3c0 8.8-7.2 16-16 16H286.5c-12.6 0-25-3.7-35.5-10.7l-61.7-41.1c-11-7.4-25.9-4.4-33.3 6.7s-4.4 25.9 6.7 33.3l61.7 41.1c18.4 12.3 40 18.8 62.1 18.8H384c34.7 0 62.9-27.6 64-62c14.6-11.7 24-29.7 24-50c0-4.5-.5-8.8-1.3-13c15.4-11.7 25.3-30.2 25.3-51c0-6.5-1-12.8-2.8-18.7C504.8 273.7 512 257.7 512 240c0-35.3-28.6-64-64-64l-92.3 0c4.7-10.4 8.7-21.2 11.8-32.2l5.7-20c10.9-38.2-11.2-78.1-49.4-89zM32 192c-17.7 0-32 14.3-32 32V448c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H32z" />
@@ -247,8 +214,8 @@
                                     else
                                     {
                                         <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                                @onclick="ThankTopic">
-                                            <span>2</span>
+                                        @onclick="ThankTopic">
+                                            <span>@viewModel.Thanks</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="16" width="16" viewBox="0 0 512 512">
                                                 <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                                                 <path d="M323.8 34.8c-38.2-10.9-78.1 11.2-89 49.4l-5.7 20c-3.7 13-10.4 25-19.5 35l-51.3 56.4c-8.9 9.8-8.2 25 1.6 33.9s25 8.2 33.9-1.6l51.3-56.4c14.1-15.5 24.4-34 30.1-54.1l5.7-20c3.6-12.7 16.9-20.1 29.7-16.5s20.1 16.9 16.5 29.7l-5.7 20c-5.7 19.9-14.7 38.7-26.6 55.5c-5.2 7.3-5.8 16.9-1.7 24.9s12.3 13 21.3 13L448 224c8.8 0 16 7.2 16 16c0 6.8-4.3 12.7-10.4 15c-7.4 2.8-13 9-14.9 16.7s.1 15.8 5.3 21.7c2.5 2.8 4 6.5 4 10.6c0 7.8-5.6 14.3-13 15.7c-8.2 1.6-15.1 7.3-18 15.2s-1.6 16.7 3.6 23.3c2.1 2.7 3.4 6.1 3.4 9.9c0 6.7-4.2 12.6-10.2 14.9c-11.5 4.5-17.7 16.9-14.4 28.8c.4 1.3 .6 2.8 .6 4.3c0 8.8-7.2 16-16 16H286.5c-12.6 0-25-3.7-35.5-10.7l-61.7-41.1c-11-7.4-25.9-4.4-33.3 6.7s-4.4 25.9 6.7 33.3l61.7 41.1c18.4 12.3 40 18.8 62.1 18.8H384c34.7 0 62.9-27.6 64-62c14.6-11.7 24-29.7 24-50c0-4.5-.5-8.8-1.3-13c15.4-11.7 25.3-30.2 25.3-51c0-6.5-1-12.8-2.8-18.7C504.8 273.7 512 257.7 512 240c0-35.3-28.6-64-64-64l-92.3 0c4.7-10.4 8.7-21.2 11.8-32.2l5.7-20c10.9-38.2-11.2-78.1-49.4-89zM32 192c-17.7 0-32 14.3-32 32V448c0 17.7 14.3 32 32 32H96c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32H32z" />
@@ -260,7 +227,7 @@
                                 @if (farFromTop)
                                 {
                                     <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                            @onclick="ScrollToTop"   >
+                                    @onclick="ScrollToTop">
                                         <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
                                         </svg>
@@ -268,61 +235,9 @@
                                 }
                             </div>
                         </div>
-                    } else {
-
-
-    <div class="sticky bottom-0 w-full flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-        <input @ref="imageinputRef" @onchange="HandleImageInputChange" 
-            accept="image/*"
-            class="hidden" type="file" name="image" id="image">
-        <button type="button"
-            @onclick="UploadImage" 
-         class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                <path fill="currentColor" d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"/>
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 1H2a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"/>
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"/>
-            </svg>
-            <span class="sr-only">Upload image</span>
-        </button>
-        <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.408 7.5h.01m-6.876 0h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM4.6 11a5.5 5.5 0 0 0 10.81 0H4.6Z"/>
-            </svg>
-            <span class="sr-only">Add emoji</span>
-        </button>
-        <div
-            id="chat" rows="1"
-            @ref="inputboxRef" 
-            contenteditable="true"
-            class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..." 
-            ></div>
-        <button 
-        disabled="@isUploadImage"
-        type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600" @onclick="SendAsync">
-            <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"/>
-            </svg>
-            <span class="sr-only">Send message</span>
-        </button>
-    </div>
-
-                                @if (farFromTop)
-                                {
-                                    <button class="
-                                    absolute
-                                    right-2
-                                    bottom-2
-                                    z-99
-                                    text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
-                                            @onclick="ScrollToTop"   >
-                                        <svg class="w-3 h-3 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                                        </svg>
-                                    </button>
-                                }
                     }
                 </Footer>
+
             </CollectionView>
         </RefreshView>
     }
@@ -334,9 +249,8 @@
                     <div class="flex flex-row justify-center select-none px-4 py-2 ">
                         <a href="#" class="flex flex-row items-center">
                             <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
                             </svg>
                         </a>
                         <div class="flex flex-col flex-1 mx-2 justify-center space-y-2">
@@ -384,10 +298,22 @@
         </div>
     }
 
+    <!-- reply input modal -->
+    <div id="replyInputModal" tabindex="-1" aria-hidden="true"
+         class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full !h-full md:inset-0 ">
+        <div class="relative p-0 w-full md:p-4">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800">
+                <div class="overflow-y-auto max-h-96">
+                    <ReplyInput ReplyCallback="OnReplyAsync"></ReplyInput>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Callup user modal -->
     <div id="callupUserModal" tabindex="-1" aria-hidden="true"
-        class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full h-modal !h-full md:inset-0 ">
+         class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full  !h-full md:inset-0 ">
         <div class="relative mx-4 mt-8 mb-16 w-full max-w-xl md:h-auto md:m-4">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -404,12 +330,12 @@
 
                     <!-- close button -->
                     <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        @onclick="HideModal">
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            @onclick="HideModal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
+                             viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
@@ -422,7 +348,7 @@
                             {
                                 var isOp = item.UserName == viewModel?.UserName;
                                 <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp"
-                                    CallupCallback="OnCallupAsync" />
+                                       CallupCallback="OnCallupAsync" />
                             }
                         </div>
                     </CascadingValue>
@@ -468,10 +394,9 @@
 
     private DotNetObjectReference<TopicPage>? thisRef;
     private ElementReference? containerRef;
-    private ElementReference? imageinputRef;
-    private ElementReference? inputboxRef;
     private IJSObjectReference? interopModule;
-    private IJSObjectReference? modalReference;
+    private IJSObjectReference? callupUserModalReference;
+    private IJSObjectReference? replyInputModalReference;
     private CollectionView<ReplyViewModel>? collectionView;
 
     private CurrentUser? currentUser;
@@ -480,7 +405,6 @@
     private bool isUploadImage;
     private List<ReplyViewModel> callupReplies = new();
 
-    private string inputtingText = string.Empty;
     private string? originUri;
 
     protected override async Task OnParametersSetAsync()
@@ -500,9 +424,9 @@
         if (firstRender)
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-            "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
-
-            modalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal", containerRef, thisRef);
+                "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
+            callupUserModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeCallupUserModal", containerRef, thisRef);
+            replyInputModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeReplyInputModal", containerRef, thisRef);
         }
     }
 
@@ -516,55 +440,16 @@
     private async Task LoadAsync(int page)
     {
         var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
-
         if (topicInfo == null)
-        { return; }
-
-        var replies = topicInfo.Replies.Select(o => new ReplyViewModel(o.Id,
-        o.Content == null ? null : new MarkupString(o.Content),
-        o.UserName,
-        o.UserLink,
-        o.Avatar,
-        o.ReplyTime,
-        o.ReplyTimeText,
-        o.Badges,
-        o.Floor)
-            {
-                Thanked = o.Thanked != null,
-                AlreadyThanked = int.TryParse(o.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0
-            }).ToList();
-
-        var supplements = topicInfo.Supplements.Select(o => new SupplementViewModel(
-        o.Created,
-        o.CreatedText,
-        o.Content == null ? null : new MarkupString(o.Content)
-        )).ToList();
-        if (viewModel == null)
         {
-            viewModel = new TopicPageViewModel(
-            topicInfo.NodeId,
-            topicInfo.Title,
-            topicInfo.UserName,
-            topicInfo.UserLink,
-            topicInfo.Avatar,
-            topicInfo.Created,
-            topicInfo.CreatedText,
-            topicInfo.TopicStats,
-            topicInfo.Content == null ? null : new MarkupString(topicInfo.Content),
-            supplements,
-            topicInfo.NodeName,
-            topicInfo.NodeLink,
-            topicInfo.ReplyStats == null ? null : new MarkupString(topicInfo.ReplyStats),
-            topicInfo.Tags,
-            topicInfo.Url
-            );
+            return;
         }
-        viewModel.Once = topicInfo.Once;
-        viewModel.Liked = topicInfo.IsLiked;
-        viewModel.Thanked = topicInfo.IsThanked;
-        viewModel.Ignored = topicInfo.IsIgnored;
 
-        viewModel.UpdatePage(topicInfo.CurrentPage, topicInfo.MaximumPage, replies);
+        if(this.viewModel == null)
+        {
+            viewModel = TopicPageViewModel.Create(topicInfo);
+        }
+        viewModel.Update(topicInfo);
     }
 
     private async Task OnRemainingReached()
@@ -590,7 +475,7 @@
 
     private async Task ScrollToTop()
     {
-        if(collectionView == null)
+        if (collectionView == null)
         {
             return;
         }
@@ -600,7 +485,7 @@
 
     private async Task OnCallupAsync(CallupModel model)
     {
-        if (interopModule == null || viewModel == null || modalReference == null)
+        if (interopModule == null || viewModel == null || callupUserModalReference == null)
         {
             return;
         }
@@ -613,38 +498,38 @@
             }
         }
 
-        await interopModule.InvokeVoidAsync("showModal", modalReference);
+        await callupUserModalReference.InvokeVoidAsync("show");
     }
 
     private async Task HideModal()
     {
-        if (modalReference == null || interopModule == null)
+        if (callupUserModalReference == null)
         {
             return;
         }
-        await interopModule.InvokeVoidAsync("hideModal", modalReference);
+
+        await callupUserModalReference.InvokeVoidAsync("hide");
     }
 
 
     [JSInvokable]
-    public Task OnModalShowJsInvoke()
+    public Task OnCallupUserModalShowJsInvoke()
     {
         this.NavigationManager.NavigateTo(originUri + $"#modal=callup");
         return Task.CompletedTask;
     }
 
     [JSInvokable]
-    public async Task OnModalHideJsInvoke()
+    public async Task OnCallupUserModalHideJsInvoke()
     {
         callupReplies.Clear();
         // we should remove the hash from the uri, to clear the navigation history
         await this.UtilsJsInterop.GoBack();
     }
 
-    private async Task SendAsync()
+    private async Task OnReplyAsync(string content)
     {
-        inputtingText = await interopModule.InvokeAsync<string>("getReplyContent", inputboxRef);
-        if (string.IsNullOrEmpty(this.inputtingText) || this.viewModel?.Once == null)
+        if (string.IsNullOrEmpty(content) || this.viewModel?.Once == null)
         {
             return;
         }
@@ -653,7 +538,7 @@
         try
         {
             isSending = true;
-            topicInfo = await this.ApiService.ReplyTopic(this.Id.ToString(), this.inputtingText, this.viewModel.Once);
+            topicInfo = await this.ApiService.ReplyTopic(this.Id.ToString(), content, this.viewModel.Once);
         }
         catch (Exception)
         {
@@ -666,53 +551,26 @@
             isSending = false;
         }
 
-        // if the reply is successful, we should clear the inputting text
-        this.inputtingText = string.Empty;
-
-        var replies = viewModel.Replies;
-        if (viewModel.CurrentPage == viewModel.MaximumPage)
-        {
-            var lastReply = topicInfo.Replies.Last();
-            replies.Add(new ReplyViewModel(lastReply.Id,
-            lastReply.Content == null ? null : new MarkupString(lastReply.Content),
-            lastReply.UserName,
-            lastReply.UserLink,
-            lastReply.Avatar,
-            lastReply.ReplyTime,
-            lastReply.ReplyTimeText,
-            lastReply.Badges,
-            lastReply.Floor)
-                {
-                    Thanked = lastReply.Thanked != null,
-                    AlreadyThanked = int.TryParse(lastReply.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0
-                });
-        }
-
-        viewModel = new TopicPageViewModel(
-        topicInfo.NodeId,
-        topicInfo.Title,
-        topicInfo.UserName,
-        topicInfo.UserLink,
-        topicInfo.Avatar,
-        topicInfo.Created,
-        topicInfo.CreatedText,
-        topicInfo.TopicStats,
-        topicInfo.Content == null ? null : new MarkupString(topicInfo.Content),
-        viewModel.Supplements,
-        topicInfo.NodeName,
-        topicInfo.NodeLink,
-        topicInfo.ReplyStats == null ? null : new MarkupString(topicInfo.ReplyStats),
-        topicInfo.Tags,
-        topicInfo.Url
-        );
-        viewModel.Once = topicInfo.Once;
-        viewModel.Liked = topicInfo.IsLiked;
-        viewModel.Thanked = topicInfo.IsThanked;
-        viewModel.Ignored = topicInfo.IsIgnored;
-        viewModel.UpdatePage(topicInfo.CurrentPage, topicInfo.MaximumPage, replies);
+        viewModel.Update(topicInfo);
         await this.Toast.Show("回复成功");
+
+        // hide the modal
+        if (replyInputModalReference == null)
+        {
+            return;
+        }
+        await replyInputModalReference.InvokeVoidAsync("hide");
     }
 
+    private async Task ShowReplyInput()
+    {
+        if (replyInputModalReference == null)
+        {
+            return;
+        }
+
+        await replyInputModalReference.InvokeVoidAsync("show");
+    }
 
     private Task OnExternalLickClicked(Uri uri)
     {
@@ -781,6 +639,7 @@
             var topicInfo = await this.ApiService.UnfavoriteTopic(this.Id.ToString(), this.viewModel.Once);
             viewModel.Liked = false;
             viewModel.Once = topicInfo.Once;
+            viewModel.TopicStats = topicInfo.TopicStats;
             await this.Toast.Show("取消收藏成功");
         }
         catch (Exception exception)
@@ -805,6 +664,8 @@
             var topicInfo = await this.ApiService.FavoriteTopic(this.Id.ToString(), this.viewModel.Once);
             viewModel.Liked = true;
             viewModel.Once = topicInfo.Once;
+            viewModel.TopicStats = topicInfo.TopicStats;
+
             await this.Toast.Show("收藏成功");
         }
         catch (Exception exception)
@@ -826,24 +687,26 @@
         try
         {
             isThanking = true;
-            var result =  await this.ApiService.ThankCreator(this.Id.ToString(), this.viewModel.Once);
+            var result = await this.ApiService.ThankCreator(this.Id.ToString(), this.viewModel.Once);
 
-            if(result == null)
+            if (result == null)
             {
                 throw new InvalidOperationException("Can not thank creator");
             }
 
-            if(!result.Success){
+            if (!result.Success)
+            {
                 throw new InvalidOperationException(result.Message);
             }
             viewModel.Thanked = true;
-            if(result.Once>0)
+            viewModel.Thanks += 1;
+            if (result.Once > 0)
             {
                 viewModel.Once = result.Once.ToString();
             }
             await this.Toast.Show("感谢成功");
         }
-        catch(Exception exception)
+        catch (Exception exception)
         {
             await this.Toast.Show(exception.Message);
         }
@@ -856,23 +719,5 @@
     public void Dispose()
     {
     }
-    private async Task UploadImage()
-    {
-        if (interopModule == null) return;
-        await interopModule.InvokeVoidAsync("clickImageInput", imageinputRef);
 
-    }
-    private async Task HandleImageInputChange()
-    {
-        if (interopModule == null) return;
-        try
-        {
-            isUploadImage = true;
-            await interopModule.InvokeVoidAsync("handleImageInput", imageinputRef, inputboxRef);
-        }
-        finally
-        {
-            isUploadImage = false;
-        }
-    }
 }

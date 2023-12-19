@@ -1,4 +1,6 @@
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using System.Text.RegularExpressions;
+using V2ex.Api;
 using V2ex.Blazor.Components;
 
 namespace V2ex.Blazor.Pages;
@@ -11,30 +13,133 @@ public record TopicPageViewModel(
     string Avatar,
     DateTime Created,
     string CreatedText,
-    string? TopicStats,
     MarkupString? Content,
     List<SupplementViewModel> Supplements,
     string NodeName,
     string NodeLink,
-    MarkupString? ReplyStats,
     List<string> Tags,
     string Url
     )
 {
+    private string? topicStats;
+
     public int CurrentPage { get; protected set; } = 1;
     public int MaximumPage { get; protected set; } = 0;
 
     public bool Liked { get;  set; }
+
+    public string? TopicStats
+    {
+        get => topicStats; set
+        {
+            topicStats = value;
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
+            var match1 = Regex.Match(value, @"(\d+) 次点击");
+            if (match1.Success)
+            {
+                this.Clicks = int.Parse(match1.Groups[1].Value);
+            }
+
+            var match2 = Regex.Match(value, @"(\d+) 人收藏");
+            if (match2.Success)
+            {
+                this.Likes = int.Parse(match2.Groups[1].Value);
+            }
+            var match3 = Regex.Match(value, @"(\d+) 人感谢");
+            if (match3.Success)
+            {
+                this.Thanks = int.Parse(match3.Groups[1].Value);
+            }
+        }
+    }
+
+    public MarkupString? ReplyStats { get; set; }
+
+    public int Clicks { get; set; }
+
+    public int Likes
+    {
+        get; set;
+    }
+
+    public int Thanks
+    {
+        get; set;
+    }
+
+
     public bool Thanked { get;  set; }
     public bool Ignored { get;  set; }
     public string? Once { get; set; }
     public List<ReplyViewModel> Replies { get; } = [];
 
-    public void UpdatePage(int currentPage, int maximumPage, IReadOnlyList<ReplyViewModel> replies)
+
+    public static TopicPageViewModel Create(TopicInfo topicInfo)
     {
-        CurrentPage = currentPage;
-        MaximumPage = maximumPage;
-        Replies.AddRange(replies);
+        var supplements = topicInfo.Supplements.Select(o => new SupplementViewModel(
+           o.Created,
+           o.CreatedText,
+           o.Content == null ? null : new MarkupString(o.Content)
+           )).ToList();
+        var viewModel = new TopicPageViewModel(
+        topicInfo.NodeId,
+        topicInfo.Title,
+        topicInfo.UserName,
+        topicInfo.UserLink,
+        topicInfo.Avatar,
+        topicInfo.Created,
+        topicInfo.CreatedText,
+        topicInfo.Content == null ? null : new MarkupString(topicInfo.Content),
+        supplements,
+        topicInfo.NodeName,
+        topicInfo.NodeLink,
+        topicInfo.Tags,
+        topicInfo.Url
+        );
+
+        viewModel.Update(topicInfo);
+        return viewModel;
+    }
+
+    public void Update(TopicInfo topicInfo)
+    {
+        var replies = topicInfo.Replies.Select(o => new ReplyViewModel(o.Id,
+            o.Content == null ? null : new MarkupString(o.Content),
+            o.UserName,
+            o.UserLink,
+            o.Avatar,
+            o.ReplyTime,
+            o.ReplyTimeText,
+            o.Badges,
+            o.Floor)
+        {
+            Thanked = o.Thanked != null,
+            AlreadyThanked = int.TryParse(o.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0
+        }).ToList();
+
+        CurrentPage = topicInfo.CurrentPage;
+        MaximumPage = topicInfo.MaximumPage;
+
+        foreach (var reply in replies)
+        {
+            if(Replies.Any(t=>t.Id == reply.Id))
+            {
+                continue;
+            }
+            Replies.Add(reply);
+        }
+
+        ReplyStats = topicInfo.ReplyStats == null ? null : new MarkupString(topicInfo.ReplyStats);
+        TopicStats = topicInfo.TopicStats;
+        Once = topicInfo.Once;
+        Liked = topicInfo.IsLiked;
+        Thanked = topicInfo.IsThanked;
+        Ignored = topicInfo.IsIgnored;
     }
 }
 

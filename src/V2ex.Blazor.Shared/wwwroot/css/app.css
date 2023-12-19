@@ -1080,10 +1080,6 @@ input:checked + .toggle-bg {
   bottom: 0px;
 }
 
-.bottom-2 {
-  bottom: 0.5rem;
-}
-
 .bottom-\[60px\] {
   bottom: 60px;
 }
@@ -1098,10 +1094,6 @@ input:checked + .toggle-bg {
 
 .right-0 {
   right: 0px;
-}
-
-.right-2 {
-  right: 0.5rem;
 }
 
 .top-0 {
@@ -1388,6 +1380,26 @@ input:checked + .toggle-bg {
   max-height: 100%;
 }
 
+.max-h-96 {
+  max-height: 24rem;
+}
+
+.max-h-32 {
+  max-height: 8rem;
+}
+
+.min-h-\[64px\] {
+  min-height: 64px;
+}
+
+.min-h-\[12rem\] {
+  min-height: 12rem;
+}
+
+.min-h-\[8rem\] {
+  min-height: 8rem;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1550,11 +1562,6 @@ input:checked + .toggle-bg {
 
 .rotate-180 {
   --tw-rotate: 180deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-90 {
-  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1829,11 +1836,6 @@ input:checked + .toggle-bg {
   border-bottom-right-radius: 0.5rem;
 }
 
-.rounded-s-lg {
-  border-start-start-radius: 0.5rem;
-  border-end-start-radius: 0.5rem;
-}
-
 .rounded-t {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
@@ -2026,10 +2028,6 @@ input:checked + .toggle-bg {
 
 .fill-red-400 {
   fill: #F98080;
-}
-
-.stroke-gray-400 {
-  stroke: #9CA3AF;
 }
 
 .p-0 {
@@ -2229,11 +2227,6 @@ input:checked + .toggle-bg {
 .text-blue-300 {
   --tw-text-opacity: 1;
   color: rgb(164 202 254 / var(--tw-text-opacity));
-}
-
-.text-blue-400 {
-  --tw-text-opacity: 1;
-  color: rgb(118 169 250 / var(--tw-text-opacity));
 }
 
 .text-blue-600 {
@@ -2445,6 +2438,10 @@ body {
   text-decoration: underline;
 }
 
+.markup-container img{
+  display: inline;
+}
+
 /* PullToRefresh.js */
 
 .ptr--ptr {
@@ -2476,7 +2473,7 @@ listeners can take over.
 
 .ql-editor img{
   display: inline;
-  max-height: 100px;
+  max-height: 200px;
 }
 
 .first\:m-4:first-child {
@@ -2486,11 +2483,6 @@ listeners can take over.
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
-}
-
-.hover\:bg-blue-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(225 239 254 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-blue-800:hover {
@@ -2542,11 +2534,6 @@ listeners can take over.
   z-index: 10;
 }
 
-.focus\:border-blue-500:focus {
-  --tw-border-opacity: 1;
-  border-color: rgb(63 131 248 / var(--tw-border-opacity));
-}
-
 .focus\:border-blue-600:focus {
   --tw-border-opacity: 1;
   border-color: rgb(28 100 242 / var(--tw-border-opacity));
@@ -2583,11 +2570,6 @@ listeners can take over.
 .focus\:ring-blue-300:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(164 202 254 / var(--tw-ring-opacity));
-}
-
-.focus\:ring-blue-500:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-gray-200:focus {
@@ -2658,11 +2640,6 @@ listeners can take over.
 .peer:focus ~ .peer-focus\:text-blue-600 {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
-}
-
-:is([dir="rtl"] .rtl\:-rotate-90) {
-  --tw-rotate: -90deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 :is([dir="rtl"] .peer:focus ~ .rtl\:peer-focus\:left-auto) {
@@ -2855,11 +2832,6 @@ listeners can take over.
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
 }
 
-:is(.dark .dark\:focus\:ring-blue-500:focus) {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
-}
-
 :is(.dark .dark\:focus\:ring-blue-800:focus) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(30 66 159 / var(--tw-ring-opacity));
@@ -2981,6 +2953,10 @@ listeners can take over.
     --tw-space-y-reverse: 0;
     margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+  }
+
+  .md\:p-4 {
+    padding: 1rem;
   }
 
   .md\:p-5 {

@@ -9,17 +9,6 @@
   "c4a4a563f698595",
   "81be04b9e4a08ce",
 ];
-function imageHandler() {
-  //prompt user to choose a local image and uploading it to imgur then insert the image url to the editor
-  const quill = this.quill;
-}
-
-function emojiHandler() {
-  const quill = this.quill;
-  const range = quill.getSelection(true);
-
-  quill.insertEmbed(range.index, "image", "https://i.imgur.com/io2SM1h.png");
-}
 
 export function initialize(containerRef, thisRef) {
   const editorDiv = containerRef.querySelector("#editor");
@@ -43,11 +32,25 @@ export function insertEmoji(quill, emoji) {
 }
 
 export function insertClassicEmoji(quill, emojiImageUrl) {
-  const range = quill.getSelection(true);
-  quill.insertEmbed(range.index, "image", emojiImageUrl);
+    const range = quill.getSelection(true);
+    // add a space before the image
+    var index = range.index;
+    quill.insertEmbed(index, "image", emojiImageUrl);
+    index += emojiImageUrl.length;
 
-  const nextIndex = range.index + emojiImageUrl.length;
-  quill.setSelection(nextIndex, Quill.sources.SILENT);
+    quill.setSelection(index, Quill.sources.SILENT);
+}
+
+export function insertImage(quill, imageUrl) {
+
+    const range = quill.getSelection(true);
+    // add a space before the image
+    var index = range.index;
+    quill.insertEmbed(range.index, "text", "\n");
+    index++;
+    quill.insertEmbed(index, "image", imageUrl);
+    index += imageUrl.length;
+    quill.setSelection(index, Quill.sources.SILENT);
 }
 
 export async function chooseImage(quill, thisRef) {
@@ -68,7 +71,6 @@ export async function chooseImage(quill, thisRef) {
         return;
       }
       const file = input.files[0];
-      const range = quill.getSelection(true);
 
       // reset the input value;
       input.value = "";
@@ -89,9 +91,9 @@ export async function chooseImage(quill, thisRef) {
 
         if (response.ok) {
           const resData = await response.json();
-          if (resData.success) {
-            //insert image url to editor
-            quill.insertEmbed(range.index, "image", resData.data.link);
+            if (resData.success) {
+
+            insertImage(quill, resData.data.link);
             resolve();
             return;
           }
@@ -110,4 +112,30 @@ export async function chooseImage(quill, thisRef) {
   } finally {
     document.body.removeChild(input);
   }
+}
+
+export function getQuillContents(quill)
+{
+    const delta = quill.getContents();
+
+    let fragments = [];
+    for (var i = 0; i < delta.ops.length; i++) {
+        const ops = delta.ops[i];
+        if (!ops.insert) {
+            continue;
+        }
+        if (ops.insert.image) {
+            fragments.push(' ');
+            fragments.push(ops.insert.image);
+            fragments.push(' ');
+        }
+        else{
+            fragments.push(ops.insert);
+        }
+    }
+    return  fragments.join("");
+}
+
+export function clearQuill(quill) {
+    quill.setContents([]);
 }

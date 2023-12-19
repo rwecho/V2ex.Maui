@@ -48,6 +48,10 @@ body {
     text-decoration: underline;
 }
 
+.markup-container img{
+    display: inline;
+}
+
 /* PullToRefresh.js */
 .ptr--ptr {
     box-shadow: none !important;
