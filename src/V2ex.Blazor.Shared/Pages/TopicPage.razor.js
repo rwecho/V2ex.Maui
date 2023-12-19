@@ -8,10 +8,10 @@
         closable: true,
         onHide: () => {
             document.body.classList.add('overflow-hidden');
-            thisRef.invokeMethodAsync('OnModalUserHideJsInvoke');
+            thisRef.invokeMethodAsync('OnCallUpUserModalHideJsInvoke');
         },
         onShow: () => {
-            thisRef.invokeMethodAsync('OnModalUserShowJsInvoke');
+            thisRef.invokeMethodAsync('OnCallUpUserModalShowJsInvoke');
         },
         onToggle: () => {
         },

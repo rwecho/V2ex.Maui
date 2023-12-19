@@ -6,4 +6,5 @@ module.exports = {
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
+  safelist: ["bg-gray-900/50"],
 };

@@ -1964,6 +1964,10 @@ input:checked + .toggle-bg {
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
+.bg-gray-900\/50 {
+  background-color: rgb(17 24 39 / 0.5);
+}
+
 .bg-green-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(49 196 141 / var(--tw-bg-opacity));
@@ -2151,6 +2155,11 @@ input:checked + .toggle-bg {
   text-align: end;
 }
 
+.\!text-base {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -2176,9 +2185,8 @@ input:checked + .toggle-bg {
   line-height: 1rem;
 }
 
-.\!text-base {
-  font-size: 1rem !important;
-  line-height: 1.5rem !important;
+.\!font-normal {
+  font-weight: 400 !important;
 }
 
 .font-bold {
@@ -2191,14 +2199,6 @@ input:checked + .toggle-bg {
 
 .font-semibold {
   font-weight: 600;
-}
-
-.font-normal {
-  font-weight: 400;
-}
-
-.\!font-normal {
-  font-weight: 400 !important;
 }
 
 .uppercase {
