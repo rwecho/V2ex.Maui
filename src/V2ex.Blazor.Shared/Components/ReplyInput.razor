@@ -76,13 +76,13 @@
                         {
                             if (item is TextEmoji textItem)
                             {
-                                <button class="p-2" @onclick="()=> ChooseTextEmoji(textItem)">
+                                <button class="p-2" @onclick="()=> OnTextEmojiSelected(textItem)">
                                     @item.Name
                                 </button>
                             }
                             else if (item is ImageEmoji imageEmoji)
                             {
-                                <button class="p-2" @onclick="()=> ChooseImageEmoji(imageEmoji)">
+                                <button class="p-2" @onclick="()=> OnImageEmojiSelected(imageEmoji)">
                                     <img src="@imageEmoji.Low" alt="@imageEmoji.Name" />
                                 </button>
                             }
@@ -100,13 +100,13 @@
                         {
                             if(item is TextEmoji textItem)
                             {
-                                <button class="p-2" @onclick="()=> ChooseTextEmoji(textItem)">
+                                <button class="p-2" @onclick="()=> OnTextEmojiSelected(textItem)">
                                     @item.Name
                                 </button>
                             }
                             else if(item is ImageEmoji imageEmoji)
                             {
-                                <button class="p-2" @onclick="()=> ChooseImageEmoji(imageEmoji)">
+                                <button class="p-2" @onclick="()=> OnImageEmojiSelected(imageEmoji)">
                                     <img src="@imageEmoji.Low" alt="@imageEmoji.Name" />
                                 </button>
                             }
@@ -173,7 +173,7 @@
         return Task.CompletedTask;
     }
 
-    private async Task ChooseTextEmoji(TextEmoji emoji)
+    private async Task OnTextEmojiSelected(TextEmoji emoji)
     {
         if (interopModule == null)
         {
@@ -185,7 +185,7 @@
         await this.interopModule.InvokeVoidAsync("insertTextEmoji", quillRef, emoji.Name);
     }
 
-    private async Task ChooseImageEmoji(ImageEmoji emoji)
+    private async Task OnImageEmojiSelected(ImageEmoji emoji)
     {
         if (interopModule == null)
         {
