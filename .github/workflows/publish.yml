@@ -44,7 +44,7 @@ jobs:
         with:
           files: "src/V2ex.Blazor/appsettings.json"
         env:
-          AppCenter.Secret: ${{ secrets.APPCENTER_SECRET }}
+          AppCenter.AndroidSecret: ${{ secrets.APPCENTER_SECRET }}
 
       - name: Setup .NET 8
         uses: xt0rted/setup-dotnet@6f04e7f8ca9ff2faf76540fe2e3ebc595ca38b6b
