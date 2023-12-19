@@ -37,14 +37,19 @@ It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is curr
    - My Notifications
    - Settings
 
-2. **todo in the future**
+2. **advanced functions**
 
-   - [x] Search
+   - [x] Reply with emoji
+   - [x] Reply with image (imgur)
    - [x] Animation and gesture
-   - [x] Rich text input
-   - [x] User profile
-   - [x] ChatGPT enhancement
-   - [x] Dark mode
+   - [x] Rich text input(quill.js)
+
+3. **todo in the future**
+
+   - [ ] User profile
+   - [ ] Search
+   - [ ] ChatGPT enhancement
+   - [ ] Dark mode
 
 ## Contributes
 
