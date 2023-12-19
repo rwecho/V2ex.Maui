@@ -81,7 +81,7 @@
                     @{
                         var isOp = item.UserName == viewModel.UserName;
                         <CascadingValue Value="viewModel">
-                            <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp" CallupCallback="OnCallupAsync" />
+                            <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp" CallUpCallback="OnCallUpAsync" />
                         </CascadingValue>
                     }
                 </ItemContent>
@@ -305,14 +305,14 @@
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800">
                 <div class="overflow-y-auto max-h-96">
-                    <ReplyInput ReplyCallback="OnReplyAsync"></ReplyInput>
+                    <ReplyInput @ref="replyInput" ReplyCallback="OnReplyAsync"></ReplyInput>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Callup user modal -->
-    <div id="callupUserModal" tabindex="-1" aria-hidden="true"
+    <!-- CallUp user modal -->
+    <div id="callUpUserModal" tabindex="-1" aria-hidden="true"
          class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full  !h-full md:inset-0 ">
         <div class="relative mx-4 mt-8 mb-16 w-full max-w-xl md:h-auto md:m-4">
             <!-- Modal content -->
@@ -320,10 +320,10 @@
                 <!-- Modal header -->
                 <div class="flex justify-between mb-4 rounded-t sm:mb-5 border-b-2 py-2">
                     <div class="text-lg text-gray-900 md:text-xl dark:text-white">
-                        @if (callupReplies.Count > 0)
+                        @if (callUpReplies.Count > 0)
                         {
                             <span class="font-semibold ">
-                                @callupReplies.First().UserName 之前的回复
+                                @callUpReplies.First().UserName 之前的回复
                             </span>
                         }
                     </div>
@@ -344,11 +344,11 @@
                 <div class="-mx-4 overflow-y-auto max-h-64">
                     <CascadingValue Value="viewModel">
                         <div class="grid grid-cols-1 divide-y">
-                            @foreach (var item in callupReplies)
+                            @foreach (var item in callUpReplies)
                             {
                                 var isOp = item.UserName == viewModel?.UserName;
                                 <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp"
-                                       CallupCallback="OnCallupAsync" />
+                                       CallUpCallback="OnCallUpAsync" />
                             }
                         </div>
                     </CascadingValue>
@@ -356,8 +356,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 @code {
@@ -395,15 +393,15 @@
     private DotNetObjectReference<TopicPage>? thisRef;
     private ElementReference? containerRef;
     private IJSObjectReference? interopModule;
-    private IJSObjectReference? callupUserModalReference;
+    private IJSObjectReference? callUpUserModalReference;
     private IJSObjectReference? replyInputModalReference;
     private CollectionView<ReplyViewModel>? collectionView;
 
+    private ReplyInput? replyInput;
+
     private CurrentUser? currentUser;
     private bool farFromTop;
-    private bool isSending;
-    private bool isUploadImage;
-    private List<ReplyViewModel> callupReplies = new();
+    private List<ReplyViewModel> callUpReplies = new();
 
     private string? originUri;
 
@@ -425,7 +423,7 @@
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
-            callupUserModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeCallupUserModal", containerRef, thisRef);
+            callUpUserModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeCallUpUserModal", containerRef, thisRef);
             replyInputModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeReplyInputModal", containerRef, thisRef);
         }
     }
@@ -483,48 +481,58 @@
         await collectionView.ScrollToTop();
     }
 
-    private async Task OnCallupAsync(CallupModel model)
+    private async Task OnCallUpAsync(CallUpModel model)
     {
-        if (interopModule == null || viewModel == null || callupUserModalReference == null)
+        if (interopModule == null || viewModel == null || callUpUserModalReference == null)
         {
             return;
         }
-        callupReplies.Clear();
+        callUpReplies.Clear();
         foreach (var reply in this.viewModel.Replies)
         {
             if (reply.Floor < model.Floor && reply.UserName == model.UserName)
             {
-                callupReplies.Add(reply);
+                callUpReplies.Add(reply);
             }
         }
 
-        await callupUserModalReference.InvokeVoidAsync("show");
+        await callUpUserModalReference.InvokeVoidAsync("show");
     }
 
     private async Task HideModal()
     {
-        if (callupUserModalReference == null)
+        if (callUpUserModalReference == null)
         {
             return;
         }
 
-        await callupUserModalReference.InvokeVoidAsync("hide");
+        await callUpUserModalReference.InvokeVoidAsync("hide");
     }
 
 
     [JSInvokable]
-    public Task OnCallupUserModalShowJsInvoke()
+    public Task OnCallUpUserModalShowJsInvoke()
     {
-        this.NavigationManager.NavigateTo(originUri + $"#modal=callup");
+        this.NavigationManager.NavigateTo(originUri + $"#modal=callUp");
         return Task.CompletedTask;
     }
 
     [JSInvokable]
-    public async Task OnCallupUserModalHideJsInvoke()
+    public async Task OnCallUpUserModalHideJsInvoke()
     {
-        callupReplies.Clear();
+        callUpReplies.Clear();
         // we should remove the hash from the uri, to clear the navigation history
         await this.UtilsJsInterop.GoBack();
+    }
+
+    [JSInvokable]
+    public async Task OnModalReplyShowJsInvoke()
+    {
+        if(replyInput == null)
+        {
+            return;
+        }
+        await replyInput.FocusAsync();
     }
 
     private async Task OnReplyAsync(string content)
@@ -537,7 +545,6 @@
         TopicInfo topicInfo;
         try
         {
-            isSending = true;
             topicInfo = await this.ApiService.ReplyTopic(this.Id.ToString(), content, this.viewModel.Once);
         }
         catch (Exception)
@@ -545,10 +552,6 @@
             // todo handle the reply error.
             await this.Toast.Show("Can not reply topic");
             return;
-        }
-        finally
-        {
-            isSending = false;
         }
 
         viewModel.Update(topicInfo);
@@ -719,5 +722,4 @@
     public void Dispose()
     {
     }
-
 }

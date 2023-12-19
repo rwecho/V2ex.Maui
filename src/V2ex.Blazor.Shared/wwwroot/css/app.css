@@ -1376,24 +1376,12 @@ input:checked + .toggle-bg {
   max-height: 16rem;
 }
 
-.max-h-full {
-  max-height: 100%;
-}
-
 .max-h-96 {
   max-height: 24rem;
 }
 
-.max-h-32 {
-  max-height: 8rem;
-}
-
-.min-h-\[64px\] {
-  min-height: 64px;
-}
-
-.min-h-\[12rem\] {
-  min-height: 12rem;
+.max-h-full {
+  max-height: 100%;
 }
 
 .min-h-\[8rem\] {
@@ -2188,6 +2176,11 @@ input:checked + .toggle-bg {
   line-height: 1rem;
 }
 
+.\!text-base {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -2198,6 +2191,14 @@ input:checked + .toggle-bg {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.\!font-normal {
+  font-weight: 400 !important;
 }
 
 .uppercase {

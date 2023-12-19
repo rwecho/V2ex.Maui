@@ -2,8 +2,9 @@
 
 
 <div class="w-full flex-col" @ref="containerRef">
-    <div class="flex flex-row w-full" >
-        <div class="h-10 w-full bg-gray-100 border-2 border-gray-200 m-4 p-2 rounded-lg cursor:pointer" @onclick="OnInputClick">回复...</div>
+    <div class="flex flex-row w-full">
+        <div class="h-10 w-full bg-gray-100 border-2 border-gray-200 m-4 p-2 rounded-lg cursor:pointer"
+            @onclick="OnInputClick">回复...</div>
 
     </div>
 
@@ -11,9 +12,9 @@
         <ReplyInput></ReplyInput>
     </div>
 
-    <!-- Callup user modal -->
+    <!-- CallUp user modal -->
     <div id="replyInputModal" tabindex="-1" aria-hidden="true"
-         class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end w-full h-modal !h-full md:inset-0 ">
+        class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end w-full h-modal !h-full md:inset-0 ">
         <div class="relative bg-gray-200/10 p-0 w-full">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800">
@@ -55,10 +56,9 @@
         if (firstRender)
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", 
-                "./_content/V2ex.Blazor.Shared/Pages/Test.razor.js");
+            "import", "./_content/V2ex.Blazor.Shared/Pages/Test.razor.js");
             modalRef = await interopModule.InvokeAsync<IJSObjectReference>("initializeModal",
-                containerRef, thisRef);
+            containerRef, thisRef);
         }
     }
 

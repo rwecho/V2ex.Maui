@@ -1,5 +1,5 @@
-﻿export function initializeCallupUserModal(containerRef, thisRef) {
-    const $modalElement = containerRef.querySelector("#callupUserModal");
+﻿export function initializeCallUpUserModal(containerRef, thisRef) {
+    const $modalElement = containerRef.querySelector("#callUpUserModal");
     const modalOptions = {
         placement: 'bottom-center',
         backdrop: "dynamic",
@@ -18,13 +18,12 @@
     };
 
     const instanceOptions = {
-        id: 'callupUserModal',
+        id: 'callUpUserModal',
         override: true
     };
 
     return new Modal($modalElement, modalOptions, instanceOptions);
 };
-
 
 export function initializeReplyInputModal(containerRef, thisRef) {
     const $modalElement = containerRef.querySelector("#replyInputModal");
@@ -38,7 +37,7 @@ export function initializeReplyInputModal(containerRef, thisRef) {
             document.body.classList.add('overflow-hidden');
         },
         onShow: () => {
-            
+            thisRef.invokeMethodAsync('OnModalReplyShowJsInvoke');
         },
         onToggle: () => {
         },
