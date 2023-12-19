@@ -23,7 +23,7 @@ export function initialize(containerRef, thisRef) {
   return quill;
 }
 
-export function insertEmoji(quill, emoji) {
+export function insertTextEmoji(quill, emoji) {
   const range = quill.getSelection(true);
   quill.insertEmbed(range.index, "text", emoji);
 
@@ -31,7 +31,7 @@ export function insertEmoji(quill, emoji) {
   quill.setSelection(nextIndex, Quill.sources.SILENT);
 }
 
-export function insertClassicEmoji(quill, emojiImageUrl) {
+export function insertImageEmoji(quill, emojiImageUrl) {
     const range = quill.getSelection(true);
     // add a space before the image
     var index = range.index;

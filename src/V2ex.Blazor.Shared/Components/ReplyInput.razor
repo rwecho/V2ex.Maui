@@ -67,28 +67,49 @@
     @if (isEmojiShow)
     {
         <div class="flex flex-col w-full pt-0">
-            <div class="flex flex-col space-y-2">
-                <div class="text-gray-500 font-semibold">经典表情</div>
-                <div class="flex flex-wrap ">
-                    @foreach (var item in classicEmoticons)
-                    {
-                        <button class="p-2" @onclick="()=> ChooseClassic(item)">
-                            <img src="@item.Low" alt="@item.Name" />
-                        </button>
-                    }
-                </div>
-            </div>
-
-            @foreach (var item in emojiEmoticons)
+            @if (recentEmojis.Any())
             {
                 <div class="flex flex-col space-y-2">
-                    <div class="text-gray-500 font-semibold">@item.Key</div>
-                    <div class="flex flex-wrap text-xl">
-                        @foreach (var emojiItem in item.Value)
+                    <div class="text-gray-500 font-semibold">最近使用</div>
+                    <div class="flex flex-wrap ">
+                        @foreach (var item in recentEmojis)
                         {
-                            <button class="p-2" @onclick="()=>ChooseEmoji(emojiItem)">
-                                @emojiItem
-                            </button>
+                            if (item is TextEmoji textItem)
+                            {
+                                <button class="p-2" @onclick="()=> ChooseTextEmoji(textItem)">
+                                    @item.Name
+                                </button>
+                            }
+                            else if (item is ImageEmoji imageEmoji)
+                            {
+                                <button class="p-2" @onclick="()=> ChooseImageEmoji(imageEmoji)">
+                                    <img src="@imageEmoji.Low" alt="@imageEmoji.Name" />
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            @foreach (var category in emojiCategories)
+            {
+                <div class="flex flex-col space-y-2">
+                    <div class="text-gray-500 font-semibold">@category.Key</div>
+                    <div class="flex flex-wrap ">
+                        @foreach (var item in category.Value)
+                        {
+                            if(item is TextEmoji textItem)
+                            {
+                                <button class="p-2" @onclick="()=> ChooseTextEmoji(textItem)">
+                                    @item.Name
+                                </button>
+                            }
+                            else if(item is ImageEmoji imageEmoji)
+                            {
+                                <button class="p-2" @onclick="()=> ChooseImageEmoji(imageEmoji)">
+                                    <img src="@imageEmoji.Low" alt="@imageEmoji.Name" />
+                                </button>
+                            }
                         }
                     </div>
                 </div>
@@ -104,119 +125,8 @@
     [Parameter]
     public EventCallback<string> ReplyCallback { get; set; }
 
-    private Dictionary<string, List<string>> emojiEmoticons = new()
-{
-{
-"小黄脸",
-new () {
-"😀",
-"😁",
-"😂",
-"🤣",
-"😅",
-"😊",
-"😋",
-"😘",
-"🥰",
-"😗",
-"🤩",
-"🤔",
-"🤨",
-"😐",
-"😑",
-"🙄",
-"😏",
-"😪",
-"😫",
-"🥱",
-"😜",
-"😒",
-"😔",
-"😨",
-"😰",
-"😱",
-"🥵",
-"😡",
-"🥳",
-"🥺",
-"🤭",
-"🧐",
-"😎",
-"🤓",
-"😭",
-"🤑",
-"🤮"
-}
-},
-{
-"手势",
-new ()
-{
-"🙋",
-"🙎",
-"🙅",
-"🙇",
-"🤷",
-"🤏",
-"👉",
-"✌️",
-"🤘",
-"🤙",
-"👌",
-"🤌",
-"👍",
-"👎",
-"👋",
-"🤝",
-"🙏",
-"👏"
-}
-},
-{
-"庆祝",
-new ()
-{
-"✨", "🎉", "🎊"
-}
-},
-{
-"其他",
-new ()
-{
-"👻", "🤡", "🐔", "👀", "💩", "🐴", "🦄", "🐧", "🐶", "🐒", "🙈", "🙉", "🙊", "🐵"
-}
-}
-};
-
-    private List<(string Name, string Low, string High)> classicEmoticons = new()
-{
-("[狗头]","https://i.imgur.com/io2SM1h.png","https://i.imgur.com/0icl60r.png"),
-("[马]","https://i.imgur.com/8EKZv7I.png","https://i.imgur.com/ANFUX52.png"),
-("[不高兴]","https://i.imgur.com/huX6coX.png","https://i.imgur.com/N7JEuvc.png"),
-("[呵呵]","https://i.imgur.com/RvoLAbX.png","https://i.imgur.com/xSzIqrK.png"),
-("[真棒]","https://i.imgur.com/xr1UOz1.png","https://i.imgur.com/w8YEw9Q.png"),
-("[鄙视]","https://i.imgur.com/u6jlqVq.png","https://i.imgur.com/8JFNANq.png"),
-("[疑问]","https://i.imgur.com/F29pmQ6.png","https://i.imgur.com/EbbTQAR.png"),
-("[嘲笑]","https://i.imgur.com/BaWcsMR.png","https://i.imgur.com/0OGfJw4.png"),
-("[滑稽]","https://i.imgur.com/lmbN0yI.png","https://i.imgur.com/Pc0wH85.png"),
-("[笑眼]","https://i.imgur.com/ZveiiGy.png","https://i.imgur.com/PI1CfEr.png"),
-("[狂汗]","https://i.imgur.com/veWihk6.png","https://i.imgur.com/3LtHdQv.png"),
-("[大哭]","https://i.imgur.com/hu4oR6C.png","https://i.imgur.com/b4X9XLE.png"),
-("[喷]","https://i.imgur.com/bkw3VRr.png","https://i.imgur.com/wnZL13L.png"),
-("[苦笑]","https://i.imgur.com/VUWFktU.png","https://i.imgur.com/NAfspZ1.png"),
-("[喝酒]","https://i.imgur.com/2ZZSapE.png","https://i.imgur.com/rVbSVak.png"),
-("[吃瓜]","https://i.imgur.com/ee8Lq7H.png","https://i.imgur.com/0L26og9.png"),
-("[捂脸]","https://i.imgur.com/krir4IG.png","https://i.imgur.com/qqBqgVm.png"),
-("[呕]","https://i.imgur.com/6CUiUxv.png","https://i.imgur.com/kgdxRsG.png"),
-("[阴险]","https://i.imgur.com/MA8YqTP.png","https://i.imgur.com/e94jbaT.png"),
-("[怒]","https://i.imgur.com/n4kWfGB.png","https://i.imgur.com/iMXxNxh.png"),
-("[衰]","https://i.imgur.com/voHFDyQ.png","https://i.imgur.com/XffE6gu.png"),
-("[合十]","https://i.imgur.com/I8x3ang.png","https://i.imgur.com/T4rJVee.png"),
-("[赞]","https://i.imgur.com/lG44yUl.png","https://i.imgur.com/AoF5PLp.png"),
-("[踩]","https://i.imgur.com/cJp0uKZ.png","https://i.imgur.com/1XYGfXj.png"),
-("[爱心]","https://i.imgur.com/sLENaF5.png","https://i.imgur.com/dND56oX.png"),
-("[心碎]","https://i.imgur.com/AZxJzve.png","https://i.imgur.com/RiUsPci.png"),
-};
+    [Inject]
+    private EmojiService EmojiService { get; set; } = null!;
 
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
@@ -227,10 +137,18 @@ new ()
     private IJSObjectReference? interopModule;
     private IJSObjectReference? quillRef;
     private bool isUploading, isReplying;
+    private Dictionary<string, List<IEmoji>> emojiCategories = [];
+    private List<IEmoji> recentEmojis = [];
 
     protected override void OnInitialized()
     {
         this.thisRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.emojiCategories = await this.EmojiService.GetListAsync();
+        this.recentEmojis = await this.EmojiService.GetRecentListAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -255,22 +173,26 @@ new ()
         return Task.CompletedTask;
     }
 
-    private async Task ChooseEmoji(string emoji)
+    private async Task ChooseTextEmoji(TextEmoji emoji)
     {
         if (interopModule == null)
         {
             return;
         }
-        await this.interopModule.InvokeVoidAsync("insertEmoji", quillRef, emoji);
+
+        await this.EmojiService.SetRecentAsync(emoji);
+
+        await this.interopModule.InvokeVoidAsync("insertTextEmoji", quillRef, emoji.Name);
     }
 
-    private async Task ChooseClassic((string Name, string Low, string High) emoji)
+    private async Task ChooseImageEmoji(ImageEmoji emoji)
     {
         if (interopModule == null)
         {
             return;
         }
-        await this.interopModule.InvokeVoidAsync("insertClassicEmoji", quillRef, emoji.Low);
+        await this.EmojiService.SetRecentAsync(emoji);
+        await this.interopModule.InvokeVoidAsync("insertImageEmoji", quillRef, emoji.High);
     }
 
     private async Task ChooseImage()

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net;
 using V2ex.Api;
-using V2ex.Blazor.Pages;
 using V2ex.Blazor.Services;
 
 namespace V2ex.Blazor;
@@ -25,6 +23,7 @@ public static class ServiceCollectionExtensions
         // because we want to reuse the same instance for the entire app.
         services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
 
+        services.AddScoped<EmojiService>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         return services;
