@@ -2,10 +2,11 @@
 <HeadTitle Title="@Id"></HeadTitle>
 
 <RefreshView Refresh="LoadAsync">
-    <LoadingBox Load="LoadAsync">
+    <ScrollView>
+        <LoadingBox Load="LoadAsync">
             @if (memberInfo != null)
             {
-                <div class="flex flex-row space-x-2 p-2 bg-white mt-4">
+                <div class="flex flex-row space-x-2 p-4 bg-white mt-4">
                     <div class="flex flex-col items-center space-y-1">
                     <img class="w-16 h-16 rounded-full shadow-md" src="@memberInfo.Avatar" alt="avatar" />
 
@@ -21,15 +22,13 @@
                         <span>今日活跃度排名 @memberInfo.TodayActivity</span>
                     </div>
                 </div>
-                <div class="bg-white mb-4 p-2 flex flex-col">
+                <div class="bg-white mb-4 p-4 flex flex-col">
                     <span>@memberInfo.CreatedText</span>
                 </div>
 
-
-
                 <div class="grid grid-cols-1 bg-white my-4 divide-y space-y-2">
                     <div class="flex flex-row justify-between p-4 text-gray-400">
-                        <span> @Id 最近创建了</span>
+                        <span>@Id 最近创建了</span>
 
                         <div class="flex flex-row justify-start space-x-2  px-2">
                             <a href="/member/@Id/replies">创建的更多主题</a>
@@ -61,8 +60,8 @@
                 </div>
 
 
-                <div class="grid grid-cols-1 p-2 bg-white my-4 divide-y space-y-2">
-                    <div class="flex flex-row justify-between py-4 text-gray-400">
+                <div class="grid grid-cols-1 bg-white my-4 p-4 divide-y space-y-2">
+                    <div class="flex flex-row justify-between  text-gray-400">
                         <span> @Id 最近回复了</span>
 
                         <div class="flex flex-row justify-start space-x-2  ">
@@ -74,7 +73,8 @@
                     {
                         var content = new MarkupString(memberInfo.ReplyContents[i]);
                         var reply = memberInfo.Replies[i];
-                        <div class="w-full flex flex-col space-y-2">
+                        
+                        <div class="w-full flex flex-col space-y-2" @onclick="()=>TapReplyAsync(reply)">
                             <div class="flex flex-row justify-between py-2">
                                 <div><span>@reply.OpUserName 创建的主题 ></span> @reply.TopicTitle </div>
                                 <div>@reply.ReplyTimeText</div>
@@ -84,7 +84,8 @@
                     }
                 </div>
             }
-    </LoadingBox>
+        </LoadingBox>
+    </ScrollView>
 </RefreshView>
 
 @code {
@@ -94,10 +95,20 @@
     [Inject]
     private ApiService ApiService { get; set; } = null!;
 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
     private MemberPageInfo? memberInfo;
 
     private async Task LoadAsync()
     {
         memberInfo = await this.ApiService.GetUserPageInfo(this.Id);
+    }
+
+    private Task TapReplyAsync(MemberPageInfo.ReplyInfo reply)
+    {
+        var link = reply.TopicLink;
+        this.NavigationManager.NavigateTo(link);
+        return Task.CompletedTask;
     }
 }
