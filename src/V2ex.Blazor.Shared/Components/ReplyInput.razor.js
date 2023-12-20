@@ -102,25 +102,27 @@ export function initialize(containerRef, thisRef) {
 }
 
 export function insertTextEmoji(quill, emoji) {
-  const range = quill.getSelection(true);
+    // disable the quill for suppressing the soft keyboard
+    quill.disable();
+    const range = quill.getSelection(false);
   quill.insertEmbed(range.index, "text", emoji);
 
   const nextIndex = range.index + emoji.length;
     quill.setSelection(nextIndex, Quill.sources.SILENT);
-    quill.blur();
-
+    quill.enable();
 }
 
 export function insertImageEmoji(quill, emojiImageUrl) {
-  const range = quill.getSelection(true);
+    // disable the quill for suppressing the soft keyboard
+    quill.disable();
+    const range = quill.getSelection(false);
   // add a space before the image
   let index = range.index;
   quill.insertEmbed(index, "image", emojiImageUrl);
   index += emojiImageUrl.length;
 
     quill.setSelection(index, Quill.sources.SILENT);
-
-    quill.blur();
+    quill.enable();
 }
 
 export function insertText(quill, text) {
