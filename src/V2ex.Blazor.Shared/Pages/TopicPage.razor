@@ -62,18 +62,47 @@
                         </div>
                     }
 
-                    <div class="flex flex-row justify-between items-center justify-items-center p-4  bg-gray-100">
-                        <div>@viewModel.ReplyStats</div>
+                    <div class="flex flex-row items-center justify-items-center p-4  bg-gray-100 text-gray-400 text-sm">
+                        @if (viewModel.RepliesCount > 0)
+                        {
+                            <div class="flex space-x-2">
+                                <div>@viewModel.RepliesCount 条回复</div>
+
+                                <div>@viewModel.CreationTime</div>
+                            </div>
+                        }
+                        <div class="flex-1"></div>
                         <div class="hidden md:flex">
                             @if (viewModel.Tags.Any())
                             {
                                 <div class="flex flex-row select-auto space-x-2">
                                     @foreach (var tag in viewModel.Tags)
                                     {
-                                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                        <span class="text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
                                     }
                                 </div>
                             }
+                        </div>
+
+                        <div class="ms-2 flex flex-row ">
+                            <button class="px-2 py-1 rounded-full text-sm flex space-x-2" @onclick="FormatTopicAsync">
+                                <svg class="w-4 h-4 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 21">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12.555 5.117 2.828 2.828M14 16v4m-2-2h4M3 6v4M1 8h4m11.01-6.339 2.828 2.829L3.99 19.339 1.161 16.51 16.01 1.661Z" />
+                                    <path fill="currentColor" d="M16 13h-2v2h2v-2ZM10 2H8v2h2V2ZM7 4H5v2h2V4ZM4 2H2v2h2V2Zm15 8h-2v2h2v-2Zm0 5h-2v2h2v-2Z" />
+                                </svg>
+                                <span>
+                                格式化
+                                </span>
+                            </button>
+
+                            <button class="px-2 py-1 rounded-full text-sm flex space-x-2" @onclick="ConcludeTopicAsync">
+                                <svg class="w-4 h-4 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.15 5.6h.01m3.337 1.913h.01m-6.979 0h.01M5.541 11h.01M15 15h2.706a1.957 1.957 0 0 0 1.883-1.325A9 9 0 1 0 2.043 11.89 9.1 9.1 0 0 0 7.2 19.1a8.62 8.62 0 0 0 3.769.9A2.013 2.013 0 0 0 13 18v-.857A2.034 2.034 0 0 1 15 15Z" />
+                                </svg>
+                                <span>
+                                    总结
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </Header>
@@ -735,6 +764,16 @@
         {
             isThanking = false;
         }
+    }
+
+    private async Task FormatTopicAsync()
+    {
+
+    }
+
+    private async Task ConcludeTopicAsync()
+    {
+        
     }
 
     public void Dispose()

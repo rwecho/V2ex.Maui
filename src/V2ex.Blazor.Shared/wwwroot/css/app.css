@@ -1272,6 +1272,10 @@ input:checked + .toggle-bg {
   margin-top: 2rem;
 }
 
+.ms-2 {
+  margin-inline-start: 0.5rem;
+}
+
 .block {
   display: block;
 }

@@ -22,6 +22,7 @@ public record TopicPageViewModel(
     )
 {
     private string? topicStats;
+    private string? replyStats;
 
     public int CurrentPage { get; protected set; } = 1;
     public int MaximumPage { get; protected set; } = 0;
@@ -58,9 +59,36 @@ public record TopicPageViewModel(
         }
     }
 
-    public MarkupString? ReplyStats { get; set; }
+    public string? ReplyStats { 
+        get => replyStats; 
+        set
+        {
+            replyStats = value;
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
+            var match1 = Regex.Match(value, @"(\d+) 条回复");
+            if (match1.Success)
+            {
+                this.RepliesCount = int.Parse(match1.Groups[1].Value);
+            }
+
+            if(DateTime.TryParse( value.Split(";").Last(), out var creationTime))
+            {
+                this.CreationTime = creationTime;
+            }
+
+        }
+    }
 
     public int Clicks { get; set; }
+
+    public int RepliesCount { get; set; }
+
+    public DateTime? CreationTime { get; set; }
 
     public int Likes
     {
@@ -134,7 +162,7 @@ public record TopicPageViewModel(
             Replies.Add(reply);
         }
 
-        ReplyStats = topicInfo.ReplyStats == null ? null : new MarkupString(topicInfo.ReplyStats);
+        ReplyStats = topicInfo.ReplyStats;
         TopicStats = topicInfo.TopicStats;
         Once = topicInfo.Once;
         Liked = topicInfo.IsLiked;
