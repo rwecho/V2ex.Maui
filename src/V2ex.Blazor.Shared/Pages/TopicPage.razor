@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="flex flex-row select-auto px-4 py-2">
-                                <span class="text-md text-gray-900">@viewModel.Title</span>
+                                <span class="text-lg font-semibold text-gray-800">@viewModel.Title</span>
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@
                                 var supplement = viewModel.Supplements[i];
                                 <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
                                     <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @supplement.CreatedText</span>
-                                    <span class="text-md text-gray-900">@supplement.Content</span>
+                                    <MarkupStringView Content="supplement.Content"></MarkupStringView>
                                 </div>
                             }
                         </div>
@@ -81,7 +81,9 @@
                     @{
                         var isOp = item.UserName == viewModel.UserName;
                         <CascadingValue Value="viewModel">
-                            <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp" CallUpCallback="OnCallUpAsync" />
+                            <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp" 
+                                CallUpCallback="OnCallUpAsync"
+                                MentionCallback="OnMentionedAsync" />
                         </CascadingValue>
                     }
                 </ItemContent>
@@ -114,7 +116,7 @@
                     {
                         <div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
                             <div class="flex flex-row me-2 md:me-4 w-full">
-                                <div @onclick="ShowReplyInput" class="p-2 w-full z-20 text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
+                                <div @onclick="()=>ShowReplyInput()" class="p-2 w-full z-20 text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
                             </div>
 
                             <div class="flex flex-row md:space-x-4 ">
@@ -319,7 +321,7 @@
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
                 <div class="flex justify-between mb-4 rounded-t sm:mb-5 border-b-2 py-2">
-                    <div class="text-lg text-gray-900 md:text-xl dark:text-white">
+                    <div class="text-lg text-gray-600 md:text-xl dark:text-white">
                         @if (callUpReplies.Count > 0)
                         {
                             <span class="font-semibold ">
@@ -348,7 +350,7 @@
                             {
                                 var isOp = item.UserName == viewModel?.UserName;
                                 <Reply @key="item.NormalizedId" ViewModel="@item" IsOp="isOp"
-                                       CallUpCallback="OnCallUpAsync" />
+                                       CallUpCallback="OnCallUpAsync"/>
                             }
                         </div>
                     </CascadingValue>
@@ -481,6 +483,16 @@
         await collectionView.ScrollToTop();
     }
 
+    private async Task OnMentionedAsync(int floor)
+    {
+        var reply = viewModel?.Replies.FirstOrDefault(r => r.Floor == floor);
+        if (reply == null)
+        {
+            return;
+        }
+        await this.ShowReplyInput($"@{reply.UserName} #{floor}");
+    }
+
     private async Task OnCallUpAsync(CallUpModel model)
     {
         if (interopModule == null || viewModel == null || callUpUserModalReference == null)
@@ -565,11 +577,17 @@
         await replyInputModalReference.InvokeVoidAsync("hide");
     }
 
-    private async Task ShowReplyInput()
+    private async Task ShowReplyInput(string? content = null)
     {
         if (replyInputModalReference == null)
         {
             return;
+        }
+
+        if (content != null && replyInput != null)
+        {
+            await replyInput.InsertTextAsync(content);
+            await replyInput.FocusAsync();
         }
 
         await replyInputModalReference.InvokeVoidAsync("show");

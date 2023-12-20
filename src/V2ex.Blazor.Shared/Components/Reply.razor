@@ -2,7 +2,7 @@
 <div class="flex flex-col px-4 py-2 ">
 
     <div class="flex flex-row justify-start items-start ">
-        <a href="@ViewModel.Avatar" class="flex flex-row items-start justify-start justify-items-start select-none">
+        <a href="@ViewModel.UserLink" class="flex flex-row items-start justify-start justify-items-start select-none">
             <img class="w-10 h-10 rounded-full shadow-md" src="@ViewModel.Avatar" alt="avatar">
         </a>
 
@@ -37,12 +37,12 @@
                     }
                     else
                     {
-                        <button @onclick="TapThank" class="flex flex-row items-center space-x-1 text-sm cursor-pointer">
+                        <button @onclick="TapThank" class="flex flex-row items-center space-x-1 text-sm cursor-pointer text-gray-400">
                             @if (ViewModel.AlreadyThanked > 0)
                             {
                                 <span class="">@ViewModel.AlreadyThanked</span>
                             }
-                            <span class="flex flex-row items-center space-x-1 text-gray-400 text-sm">
+                            <span class="flex flex-row items-center space-x-1  ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="1em"
                                     viewBox="0 0 512 512">
                                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -57,7 +57,27 @@
 
             <MarkupStringView Content="ViewModel.Content" MemberClickedCallback="OnCallUpAsync"
                 ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
-            <div class="text-gray-400 text-sm select-none">@ViewModel.Floor 楼</div>
+
+            <div class="flex flex-row items-center">
+                <div class="text-gray-400 text-sm select-none"># @ViewModel.Floor </div>
+                <div class="flex-1"></div>
+
+                @if(MentionCallback.HasDelegate)
+                {
+                    <button class="flex items-center text-sm text-gray-400 space-x-2" @onclick="TapMention">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 5h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-2v3l-4-3H8m4-13H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2v3l4-3h4a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" />
+                        </svg>
+                        <span>回复</span>
+                    </button>
+                }
+
+                <button class="ms-4">
+                    <svg class="w-4 h-4 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -74,6 +94,9 @@
 
     [Parameter]
     public EventCallback<CallUpModel> CallUpCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<int> MentionCallback{ get; set; }
 
     public CurrentUser? CurrentUser;
 
@@ -94,6 +117,11 @@
     protected override async Task OnParametersSetAsync()
     {
         CurrentUser = new CurrentUser((await AuthenticationStateTask).User);
+    }
+
+    private Task TapMention()
+    {
+        return MentionCallback.InvokeAsync(ViewModel.Floor);
     }
 
 

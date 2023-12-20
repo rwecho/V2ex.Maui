@@ -91,6 +91,13 @@ export function initialize(containerRef, thisRef) {
     }
   });
 
+
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (node, delta) {
+        var plaintext = node.innerText
+        var Delta = Quill.import('delta')
+        return new Delta().insert(plaintext)
+    })
+
   return quill;
 }
 
@@ -105,11 +112,22 @@ export function insertTextEmoji(quill, emoji) {
 export function insertImageEmoji(quill, emojiImageUrl) {
   const range = quill.getSelection(true);
   // add a space before the image
-  const index = range.index;
+  let index = range.index;
   quill.insertEmbed(index, "image", emojiImageUrl);
   index += emojiImageUrl.length;
 
   quill.setSelection(index, Quill.sources.SILENT);
+}
+
+export function insertText(quill, text) {
+    const range = quill.getSelection(true);
+    let index = range.index ;
+    quill.insertText(range.index, text);
+    index += text.length;
+    
+    quill.insertText(index, " ");
+    index++;
+    quill.setSelection(index, Quill.sources.SILENT);
 }
 
 export function insertImage(quill, imageUrl) {

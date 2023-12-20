@@ -269,6 +269,16 @@
         await this.interopModule.InvokeVoidAsync("insertImageEmoji", quillRef, emoji.High);
     }
 
+    public async Task InsertTextAsync(string text)
+    {
+        if (interopModule == null)
+        {
+            return;
+        }
+        await this.interopModule.InvokeVoidAsync("clearQuill", quillRef);
+        await this.interopModule.InvokeVoidAsync("insertText", quillRef, text);
+    }
+
     private async Task ChooseImage()
     {
         try
@@ -304,6 +314,7 @@
         }
         await this.quillRef.InvokeVoidAsync("focus");
     }
+
     public async Task ReplyAsync()
     {
         if (interopModule == null)
