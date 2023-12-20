@@ -1834,6 +1834,11 @@ input:checked + .toggle-bg {
   border-top-right-radius: 0.5rem;
 }
 
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1940,10 +1945,6 @@ input:checked + .toggle-bg {
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
-.bg-gray-400\/20 {
-  background-color: rgb(156 163 175 / 0.2);
-}
-
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -2008,6 +2009,10 @@ input:checked + .toggle-bg {
 
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
+}
+
+.fill-blue-400 {
+  fill: #76A9FA;
 }
 
 .fill-blue-600 {
@@ -2533,6 +2538,10 @@ listeners can take over.
 
 .focus\:z-10:focus {
   z-index: 10;
+}
+
+.focus\:border-0:focus {
+  border-width: 0px;
 }
 
 .focus\:border-blue-600:focus {

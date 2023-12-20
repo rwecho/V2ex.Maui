@@ -22,10 +22,10 @@
         if(firstRender)
         {
  #if DEBUG
-            await JSRuntime.InvokeVoidAsync("import",
-                "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
+            // await JSRuntime.InvokeVoidAsync("import",
+            //     "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
 
-            await JSRuntime.InvokeVoidAsync("TouchEmulator");
+            // await JSRuntime.InvokeVoidAsync("TouchEmulator");
 #endif
 
             module = await this.JSRuntime.InvokeAsync<IJSObjectReference>(

@@ -305,7 +305,7 @@
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800">
                 <div class="overflow-y-auto max-h-96">
-                    <ReplyInput @ref="replyInput" ReplyCallback="OnReplyAsync"></ReplyInput>
+                    <ReplyInput @ref="replyInput" ReplyCallback="OnReplyAsync" Replies="viewModel?.Replies"></ReplyInput>
                 </div>
             </div>
         </div>
