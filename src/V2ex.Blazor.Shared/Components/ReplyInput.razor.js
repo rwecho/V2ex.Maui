@@ -106,7 +106,9 @@ export function insertTextEmoji(quill, emoji) {
   quill.insertEmbed(range.index, "text", emoji);
 
   const nextIndex = range.index + emoji.length;
-  quill.setSelection(nextIndex, Quill.sources.SILENT);
+    quill.setSelection(nextIndex, Quill.sources.SILENT);
+    quill.blur();
+
 }
 
 export function insertImageEmoji(quill, emojiImageUrl) {
@@ -116,7 +118,9 @@ export function insertImageEmoji(quill, emojiImageUrl) {
   quill.insertEmbed(index, "image", emojiImageUrl);
   index += emojiImageUrl.length;
 
-  quill.setSelection(index, Quill.sources.SILENT);
+    quill.setSelection(index, Quill.sources.SILENT);
+
+    quill.blur();
 }
 
 export function insertText(quill, text) {

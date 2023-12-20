@@ -2965,6 +2965,10 @@ listeners can take over.
     margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
   }
 
+  .md\:rounded-lg {
+    border-radius: 0.5rem;
+  }
+
   .md\:p-4 {
     padding: 1rem;
   }

@@ -116,7 +116,7 @@
                     {
                         <div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
                             <div class="flex flex-row me-2 md:me-4 w-full">
-                                <div @onclick="()=>ShowReplyInput()" class="p-2 w-full z-20 text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
+                                <div @onclick="()=>ShowReplyInput()" class="p-2 w-full z-20 text-sm text-gray-600 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
                             </div>
 
                             <div class="flex flex-row md:space-x-4 ">
@@ -305,7 +305,7 @@
          class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full !h-full md:inset-0 ">
         <div class="relative p-0 w-full md:p-4">
             <!-- Modal content -->
-            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800">
+            <div class="relative p-4 bg-white rounded-t-lg  md:rounded-lg shadow dark:bg-gray-800">
                 <div class="overflow-y-auto max-h-96">
                     <ReplyInput @ref="replyInput" ReplyCallback="OnReplyAsync" Replies="viewModel?.Replies"></ReplyInput>
                 </div>
