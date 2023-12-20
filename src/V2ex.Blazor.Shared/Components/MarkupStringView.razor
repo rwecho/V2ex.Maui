@@ -1,4 +1,4 @@
-﻿<div class="markup-container" @ref="containerRef">
+﻿<div class="markup-container text-gray-800 leading-relaxed tracking-wide" @ref="containerRef">
     @Content
 </div>
 
@@ -7,13 +7,13 @@
     public MarkupString? Content { get; set; }
 
     [Parameter]
-    public EventCallback<string> MemberClickedCallback{ get; set; }
+    public EventCallback<string> MemberClickedCallback { get; set; }
 
     [Parameter]
-    public EventCallback<string> ImageClickedCallback{ get; set; }
+    public EventCallback<string> ImageClickedCallback { get; set; }
 
     [Parameter]
-    public EventCallback<Uri> ExternalLinkClickedCallback{ get; set; }
+    public EventCallback<Uri> ExternalLinkClickedCallback { get; set; }
 
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
@@ -36,7 +36,7 @@
         if (firstRender)
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Components/MarkupStringView.razor.js");
+            "./_content/V2ex.Blazor.Shared/Components/MarkupStringView.razor.js");
             await interopModule.InvokeVoidAsync("initialize", containerRef, thisRef);
         }
     }
@@ -90,4 +90,3 @@
         await ImageClickedCallback.InvokeAsync(src);
     }
 }
-
