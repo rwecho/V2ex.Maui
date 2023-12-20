@@ -120,17 +120,27 @@
 
     <div id="mentionUsersModal" tabindex="-1" aria-hidden="true"
          class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full !h-full md:inset-0 ">
-        <div class="relative p-0 w-full  h-full">
+        <div class="relative p-0 w-full h-5/6">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 h-full">
                 <div class="overflow-y-auto h-full">
                     @if (Replies != null && Replies.Count > 0)
                     {
                         <ScrollView>
-                            <div class="flex flex-row sticky top-0 bg-gray-100 p-4 rounded-b-lg space-x-4">
-                                <input class="flex-1 rounded-lg px-4 py-2 focus:outline-none" @bind-value="SearchText" @bind-value:event="oninput" placeholder="搜索用户和回复" />
+                            <div class="sticky top-0 bg-gray-100 px-4 py-2 rounded-lg flex flex-col">
+                                <div class="flex py-2 text-gray-800 relative justify-center">
+                                    <button class="absolute left-0 p-2 bg-gray-200 rounded-full" @onclick="HideMentionUsersModal">
+                                        <svg class="w-2 h-2 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                        </svg>
+                                    </button>
+                                    <div class=" text-lg font-semibold ">选择用户</div>
+                                </div>
+                                <div class="flex flex-row  space-x-4">
+                                    <input class="flex-1 rounded-lg px-4 py-2 focus:outline-none" @bind-value="SearchText" @bind-value:event="oninput" placeholder="搜索用户和回复" />
 
-                                <button class="px-4 py-2 bg-gray-400 text-gray-50 rounded-lg focus:outline-none" @onclick="ConfirmMention">确定</button>
+                                    <button class="px-4 py-2 bg-gray-400 text-gray-50 rounded-lg focus:outline-none" @onclick="ConfirmMention">确定</button>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-1 divide-y">
@@ -235,10 +245,11 @@
         }
     }
 
-    private Task OnEditorClick()
+    private async Task OnEditorClick()
     {
         isEmojiShow = false;
-        return Task.CompletedTask;
+
+        await this.FocusAsync();
     }
 
     private Task ShowEmojiPanel()
@@ -383,6 +394,15 @@
         mentionUsersTcs.SetResult(replies);
 
         mentionFloors.Clear();
+        await this.mentionUsersModal.InvokeVoidAsync("hide");
+    }
+
+    private async Task HideMentionUsersModal()
+    {
+        if (this.mentionUsersModal == null)
+        {
+            return;
+        }
         await this.mentionUsersModal.InvokeVoidAsync("hide");
     }
 }
