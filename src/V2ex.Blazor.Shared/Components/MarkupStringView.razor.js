@@ -20,4 +20,12 @@ export function initialize(containerRef, thisRef) {
             imgClickThrottle(e.target.src);
         }
     });
+
+
+    // highlight the code
+    const codeElements = containerRef.querySelectorAll("pre code");
+    for (let i = 0; i < codeElements.length; i++) {
+        const codeElement = codeElements[i];
+        hljs.highlightElement(codeElement);
+    }
 }

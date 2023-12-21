@@ -52,6 +52,19 @@ body {
     display: inline;
 }
 
+.markup-container ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+    padding-left: 1rem;
+}
+
+.markup-container ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding-left: 1rem;
+}
+
+
 /* PullToRefresh.js */
 .ptr--ptr {
     box-shadow: none !important;
@@ -64,11 +77,11 @@ body {
 }
 
 .ptr--text {
-  
+
 }
 
 .ptr--icon {
-  
+
 }
 
 /*

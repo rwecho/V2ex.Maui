@@ -1248,6 +1248,10 @@ input:checked + .toggle-bg {
   margin-right: 0.5rem;
 }
 
+.ms-2 {
+  margin-inline-start: 0.5rem;
+}
+
 .ms-3 {
   margin-inline-start: 0.75rem;
 }
@@ -1270,10 +1274,6 @@ input:checked + .toggle-bg {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.ms-2 {
-  margin-inline-start: 0.5rem;
 }
 
 .block {
@@ -1623,6 +1623,18 @@ input:checked + .toggle-bg {
   resize: both;
 }
 
+.list-inside {
+  list-style-position: inside;
+}
+
+.list-decimal {
+  list-style-type: decimal;
+}
+
+.list-disc {
+  list-style-type: disc;
+}
+
 .appearance-none {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -1840,11 +1852,6 @@ input:checked + .toggle-bg {
 .rounded-t-lg {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
-}
-
-.rounded-b-lg {
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
 }
 
 .border {
@@ -2138,6 +2145,10 @@ input:checked + .toggle-bg {
 
 .pb-16 {
   padding-bottom: 4rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
 }
 
 .pt-0 {
@@ -2458,6 +2469,18 @@ body {
 
 .markup-container img{
   display: inline;
+}
+
+.markup-container ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+  padding-left: 1rem;
+}
+
+.markup-container ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding-left: 1rem;
 }
 
 /* PullToRefresh.js */
