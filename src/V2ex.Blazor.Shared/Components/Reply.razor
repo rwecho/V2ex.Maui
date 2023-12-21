@@ -9,16 +9,19 @@
         <div class="flex flex-col flex-1 mx-2 space-y-2 ">
             <div class="flex flex-row items-center w-full">
                 <a href="@ViewModel.UserLink" class=" ">
-                    <span class="text-sm text-gray-900">@ViewModel.UserName</span>
+                    <div class="flex items-start flex-col md:flex-row md:items-center md:space-x-2 ">
+                        <div class="flex space-x-2 items-center">
+                            <span class="text-sm text-gray-900">@ViewModel.UserName</span>
+                            @if (IsOp)
+                            {
+                                <span
+                                    class="uppercase rounded-md text-xs border-2 text-blue-300 border-blue-300 p-0.5 scale-75 ">OP</span>
+                            }
+                        </div>
+
+                        <span class="text-xs text-gray-500 whitespace-nowrap text-ellipsis md:text-sm">@ViewModel.ReplyTimeText</span>
+                    </div>
                 </a>
-                @if (IsOp)
-                {
-                    <span
-                        class="uppercase rounded-md text-xs border-2 text-blue-300 border-blue-300 p-0.5 scale-75 ml-2">OP</span>
-                }
-
-                <span class="text-sm text-gray-500 whitespace-nowrap text-ellipsis ml-2">@ViewModel.ReplyTimeText</span>
-
                 <div class="ml-auto">
                     @if (ViewModel.Thanked)
                     {
