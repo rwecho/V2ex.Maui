@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\V2ex.Api\V2ex.Api.csproj" />
+    <ProjectReference Include="..\..\src\V2ex.Blazor.Shared\V2ex.Blazor.Shared.csproj" />
   </ItemGroup>
 
 </Project>

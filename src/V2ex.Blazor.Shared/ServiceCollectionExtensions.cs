@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
         // We register the AuthenticationStateProvider as a singleton
         // because we want to reuse the same instance for the entire app.
         services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
+        services.AddTransient<ChatGPTService>();
 
         services.AddScoped<EmojiService>();
         services.AddScoped<ApiService>();
