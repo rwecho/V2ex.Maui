@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
             .ConfigurePrimaryHttpMessageHandler((sp)=> {
 
 #pragma warning disable CA1416 // Validate platform compatibility
-                return new AiHttpClientHandler(sp.GetRequiredService<IPreferences>());
+                return sp.GetRequiredService<AiHttpClientHandler>();
 #pragma warning restore CA1416 // Validate platform compatibility
             });
 
@@ -34,6 +34,7 @@ public static class ServiceCollectionExtensions
         // because we want to reuse the same instance for the entire app.
         services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();
         services.AddTransient<ChatGPTService>();
+        services.AddTransient<AiHttpClientHandler>();
 
         services.AddScoped<EmojiService>();
         services.AddScoped<ApiService>();

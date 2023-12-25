@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Options;
+using System.Net;
 using System.Runtime.Versioning;
 using V2ex.Api;
 
@@ -9,7 +10,7 @@ public class AiHttpClientHandler: HttpClientHandler
     private const string CookiesFileName = "cookies.json";
 
     [UnsupportedOSPlatform("browser")]
-    public AiHttpClientHandler(IPreferences preferences)
+    public AiHttpClientHandler(IPreferences preferences, IOptions<ChatGPTOptions> options)
     {
         this.CookieContainer = new CookieContainer();
         this.UseCookies = true;
@@ -19,9 +20,13 @@ public class AiHttpClientHandler: HttpClientHandler
         this.Preferences = preferences;
 
         var cookies = this.Preferences.Get(CookiesFileName, Array.Empty<Cookie>());
+
+        var endpoint = options.Value.Endpoint;
+        var host = new Uri(endpoint).Host;
+
         foreach (var cookie in cookies)
         {
-            cookie.Domain = "v2ex-maui.vercel.app";
+            cookie.Domain = host;
             this.CookieContainer.Add(cookie);
         }
     }

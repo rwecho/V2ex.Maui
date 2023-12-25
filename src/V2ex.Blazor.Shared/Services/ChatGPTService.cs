@@ -1,16 +1,19 @@
-﻿namespace V2ex.Blazor.Services;
+﻿using Microsoft.Extensions.Options;
+
+namespace V2ex.Blazor.Services;
 
 public class ChatGPTService
 {
     private readonly HttpClient HttpClient;
 
-    public ChatGPTService(IHttpClientFactory httpClientFactory, IAppInfoService appInfoService)
+    public ChatGPTService(IHttpClientFactory httpClientFactory, IAppInfoService appInfoService,
+        IOptions<ChatGPTOptions> options)
     {
         this.HttpClient = httpClientFactory.CreateClient("ai");
 
         if(this.HttpClient.BaseAddress == null)
         {
-            this.HttpClient.BaseAddress = new Uri("https://v2ex-maui.vercel.app");
+            this.HttpClient.BaseAddress = new Uri(options.Value.Endpoint);
         }
 
         this.AppInfoService = appInfoService;

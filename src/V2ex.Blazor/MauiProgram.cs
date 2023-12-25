@@ -44,6 +44,8 @@ public static class MauiProgram
         var configuration = builder.Configuration;
         builder.Services.Configure<AppCenterOptions>(configuration.GetSection("AppCenter"));
 
+        builder.Services.Configure<ChatGPTOptions>(configuration.GetSection("ChatGPT"));
+
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
