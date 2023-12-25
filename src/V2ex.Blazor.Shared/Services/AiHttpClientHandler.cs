@@ -21,7 +21,7 @@ public class AiHttpClientHandler: HttpClientHandler
         var cookies = this.Preferences.Get(CookiesFileName, Array.Empty<Cookie>());
         foreach (var cookie in cookies)
         {
-            cookie.Domain = "localhost";
+            cookie.Domain = "v2ex-maui.vercel.app";
             this.CookieContainer.Add(cookie);
         }
     }

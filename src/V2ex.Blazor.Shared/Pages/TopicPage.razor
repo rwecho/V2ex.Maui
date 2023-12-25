@@ -870,6 +870,10 @@
                 await formattedMarkupStringViewRef.RelaunchContentAsync();
             }
         }
+        catch(InvalidOperationException)
+        {
+            await this.Toast.Show("无法连接到服务");
+        }
         finally
         {
             isFormatting = false;

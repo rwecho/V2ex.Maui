@@ -22,6 +22,12 @@ public class ChatGPTService
     {
         var version = this.AppInfoService.GetVersionNumber();
         var response = await HttpClient.GetAsync($"/api/topic/{topicId}?version={version}", HttpCompletionOption.ResponseHeadersRead);
-        return await response.Content.ReadAsStreamAsync();
+
+        if(response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsStreamAsync();
+        }
+
+        throw new InvalidOperationException(response.ReasonPhrase);
     }
 }
