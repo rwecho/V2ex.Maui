@@ -106,7 +106,7 @@
                             <div class="hidden md:flex">@viewModel.LastReplyTime?.ToString("yyyy-MM-dd HH:mm:ss")</div>
                             <div class="md:hidden">@viewModel.LastReplyTime?.ToString("yyyy-MM-dd")</div>
                         </div>
-                       
+
                         <div class="flex-1"></div>
                         <div class="hidden md:flex">
                             @if (viewModel.Tags.Any())
@@ -493,7 +493,7 @@
     {
         get
         {
-            if (currentUser == null || !currentUser.IsAuthenticated 
+            if (currentUser == null || !currentUser.IsAuthenticated
                 || viewModel == null
                 || !viewModel.Content.HasValue
                 || viewModel.Content.Value.ToString().Length < 300)
@@ -873,6 +873,10 @@
         catch(InvalidOperationException)
         {
             await this.Toast.Show("无法连接到服务");
+        }
+        catch(Exception exception)
+        {
+            await this.Toast.Show(exception.Message);
         }
         finally
         {
