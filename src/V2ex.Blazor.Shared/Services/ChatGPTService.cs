@@ -2,17 +2,26 @@
 
 public class ChatGPTService
 {
-    public ChatGPTService(IHttpClientFactory httpClientFactory)
+    private readonly HttpClient HttpClient;
+
+    public ChatGPTService(IHttpClientFactory httpClientFactory, IAppInfoService appInfoService)
     {
-        this.HttpClientFactory = httpClientFactory;
+        this.HttpClient = httpClientFactory.CreateClient("ai");
+
+        if(this.HttpClient.BaseAddress == null)
+        {
+            this.HttpClient.BaseAddress = new Uri("http://localhost:3000");
+        }
+
+        this.AppInfoService = appInfoService;
     }
 
-    private IHttpClientFactory HttpClientFactory { get; }
+    private IAppInfoService AppInfoService { get; }
 
     public async Task<Stream> FormatTopicAsync(string topicId)
     {
-        var client = this.HttpClientFactory.CreateClient("api");
-        var response = await client.GetAsync($"https://v2ex-maui.vercel.app/api/topic/{topicId}");
+        var version = this.AppInfoService.GetVersionNumber();
+        var response = await HttpClient.GetAsync($"/api/topic/{topicId}?version={version}", HttpCompletionOption.ResponseHeadersRead);
         return await response.Content.ReadAsStreamAsync();
     }
 }

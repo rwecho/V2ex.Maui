@@ -41,6 +41,15 @@
         }
     }
 
+    public async Task RelaunchContentAsync()
+    {
+        if (interopModule != null)
+        {
+            await interopModule.InvokeVoidAsync("initialize", containerRef, thisRef);
+        }
+    }
+
+
     [JSInvokable]
     public async Task AnchorClickedJsInvoke(string href)
     {

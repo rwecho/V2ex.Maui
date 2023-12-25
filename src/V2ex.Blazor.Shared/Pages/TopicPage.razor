@@ -1,4 +1,5 @@
 @page "/t/{Id:int}"
+@using System.Text
 @implements IDisposable
 <HeadTitle Title="话题"></HeadTitle>
 
@@ -41,10 +42,46 @@
                         </div>
 
                         <div class="flex flex-col divide-y">
-                            <div class="flex flex-col select-auto px-4 py-2 text-start">
-                                <MarkupStringView Content="viewModel.Content"
-                                                  ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
-                            </div>
+                            @if (formattedContent == null)
+                            {
+                                 <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                    <MarkupStringView Content="viewModel.Content"
+                                                      ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="accordion-collapse" data-accordion="open">
+                                    <h2 id="accordion-collapse-heading-1">
+                                        <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
+                                            <span>原文</span>
+                                            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
+                                            </svg>
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
+                                        <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                            <MarkupStringView Content="viewModel.Content"
+                                                              ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                        </div>
+                                    </div>
+                                    <h2 id="accordion-collapse-heading-2">
+                                        <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200  gap-3" data-accordion-target="#accordion-collapse-body-2" aria-expanded="true" aria-controls="accordion-collapse-body-2">
+                                            <span>AI 优化</span>
+                                            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
+                                            </svg>
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
+                                        <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                            <MarkupStringView @ref="formattedMarkupStringViewRef" Content="formattedContent"
+                                                              ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                     @if (viewModel.Supplements.Any())
@@ -410,6 +447,9 @@
     [Inject]
     private UtilsJsInterop UtilsJsInterop { get; set; } = null!;
 
+    [Inject]
+    private ChatGPTService ChatGPTService { get; set; } = null!;
+
     private TopicPageViewModel? viewModel;
 
     private DotNetObjectReference<TopicPage>? thisRef;
@@ -424,6 +464,8 @@
     private CurrentUser? currentUser;
     private bool farFromTop;
     private List<ReplyViewModel> callUpReplies = new();
+    private MarkupString? formattedContent;
+    private MarkupStringView? formattedMarkupStringViewRef;
 
     private string? originUri;
 
@@ -449,9 +491,9 @@
             replyInputModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeReplyInputModal", containerRef, thisRef);
         }
 
-        if (viewModel != null)
+        if (formattedContent != null)
         {
-
+            await JsRuntime.InvokeVoidAsync("initAccordions");
         }
     }
 
@@ -764,12 +806,25 @@
 
     private async Task FormatTopicAsync()
     {
+        var stream = await this.ChatGPTService.FormatTopicAsync(this.Id.ToString());
 
-    }
+        formattedContent = null;
+        await this.InvokeAsync(this.StateHasChanged);
 
-    private async Task ConcludeTopicAsync()
-    {
+        var buffer = new byte[1024];
+        var content = new StringBuilder();
+        var read = 0;
+        while ((read = await stream.ReadAsync(buffer)) > 0)
+        {
+            content.Append(Encoding.UTF8.GetString(buffer, 0, read));
+            formattedContent = (MarkupString)content.ToString();
+            await this.InvokeAsync(this.StateHasChanged);
+        }
 
+        if (formattedMarkupStringViewRef != null)
+        {
+            await formattedMarkupStringViewRef.RelaunchContentAsync();
+        }
     }
 
     public void Dispose()

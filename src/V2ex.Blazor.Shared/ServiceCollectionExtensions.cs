@@ -18,7 +18,18 @@ public static class ServiceCollectionExtensions
              {
                  return new CookieHttpClientHandler(sp.GetRequiredService<IPreferences>());
              });
-        
+
+        services.AddHttpClient("ai", client =>
+        {
+
+        })
+            .ConfigurePrimaryHttpMessageHandler((sp)=> {
+
+#pragma warning disable CA1416 // Validate platform compatibility
+                return new AiHttpClientHandler(sp.GetRequiredService<IPreferences>());
+#pragma warning restore CA1416 // Validate platform compatibility
+            });
+
         // We register the AuthenticationStateProvider as a singleton
         // because we want to reuse the same instance for the entire app.
         services.AddSingleton<AuthenticationStateProvider, V2exAuthenticationStateProvider>();

@@ -37,6 +37,7 @@ public static class MauiProgram
         builder.Services.AddScoped<INativeNavigation, NativeNavigation>();
         builder.Services.AddScoped<IAlterService, NativeAlterService>();
         builder.Services.AddScoped<IToastService, NativeToastService>();
+        builder.Services.AddScoped<IAppInfoService, AppInfoService>();
 
         ConfigureConfiguration(builder);
 

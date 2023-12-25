@@ -12,14 +12,14 @@ public class CookieHttpClientHandler : HttpClientHandler
     private const string CookiesFileName = "cookies.json";
     private IPreferences Preferences { get; }
 
-    public CookieHttpClientHandler(IPreferences preference)
+    public CookieHttpClientHandler(IPreferences preferences)
     {
         this.CookieContainer = new CookieContainer();
         this.UseCookies = true;
         this.UseDefaultCredentials = false;
         this.AllowAutoRedirect = false;
         this.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-        this.Preferences = preference;
+        this.Preferences = preferences;
 
         var cookies = this.Preferences.Get(CookiesFileName, Array.Empty<Cookie>());
         foreach (var cookie in cookies)

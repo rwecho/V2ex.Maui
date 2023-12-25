@@ -24,7 +24,6 @@ public class V2exAuthenticationStateProvider(IPreferences preferences,
         {
             try
             {
-
                 var notifications = userInfo.Notifications?.ToString();
                 var unreadMessageCount = 0;
                 if (!string.IsNullOrEmpty(notifications))

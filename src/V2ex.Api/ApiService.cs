@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace V2ex.Api;
 
-public class CreateTopicException: Exception
-{
-    public CreateTopicException(Problem problem) {
-        this.Problem = problem;
-    }
-
-    public Problem Problem { get; }
-}
-
 public class ApiService
 {
     private const string USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15";
@@ -147,6 +138,7 @@ public class ApiService
         var url = tab == null ? "/" : "/?tab=" + tab;
         //var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
+
         newsInfo.Url = url;
         return newsInfo;
     }

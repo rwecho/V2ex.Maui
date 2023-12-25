@@ -48,6 +48,10 @@ body {
     text-decoration: underline;
 }
 
+.markup-container p {
+    margin-top: 0.75rem;
+}
+
 .markup-container img{
     display: inline;
 }
