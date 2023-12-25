@@ -11,7 +11,7 @@ public class ChatGPTService
     {
         this.HttpClient = httpClientFactory.CreateClient("ai");
 
-        if(this.HttpClient.BaseAddress == null)
+        if (this.HttpClient.BaseAddress == null)
         {
             this.HttpClient.BaseAddress = new Uri(options.Value.Endpoint);
         }
@@ -25,12 +25,10 @@ public class ChatGPTService
     {
         var version = this.AppInfoService.GetVersionNumber();
         var response = await HttpClient.GetAsync($"/api/topic/{topicId}?version={version}", HttpCompletionOption.ResponseHeadersRead);
-
-        if(response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadAsStreamAsync();
         }
-
         throw new InvalidOperationException(response.ReasonPhrase);
     }
 }
