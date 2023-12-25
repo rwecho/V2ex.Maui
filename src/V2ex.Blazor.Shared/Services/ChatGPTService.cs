@@ -10,7 +10,7 @@ public class ChatGPTService
 
         if(this.HttpClient.BaseAddress == null)
         {
-            this.HttpClient.BaseAddress = new Uri("http://localhost:3000");
+            this.HttpClient.BaseAddress = new Uri("https://v2ex-maui.vercel.app");
         }
 
         this.AppInfoService = appInfoService;

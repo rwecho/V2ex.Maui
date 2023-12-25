@@ -59,7 +59,8 @@ public record TopicPageViewModel(
         }
     }
 
-    public string? ReplyStats { 
+    public string? ReplyStats 
+    { 
         get => replyStats; 
         set
         {
@@ -76,9 +77,9 @@ public record TopicPageViewModel(
                 this.RepliesCount = int.Parse(match1.Groups[1].Value);
             }
 
-            if(DateTime.TryParse( value.Split(";").Last(), out var creationTime))
+            if(DateTime.TryParse( value.Split(";").Last(), out var lastReplyTime))
             {
-                this.CreationTime = creationTime;
+                this.LastReplyTime = lastReplyTime;
             }
 
         }
@@ -88,7 +89,7 @@ public record TopicPageViewModel(
 
     public int RepliesCount { get; set; }
 
-    public DateTime? CreationTime { get; set; }
+    public DateTime? LastReplyTime { get; set; }
 
     public int Likes
     {
