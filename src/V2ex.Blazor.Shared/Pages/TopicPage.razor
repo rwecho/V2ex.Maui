@@ -616,7 +616,10 @@
             }
         }
 
-        await callUpUserModalReference.InvokeVoidAsync("show");
+        if(callUpReplies.Any())
+        {
+            await callUpUserModalReference.InvokeVoidAsync("show");
+        }
     }
 
     private async Task HideModal()
