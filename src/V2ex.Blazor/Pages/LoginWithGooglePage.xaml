@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="V2ex.Blazor.Pages.LoginWithGooglePage"
+             xmlns:local="clr-namespace:V2ex.Blazor.Pages"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Google 登录"
+             x:DataType="local:LoginWithGooglePageViewModel"
+             NavigationPage.HasNavigationBar="{Binding HasNavigationBar}">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#f3f4f6" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <WebView x:Name="WebView" Source="{Binding Url}"
+             UserAgent="{Binding UserAgent}"
+             Navigating="WebView_Navigating"></WebView>
+</ContentPage>

@@ -88,6 +88,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiXaml Update="Pages\LoginWithGooglePage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\ReturnPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

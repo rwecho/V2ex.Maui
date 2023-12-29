@@ -25,9 +25,12 @@ public class UserInfo
     public string? Notifications { get; set; }
 
     [XPath("//div[@id='money']/a/text()[1]")]
+    [SkipNodeNotFound]
     public string? MoneyGold { get; set; }
     [XPath("//div[@id='money']/a/text()[2]")]
+    [SkipNodeNotFound]
     public string? MoneySilver { get; set; }
     [XPath("//div[@id='money']/a/text()[3]")]
+    [SkipNodeNotFound]
     public string? MoneyBronze { get; set; }
 }

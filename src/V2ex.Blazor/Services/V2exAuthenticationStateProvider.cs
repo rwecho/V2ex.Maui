@@ -1,24 +1,18 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using V2ex.Api;
 
 namespace V2ex.Blazor.Services;
 
-public class V2exAuthenticationStateProvider(IPreferences preferences,
-    ILogger<V2exAuthenticationStateProvider> logger) : AuthenticationStateProvider
+public class V2exAuthenticationStateProvider(CookieContainerService cookieContainerService,
+    ILogger<V2exAuthenticationStateProvider> logger) : AuthenticationStateProvider, IAuthenticationStateProvider
 {
-    private const string UserKey = "user.json";
-    private readonly object locker = new();
-
+    private CookieContainerService CookieContainerService { get; } = cookieContainerService;
     private ILogger<V2exAuthenticationStateProvider> Logger { get; } = logger;
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        UserInfo? userInfo;
-        lock (locker)
-        {
-            userInfo = preferences.Get<UserInfo?>(UserKey, null);
-        }
+        var userInfo = CookieContainerService.User;
         var identity = new ClaimsIdentity();
         if (userInfo != null)
         {
@@ -43,9 +37,9 @@ public class V2exAuthenticationStateProvider(IPreferences preferences,
                     new Claim("nodes", userInfo.Nodes.ToString()),
                     new Claim("topics", userInfo.Topics.ToString()),
                     new Claim("notifications", unreadMessageCount.ToString()),
-                    new Claim("moneyGold", userInfo.MoneyGold?.ToString()??""),
-                    new Claim("moneySilver", userInfo.MoneySilver?.ToString()??""),
-                    new Claim("moneyBronze", userInfo.MoneyBronze?.ToString()??""),
+                    new Claim("moneyGold", userInfo.MoneyGold?.Trim().ToString()??"0"),
+                    new Claim("moneySilver", userInfo.MoneySilver?.Trim().ToString()??"0"),
+                    new Claim("moneyBronze", userInfo.MoneyBronze?.Trim().ToString()??"0"),
                 }, "v2ex");
             }
             catch (Exception)
@@ -58,14 +52,13 @@ public class V2exAuthenticationStateProvider(IPreferences preferences,
 
     public Task LoginAsync(UserInfo userInfo)
     {
-        preferences.Set(UserKey, userInfo);
+        this.CookieContainerService.Login(userInfo);
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         return Task.CompletedTask;
     }
-
     public Task LogoutAsync()
     {
-        preferences.Set<UserInfo?>(UserKey, null);
+        this.CookieContainerService.Logout();
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         return Task.CompletedTask;
     }

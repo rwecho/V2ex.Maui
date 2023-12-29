@@ -3,7 +3,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace V2ex.Api.Tests;
 
-public class FilePreferences : IPreferences, ITransientDependency
+public class FilePreferences :  ITransientDependency
 {
     public T Get<T>(string key, T defaultValue)
     {

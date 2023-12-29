@@ -13,11 +13,11 @@ public class ApiTestModule : AbpModule
         context.Services.AddBlazorShared();
 
         context.Services.AddSingleton<ApiService>();
-        context.Services.AddHttpClient("api", client =>
-            {
-            }).ConfigurePrimaryHttpMessageHandler((sp) =>
-            {
-                return new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
-            });
+        //context.Services.AddHttpClient("api", client =>
+        //    {
+        //    }).ConfigurePrimaryHttpMessageHandler((sp) =>
+        //    {
+        //        return new CookieHttpClientHandler(sp.GetRequiredService<FilePreferences>());
+        //    });
     }
 }

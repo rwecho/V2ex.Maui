@@ -21,7 +21,7 @@
 @code {
 
     [Inject]
-    private Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+    private AuthenticationStateProvider AuthenticationStateProvider
     {
         get;
         set;
@@ -54,30 +54,12 @@
         try
         {
             isLogging = true;
-            await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LogoutAsync();
+            await ((IAuthenticationStateProvider)this.AuthenticationStateProvider).LogoutAsync();
             // this.NavigationManager.NavigateTo("/");
         }
         finally
         {
             isLogging = false;
         }
-    }
-
-    private async Task TestAsync()
-    {
-        try
-        {
-            isLogging = true;
-            await ((V2exAuthenticationStateProvider)this.AuthenticationStateProvider).LoginAsync(new UserInfo
-                {
-                    Name = "rwecho",
-                    Avatar = "https://cdn.v2ex.com/avatar/3e3c/9b9c/2353_normal.png?m=1628076543",
-                });
-        }
-        finally
-        {
-            isLogging = false;
-        }
-        
     }
 }

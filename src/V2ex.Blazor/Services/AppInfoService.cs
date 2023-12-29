@@ -1,4 +1,7 @@
-﻿namespace V2ex.Blazor.Services;
+﻿using System.Net;
+using V2ex.Api;
+
+namespace V2ex.Blazor.Services;
 
 public class AppInfoService : IAppInfoService
 {

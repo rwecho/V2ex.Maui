@@ -13,7 +13,7 @@ public class NavigationInterceptorService : INavigationInterceptorService
     {
         get
         {
-            return App.Current!.MainPage!.Navigation;
+            return Application.Current!.MainPage!.Navigation;
         }
     }
 

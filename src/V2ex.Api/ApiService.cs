@@ -9,7 +9,6 @@ namespace V2ex.Api;
 
 public class ApiService
 {
-    private const string USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15";
     public ApiService(IHttpClientFactory httpClientFactory, ILogger<ApiService> logger)
     {
         this.HttpClient = httpClientFactory.CreateClient("api");
@@ -17,9 +16,7 @@ public class ApiService
         if (this.HttpClient.BaseAddress == null)
         {
             this.HttpClient.BaseAddress = new Uri(UrlUtilities.BASE_URL);
-            this.HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(USER_AGENT);
         }
-
         this.Logger = logger;
     }
 
