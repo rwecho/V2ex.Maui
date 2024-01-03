@@ -11,61 +11,51 @@ public class MemberPageInfo
 {
     private string DebuggerDisplay => $"UserName:{this.UserName}";
 
-    [XPath("//div[@id='Main']//td/h1")]
+    [XPath("//div[@id='Wrapper']//td/h1")]
     public string UserName { get; init; } = null!;
-    [XPath("//div[@id='Main']//td/span[@class='bigger'][1]")]
-    [SkipNodeNotFound]
-    public string? Tagline { get; init; }
 
-    [XPath("//div[@id='Main']//td/img", "src")]
+    [XPath("//div[@id='Wrapper']//td/img", "src")]
     public string Avatar { get; init; } = null!;
-    [XPath("//div[@id='Main']//span/a[@href='/top/dau']")]
-    [SkipNodeNotFound]
-    public string? TodayActivity { get; init; }
-    [XPath("//div[@id='Main']//td/span[@class='bigger']/following-sibling::span[@class='gray']/text()[1]")]
+    [XPath("//div[@id='Wrapper']//td/h1/following-sibling::span[@class='gray']")]
     [SkipNodeNotFound]
     public string? CreatedText { get; init; }
 
-    [XPath("//div[@id='Main']//td/strong[@class='online']")]
+    [XPath("//div[@id='Wrapper']//td/strong[@class='online']")]
     [SkipNodeNotFound]
     public string? IsOnline { get; set; }
 
-    public string? FollowOnClick { get; init; } = null!;
-    public string? BlockOnClick { get; init; } = null!;
     [XPath("//span[@class='item_title']/ancestor::table", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
-    public List<TopicInfo> Topics { get; init; } = new();
+    public List<TopicInfo> Topics { get; init; } = [];
 
     [XPath("//div[@class='dock_area']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
-    public List<ReplyInfo> Replies { get; init; } = new();
+    public List<ReplyInfo> Replies { get; init; } = [];
 
     [XPath("//div[@class='reply_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
-    public List<string> ReplyContents { get; init; } = new();
-    public string Url { get; internal set; } = null!;
+    public List<string> ReplyContents { get; init; } = [];
 
     [HasXPath]
     [DebuggerDisplay("{Title}-{UserName}")]
     public class TopicInfo
     {
-        [XPath("//span[@class='topic_info']/strong[1]/a")]
+        [XPath("//td/span[1]/strong/a")]
         public string UserName { get; init; } = null!;
-        [XPath("//span[@class='topic_info']/strong[2]/a")]
+
+        [XPath("//td/span[3]/strong/a")]
         [SkipNodeNotFound]
         public string? LatestReplyBy { get; init; }
-        [XPath("//span[@class='topic_info']/a[@class='node']")]
+
+        [XPath("//td/span[1]/a[@class='node']")]
         public string NodeName { get; init; } = null!;
-        [XPath("//span[@class='topic_info']/a[@class='node']", "href")]
+        [XPath("//td/span[1]/a[@class='node']", "href")]
         public string NodeLink { get; init; } = null!;
 
-        [XPath("//span[@class='topic_info']/span")]
+        [XPath("//td/span[3]")]
         [SkipNodeNotFound]
         public string? CreatedText { get; set; }
 
-        [XPath("//span[@class='topic_info']/span", "title")]
-        [SkipNodeNotFound]
-        public DateTime Created { get; set; }
         [XPath("//span[@class='item_title']/a")]
         public string Title { get; init; } = null!;
         [XPath("//span[@class='item_title']/a", "href")]
@@ -79,19 +69,15 @@ public class MemberPageInfo
     [DebuggerDisplay("{OpUserName}-{TopicTitle}")]
     public class ReplyInfo
     {
-        [XPath("//td/span[@class='gray']/a[1]")]
+        [XPath("//td/span[1]")]
         public string OpUserName { get; init; } = null!;
-        [XPath("//td/span[@class='gray']/a[2]")]
-        public string NodeName { get; init; } = null!;
-        [XPath("//td/span[@class='gray']/a[3]")]
+
+        [XPath("//td/span[1]/a")]
         public string TopicTitle { get; init; } = null!;
-        [XPath("//td/span[@class='gray']/a[3]", "href")]
+        [XPath("//td/span[1]/a", "href")]
         public string TopicLink { get; init; } = null!;
 
-        [XPath("//td/div[@class='fr']/span[@class='fade']", "title")]
-        public DateTime ReplyTime { get; init; }
-
-        [XPath("//td/div[@class='fr']/span[@class='fade']")]
+        [XPath("//td/span[2]")]
         public string ReplyTimeText { get; init; } = null!;
     }
 }

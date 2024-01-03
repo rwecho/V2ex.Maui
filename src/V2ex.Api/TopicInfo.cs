@@ -1,8 +1,6 @@
 ﻿using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace V2ex.Api;
 
@@ -10,34 +8,29 @@ namespace V2ex.Api;
 [DebuggerDisplay("{Title}")]
 public class TopicInfo
 {
-    [XPath("//div[@id='Main']//div[@class='header']/h1")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/h1")]
     public string Title { get; set; } = null!;
-    [XPath("//div[@id='Main']//div[@class='header']/small/a")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/small/a")]
     public string UserName { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='header']/small/a", "href")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/small/a", "href")]
     public string UserLink { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='header']/div[@class='fr']//img", "src")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/div[@class='fr']//img", "src")]
     public string Avatar { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='header']/small/span", "title", NodeReturnType = ReturnType.InnerHtml)]
-    [SkipNodeNotFound]
-    public DateTime Created { get; set; }
-
-    [XPath("//div[@id='Main']//div[@class='header']/small/span")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/small/a/following-sibling::text()")]
     public string CreatedText { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[contains(@class, 'topic_stats')]")]
+    [XPath("//div[@id='Wrapper']//a[contains(@href, 'favorite/topic')]/preceding-sibling::span")]
     [SkipNodeNotFound]
     public string? TopicStats { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='topic_buttons']/a[contains(@class, 'tb')][1]")]
+    [XPath("//div[@id='Wrapper']//a[contains(@href, 'favorite/topic')]/parent::div/following-sibling::small")]
+    [SkipNodeNotFound]
+    public string? ViaPhone { get; set; }
+
+    [XPath("//div[@id='Wrapper']//a[contains(@href, 'favorite/topic')]/text()")]
     [SkipNodeNotFound]
     public string? Liked { get; set; }
     
@@ -53,11 +46,11 @@ public class TopicInfo
     {
         get
         {
-            return Thanked == "Thanked";
+            return Thanked == "感谢已发送";
         }
     }
 
-    [XPath("//div[@id='Main']//div[@class='topic_buttons']/div[@id='topic_thank']/span")]
+    [XPath("//div[@id='Wrapper']//div[@id='topic_thank']/a/text()")]
     [SkipNodeNotFound]
     public string? Thanked { get; set; }
 
@@ -69,70 +62,81 @@ public class TopicInfo
         }
     }
 
-    [XPath("//div[@id='Main']//div[@class='topic_buttons']/a[contains(@class, 'tb')][3]")]
+    [XPath("//div[@id='Wrapper']//a[contains(@onclick, '/ignore/topic')]/text()")]
     [SkipNodeNotFound]
     public string? Ignored { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell']/div[@class='topic_content']", ReturnType.InnerHtml)]
+    [XPath("//div[@id='Wrapper']//div[@class='cell']/div[@class='topic_content']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
     public string? Content { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='subtle']", ReturnType.InnerHtml)]
+    [XPath("//div[@id='Wrapper']//div[@class='subtle']", ReturnType.InnerHtml)]
     [SkipNodeNotFound]
-    public List<SupplementInfo> Supplements { get; set; } = new();
+    public List<SupplementInfo> Supplements { get; set; } = [];
 
-    [XPath("//div[@id='Main']//div[@class='header']/a[2]")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/a[2]")]
     public string NodeName { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//div[@class='header']/a[2]", "href")]
-    [SkipNodeNotFound]
+    [XPath("//div[@id='Wrapper']//div[@class='header']/a[2]", "href")]
     public string NodeLink { get; set; } = null!;
 
-    [XPath("//div[@id='Main']//a[@class='tag']/../../span")]
+    [XPath("//div[@id='Wrapper']/div/div[@class='box'][3]/div[@class='cell'][1]/span")]
     [SkipNodeNotFound]
     public string? ReplyStats { get; set; }
 
-    [XPath("//div[@id='Main']//a[@class='tag']")]
+    [XPath("//div[@id='Wrapper']//a[@class='tag']")]
     [SkipNodeNotFound]
-    public List<string> Tags { get; set; } = new();
+    public List<string> Tags { get; set; } = [];
 
-    [XPath("//div[@id='Main']//a[@class='page_current'][1]")]
-    [SkipNodeNotFound]
-    public int CurrentPage { get; set; }
-
-    [XPath("//div[@id='Main']//a[@class='page_normal'][last()]")]
-    [SkipNodeNotFound]
-    public int MaximumPage { get; set; }
-
-    [XPath("//div[@id='Main']//div[@class='cell' and contains(@id, 'r_')]", ReturnType.OuterHtml)]
-    [SkipNodeNotFound]
-    public List<ReplyInfo> Replies { get; set; } = new();
-
-    [XPath("//div[@id='Main']//input[@id='once']", "value")]
-    [SkipNodeNotFound]
-    public string? Once { get; set; }
-
-    public string NodeId
+    public int CurrentPage
     {
         get
         {
-            return new UriBuilder(UrlUtilities.CompleteUrl(NodeLink)).Path.Split("/").Last();
+            if (string.IsNullOrEmpty(CurrentPageInfo))
+            {
+                return 0;
+            }
+            return int.Parse(CurrentPageInfo.Replace("第", "").Replace("页", "").Trim());
         }
     }
 
-    public string Url { get; internal set; } = null!;
+    public int MaximumPage
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(MaximumPageInfo))
+            {
+                return 0;
+            }
+            return int.Parse(MaximumPageInfo.Replace("共", "").Replace("页", "").Trim());
+        }
+    }
+
+    [XPath("(//div[@id='Wrapper']//span[@class='page_current'])[1]/preceding-sibling::div[2]")]
+    [SkipNodeNotFound]
+    public string? CurrentPageInfo { get; init; }
+
+    [XPath("(//div[@id='Wrapper']//span[@class='page_current'])[1]/preceding-sibling::div[1]")]
+    [SkipNodeNotFound]
+    public string? MaximumPageInfo { get; init; }
+
+    [XPath("//div[@id='Wrapper']//div[@class='cell' and contains(@id, 'r_')]", ReturnType.OuterHtml)]
+    [SkipNodeNotFound]
+    public List<ReplyInfo> Replies { get; set; } = [];
+
+    [XPath("//div[@id='Wrapper']//input[@id='once']", "value")]
+    [SkipNodeNotFound]
+    public string? Once { get; set; }
+
+    public string NodeId => UrlUtilities.ParseId(NodeLink);
 
     [HasXPath]
     [DebuggerDisplay("{Content}")]
     public class SupplementInfo
     {
-        [XPath("//span[@class='fade']/span", "title")]
+        [XPath("//span[@class='fade']")]
         [SkipNodeNotFound]
-        public DateTime Created { get; set; }
-        [XPath("//span[@class='fade']/span")]
-        [SkipNodeNotFound]
-        public string CreatedText { get; set; } = null!;
+        public string? CreatedText { get; set; }
 
         [XPath("//div[@class='topic_content']", ReturnType.InnerHtml)]
         public string? Content { get; set; }
@@ -148,28 +152,28 @@ public class TopicInfo
         [XPath("//td/div[@class='reply_content']", ReturnType.InnerHtml)]
         public string Content { get; init; } = null!;
         [XPath("//td/strong/a")]
-        [SkipNodeNotFound]
         public string UserName { get; init; } = null!;
+
         [XPath("//td/strong/a", "href")]
         public string UserLink { get; init; } = null!;
+
         [XPath("//img[@class='avatar']", "src")]
         public string Avatar { get; init; } = null!;
-        [XPath("//td/span[@class='ago']", "title")]
-        public DateTime ReplyTime { get; init; }
 
-        [XPath("//td/span[@class='ago']")]
-        public string ReplyTimeText { get; init; } = null!;
+        [XPath("//td/strong/following-sibling::span[1]")]
+        [SkipNodeNotFound]
+        public string? ReplyTimeText { get; init; }
 
-        [XPath("//td/badges")]
+        [XPath("//td/div[@class='badges']")]
         [SkipNodeNotFound]
         public string? Badges { get; init; }
 
         [XPath("//td//span[@class='no']")]
         public int Floor { get; init; }
 
-        [XPath("//td/span[contains(@class, 'small fade')]/text()")]
+        [XPath("//td/strong/following-sibling::span[1]/following-sibling::span")]
         [SkipNodeNotFound]
-        public string? AlreadyThanked { get; init; }
+        public string? Thanks { get; init; }
 
         [XPath("//td//div[contains(@class, 'thanked')]/text()")]
         [SkipNodeNotFound]

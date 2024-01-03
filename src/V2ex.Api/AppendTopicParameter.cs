@@ -7,7 +7,7 @@ namespace V2ex.Api;
 public class AppendTopicParameter
 {
     public string Once { get; init; } = null!;
-    public List<TipInfo> Tips { get; set; } = new();
+    public List<TipInfo> Tips { get; set; } = [];
     public ProblemInfo? Problem { get; init; }
     public string Url { get; internal set; } = null!;
 

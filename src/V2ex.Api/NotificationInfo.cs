@@ -10,22 +10,40 @@ namespace V2ex.Api;
 [DebuggerDisplay("{Total}/{MaximumPage}")]
 public class NotificationInfo
 {
-    [XPath("//div[@id='Main']//div[@class='header']//strong")]
-    [SkipNodeNotFound]
-    public int Total { get; set; }
 
-    [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]
+    [XPath("//div[@id='Wrapper']//div[@class='inner']//td/strong")]
     [SkipNodeNotFound]
-    public int CurrentPage { get; set; }
+    public string? PageInfo { get; init; }
 
-    [XPath("(//div[@id='Main']//a[@class='page_normal'])[last()]")]
-    [SkipNodeNotFound]
-    public int MaximumPage { get; set; }
+    public int CurrentPage
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(PageInfo) || !PageInfo.Contains("/"))
+            {
+                return 0;
+            }
+            var parts = PageInfo.Split('/');
+            return int.Parse(parts[0]);
+        }
+    }
+
+    public int MaximumPage
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(PageInfo) || !PageInfo.Contains("/"))
+            {
+                return 0;
+            }
+            var parts = PageInfo.Split('/');
+            return int.Parse(parts[1]);
+        }
+    }
 
     [XPath("//div[contains(@id, 'n_')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
-    public List<NotificationItemInfo> Items { get; set; } = new();
-    public string Url { get; internal set; } = null!;
+    public List<NotificationItemInfo> Items { get; set; } = [];
 
     [HasXPath]
     [DebuggerDisplay("{DebuggerDisplay, nq}")]

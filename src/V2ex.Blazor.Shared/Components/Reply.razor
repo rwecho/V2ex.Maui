@@ -25,9 +25,9 @@
                     @if (ViewModel.Thanked)
                     {
                         <span class="flex flex-row items-center space-x-1 text-sm ">
-                            @if (ViewModel.AlreadyThanked > 0)
+                            @if (ViewModel.Thanks > 0)
                             {
-                                <span class="">@ViewModel.AlreadyThanked</span>
+                                <span class="">@ViewModel.Thanks</span>
                             }
                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400" height="16" width="16"
                                 viewBox="0 0 512 512">
@@ -40,9 +40,9 @@
                     else
                     {
                         <button @onclick="TapThank" class="flex flex-row items-center space-x-1 text-sm cursor-pointer text-gray-400">
-                            @if (ViewModel.AlreadyThanked > 0)
+                            @if (ViewModel.Thanks > 0)
                             {
-                                <span class="">@ViewModel.AlreadyThanked</span>
+                                <span class="">@ViewModel.Thanks</span>
                             }
                             <span class="flex flex-row items-center space-x-1  ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400" height="1em"
@@ -103,7 +103,7 @@
     public CurrentUser? CurrentUser;
 
     [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
 
     [Inject]
     private ApiService ApiService { get; set; } = null!;
@@ -118,7 +118,10 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        CurrentUser = new CurrentUser((await AuthenticationStateTask).User);
+        if (AuthenticationStateTask != null)
+        {
+            CurrentUser = new CurrentUser((await AuthenticationStateTask).User);
+        }
     }
 
     private Task TapMention()
@@ -140,7 +143,7 @@
         {
             await this.ApiService.ThanksReplier(this.ViewModel.NormalizedId, this.TopicPageViewModel.Once);
             this.ViewModel.Thanked = true;
-            this.ViewModel.AlreadyThanked = this.ViewModel.AlreadyThanked + 1;
+            this.ViewModel.Thanks = this.ViewModel.Thanks + 1;
 
             await this.Toast.Show("感谢成功");
         }

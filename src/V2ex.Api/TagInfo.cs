@@ -20,7 +20,6 @@ public class TagInfo
     [XPath("//div[@id='Main']//div[contains(@class,'cell')]", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
-    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     public class ItemInfo
@@ -41,6 +40,8 @@ public class TagInfo
         [XPath("//span[@class='item_title']/a", "href")]
         public string TopicLink { get; init; } = null!;
 
+        [XPath("//td/a[@class='count_livid']")]
+        [SkipNodeNotFound]
         public int Replies { get; init; }
 
         [XPath("//span[@class='topic_info']/a[@class='node']")]

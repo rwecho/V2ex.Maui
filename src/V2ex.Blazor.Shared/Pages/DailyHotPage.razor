@@ -41,9 +41,7 @@
             o.Member == null ? "" : $"/member/{o.Member?.Id}",
             o.Member == null ? "" : o.Member?.UserName,
             o.Member == null ? "" : $"/member/{o.Member?.Id}",
-            DateTimeOffset.FromUnixTimeSeconds(o.Created)
-            .ToLocalTime().DateTime,
-            $"{o.LastReplyBy}",
+            o.LastReplyBy== null? null: new MarkupString(o.LastReplyBy),
             "",
             o.Node?.Title,
             $"/go/{o.Node?.Name}",

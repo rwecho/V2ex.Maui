@@ -114,7 +114,9 @@
                                 <div class="flex flex-row select-auto space-x-2">
                                     @foreach (var tag in viewModel.Tags)
                                     {
-                                        <span class="text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                        <button @onclick="()=>GoToTagPage(tag)">
+                                            <span class="text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                        </button>
                                     }
                                 </div>
                             }
@@ -447,7 +449,7 @@
     public string? Title { get; set; }
 
     [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
@@ -512,7 +514,10 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        currentUser = new CurrentUser((await AuthenticationStateTask).User);
+        if (AuthenticationStateTask != null)
+        {
+            currentUser = new CurrentUser((await AuthenticationStateTask).User);
+        }
     }
 
     protected override Task OnInitializedAsync()
@@ -707,6 +712,12 @@
     private Task OnExternalLickClicked(Uri uri)
     {
         return Browser.OpenAsync(uri);
+    }
+
+    private Task GoToTagPage(string tag)
+    {
+        this.NavigationManager.NavigateTo($"/tag/{tag}");
+        return Task.CompletedTask;
     }
 
     private bool isIgnoring, isFavoriting, isThanking;

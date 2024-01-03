@@ -65,6 +65,7 @@ public partial class LoginWithGooglePage : ContentPage
             this.CookieContainerService.Container.Add(cookie);
         }
 #else
+        await Task.CompletedTask;
 #endif        
     }
 

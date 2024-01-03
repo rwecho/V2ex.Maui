@@ -11,21 +11,19 @@ public record TopicPageViewModel(
     string UserName,
     string UserLink,
     string Avatar,
-    DateTime Created,
     string CreatedText,
     MarkupString? Content,
     List<SupplementViewModel> Supplements,
     string NodeName,
     string NodeLink,
-    List<string> Tags,
-    string Url
+    List<string> Tags
     )
 {
     private string? topicStats;
     private string? replyStats;
 
-    public int CurrentPage { get; protected set; } = 1;
-    public int MaximumPage { get; protected set; } = 0;
+    public int CurrentPage { get; protected set; }
+    public int MaximumPage { get; protected set; }
 
     public bool Liked { get;  set; }
 
@@ -111,7 +109,6 @@ public record TopicPageViewModel(
     public static TopicPageViewModel Create(TopicInfo topicInfo)
     {
         var supplements = topicInfo.Supplements.Select(o => new SupplementViewModel(
-           o.Created,
            o.CreatedText,
            o.Content == null ? null : new MarkupString(o.Content)
            )).ToList();
@@ -121,14 +118,12 @@ public record TopicPageViewModel(
         topicInfo.UserName,
         topicInfo.UserLink,
         topicInfo.Avatar,
-        topicInfo.Created,
         topicInfo.CreatedText,
         topicInfo.Content == null ? null : new MarkupString(topicInfo.Content),
         supplements,
         topicInfo.NodeName,
         topicInfo.NodeLink,
-        topicInfo.Tags,
-        topicInfo.Url
+        topicInfo.Tags
         );
 
         viewModel.Update(topicInfo);
@@ -142,13 +137,12 @@ public record TopicPageViewModel(
             o.UserName,
             o.UserLink,
             o.Avatar,
-            o.ReplyTime,
-            o.ReplyTimeText,
+            o.ReplyTimeText == null? null: new MarkupString(o.ReplyTimeText),
             o.Badges,
             o.Floor)
         {
             Thanked = o.Thanked != null,
-            AlreadyThanked = int.TryParse(o.AlreadyThanked, out var alreadyThanked) ? alreadyThanked : 0
+            Thanks = int.TryParse(o.Thanks, out var thanks) ? thanks : 0
         }).ToList();
 
         CurrentPage = topicInfo.CurrentPage;

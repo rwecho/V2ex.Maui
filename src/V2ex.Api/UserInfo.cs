@@ -7,30 +7,30 @@ namespace V2ex.Api;
 [DebuggerDisplay("{Name}")]
 public class UserInfo
 {
-    [XPath("//td/span/a")]
-    public string Name { get; set; } = null!;
+    [XPath("//div[@id='site-header-menu']//img[@class='avatar mobile']", "alt")]
+    [SkipNodeNotFound]
+    public string? Name { get; init; }
 
-    [XPath("//td/a/img", "src")]
-    public string Avatar { get; set; } = null!;
+    [XPath("//div[@id='site-header-menu']//img[@class='avatar mobile']", "src")]
+    [SkipNodeNotFound]
+    public string? Avatar { get; init; }
 
-    [XPath("//td/a[@href='/my/nodes']/span")]
-    public int Nodes { get; set; }
-    [XPath("//td/a[@href='/my/topics']/span")]
-    public int Topics { get; set; }
-    [XPath("//td/a[@href='/my/following']/span")]
-    public int Following { get; set; }
-
-    [XPath("//div//a[@href='/notifications']")]
+   
+    [XPath("//div[@class='cell flex-one-row']/a[@href='/notifications']")]
     [SkipNodeNotFound]
     public string? Notifications { get; set; }
 
-    [XPath("//div[@id='money']/a/text()[1]")]
+    [XPath("//div[@class='cell flex-one-row']/a[@href='/balance']/img[@alt='G']/preceding-sibling::text()[1]")]
     [SkipNodeNotFound]
     public string? MoneyGold { get; set; }
-    [XPath("//div[@id='money']/a/text()[2]")]
+    [XPath("//div[@class='cell flex-one-row']/a[@href='/balance']/img[@alt='S']/preceding-sibling::text()[1]")]
     [SkipNodeNotFound]
     public string? MoneySilver { get; set; }
-    [XPath("//div[@id='money']/a/text()[3]")]
+    [XPath("//div[@class='cell flex-one-row']/a[@href='/balance']/img[@alt='B']/preceding-sibling::text()[1]")]
     [SkipNodeNotFound]
     public string? MoneyBronze { get; set; }
+
+    [XPath("//div/a[@href='/mission/daily']")]
+    [SkipNodeNotFound]
+    public string? DailyMission { get; set; }
 }

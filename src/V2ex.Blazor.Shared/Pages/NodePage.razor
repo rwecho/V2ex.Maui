@@ -84,9 +84,8 @@
         o.UserLink,
         o.UserName,
         o.UserLink,
-        o.Created,
-        o.CreatedText,
-        o.LastReplyUserName,
+        null,
+        null,
         null,
         null,
         o.Replies
@@ -95,7 +94,6 @@
         viewModel = new NodePageViewModel(
         info.CurrentPage,
         info.MaximumPage,
-        info.Url,
         viewModel == null ? items : [.. viewModel.Topics, .. items]
         );
     }

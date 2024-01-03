@@ -6,48 +6,48 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    public int OnlineUserCount
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(newsInfo?.OnlineUserCount))
-            {
-                return 0;
-            }
+    // public int OnlineUserCount
+    // {
+    //     get
+    //     {
+    //         if (string.IsNullOrEmpty(newsInfo?.OnlineUserCount))
+    //         {
+    //             return 0;
+    //         }
 
-            if (int.TryParse(newsInfo.OnlineUserCount.Split(" ")[2], out var count))
-            {
-                return count;
-            }
-            return 0;
-        }
-    }
+    //         if (int.TryParse(newsInfo.OnlineUserCount.Split(" ")[2], out var count))
+    //         {
+    //             return count;
+    //         }
+    //         return 0;
+    //     }
+    // }
 
-    public int MaxOnlineUserCount
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(newsInfo?.MaxOnlineUserCount))
-            {
-                return 0;
-            }
+    // public int MaxOnlineUserCount
+    // {
+    //     get
+    //     {
+    //         if (string.IsNullOrEmpty(newsInfo?.MaxOnlineUserCount))
+    //         {
+    //             return 0;
+    //         }
 
-            if (int.TryParse(newsInfo.MaxOnlineUserCount.Split(" ")[1], out var count))
-            {
-                return count;
-            }
-            return 0;
-        }
-    }
+    //         if (int.TryParse(newsInfo.MaxOnlineUserCount.Split(" ")[1], out var count))
+    //         {
+    //             return count;
+    //         }
+    //         return 0;
+    //     }
+    // }
 
     private NewsInfo? newsInfo;
 
     public void Update(NewsInfo newsInfo)
     {
-        if (this.newsInfo?.OnlineUserCount == newsInfo.OnlineUserCount)
-        {
-            return;
-        }
+        // if (this.newsInfo?.OnlineUserCount == newsInfo.OnlineUserCount)
+        // {
+        //     return;
+        // }
         this.newsInfo = newsInfo;
 
         this.InvokeAsync(this.StateHasChanged);

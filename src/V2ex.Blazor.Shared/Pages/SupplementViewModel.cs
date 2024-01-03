@@ -3,8 +3,7 @@
 namespace V2ex.Blazor.Pages;
 
 public record SupplementViewModel(
-    DateTime Created,
-    string CreatedText,
+    string? CreatedText,
     MarkupString? Content
     )
 { }

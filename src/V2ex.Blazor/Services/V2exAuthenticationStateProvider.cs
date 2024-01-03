@@ -31,15 +31,12 @@ public class V2exAuthenticationStateProvider(CookieContainerService cookieContai
 
                 identity = new ClaimsIdentity(new[]
                 {
-                    new Claim("sub", userInfo.Name),
-                    new Claim("avatar", userInfo.Avatar),
-                    new Claim("following", userInfo.Following.ToString()),
-                    new Claim("nodes", userInfo.Nodes.ToString()),
-                    new Claim("topics", userInfo.Topics.ToString()),
+                    new Claim("sub", userInfo?.Name??""),
+                    new Claim("avatar", userInfo?.Avatar??""),
                     new Claim("notifications", unreadMessageCount.ToString()),
-                    new Claim("moneyGold", userInfo.MoneyGold?.Trim().ToString()??"0"),
-                    new Claim("moneySilver", userInfo.MoneySilver?.Trim().ToString()??"0"),
-                    new Claim("moneyBronze", userInfo.MoneyBronze?.Trim().ToString()??"0"),
+                    new Claim("moneyGold", userInfo?.MoneyGold?.Trim().ToString()??"0"),
+                    new Claim("moneySilver", userInfo?.MoneySilver?.Trim().ToString()??"0"),
+                    new Claim("moneyBronze", userInfo?.MoneyBronze?.Trim().ToString()??"0"),
                 }, "v2ex");
             }
             catch (Exception)

@@ -6,8 +6,6 @@ using V2ex.Blazor.Components;
 namespace V2ex.Blazor.Pages;
 public record TabViewModel(NewsInfo NewsInfo)
 {
-    public string? Url => NewsInfo.Url;
-
     public UserInfo? CurrentUser => NewsInfo.CurrentUser;
 
     public IReadOnlyList<TopicViewModel> Topics => NewsInfo.Items
@@ -20,8 +18,7 @@ public record TabViewModel(NewsInfo NewsInfo)
         x.AvatarLink,
         x.UserName,
         x.UserLink,
-        x.LastReplied,
-        x.LastRepliedText,
+        x.LastRepliedText == null? null: new MarkupString(x.LastRepliedText),
         x.LastRepliedBy,
         x.NodeName,
         x.NodeLink,

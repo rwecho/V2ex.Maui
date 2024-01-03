@@ -1,8 +1,7 @@
-using V2ex.Blazor.Components;
+﻿using V2ex.Blazor.Components;
 
 namespace V2ex.Blazor.Pages;
-
-public record NodePageViewModel(int CurrentPage,
+public record TagPageViewModel(int CurrentPage,
     int MaximumPage,
     List<TopicViewModel> Topics)
 {

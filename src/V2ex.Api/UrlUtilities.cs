@@ -1,4 +1,7 @@
-﻿namespace V2ex.Api;
+﻿using System;
+using System.Linq;
+
+namespace V2ex.Api;
 
 public static class UrlUtilities
 {
@@ -17,5 +20,10 @@ public static class UrlUtilities
         }
 
         return BASE_URL + url;
+    }
+
+    public static string ParseId(string url)
+    {
+        return new UriBuilder(CompleteUrl(url)).Path.Split("/").Last();
     }
 }

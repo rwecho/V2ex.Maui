@@ -10,15 +10,15 @@ namespace V2ex.Api;
 [DebuggerDisplay("{CurrentPage}/{MaximumPage}")]
 public class FavoriteTopicsInfo
 {
-    [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]
+    [XPath("(//div[@id='Wrapper']//input)[1]", "min")]
     [SkipNodeNotFound]
     public int CurrentPage { get; set; }
 
-    [XPath("(//div[@id='Main']//a[@class='page_normal'])[last()]")]
+    [XPath("(//div[@id='Wrapper']//input)[1]", "max")]
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell item']", ReturnType.OuterHtml)]
+    [XPath("//div[@id='Wrapper']//div[@class='cell item']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
     public string Url { get; internal set; } = null!;

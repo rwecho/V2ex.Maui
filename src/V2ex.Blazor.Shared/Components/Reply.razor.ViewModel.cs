@@ -6,16 +6,12 @@ public record ReplyViewModel(string Id,
     string UserName,
     string UserLink,
     string Avatar,
-    DateTime ReplyTime,
-    string ReplyTimeText,
+    MarkupString? ReplyTimeText,
     string? Badges,
     int Floor
 )
 {
-
     public string NormalizedId => Id.Replace("r_", "");
-
     public bool Thanked { get; set; }
-
-    public int AlreadyThanked { get; set; }
+    public int Thanks { get; set; }
 };

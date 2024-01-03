@@ -63,6 +63,10 @@
 
     private async Task OnInputClick()
     {
-        modalRef?.InvokeVoidAsync("show");
+        if (modalRef == null)
+        {
+            return;
+        }
+        await modalRef.InvokeVoidAsync("show");
     }
 }

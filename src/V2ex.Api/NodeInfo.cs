@@ -8,7 +8,6 @@ public class NodeInfo
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public string Url { get; set; } = null!;
     public string Title { get; set; } = null!;
     [JsonPropertyName("title_alternative")]
     public string TitleAlternative { get; set; } = null!;

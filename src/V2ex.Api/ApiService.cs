@@ -32,10 +32,6 @@ public class ApiService
         this.Logger.LogDebug("GetDailyHot: {0}", response.StatusCode);
 
         var dailyHotInfo = await response.ReadFromJson<DailyHotInfo>();
-        if (dailyHotInfo != null)
-        {
-            dailyHotInfo.Url = url;
-        }
         return dailyHotInfo;
     }
 
@@ -44,10 +40,6 @@ public class ApiService
         var url = $"/api/nodes/show.json?name={nodeName}";
         var response = await this.HttpClient.GetAsync(url);
         var nodeInfo = await response.ReadFromJson<NodeInfo>();
-        if (nodeInfo != null)
-        {
-            nodeInfo.Url = url;
-        }
         return nodeInfo;
     }
 
@@ -56,13 +48,6 @@ public class ApiService
         var url = $"/go/{nodeName}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
         var nodePageInfo = await response.GetEncapsulatedData<NodePageInfo>(this.Logger);
-        nodePageInfo.Url = url;
-        
-        // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
-        if (nodePageInfo.CurrentPage > nodePageInfo.MaximumPage)
-        {
-            nodePageInfo.MaximumPage = nodePageInfo.CurrentPage;
-        }
         return nodePageInfo;
     }
 
@@ -71,10 +56,6 @@ public class ApiService
         var url = "/api/nodes/s2.json";
         var response = await this.HttpClient.GetAsync(url);
         var nodesInfo = await response.ReadFromJson<NodesInfo>();
-        if (nodesInfo != null)
-        {
-            nodesInfo.Url = url;
-        }
         return nodesInfo;
     }
 
@@ -83,10 +64,6 @@ public class ApiService
         var url = "api/nodes/list.json?fields=name,title,topics,aliases&sort_by=topics&reverse=1";
         var response = await this.HttpClient.GetAsync(url);
         var nodesInfo = await response.ReadFromJson<NodesInfo>();
-        if (nodesInfo != null)
-        {
-            nodesInfo.Url = url;
-        }
         return nodesInfo;
     }
 
@@ -95,10 +72,6 @@ public class ApiService
         var url = $"/api/members/show.json?username={username}";
         var response = await this.HttpClient.GetAsync(url);
         var memberInfo = await response.ReadFromJson<MemberInfo>();
-        if (memberInfo != null)
-            memberInfo.Url = url;
-
-
         return memberInfo;
     }
 
@@ -117,8 +90,6 @@ public class ApiService
         var response = await this.HttpClient.GetAsync(url);
 
         var result = await response.ReadFromJson<SoV2EXSearchResultInfo>();
-        if (result != null)
-            result.Url = url;
         return result;
     }
 
@@ -136,7 +107,6 @@ public class ApiService
         //var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
 
-        newsInfo.Url = url;
         return newsInfo;
     }
 
@@ -145,7 +115,6 @@ public class ApiService
         var url = "/recent";
         var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
-        newsInfo.Url = url;
         return newsInfo;
     }
 
@@ -154,7 +123,6 @@ public class ApiService
         var url = $"/tag/{tagName}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
         var tagInfo =  await response.GetEncapsulatedData<TagInfo>(this.Logger);
-        tagInfo.Url = url;
         return tagInfo;
     }
 
@@ -170,7 +138,6 @@ public class ApiService
             }
         }, this.Logger);
 
-        loginParameters.Url = url;
         return loginParameters;
     }
 
@@ -217,8 +184,6 @@ public class ApiService
         }
 
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
-
-        newsInfo.Url = url;
         return newsInfo;
     }
 
@@ -228,13 +193,6 @@ public class ApiService
         var response = await this.HttpClient.GetAsync(url);
 
         var topicInfo = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        topicInfo.Url = url;
-
-        // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
-        if (topicInfo.CurrentPage > topicInfo.MaximumPage)
-        {
-            topicInfo.MaximumPage = topicInfo.CurrentPage;
-        }
         return topicInfo;
     }
 
@@ -244,15 +202,6 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<NotificationInfo>(this.Logger);
-        if (result != null)
-        {
-            result.Url = url;
-            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
-            if (result.CurrentPage > result.MaximumPage)
-            {
-                result.MaximumPage = result.CurrentPage;
-            }
-        }
         return result;
     }
 
@@ -262,15 +211,6 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<FollowingInfo>(this.Logger);
-        if (result != null)
-        {
-            result.Url = url;
-            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
-            if (result.CurrentPage > result.MaximumPage)
-            {
-                result.MaximumPage = result.CurrentPage;
-            }
-        }
         return result;
     }
 
@@ -280,15 +220,6 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<FavoriteTopicsInfo>(this.Logger);
-        if (result != null)
-        {
-            result.Url = url;
-            // fix the maximum page when the current page is last page and the maximum page is pointint the last second.
-            if (result.CurrentPage > result.MaximumPage)
-            {
-                result.MaximumPage = result.CurrentPage;
-            }
-        }
         return result;
     }
 
@@ -303,7 +234,6 @@ public class ApiService
         {
             item.Image = UrlUtilities.CompleteUrl(item.Image);
         }
-        nodeInfo.Url = url;
         return nodeInfo;
     }
 
@@ -312,16 +242,6 @@ public class ApiService
         var url = "/";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<NodesNavInfo>(this.Logger);
-        result.Url = url;
-        return result;
-    }
-
-    public async Task<NodeTopicsInfo> GetNodeTopics(string node, int page = 1)
-    {
-        var url = $"/go/{node}?p={page}";
-        var response = await this.HttpClient.GetAsync(url);
-        var result = await response.GetEncapsulatedData<NodeTopicsInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -331,7 +251,6 @@ public class ApiService
 
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<MemberPageInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -345,7 +264,6 @@ public class ApiService
         var url = "/new";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<CreateTopicParameter>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -382,7 +300,6 @@ public class ApiService
             throw new InvalidOperationException(response.ReasonPhrase);
         }
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -393,7 +310,6 @@ public class ApiService
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/t/{topicId}");
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<AppendTopicParameter>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -412,7 +328,6 @@ public class ApiService
         };
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -422,7 +337,6 @@ public class ApiService
         var response = await this.HttpClient.PostAsync(url, null);
         var content = await response.Content.ReadAsStringAsync();
         var result = UnitInfo.Parse(content);
-        result.Url = url;
         return result;
     }
 
@@ -441,7 +355,6 @@ public class ApiService
         var url = "/ajax/money";
         var response = await this.HttpClient.PostAsync(url, null);
         var result = await response.GetEncapsulatedData<ThanksInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -465,7 +378,6 @@ public class ApiService
             throw new InvalidOperationException("Can not reply the topic.");
         }
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -488,7 +400,6 @@ public class ApiService
             throw new InvalidOperationException("Can not reply the topic.");
         }
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -497,7 +408,6 @@ public class ApiService
         var url = $"/ignore/reply/{replyId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -506,7 +416,6 @@ public class ApiService
         var url = $"/settings/ignore/node/{nodeId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<NodeTopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -515,7 +424,6 @@ public class ApiService
         var url = $"/settings/ignore/node/{nodeId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<NodeTopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -540,7 +448,6 @@ public class ApiService
         }
 
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -565,7 +472,6 @@ public class ApiService
         }
 
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -574,7 +480,6 @@ public class ApiService
         var url = $"/up/topic/{topicId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -583,7 +488,6 @@ public class ApiService
         var url = $"/down/topic/{topicId}?once={once}";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
         return result;
      }
 
@@ -613,7 +517,6 @@ public class ApiService
         }
 
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -621,7 +524,6 @@ public class ApiService
     {
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -629,7 +531,6 @@ public class ApiService
     {
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<MemberPageInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -639,7 +540,6 @@ public class ApiService
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -648,7 +548,6 @@ public class ApiService
         var url = "/mission/daily";
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<DailyInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -659,7 +558,6 @@ public class ApiService
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<DailyInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -678,7 +576,6 @@ public class ApiService
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -688,7 +585,6 @@ public class ApiService
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/mission/daily");
         var response = await this.HttpClient.SendAsync(request);
         var result = await response.GetEncapsulatedData<DailyInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -696,7 +592,6 @@ public class ApiService
     {
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 
@@ -704,7 +599,6 @@ public class ApiService
     {
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<TopicInfo>(this.Logger);
-        result.Url = url;
         return result;
     }
 }

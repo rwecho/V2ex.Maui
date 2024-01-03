@@ -8,8 +8,6 @@ namespace V2ex.Api;
 [DebuggerDisplay("{DebuggerDisplay}")]
 public class NodesInfo : List<NodesInfo.Node>
 {
-    public string Url { get; internal set; } = null!;
-
     private string DebuggerDisplay
     {
         get

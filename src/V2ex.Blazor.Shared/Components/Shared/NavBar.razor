@@ -90,11 +90,14 @@
 
     private CurrentUser? currentUser;
     [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        currentUser = new CurrentUser((await AuthenticationStateTask).User);
+        if(AuthenticationStateTask != null)
+        {
+            currentUser = new CurrentUser((await AuthenticationStateTask).User);
+        }
     }
 
     private string Avatar

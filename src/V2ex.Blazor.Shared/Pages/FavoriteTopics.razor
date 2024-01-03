@@ -65,7 +65,7 @@
 
     private async Task LoadAsync(int page)
     {
-        var info = await this.ApiService.GetFollowingInfo(page);
+        var info = await this.ApiService.GetFavoriteTopics(page);
 
         if (info == null)
         {
@@ -81,8 +81,7 @@
         o.UserLink,
         o.UserName,
         o.UserLink,
-        o.Created,
-        o.CreatedText,
+        o.CreatedText == null? null: new MarkupString(o.CreatedText),
         o.LastReplyUserName,
         o.NodeName,
         o.NodeLink,

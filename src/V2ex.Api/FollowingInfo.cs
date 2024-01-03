@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace V2ex.Api;
 
@@ -10,18 +9,17 @@ namespace V2ex.Api;
 [DebuggerDisplay("{CurrentPage}/{MaximumPage}")]
 public class FollowingInfo
 {
-    [XPath("(//div[@id='Main']//a[@class='page_current'])[1]")]
+    [XPath("(//div[@id='Wrapper']//input)[1]", "min")]
     [SkipNodeNotFound]
     public int CurrentPage { get; set; }
 
-    [XPath("(//div[@id='Main']//a[@class='page_normal'])[last()]")]
+    [XPath("(//div[@id='Wrapper']//input)[1]", "max")]
     [SkipNodeNotFound]
     public int MaximumPage { get; set; }
 
-    [XPath("//div[@id='Main']//div[@class='cell item']", ReturnType.OuterHtml)]
+    [XPath("//div[@id='Wrapper']//div[@class='cell item']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
-    public List<ItemInfo> Items { get; set; } = new();
-    public string Url { get; internal set; } = null!;
+    public List<ItemInfo> Items { get; set; } = [];
 
     [HasXPath]
     [DebuggerDisplay("{UserName,nq} {TopicTitle,nq}")]
@@ -29,7 +27,7 @@ public class FollowingInfo
     {
         [XPath("//td/a/img", "src")]
         [SkipNodeNotFound]
-        public string Avatar { get; init; } = null!;
+        public string? Avatar { get; init; }
 
         [XPath("//span[@class='topic_info']/strong[1]/a")]
         public string UserName { get; init; } = null!;
@@ -69,20 +67,8 @@ public class FollowingInfo
         [SkipNodeNotFound]
         public string? LastReplyUserLink { get; set; }
 
-        public string Id
-        {
-            get
-            {
-                return new UriBuilder(UrlUtilities.CompleteUrl(TopicLink)).Path.Split("/").Last();
-            }
-        }
+        public string Id => UrlUtilities.ParseId(TopicLink);
 
-        public string NodeId
-        {
-            get
-            {
-                return new UriBuilder(UrlUtilities.CompleteUrl(NodeLink)).Path.Split("/").Last();
-            }
-        }
+        public string NodeId => UrlUtilities.ParseId(NodeLink);
     }
 }

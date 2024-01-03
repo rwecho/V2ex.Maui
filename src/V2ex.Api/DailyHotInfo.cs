@@ -7,8 +7,6 @@ namespace V2ex.Api;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class DailyHotInfo : List<DailyHotInfo.Item>
 {
-    public string Url { get; internal set; } = null!;
-
     private string DebuggerDisplay
     {
         get

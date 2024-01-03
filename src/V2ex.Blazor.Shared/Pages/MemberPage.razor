@@ -18,8 +18,6 @@
 
                     <div class="flex flex-col space-y-1 text-gray-400">
                         <span class="text-gray-800 text-lg">@memberInfo.UserName</span>
-                        <span>@memberInfo.Tagline</span>
-                        <span>今日活跃度排名 @memberInfo.TodayActivity</span>
                     </div>
                 </div>
                 <div class="bg-white mb-4 p-4 flex flex-col">
@@ -46,8 +44,7 @@
                         "", // avatar link
                         topic.UserName,
                         "", // user link
-                        topic.Created,
-                        topic.CreatedText,
+                        topic.CreatedText == null? null: new MarkupString(topic.CreatedText),
                         topic.LatestReplyBy,
                         topic.NodeName,
                         topic.NodeLink,
@@ -76,7 +73,7 @@
                         
                         <div class="w-full flex flex-col space-y-2" @onclick="()=>TapReplyAsync(reply)">
                             <div class="flex flex-row justify-between py-2">
-                                <div><span>@reply.OpUserName 创建的主题 ></span> @reply.TopicTitle </div>
+                                <div><span>@reply.OpUserName ></span> @reply.TopicTitle </div>
                                 <div>@reply.ReplyTimeText</div>
                             </div>
                             <div class="bg-gray-100 p-2 rounded-sm">@content</div>
