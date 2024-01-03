@@ -44,16 +44,10 @@
                                 }
                             </div>
                         </div>
-                        @if (AppConstants.IsDebug)
-                        {
-                            // todo: implement google login.
-                            <div class="flex flex-row">
-                                <button type="button" class="ml-auto underline underline-offset-1" 
-                                    @onclick="LoginWithGoogle">使用 Google 登录</button>
-                            </div>
-                        }
-                            
-
+                        <div class="flex flex-row">
+                            <button type="button" class="ml-auto underline underline-offset-1" 
+                                @onclick="LoginWithGoogle">使用 Google 登录</button>
+                        </div>
                         @if (!string.IsNullOrEmpty(Error))
                         {
                             <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
