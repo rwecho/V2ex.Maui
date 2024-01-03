@@ -31,6 +31,10 @@ public partial class LoginWithGooglePageViewModel: ObservableObject
 
     public LoginWithGooglePageViewModel()
     {
+#if ANDROID
         this.UserAgent = UserAgentConstants.UserAgent;
+#else
+        this.UserAgent = UserAgentConstants.UserAgent;
+#endif
     }
 }

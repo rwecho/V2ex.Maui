@@ -15,6 +15,9 @@ public partial class LoginWithGooglePage : ContentPage
 
         this.CookieContainerService = InstanceCreator.Create<CookieContainerService>();
         this.LoginCallback = loginCallback;
+
+        this.WebView.UserAgent = this.ViewModel.UserAgent;
+
 #if !WINDOWS
         // The app crashes when the WebView tries to access the cookie container on Windows.
         this.WebView.Cookies = this.CookieContainerService.Container;

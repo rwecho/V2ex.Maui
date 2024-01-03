@@ -103,10 +103,7 @@ public class ApiService
         var request = new HttpRequestMessage(HttpMethod.Get, "/?tab=" + tab);
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/");
         var response = await this.HttpClient.SendAsync(request);
-        var url = tab == null ? "/" : "/?tab=" + tab;
-        //var response = await this.HttpClient.GetAsync(url);
         var newsInfo = await response.GetEncapsulatedData<NewsInfo>(this.Logger);
-
         return newsInfo;
     }
 

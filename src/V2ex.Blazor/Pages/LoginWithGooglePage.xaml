@@ -12,6 +12,5 @@
     </ContentPage.Behaviors>
 
     <WebView x:Name="WebView" Source="{Binding Url}"
-             UserAgent="{Binding UserAgent}"
              Navigating="WebView_Navigating"></WebView>
 </ContentPage>

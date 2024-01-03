@@ -23,6 +23,8 @@ public class NewsInfo
 
     public class Item
     {
+        private string? lastRepliedText;
+
         [XPath("//span[contains(@class, 'item_title')]/a")]
         public string Title { get; init; } = null!;
 
@@ -42,9 +44,33 @@ public class NewsInfo
         [XPath("//td/span[1]/strong/a", "href")]
         public string UserLink { get; init; } = null!;
 
-        [XPath("//td/span[3]", ReturnType.InnerText)]
+
+        [XPath("//td/span[3]/strong/preceding-sibling::text()")]
         [SkipNodeNotFound]
-        public string? LastRepliedText { get; init; }
+        public string? LastRepliedText
+        {
+            get => lastRepliedText;
+            init
+            {
+                //  1 小时 1 分钟前 &nbsp;•&nbsp; 最后回复来自
+                if (value == null)
+                { return; }
+
+                var parts = value.Split("&nbsp;•&nbsp;");
+                if (parts.Length == 2)
+                {
+                    lastRepliedText = parts[0].Trim();
+                }
+            }
+        }
+
+        public bool IsPinned
+        {
+            get
+            {
+                return this.LastRepliedText == "置顶";
+            }
+        }
 
         [XPath("//td/span[3]/strong/a")]
         [SkipNodeNotFound]
