@@ -1,6 +1,6 @@
 # V2ex.MAUI
 
-[![PUBLISH Build](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
+[![PUBLISH Blazor](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml/badge.svg?event=push)](https://github.com/rwecho/V2ex.Maui/actions/workflows/publish.yml)
 
 It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is currently only available for Android devices. This app is still under development, the app is still in the early stages of development, and there are still many bugs and incomplete features. If you have any questions or suggestions, please feel free to submit an [issue](https://www.github.com/rwecho/V2ex.MAUI/issues) or [PR](https://www.github.com/rwecho/V2ex.MAUI/pulls).
 
