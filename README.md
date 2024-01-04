@@ -55,28 +55,9 @@ It is a cross-platform app for V2EX, which is built with Maui Hybrid. It is curr
 
 Welcome everyone to contribute and participate! If you need a specific feature, you can start by submitting an [issue](https://github.com/rwecho/V2ex.MAUI/issues) for discussion. Alternatively, you are also encouraged to [fork](https://github.com/rwecho/V2ex.MAUI/fork) the repository, make changes, and submit a pull request (PR).
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rwecho"><img src="https://avatars.githubusercontent.com/u/8048753?v=4?s=100" width="100px;" alt="rwecho"/><br /><sub><b>RWECHO</b></sub></a><br /><a href="https://github.com/rwecho/V2ex.Maui/commits?author=rwecho" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
+This project exists thanks to all the people who contribute.
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+[![Code Contributors](https://contrib.rocks/image?repo=rwecho/V2ex.Maui)](https://github.com/rwecho/V2ex.Maui/graphs/contributors)
 
 For details please visit [insights](https://github.com/rwecho/V2ex.Maui/graphs/contributors)
 
