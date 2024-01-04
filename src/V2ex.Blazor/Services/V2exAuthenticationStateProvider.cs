@@ -6,7 +6,8 @@ using V2ex.Api;
 namespace V2ex.Blazor.Services;
 
 public class V2exAuthenticationStateProvider(CookieContainerService cookieContainerService,
-    ILogger<V2exAuthenticationStateProvider> logger) : AuthenticationStateProvider, IAuthenticationStateProvider
+    ILogger<V2exAuthenticationStateProvider> logger) 
+    : AuthenticationStateProvider, IAuthenticationStateProvider
 {
     private CookieContainerService CookieContainerService { get; } = cookieContainerService;
     private ILogger<V2exAuthenticationStateProvider> Logger { get; } = logger;
