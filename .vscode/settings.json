@@ -1,6 +1,7 @@
 {
   "dotnet.defaultSolution": "V2ex.Maui.sln",
   "cSpell.words": [
+    "appsettings",
     "attributors",
     "Blazor",
     "flowbite",
