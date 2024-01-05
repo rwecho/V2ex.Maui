@@ -139,7 +139,7 @@ export function insertText(quill, text) {
 export function insertImage(quill, imageUrl) {
   const range = quill.getSelection(true);
   // add a space before the image
-  const index = range.index;
+  let index = range.index;
   quill.insertEmbed(range.index, "text", "\n");
   index++;
   quill.insertEmbed(index, "image", imageUrl);
