@@ -44,7 +44,7 @@
         </button>
 
         @{
-            var replyButtonClass = "px-4 py-2 ml-auto text-gray-200 bg-gray-400 rounded-lg flex flex-row space-x-2 items-center disabled:bg-gray-500/90" + (isUploading ?
+            var replyButtonClass = "px-4 py-2 ml-auto text-gray-50 bg-gray-400 rounded-lg flex flex-row space-x-2 items-center disabled:bg-gray-500/90" + (isUploading ?
             "disabled" : "");
         }
         <button class="@replyButtonClass" @onclick="ReplyAsync" disabled="@(isUploading||isReplying)">
