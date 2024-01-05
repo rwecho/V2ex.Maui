@@ -74,7 +74,7 @@
                     </button>
                 }
 
-                @if(MentionCallback.HasDelegate)
+                @if (MentionCallback.HasDelegate && this.CurrentUser != null && !this.CurrentUser.IsAuthenticated)
                 {
                     <button class="flex items-center text-sm text-gray-400 space-x-1 ms-2" @onclick="TapMention">
                         <svg class="w-4 h-4 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
