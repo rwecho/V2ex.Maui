@@ -1368,10 +1368,6 @@ input:checked + .toggle-bg {
   height: 100%;
 }
 
-.h-modal {
-  height: calc(100% - 2rem);
-}
-
 .h-screen {
   height: 100vh;
 }
@@ -2171,6 +2167,18 @@ input:checked + .toggle-bg {
   padding-top: 1rem;
 }
 
+.pt-8 {
+  padding-top: 2rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
+}
+
+.pt-32 {
+  padding-top: 8rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -2310,11 +2318,6 @@ input:checked + .toggle-bg {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
-}
-
-.text-red-50 {
-  --tw-text-opacity: 1;
-  color: rgb(253 242 242 / var(--tw-text-opacity));
 }
 
 .text-red-800 {

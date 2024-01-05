@@ -1,8 +1,6 @@
 ﻿using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace V2ex.Api;
 
@@ -12,7 +10,8 @@ namespace V2ex.Api;
 public class FavoriteNodeInfo
 {
     [XPath("//a[contains(@class, 'av-node')]", ReturnType.OuterHtml)]
-    public List<ItemInfo> Items { get; init; } = new();
+    [SkipNodeNotFound]
+    public List<ItemInfo> Items { get; init; } = [];
 
     [HasXPath]
     [DebuggerDisplay("{Name,nq}")]

@@ -41,9 +41,6 @@
     [Inject]
     private IToastService Toast { get; set; } = null!;
 
-    [CascadingParameter]
-    private Status Status { get; set; } = null!;
-
 
     private LoadingBox? loadingBoxRef;
 
@@ -57,7 +54,6 @@
         if (tabTopics != null)
         {
             viewModel = new TabViewModel(tabTopics);
-            Status.Update(tabTopics);
         }
     }
 

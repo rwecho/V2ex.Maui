@@ -79,8 +79,6 @@
     [Parameter]
     public bool ShowBackButton { get; set; } = false;
 
-    [CascadingParameter]
-    public Status Status { get; set; } = null!;
     [Inject]
     private INativeNavigation Navigation { get; set; } = null!;
 

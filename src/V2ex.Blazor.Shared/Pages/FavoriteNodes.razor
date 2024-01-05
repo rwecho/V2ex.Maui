@@ -4,23 +4,29 @@
 
 <RefreshView Refresh="LoadAsync">
     <ScrollView>
-        <LoadingBox Load="LoadAsync">
-                @if (nodeInfo != null)
-                {
-                    <div class="flex flex-wrap">
-                        @foreach (var item in nodeInfo.Items)
-                        {
+        @if (nodeInfo != null && nodeInfo.Items.Count > 0 )
+        {
+            <LoadingBox Load="LoadAsync">
+                <div class="flex flex-wrap">
+                    @foreach (var item in nodeInfo.Items)
+                    {
                         <div class="flex flex-col text-center items-center w-24 text-gray-400 m-4">
-                                <a href="@item.Link" >
-                                    <img class="w-24 h-24 rounded-full shadow-md" src="@item.Image" alt="node image" />
-                                    <div class="text-ellipsis w-24">@item.Name</div>
-                                    <div>@item.Topics</div>
-                                </a>
-                            </div>
-                        }
-                    </div>
-                }
-        </LoadingBox>
+                            <a href="@item.Link" >
+                                <img class="w-24 h-24 rounded-full shadow-md" src="@item.Image" alt="node image" />
+                                <div class="text-ellipsis w-24">@item.Name</div>
+                                <div>@item.Topics</div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </LoadingBox>
+        }
+        else
+        {
+            <div class="flex flex-col items-center text-gray-400 pt-32">
+                <div>暂无数据</div>
+            </div>
+        }
     </ScrollView>
 </RefreshView>
 @code {

@@ -3,9 +3,9 @@
 <HeadTitle Title="我的关注"></HeadTitle>
 
 <RefreshView Refresh="()=> LoadAsync(1)">
-    <LoadingBox Load="()=> LoadAsync(1)">
-        @if (viewModel != null)
-        {
+    @if (viewModel != null && viewModel.Topics.Count > 0)
+    {
+        <LoadingBox Load="()=> LoadAsync(1)">
             <CollectionView TItem="TopicViewModel" Items="viewModel.Topics" RemainingReachedCallback="OnRemainingReached">
                 <ItemContent Context="item">
                     <Topic ViewModel="item"></Topic>
@@ -38,8 +38,14 @@
                     }
                 </Footer>
             </CollectionView>
-        }
-    </LoadingBox>
+        </LoadingBox>
+    }
+    else
+    {
+        <div class="flex flex-col items-center text-gray-400 pt-32">
+            <div>暂无数据</div>
+        </div>
+    }
 </RefreshView>
 
 

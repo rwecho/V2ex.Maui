@@ -21,7 +21,6 @@ public class FavoriteTopicsInfo
     [XPath("//div[@id='Wrapper']//div[@class='cell item']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
-    public string Url { get; internal set; } = null!;
 
     [HasXPath]
     [DebuggerDisplay("{UserName,nq} {TopicTitle,nq}")]

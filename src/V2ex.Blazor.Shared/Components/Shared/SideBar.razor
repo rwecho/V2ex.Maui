@@ -42,7 +42,6 @@
             </li>
         </ul>
         <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-
             <li>
                 <a href="/write"
                     class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
@@ -87,52 +86,52 @@
 
         @if (currentUser != null && currentUser.IsAuthenticated)
         {
-            <div class="pt-4 mt-4 flex flex-col divide-y space-y-2 w-full font-medium border-t-2 border-gray-200 dark:border-gray-700">
-                    <div class="flex justify-end">
-                        <div class="flex flex-row w-auto p-2 items-center space-x-1  bg-gray-200 rounded-lg">
-                            @if (currentUser.MoneyGold>0)
-                            {
-                                <img class="w-4 h-4" src="https://v2ex.com/static/img/gold@2x.png" />
-                                <span class="text-gray-400">@currentUser.MoneyGold</span>
-                            }
+            <div class="pt-4 mt-4 flex flex-col divide-y space-y-4 w-full font-medium border-t-2 border-gray-200 dark:border-gray-700">
+                <div class="flex justify-end">
+                    <div class="flex flex-row w-auto p-2 items-center space-x-1  bg-gray-200 rounded-lg">
+                        @if (currentUser.MoneyGold>0)
+                        {
+                            <img class="w-4 h-4" src="https://v2ex.com/static/img/gold@2x.png" />
+                            <span class="text-gray-400">@currentUser.MoneyGold</span>
+                        }
 
-                            @if (!(currentUser.MoneyGold == 0 && currentUser.MoneySilver == 0))
-                            {
-                                <img class="w-4 h-4" src="https://v2ex.com/static/img/silver@2x.png" />
-                                <span class="text-gray-400">@currentUser.MoneySilver</span>
-                            }
-                            <img class="w-4 h-4" src="https://v2ex.com/static/img/bronze@2x.png" />
-                            <span class="text-gray-400">@currentUser.MoneyBronze</span>
+                        @if (!(currentUser.MoneyGold == 0 && currentUser.MoneySilver == 0))
+                        {
+                            <img class="w-4 h-4" src="https://v2ex.com/static/img/silver@2x.png" />
+                            <span class="text-gray-400">@currentUser.MoneySilver</span>
+                        }
+                        <img class="w-4 h-4" src="https://v2ex.com/static/img/bronze@2x.png" />
+                        <span class="text-gray-400">@currentUser.MoneyBronze</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 divide-x">
+                    <a href="/favorite/nodes" class="group py-2">
+                        <div class="flex flex-col items-center space-y-2">
+                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 14h6m-3 3v-6M1.857 1h4.286c.473 0 .857.384.857.857v4.286A.857.857 0 0 1 6.143 7H1.857A.857.857 0 0 1 1 6.143V1.857C1 1.384 1.384 1 1.857 1Zm10 0h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857h-4.286A.857.857 0 0 1 11 6.143V1.857c0-.473.384-.857.857-.857Zm-10 10h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H1.857A.857.857 0 0 1 1 16.143v-4.286c0-.473.384-.857.857-.857Z" />
+                            </svg>
+                            <span class="text-gray-400">节点收藏</span>
                         </div>
-                    </div>
+                    </a>
+                    <a href="/favorite/topics" class="group py-2">
+                        <div class="flex flex-col items-center space-y-2">
+                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 16.5c0-1-8-2.7-9-2V1.8c1-1 9 .707 9 1.706M10 16.5V3.506M10 16.5c0-1 8-2.7 9-2V1.8c-1-1-9 .707-9 1.706" />
+                            </svg>
+                            <span class="text-gray-400">主题收藏</span>
+                        </div>
+                    </a>
 
-                    <div class="grid grid-cols-3 divide-x">
-                        <a href="/favorite/nodes" class="group py-2">
-                            <div class="flex flex-col items-center space-y-2">
-                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 14h6m-3 3v-6M1.857 1h4.286c.473 0 .857.384.857.857v4.286A.857.857 0 0 1 6.143 7H1.857A.857.857 0 0 1 1 6.143V1.857C1 1.384 1.384 1 1.857 1Zm10 0h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857h-4.286A.857.857 0 0 1 11 6.143V1.857c0-.473.384-.857.857-.857Zm-10 10h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H1.857A.857.857 0 0 1 1 16.143v-4.286c0-.473.384-.857.857-.857Z" />
-                                </svg>
-                                <span class="text-gray-400">节点收藏</span>
-                            </div>
-                        </a>
-                        <a href="/favorite/topics" class="group py-2">
-                            <div class="flex flex-col items-center space-y-2">
-                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 16.5c0-1-8-2.7-9-2V1.8c1-1 9 .707 9 1.706M10 16.5V3.506M10 16.5c0-1 8-2.7 9-2V1.8c-1-1-9 .707-9 1.706" />
-                                </svg>
-                                <span class="text-gray-400">主题收藏</span>
-                            </div>
-                        </a>
-
-                        <a href="/favorite/following" class="group py-2">
-                            <div class="flex flex-col items-center space-y-2">
-                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.479 1.712 2.367 4.8a.532.532 0 0 0 .4.292l5.294.769a.534.534 0 0 1 .3.91l-3.83 3.735a.534.534 0 0 0-.154.473l.9 5.272a.535.535 0 0 1-.775.563l-4.734-2.49a.536.536 0 0 0-.5 0l-4.73 2.487a.534.534 0 0 1-.775-.563l.9-5.272a.534.534 0 0 0-.154-.473L2.158 8.48a.534.534 0 0 1 .3-.911l5.294-.77a.532.532 0 0 0 .4-.292l2.367-4.8a.534.534 0 0 1 .96.004Z" />
-                                </svg>
-                                <span class="text-gray-400">特别关注</span>
-                            </div>
-                        </a>
-                    </div>
+                    <a href="/favorite/following" class="group py-2">
+                        <div class="flex flex-col items-center space-y-2">
+                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.479 1.712 2.367 4.8a.532.532 0 0 0 .4.292l5.294.769a.534.534 0 0 1 .3.91l-3.83 3.735a.534.534 0 0 0-.154.473l.9 5.272a.535.535 0 0 1-.775.563l-4.734-2.49a.536.536 0 0 0-.5 0l-4.73 2.487a.534.534 0 0 1-.775-.563l.9-5.272a.534.534 0 0 0-.154-.473L2.158 8.48a.534.534 0 0 1 .3-.911l5.294-.77a.532.532 0 0 0 .4-.292l2.367-4.8a.534.534 0 0 1 .96.004Z" />
+                            </svg>
+                            <span class="text-gray-400">特别关注</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         }
     </div>
@@ -152,7 +151,4 @@
             currentUser = new CurrentUser((await AuthenticationStateTask).User);
         }
     }
-
-    [CascadingParameter]
-    private Status Status { get; set; } = null!;
 }
