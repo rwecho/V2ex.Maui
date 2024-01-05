@@ -7,6 +7,8 @@ public static class UrlUtilities
 {
     public const string BASE_URL = "https://www.v2ex.com";
 
+    public const string BASE_DOMAIN = "www.v2ex.com";
+
     public static string CompleteUrl(string url)
     {
         if(url.StartsWith("https://") || url.StartsWith("http://"))

@@ -90,10 +90,17 @@
             {
                 <div class="flex justify-end">
                     <div class="flex flex-row w-auto p-2 items-center space-x-1  bg-gray-200 rounded-lg">
-                        <img class="w-4 h-4" src="https://v2ex.com/static/img/gold@2x.png" />
-                        <span class="text-gray-400">@currentUser.MoneyGold</span>
-                        <img class="w-4 h-4" src="https://v2ex.com/static/img/silver@2x.png" />
-                        <span class="text-gray-400">@currentUser.MoneySilver</span>
+                        @if (currentUser.MoneyGold>0)
+                        {
+                            <img class="w-4 h-4" src="https://v2ex.com/static/img/gold@2x.png" />
+                            <span class="text-gray-400">@currentUser.MoneyGold</span>
+                        }
+
+                        @if (!(currentUser.MoneyGold == 0 && currentUser.MoneySilver == 0))
+                        {
+                            <img class="w-4 h-4" src="https://v2ex.com/static/img/silver@2x.png" />
+                            <span class="text-gray-400">@currentUser.MoneySilver</span>
+                        }
                         <img class="w-4 h-4" src="https://v2ex.com/static/img/bronze@2x.png" />
                         <span class="text-gray-400">@currentUser.MoneyBronze</span>
                     </div>

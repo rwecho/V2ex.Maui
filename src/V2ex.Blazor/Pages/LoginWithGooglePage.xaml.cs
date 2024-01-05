@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System.Net;
 using V2ex.Api;
 using V2ex.Blazor.Services;
@@ -12,14 +13,14 @@ public partial class LoginWithGooglePage : ContentPage
         this.BindingContext = this.ViewModel = 
             InstanceCreator.Create<LoginWithGooglePageViewModel>();
         this.ViewModel.Once = once;
+        this.Logger = InstanceCreator.Create<ILogger<LoginWithGooglePage>>();
 
         this.CookieContainerService = InstanceCreator.Create<CookieContainerService>();
         this.LoginCallback = loginCallback;
 
         this.WebView.UserAgent = this.ViewModel.UserAgent;
 
-#if !WINDOWS
-        // The app crashes when the WebView tries to access the cookie container on Windows.
+#if IOS || MACCATALYST
         this.WebView.Cookies = this.CookieContainerService.Container;
 #endif
     }
@@ -27,6 +28,7 @@ public partial class LoginWithGooglePage : ContentPage
     private LoginWithGooglePageViewModel ViewModel { get; }
     private CookieContainerService CookieContainerService { get; }
     private Action<bool> LoginCallback { get; }
+    private ILogger<LoginWithGooglePage> Logger { get; }
 
     private bool isAuthenticated;
 
@@ -40,24 +42,25 @@ public partial class LoginWithGooglePage : ContentPage
         {
             this.Dispatcher.DispatchAsync(async () =>
             {
-                await ExchangeCookies();
-                await this.Navigation.PopAsync();
-                this.LoginCallback(true);
+                try
+                {
+#if ANDROID || WINDOWS
+                    await ExchangeCookies();
+#endif
+                    await this.Navigation.PopAsync();
+                    this.LoginCallback(true);
+                }
+                catch (Exception exception)
+                {
+                    this.Logger.LogError(exception, "Exchange cookies failed.");
+                }
             });
-        }
-
-        if(e.Url.StartsWith($"{UrlUtilities.BASE_URL}/auth/google?once"))
-        {
-            if(this.WebView.Cookies!=null)
-            {
-                var cookies = this.WebView.Cookies.GetAllCookies();
-            }
         }
     }
 
+#if WINDOWS
     private async Task ExchangeCookies()
     {
-#if WINDOWS
         var webView = this.WebView.Handler!.PlatformView as Microsoft.UI.Xaml.Controls.WebView2;
         var cookieManager = webView!.CoreWebView2.CookieManager;
 
@@ -67,15 +70,29 @@ public partial class LoginWithGooglePage : ContentPage
 
             this.CookieContainerService.Container.Add(cookie);
         }
-#else
-        await Task.CompletedTask;
-#endif        
+#endif
+
+#if ANDROID
+    private Task ExchangeCookies()
+    {
+        var cookieManager = Android.Webkit.CookieManager.Instance;
+
+        var cookies = (cookieManager?.GetCookie(UrlUtilities.BASE_URL))
+            ?? throw new InvalidOperationException("Can not retrieve cookies from WebView.");
+        foreach (var item in cookies.Split(";"))
+        {
+            var key = item.Split("=")[0].Trim();
+            var value = item.Split("=")[1].Trim();
+            var cookie = new Cookie(key, value, "/", UrlUtilities.BASE_DOMAIN);
+            this.CookieContainerService.Container.Add(cookie);
+        }
+        return Task.CompletedTask;
     }
+#endif
 
 #if WINDOWS
     protected override async void OnHandlerChanged()
     {
-
         if(this.WebView.Handler == null)
         {
             throw new Exception("WebView.Handler is null");
@@ -96,7 +113,6 @@ public partial class LoginWithGooglePage : ContentPage
             var cookie2 = cookieManager.CreateCookie(cookie.Name, cookie.Value, cookie.Domain, cookie.Path);
             cookieManager.AddOrUpdateCookie(cookie2);
         }
-
     }
 #endif
 

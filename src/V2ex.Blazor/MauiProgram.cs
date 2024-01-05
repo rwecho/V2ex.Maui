@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
-using V2ex.Api;
 using V2ex.Blazor.Pages;
 using V2ex.Blazor.Services;
 using IPreferences = V2ex.Blazor.Services.IPreferences;
