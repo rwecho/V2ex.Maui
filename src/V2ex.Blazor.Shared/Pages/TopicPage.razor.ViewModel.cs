@@ -38,21 +38,11 @@ public record TopicPageViewModel(
                 return;
             }
 
-            var match1 = Regex.Match(value, @"(\d+) 次点击");
-            if (match1.Success)
-            {
-                this.Clicks = int.Parse(match1.Groups[1].Value);
-            }
 
             var match2 = Regex.Match(value, @"(\d+) 人收藏");
             if (match2.Success)
             {
                 this.Likes = int.Parse(match2.Groups[1].Value);
-            }
-            var match3 = Regex.Match(value, @"(\d+) 人感谢");
-            if (match3.Success)
-            {
-                this.Thanks = int.Parse(match3.Groups[1].Value);
             }
         }
     }
@@ -83,18 +73,12 @@ public record TopicPageViewModel(
         }
     }
 
-    public int Clicks { get; set; }
 
     public int RepliesCount { get; set; }
 
     public DateTime? LastReplyTime { get; set; }
 
     public int Likes
-    {
-        get; set;
-    }
-
-    public int Thanks
     {
         get; set;
     }

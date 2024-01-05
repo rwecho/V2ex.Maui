@@ -50,7 +50,7 @@ public class TopicInfo
         }
     }
 
-    [XPath("//div[@id='Wrapper']//div[@id='topic_thank']/a/text()")]
+    [XPath("//div[@id='Wrapper']//div[@id='topic_thank']/span")]
     [SkipNodeNotFound]
     public string? Thanked { get; set; }
 
