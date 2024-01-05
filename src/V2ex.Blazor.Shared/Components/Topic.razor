@@ -8,18 +8,21 @@
         </a>
 
         <div class="flex flex-col flex-1 justify-center">
-            <div class="flex flex-row">
+            <div class="flex flex-row ">
                 <a href="@ViewModel.UserLink" @onclick:stopPropagation="true">
                     <span class="text-sm text-gray-900">@ViewModel.UserName</span>
                 </a>
             </div>
 
-            <div class="flex flex-row">
-                <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
+            <div class="flex flex-row space-x-2">
+                @if(ViewModel.Replies > 0)
+                {
+                    <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
+                }
 
                 @if (ViewModel.NodeName != null)
                 {
-                    <span class="text-sm text-gray-500 ml-2">评论 @ViewModel.Replies</span>
+                    <span class="text-sm text-gray-500 ">评论 @ViewModel.Replies</span>
                 }
             </div>
         </div>

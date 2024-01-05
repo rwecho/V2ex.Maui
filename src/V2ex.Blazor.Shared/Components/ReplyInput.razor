@@ -277,7 +277,7 @@
             return;
         }
         await this.EmojiService.SetRecentAsync(emoji);
-        await this.interopModule.InvokeVoidAsync("insertImageEmoji", quillRef, emoji.High);
+        await this.interopModule.InvokeVoidAsync("insertImageEmoji", quillRef, emoji.Low);
     }
 
     public async Task InsertTextAsync(string text)
