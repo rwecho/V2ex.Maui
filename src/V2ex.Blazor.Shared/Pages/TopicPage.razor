@@ -441,186 +441,189 @@
 
 @code {
 
-    [Parameter]
-    public int Id { get; set; }
+	[Parameter]
+	public int Id { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "title")]
-    public string? Title { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery(Name = "title")]
+	public string? Title { get; set; }
 
-    [CascadingParameter]
-    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+	[CascadingParameter]
+	public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
 
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = null!;
+	[Inject]
+	private NavigationManager NavigationManager { get; set; } = null!;
 
-    [Inject]
-    private ApiService ApiService { get; set; } = null!;
+	[Inject]
+	private ApiService ApiService { get; set; } = null!;
 
-    [Inject]
-    private IJSRuntime JsRuntime { get; set; } = null!;
+	[Inject]
+	private IJSRuntime JsRuntime { get; set; } = null!;
 
-    [Inject]
-    private IToastService Toast { get; set; } = null!;
+	[Inject]
+	private IToastService Toast { get; set; } = null!;
 
-    [Inject]
-    private IBrowser Browser { get; set; } = null!;
+	[Inject]
+	private IBrowser Browser { get; set; } = null!;
 
-    [Inject]
-    private UtilsJsInterop UtilsJsInterop { get; set; } = null!;
+	[Inject]
+	private UtilsJsInterop UtilsJsInterop { get; set; } = null!;
 
-    [Inject]
-    private ChatGPTService ChatGPTService { get; set; } = null!;
+	[Inject]
+	private ChatGPTService ChatGPTService { get; set; } = null!;
 
-    private TopicPageViewModel? viewModel;
+	private TopicPageViewModel? viewModel;
 
-    private DotNetObjectReference<TopicPage>? thisRef;
-    private ElementReference? containerRef;
-    private IJSObjectReference? interopModule;
-    private IJSObjectReference? callUpUserModalReference;
-    private IJSObjectReference? replyInputModalReference;
-    private CollectionView<ReplyViewModel>? collectionView;
+	private DotNetObjectReference<TopicPage>? thisRef;
+	private ElementReference? containerRef;
+	private IJSObjectReference? interopModule;
+	private IJSObjectReference? callUpUserModalReference;
+	private IJSObjectReference? replyInputModalReference;
+	private CollectionView<ReplyViewModel>? collectionView;
 
-    private ReplyInput? replyInput;
+	private ReplyInput? replyInput;
 
-    private CurrentUser? currentUser;
-    private bool farFromTop;
-    private List<ReplyViewModel> callUpReplies = new();
-    private MarkupString? formattedContent;
-    private MarkupStringView? formattedMarkupStringViewRef;
+	private CurrentUser? currentUser;
+	private bool farFromTop;
+	private List<ReplyViewModel> callUpReplies = new();
+	private MarkupString? formattedContent;
+	private MarkupStringView? formattedMarkupStringViewRef;
 
-    private bool isFormatting;
+	private bool isFormatting;
 
-    private bool IsFormatTopicShow
-    {
-        get
-        {
-            if (currentUser == null || !currentUser.IsAuthenticated
-                || viewModel == null
-                || !viewModel.Content.HasValue
-                || viewModel.Content.Value.ToString().Length < 300)
-            {
-                return false;
-            }
+	private bool IsFormatTopicShow
+	{
+		get
+		{
+			if (currentUser == null || !currentUser.IsAuthenticated
+				|| viewModel == null
+				|| !viewModel.Content.HasValue
+				|| viewModel.Content.Value.ToString().Length < 300)
+			{
+				return false;
+			}
 
-            var html = new HtmlDocument();
-            html.LoadHtml(viewModel.Content.Value.ToString());
-            var innerText = html.DocumentNode.InnerText;
-            return innerText.Length > 300;
-        }
-    }
+			var html = new HtmlDocument();
+			html.LoadHtml(viewModel.Content.Value.ToString());
+			var innerText = html.DocumentNode.InnerText;
+			return innerText.Length > 300;
+		}
+	}
 
-    private string? originUri;
+	private string? originUri;
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (AuthenticationStateTask != null)
-        {
-            currentUser = new CurrentUser((await AuthenticationStateTask).User);
-        }
-    }
+	protected override async Task OnParametersSetAsync()
+	{
+		if (AuthenticationStateTask != null)
+		{
+			currentUser = new CurrentUser((await AuthenticationStateTask).User);
+		}
+	}
 
-    protected override Task OnInitializedAsync()
-    {
-        originUri = NavigationManager.Uri;
-        thisRef = DotNetObjectReference.Create(this);
-        return this.LoadAsync(1);
-    }
+	protected override Task OnInitializedAsync()
+	{
+		originUri = NavigationManager.Uri;
+		thisRef = DotNetObjectReference.Create(this);
+		return this.LoadAsync(1);
+	}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
-            callUpUserModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeCallUpUserModal", containerRef, thisRef);
-            replyInputModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeReplyInputModal", containerRef, thisRef);
-        }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+				"./_content/V2ex.Blazor.Shared/Pages/TopicPage.razor.js");
+			callUpUserModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeCallUpUserModal", containerRef, thisRef);
+			replyInputModalReference = await interopModule.InvokeAsync<IJSObjectReference>("initializeReplyInputModal", containerRef, thisRef);
+		}
 
-        if (formattedContent != null)
-        {
-            await JsRuntime.InvokeVoidAsync("initAccordions");
-        }
-    }
+		if (formattedContent != null)
+		{
+			await JsRuntime.InvokeVoidAsync("initAccordions");
+		}
+	}
 
-    private async Task OnRefreshAsync()
-    {
-        viewModel = null;
-        await this.LoadAsync(1);
-        await Toast.Show("刷新成功");
-    }
+	private async Task OnRefreshAsync()
+	{
+		viewModel = null;
+		await this.LoadAsync(1);
+		await Toast.Show("刷新成功");
+	}
 
-    private async Task LoadAsync(int page)
-    {
-        var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
-        if (topicInfo == null)
-        {
-            return;
-        }
+	private async Task LoadAsync(int page)
+	{
+		var topicInfo = await this.ApiService.GetTopicDetail(Id.ToString(), page);
+		if (topicInfo == null)
+		{
+			return;
+		}
 
-        if(this.viewModel == null)
-        {
-            viewModel = TopicPageViewModel.Create(topicInfo);
-        }
-        viewModel.Update(topicInfo);
-    }
+		if(this.viewModel == null)
+		{
+			viewModel = TopicPageViewModel.Create(topicInfo);
+		}
+		viewModel.Update(topicInfo);
+		await OnRemainingReached();
+	}
 
-    private async Task OnRemainingReached()
-    {
-        if (viewModel == null)
-        {
-            return;
-        }
+	private async Task OnRemainingReached()
+	{
+		if (viewModel == null)
+		{
+			return;
+		}
 
-        if (viewModel.CurrentPage >= viewModel.MaximumPage)
-        {
-            return;
-        }
-        await this.LoadAsync(this.viewModel.CurrentPage + 1);
-    }
+		if (viewModel.CurrentPage >= viewModel.MaximumPage)
+		{
+			return;
+		}
+		await this.LoadAsync(this.viewModel.CurrentPage + 1);
+	}
 
-    private Task OnScroll(ScrollEventArgs e)
-    {
-        farFromTop = e.ScrollTop >= 100;
+	private Task OnScroll(ScrollEventArgs e)
+	{
+		farFromTop = e.ScrollTop >= 100;
 
-        return Task.CompletedTask;
-    }
+		return Task.CompletedTask;
+	}
 
-    private async Task ScrollToTop()
-    {
-        if (collectionView == null)
-        {
-            return;
-        }
+	private async Task ScrollToTop()
+	{
+		if (collectionView == null)
+		{
+			return;
+		}
 
-        await collectionView.ScrollToTop();
-    }
+		await collectionView.ScrollToTop();
+	}
 
-    private async Task OnMentionedAsync(int floor)
-    {
-        var reply = viewModel?.Replies.FirstOrDefault(r => r.Floor == floor);
-        if (reply == null)
-        {
-            return;
-        }
-        await this.ShowReplyInput($"@{reply.UserName} #{floor}");
-    }
+	private async Task OnMentionedAsync(int floor)
+	{
+		var reply = viewModel?.Replies.FirstOrDefault(r => r.Floor == floor);
+		if (reply == null)
+		{
+			return;
+		}
+		await this.ShowReplyInput($"@{reply.UserName} #{floor}");
+	}
 
-    private async Task OnCallUpAsync(CallUpModel model)
-    {
-        if (interopModule == null || viewModel == null || callUpUserModalReference == null)
-        {
-            return;
-        }
-        callUpReplies.Clear();
-        foreach (var reply in this.viewModel.Replies)
-        {
-            if (reply.Floor < model.Floor && reply.UserName == model.UserName)
-            {
-                callUpReplies.Add(reply);
-            }
-        }
-
+	private async Task OnCallUpAsync(CallUpModel model)
+	{
+		if (interopModule == null || viewModel == null || callUpUserModalReference == null)
+		{
+			return;
+		}
+		callUpReplies.Clear();
+		foreach (var reply in this.viewModel.Replies)
+		{
+			if (reply.Floor >= model.Reply.Floor) break;
+			if (model.Reply.Mentions.Find(m => m.UserName == reply.UserName) != null)
+			{
+				callUpReplies.Add(reply);
+			}
+		}
+		callUpReplies.Add(model.Reply);
+		callUpReplies.AddRange(model.Reply.Replies);
         if(callUpReplies.Any())
         {
             await callUpUserModalReference.InvokeVoidAsync("show");
