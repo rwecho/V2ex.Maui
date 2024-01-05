@@ -149,7 +149,7 @@
                                     var show = true;
                                     if (!string.IsNullOrEmpty(SearchText))
                                     {
-                                        show = reply.UserName.Contains(SearchText) 
+                                        show = reply.UserName.Contains(SearchText)
                                             || (reply.Content?.Value ?? "").Contains(SearchText)
                                             || reply.Floor.ToString() == SearchText;
                                     }
@@ -159,7 +159,7 @@
                                         + (!show ? "hidden" : "");
                                     <div class="@cssClass" @onclick="()=>ToggleMentionFloor(reply.Floor)">
                                         <a href="@reply.Avatar" class="flex flex-row items-start justify-start justify-items-start select-none">
-                                            <img class="w-10 h-10 rounded-full shadow-md" src="@reply.Avatar" alt="avatar">
+                                            <img class="w-8 h-8 rounded-full shadow-md" src="@reply.Avatar" alt="avatar">
                                         </a>
 
                                         <div class="flex flex-col flex-1 mx-2 space-y-2 ">
@@ -190,7 +190,7 @@
     [Parameter]
     public EventCallback<string> ReplyCallback { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public List<ReplyViewModel>? Replies { get; set; }
 
     [Inject]
