@@ -1340,10 +1340,6 @@ input:checked + .toggle-bg {
   height: 1rem;
 }
 
-.h-5 {
-  height: 1.25rem;
-}
-
 .h-5\/6 {
   height: 83.333333%;
 }
@@ -1460,10 +1456,6 @@ input:checked + .toggle-bg {
   width: 11rem;
 }
 
-.w-5 {
-  width: 1.25rem;
-}
-
 .w-5\/6 {
   width: 83.333333%;
 }
@@ -1478,6 +1470,10 @@ input:checked + .toggle-bg {
 
 .w-8 {
   width: 2rem;
+}
+
+.w-auto {
+  width: auto;
 }
 
 .w-full {
@@ -1502,10 +1498,6 @@ input:checked + .toggle-bg {
 
 .flex-shrink {
   flex-shrink: 1;
-}
-
-.flex-shrink-0 {
-  flex-shrink: 0;
 }
 
 .shrink-0 {
@@ -1888,6 +1880,10 @@ input:checked + .toggle-bg {
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-t-2 {
+  border-top-width: 2px;
 }
 
 .border-t-\[1px\] {
@@ -2463,7 +2459,7 @@ body {
 
 .markup-container {
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-word;
   overflow-wrap: break-word;
   overflow: hidden;
   max-width: 100%;
@@ -2527,10 +2523,6 @@ listeners can take over.
 .ql-editor img{
   display: inline;
   max-height: 200px;
-}
-
-.first\:m-4:first-child {
-  margin: 1rem;
 }
 
 .hover\:border-gray-300:hover {
@@ -2642,11 +2634,6 @@ listeners can take over.
 
 .disabled\:bg-gray-500\/90:disabled {
   background-color: rgb(107 114 128 / 0.9);
-}
-
-.group:hover .group-hover\:text-gray-900 {
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
 .peer:-moz-placeholder-shown ~ .peer-placeholder-shown\:translate-y-0 {
@@ -2898,11 +2885,6 @@ listeners can take over.
 :is(.dark .dark\:focus\:ring-gray-600:focus) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(75 85 99 / var(--tw-ring-opacity));
-}
-
-:is(.dark .group:hover .dark\:group-hover\:text-white) {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .peer:focus ~ :is(.dark .peer-focus\:dark\:text-blue-500) {

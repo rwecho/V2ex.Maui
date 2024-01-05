@@ -36,7 +36,7 @@ body {
 
 .markup-container {
     word-wrap: break-word;
-    word-break: break-all;
+    word-break: break-word;
     overflow-wrap: break-word;
     overflow: hidden;
     max-width: 100%;

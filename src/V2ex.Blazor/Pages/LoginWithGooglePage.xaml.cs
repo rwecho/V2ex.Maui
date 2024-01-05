@@ -70,6 +70,7 @@ public partial class LoginWithGooglePage : ContentPage
 
             this.CookieContainerService.Container.Add(cookie);
         }
+    }
 #endif
 
 #if ANDROID
