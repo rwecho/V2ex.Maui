@@ -2,12 +2,17 @@
 
 public class AppConstants
 {
+    public static bool IsDebug
+    {
+        get
+        {
 #if DEBUG
-    public const bool IsDebug = true;
-
+            return true;
 #else
-    public const bool IsDebug = false;
+            return false;
 #endif
+        }
+    }
 
     public const string BlazorHybridHost = "0.0.0.0";
 }

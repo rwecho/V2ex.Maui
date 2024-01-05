@@ -43,6 +43,10 @@
     private void GoToTopic()
     {
         var link = ViewModel.Link;
+
+        if (string.IsNullOrEmpty(link))
+            return;
+
         this.NavigationManager.NavigateTo(link);
         this.Logger.LogInformation($"GoToTopic {link}");
     }

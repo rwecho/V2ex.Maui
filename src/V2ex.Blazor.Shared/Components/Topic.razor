@@ -1,9 +1,11 @@
 <div class="flex flex-col px-4 py-2 break-words" @onclick="GoToTopic">
     <div class="flex flex-row justify-center select-none">
-        <a href="@ViewModel.AvatarLink" class="w-10 h-10 flex flex-row items-center mr-2 rounded-full shadow-md overflow-hidden" @onclick:stopPropagation="true">
+        <a href="@ViewModel.AvatarLink"
+            class="w-10 h-10 flex flex-row items-center mr-2 rounded-full shadow-md overflow-hidden"
+            @onclick:stopPropagation="true">
             @if (ViewModel.Avatar != null)
             {
-                <img src="@ViewModel.Avatar" class="w-full h-full" alt="avatar" >
+                <img src="@ViewModel.Avatar" class="w-full h-full" alt="avatar">
             }
         </a>
 
@@ -15,7 +17,7 @@
             </div>
 
             <div class="flex flex-row space-x-2">
-                @if(ViewModel.Replies > 0)
+                @if (ViewModel.Replies > 0)
                 {
                     <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
                 }
@@ -64,6 +66,12 @@
     private void GoToTopic()
     {
         var link = ViewModel.Link;
+
+        if (string.IsNullOrEmpty(link))
+        {
+            return;
+        }
+
         this.NavigationManager.NavigateTo(link);
         this.Logger.LogInformation($"GoToTopic {link}");
     }
