@@ -10,7 +10,7 @@ public partial class LoginWithGooglePage : ContentPage
 	public LoginWithGooglePage(string once, Action<bool> loginCallback)
 	{
 		InitializeComponent();
-        this.BindingContext = this.ViewModel = 
+        this.BindingContext = this.ViewModel =
             InstanceCreator.Create<LoginWithGooglePageViewModel>();
         this.ViewModel.Once = once;
         this.Logger = InstanceCreator.Create<ILogger<LoginWithGooglePage>>();
@@ -38,7 +38,7 @@ public partial class LoginWithGooglePage : ContentPage
         {
             isAuthenticated = true;
         }
-        else if (e.Url == $"{UrlUtilities.BASE_URL}/" && isAuthenticated)
+        else if ((e.Url == $"{UrlUtilities.BASE_URL}/" || e.Url == $"{UrlUtilities.BASE_URL}/#") && isAuthenticated)
         {
             this.Dispatcher.DispatchAsync(async () =>
             {
