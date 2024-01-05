@@ -59,13 +59,13 @@
         }
 
         var uri = new UriBuilder(href).Uri;
-        if (uri.Host == AppConstants.BlazorHybridHost)
+        if (uri.Host == AppConstants.BlazorHybridHost || IsV2exUri(uri))
         {
             var path = uri.AbsolutePath;
             if (path.StartsWith("/t/"))
             {
                 var id = path.Substring(3);
-                NavigationManager.NavigateTo($"/topic/{id}");
+                NavigationManager.NavigateTo($"/t/{id}");
             }
             else if (path.StartsWith("/member/"))
             {
@@ -91,6 +91,11 @@
         {
             await ExternalLinkClickedCallback.InvokeAsync(uri);
         }
+    }
+
+    private bool IsV2exUri(Uri uri)
+    {
+        return uri.Host == "www.v2ex.com" || uri.Host == "v2ex.com";
     }
 
     [JSInvokable]

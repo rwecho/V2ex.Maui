@@ -15,4 +15,6 @@ public class AppConstants
     }
 
     public const string BlazorHybridHost = "0.0.0.0";
+
+    
 }
