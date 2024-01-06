@@ -38,7 +38,7 @@ public class NodePageInfo
         }
     }
 
-    [XPath("//div[@id='Wrapper']//div[@class='box']/div[contains(@class,'cell')]", ReturnType.OuterHtml)]
+    [XPath("//div[@id='Wrapper']//div[@class='box']/div[@class='cell']", ReturnType.OuterHtml)]
     [SkipNodeNotFound]
     public List<ItemInfo> Items { get; set; } = new();
 
@@ -51,6 +51,7 @@ public class NodePageInfo
         public string Avatar { get; init; } = null!;
 
         [XPath("//td/span/strong")]
+        [SkipNodeNotFound]
         public string UserName { get; init; } = null!;
 
         public string UserLink
@@ -62,9 +63,13 @@ public class NodePageInfo
         }
 
         [XPath("//span[@class='item_title']/a")]
+        [SkipNodeNotFound]
+
         public string TopicTitle { get; init; } = null!;
 
         [XPath("//span[@class='item_title']/a", "href")]
+        [SkipNodeNotFound]
+
         public string TopicLink { get; init; } = null!;
 
         [XPath("//td/a[contains(@class, 'count_')]")]
