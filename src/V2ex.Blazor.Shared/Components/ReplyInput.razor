@@ -1,9 +1,9 @@
 ﻿@using DebounceThrottle
 <div class="flex flex-col w-full" @ref="containerRef">
-    <div class="flex flex-col sticky">
-        <div class="flex-row w-full">
+    <div class="flex flex-col sticky top-0">
+        <div class="flex-row w-full ">
             <div id="editor" @onclick="OnEditorClick"
-                class="rounded-lg border-2 border-gray-200 bg-gray-50 !text-base min-h-[4rem] !font-normal"></div>
+                 class="rounded-lg border-2 border-gray-200 bg-gray-50 !text-base min-h-[4rem] max-h-[8rem] overflow-y-auto !font-normal"></div>
         </div>
 
         <div id="toolbar" class="flex flex-row w-full items-center justify-center py-2 bg-white">
@@ -68,7 +68,7 @@
     </div>
     @if (isEmojiShow)
     {
-        <div class="flex flex-col w-full pt-0">
+        <div class="flex flex-col w-full  pt-0">
             @if (recentEmojis.Any())
             {
                 <div class="flex flex-col space-y-2">
