@@ -10,30 +10,29 @@
   "81be04b9e4a08ce",
 ];
 
-export function initializeMentionUsersModal(containerRef, thisRef)
-{
-    const $modalElement = containerRef.querySelector("#mentionUsersModal");
-    const modalOptions = {
-        placement: 'bottom-center',
-        backdrop: "dynamic",
-        backdropClasses:
-            'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
-        closable: true,
-        onHide: () => {
-            document.body.classList.add('overflow-hidden');
-        },
-        onShow: () => {
-        },
-        onToggle: () => {
-        },
-    };
+export function initializeMentionUsersModal(containerRef, thisRef) {
+  const $modalElement = containerRef.querySelector("#mentionUsersModal");
+  const modalOptions = {
+    placement: 'bottom-center',
+    backdrop: "dynamic",
+    backdropClasses:
+      'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+      document.body.classList.add('overflow-hidden');
+    },
+    onShow: () => {
+    },
+    onToggle: () => {
+    },
+  };
 
-    const instanceOptions = {
-        id: 'mentionUsersModal',
-        override: true
-    };
+  const instanceOptions = {
+    id: 'mentionUsersModal',
+    override: true
+  };
 
-    return new Modal($modalElement, modalOptions, instanceOptions);
+  return new Modal($modalElement, modalOptions, instanceOptions);
 }
 
 export function initialize(containerRef, thisRef) {
@@ -92,48 +91,51 @@ export function initialize(containerRef, thisRef) {
   });
 
 
-    quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (node, delta) {
-        var plaintext = node.innerText
-        var Delta = Quill.import('delta')
-        return new Delta().insert(plaintext)
-    })
+  quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (node, delta) {
+    var plaintext = node.innerText
+    var Delta = Quill.import('delta')
+    return new Delta().insert(plaintext)
+  })
 
   return quill;
 }
 
 export function insertTextEmoji(quill, emoji) {
-    // disable the quill for suppressing the soft keyboard
-    quill.disable();
-    const range = quill.getSelection(false);
-  quill.insertEmbed(range.index, "text", emoji);
+  // disable the quill for suppressing the soft keyboard
+  quill.disable();
+  let range = quill.getSelection(true);
+  let index = range.index;
+  // let index = 0;
+  quill.insertEmbed(index, "text", emoji);
 
-  const nextIndex = range.index + emoji.length;
-    quill.setSelection(nextIndex, Quill.sources.SILENT);
-    quill.enable();
+  index += emoji.length;
+  quill.setSelection(index, Quill.sources.SILENT);
+  quill.enable();
 }
 
 export function insertImageEmoji(quill, emojiImageUrl) {
-    // disable the quill for suppressing the soft keyboard
-    quill.disable();
-    const range = quill.getSelection(false);
+  // disable the quill for suppressing the soft keyboard
+  quill.disable();
+  const range = quill.getSelection(true);
   // add a space before the image
   let index = range.index;
+  // let index = 0;
   quill.insertEmbed(index, "image", emojiImageUrl);
   index += emojiImageUrl.length;
 
-    quill.setSelection(index, Quill.sources.SILENT);
-    quill.enable();
+  quill.setSelection(index, Quill.sources.SILENT);
+  quill.enable();
 }
 
 export function insertText(quill, text) {
-    const range = quill.getSelection(true);
-    let index = range.index ;
-    quill.insertText(range.index, text);
-    index += text.length;
-    
-    quill.insertText(index, " ");
-    index++;
-    quill.setSelection(index, Quill.sources.SILENT);
+  const range = quill.getSelection(true);
+  let index = range.index;
+  quill.insertText(range.index, text);
+  index += text.length;
+
+  quill.insertText(index, " ");
+  index++;
+  quill.setSelection(index, Quill.sources.SILENT);
 }
 
 export function insertImage(quill, imageUrl) {
