@@ -7,13 +7,13 @@
 
 <HeadTitle Title="@Tab"></HeadTitle>
 <SectionContent SectionName="NavHeader">
-    <ul class="hidden flex flex-1 flex-wrap -mb-px text-sm font-medium text-center md:flex" role="tablist">
+    <ul class="hidden flex-1 flex-wrap -mb-px text-sm font-medium text-center xl:flex" role="tablist">
         @foreach (var tab in tabs)
         {
             var id = $"{tab.Name}-tab";
             var activeCss = (currentTab?.Name == tab.Name)
-                ? "inline-block px-4 py-2 border-b-2 rounded-t-lg border-blue-500"
-                : "inline-block px-4 py-2 rounded-t-lg";
+            ? "inline-block px-4 py-2 border-b-2 rounded-t-lg border-blue-500"
+            : "inline-block px-4 py-2 rounded-t-lg";
             <li class="me-2" role="presentation" @key="tab.Name">
                 <button class="@activeCss" id="@id" type="button" role="tab" @onclick="()=>TabClick(tab.Name)">
                     @tab.Description
@@ -24,7 +24,7 @@
 
     @if (currentTab != null)
     {
-        <div class="flex flex-1 ms-4 md:hidden">
+        <div class="flex flex-1 ms-4 xl:hidden">
             <button id="dropdownDefaultButton" @ref="dropdownButton" data-dropdown-toggle="dropdown"
                 class="text-gray-900 bg-gray-200 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center"
                 type="button">
@@ -47,8 +47,7 @@
                         ? "block px-4 py-2 border-b-2 w-full border-blue-500"
                         : "block px-4 py-2 w-full";
                         <li>
-                            <button class="@activeCss" id="@id" type="button"
-                                role="tab" @onclick="()=>TabClick(tab.Name)">
+                            <button class="@activeCss" id="@id" type="button" role="tab" @onclick="()=>TabClick(tab.Name)">
                                 @tab.Description
                             </button>
                         </li>
@@ -57,12 +56,12 @@
             </div>
         </div>
     }
-</SectionContent>
-<!-- Slider main container -->
-<div class="swiper" style="height:100%">
-    <!-- Additional required wrapper -->
-    <div class="swiper-wrapper">
-        @foreach (var tab in tabs)
+    </SectionContent>
+    <!-- Slider main container -->
+    <div class="swiper" style="height:100%">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            @foreach (var tab in tabs)
         {
             <Home_TabPanel Tab="@tab.Name" @ref="TabPanel"></Home_TabPanel>
         }
@@ -134,7 +133,7 @@
         if (firstRender)
         {
             interOpModule = await this.JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Pages/Home.razor.js");
+            "./_content/V2ex.Blazor.Shared/Pages/Home.razor.js");
 
             var initialSlide = Array.IndexOf(tabs.ToArray(), currentTab);
             swiperJsRef = await interOpModule.InvokeAsync<IJSObjectReference>("initialize", thisRef, initialSlide);
