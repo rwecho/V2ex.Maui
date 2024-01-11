@@ -6,7 +6,7 @@
                  class="rounded-lg border-2 border-gray-200 bg-gray-50 !text-base min-h-[4rem] max-h-[8rem] overflow-y-auto !font-normal"></div>
         </div>
 
-        <div id="toolbar" class="flex flex-row w-full items-center justify-center py-2 bg-white">
+        <div id="toolbar" class="flex flex-row w-full items-center justify-center pt-2 bg-white">
             <button class="ql-emoji p-2 rounded-lg " @onclick="ShowEmojiPanel">
                 <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 20 20">
@@ -45,7 +45,7 @@
             </button>
 
             @{
-                var replyButtonClass = "px-4 py-2 ml-auto text-gray-50 bg-gray-400 rounded-lg flex flex-row space-x-2 items-center disabled:bg-gray-500/90" + (isUploading ?
+                var replyButtonClass = "px-4 py-1 ml-auto text-gray-50 bg-gray-400 rounded-lg flex flex-row space-x-2 items-center disabled:bg-gray-500/90" + (isUploading ?
                 "disabled" : "");
             }
             <button class="@replyButtonClass" @onclick="ReplyAsync" disabled="@(isUploading||isReplying)">

@@ -60,8 +60,9 @@ export function initialize(containerRef, thisRef) {
             "ChooseUserListJsInvoke"
           );
 
-          console.log(userList);
-          const range = quill.getSelection(true);
+            console.log(userList);
+
+            const range = quill.selection.savedRange;
           let index = range.index;
           quill.deleteText(index - 1, 1);
           index--;
@@ -102,10 +103,9 @@ export function initialize(containerRef, thisRef) {
 
 export function insertTextEmoji(quill, emoji) {
   // disable the quill for suppressing the soft keyboard
-  quill.disable();
-  let range = quill.getSelection(true);
+    quill.disable();
+    const range = quill.selection.savedRange;
   let index = range.index;
-  // let index = 0;
   quill.insertEmbed(index, "text", emoji);
 
   index += emoji.length;
@@ -116,19 +116,17 @@ export function insertTextEmoji(quill, emoji) {
 export function insertImageEmoji(quill, emojiImageUrl) {
   // disable the quill for suppressing the soft keyboard
   quill.disable();
-  const range = quill.getSelection(true);
+    const range = quill.selection.savedRange;
   // add a space before the image
   let index = range.index;
-  // let index = 0;
   quill.insertEmbed(index, "image", emojiImageUrl);
-  index += emojiImageUrl.length;
-
+  index ++;
   quill.setSelection(index, Quill.sources.SILENT);
   quill.enable();
 }
 
 export function insertText(quill, text) {
-  const range = quill.getSelection(true);
+    const range = quill.selection.savedRange;
   let index = range.index;
   quill.insertText(range.index, text);
   index += text.length;
@@ -139,13 +137,15 @@ export function insertText(quill, text) {
 }
 
 export function insertImage(quill, imageUrl) {
-  const range = quill.getSelection(true);
+    const range = quill.selection.savedRange;
   // add a space before the image
   let index = range.index;
-  quill.insertEmbed(range.index, "text", "\n");
+    quill.insertEmbed(index, "text", "\n");
   index++;
   quill.insertEmbed(index, "image", imageUrl);
-  index += imageUrl.length;
+    index++;
+    quill.insertEmbed(index, "text", "\n");
+    index++;
   quill.setSelection(index, Quill.sources.SILENT);
 }
 

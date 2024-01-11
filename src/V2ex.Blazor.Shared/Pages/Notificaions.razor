@@ -8,13 +8,13 @@
     <CollectionView TItem="NotificationItemViewModel" Items="viewModel.Items"
         RemainingReachedCallback="OnRemainingReached">
         <Header>
-            <div class="flex flex-row p-2 place-content-end border-b-[1px] ">
+            <div class="flex flex-row p-4 place-content-end border-b-[1px] ">
                 <span class="text-gray-400">总共收到消息</span>
                 <span class="text-gray-700 ml-2">133</span>
             </div>
         </Header>
         <ItemContent Context="item">
-            <div class="flex flex-row space-x-2 p-2" @onclick="()=>GotoTopic(item.Id)">
+            <div class="flex flex-row space-x-2 p-3" @onclick="()=>GotoTopic(item.Id)">
                 <img class="w-8 h-8 rounded-full" src="@item.Avatar" alt="avatar" />
 
                 <div class="flex flex-col space-y-2 p-2 pt-0 w-full">
@@ -29,7 +29,7 @@
 
                     @if (item.Payload != null)
                         {
-                            <div class="bg-gray-100 p-2 rounded-sm">
+                            <div class="bg-gray-100 p-2 rounded-lg">
                                 @item.Payload
                             </div>
                         }
