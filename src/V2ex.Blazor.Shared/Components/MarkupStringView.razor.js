@@ -1,4 +1,5 @@
 ﻿import { throttle } from "../utils.js"
+import { decodeEmail } from "../emailDecode.js" 
 export function initialize(containerRef, thisRef) {
 
     const anchorClickThrottle = throttle((href) => {
@@ -21,6 +22,12 @@ export function initialize(containerRef, thisRef) {
         }
     });
 
+    // decode the protected email
+    const replacedHtml = decodeEmail(containerRef.innerHTML)
+    if (replacedHtml !== containerRef.innerHTML)
+    {
+        containerRef.innerHTML = replacedHtml;
+    }
 
     // highlight the code
     const codeElements = containerRef.querySelectorAll("pre code");
