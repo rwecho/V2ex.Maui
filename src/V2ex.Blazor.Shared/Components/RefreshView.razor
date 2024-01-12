@@ -1,5 +1,5 @@
 ﻿@implements IAsyncDisposable
-<div id="@mainElementId"  class="w-full h-full">
+<div id="@mainElementId" class="w-full h-full">
     @ChildContent
 </div>
 
@@ -19,20 +19,21 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
- #if DEBUG
-            // await JSRuntime.InvokeVoidAsync("import",
-            //     "https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
+#if DEBUG
+await JSRuntime.InvokeVoidAsync("import",
+"https://unpkg.com/hammer-touchemulator@0.0.2/touch-emulator.js");
 
-            // await JSRuntime.InvokeVoidAsync("TouchEmulator");
+await JSRuntime.InvokeVoidAsync("TouchEmulator");
 #endif
 
             module = await this.JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", 
-                "./_content/V2ex.Blazor.Shared/Components/RefreshView.razor.js");
+            "import",
+            "./_content/V2ex.Blazor.Shared/Components/RefreshView.razor.js");
 
-            pullToRefresh = await module.InvokeAsync<IJSObjectReference>("initialize", mainElementId, DotNetObjectReference.Create(this));
+            pullToRefresh = await module.InvokeAsync<IJSObjectReference>("initialize", mainElementId,
+            DotNetObjectReference.Create(this));
         }
     }
 

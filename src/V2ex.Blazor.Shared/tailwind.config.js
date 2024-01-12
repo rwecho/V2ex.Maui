@@ -6,5 +6,5 @@ module.exports = {
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
-  safelist: ["bg-gray-900/50", "list-decimal", "list-disc"],
+  safelist: ["bg-gray-900/50", "list-decimal", "list-disc", "overscroll-contain"],
 };

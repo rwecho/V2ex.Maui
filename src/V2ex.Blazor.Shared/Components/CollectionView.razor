@@ -1,7 +1,7 @@
 ﻿@typeparam TItem
 @implements IDisposable
 
-<div id="collection-view" class="h-full">
+<div id="collection-view" class="h-full ">
     <ScrollView @ref="scrollView" OnScrollCallback="OnScroll">
         <div class="h-full flex flex-col">
             @if (Header != null)
@@ -50,7 +50,7 @@
     [Parameter]
     public EventCallback RemainingReachedCallback { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<ScrollEventArgs> OnScrollCallback { get; set; }
 
 
@@ -89,7 +89,7 @@
 
     public async ValueTask ScrollToTop()
     {
-        if(scrollView == null){ return; }
+        if (scrollView == null) { return; }
         await scrollView.ScrollToTop();
     }
 

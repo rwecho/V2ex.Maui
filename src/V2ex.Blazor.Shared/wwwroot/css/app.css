@@ -1792,6 +1792,10 @@ input:checked + .toggle-bg {
   overflow-x: hidden;
 }
 
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
 .text-ellipsis {
   text-overflow: ellipsis;
 }
