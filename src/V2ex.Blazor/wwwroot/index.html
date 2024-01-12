@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ios:h-full ios:overflow-hidden ios:relative">
 
 <head>
     <meta charset="utf-8" />
@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="_content/V2ex.Blazor.Shared/lib/quill/quill.snow.css">
 </head>
 
-<body class="h-screen overflow-hidden overscroll-contain">
+<!-- fix the scroll behavior on iOS: https://stackoverflow.com/a/29895108/1353891 -->
+
+<body class="h-screen overflow-hidden overscroll-contain ios:h-full ios:overflow-auto ios:relative">
     <div id="app" class="h-full">
         <div role="status" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <svg aria-hidden="true" class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

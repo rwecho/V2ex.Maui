@@ -2690,6 +2690,11 @@ listeners can take over.
   color: rgb(28 100 242 / var(--tw-text-opacity));
 }
 
+:is(.ios .ios\:bg-red-100) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 232 232 / var(--tw-bg-opacity));
+}
+
 :is([dir="rtl"] .peer:focus ~ .rtl\:peer-focus\:left-auto) {
   left: auto;
 }
