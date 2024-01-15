@@ -34,6 +34,9 @@
     private NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
+    private TopicHistoryService TopicHistoryService { get; set; } = null!;
+
+    [Inject]
     private ILogger<Topic> Logger { get; set; } = null!;
     override protected void OnInitialized()
     {
@@ -47,6 +50,14 @@
         if (string.IsNullOrEmpty(link))
             return;
 
+        this.TopicHistoryService.Push(new Services.Topic(
+            this.ViewModel.Id,
+            this.ViewModel.Title.ToString(),
+            this.ViewModel.UserName,
+            this.ViewModel.Avatar,
+            this.ViewModel.NodeName,
+            this.ViewModel.Replies
+        ));
         this.NavigationManager.NavigateTo(link);
         this.Logger.LogInformation($"GoToTopic {link}");
     }

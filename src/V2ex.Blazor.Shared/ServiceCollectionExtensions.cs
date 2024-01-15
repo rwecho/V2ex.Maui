@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<ChatGPTService>();
         services.AddScoped<EmojiService>();
+        services.AddScoped<TopicHistoryService>();
         services.AddScoped<ApiService>();
         services.AddScoped<UtilsJsInterop>();
         return services;

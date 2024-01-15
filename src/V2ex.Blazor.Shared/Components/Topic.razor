@@ -3,7 +3,7 @@
         <a href="@ViewModel.AvatarLink"
             class="w-10 h-10 flex flex-row items-center mr-2 rounded-full shadow-md overflow-hidden"
             @onclick:stopPropagation="true">
-            @if (ViewModel.Avatar != null)
+            @if (!string.IsNullOrEmpty(ViewModel.Avatar))
             {
                 <img src="@ViewModel.Avatar" class="w-full h-full" alt="avatar">
             }
@@ -17,7 +17,7 @@
             </div>
 
             <div class="flex flex-row space-x-2">
-                @if (ViewModel.Replies > 0)
+                @if (ViewModel.Replies > 0 &&  ViewModel.LastRepliedText != null )
                 {
                     <span class="text-sm text-gray-500">@ViewModel.LastRepliedText</span>
                 }
@@ -57,22 +57,31 @@
     private NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
+    private TopicHistoryService TopicHistoryService { get; set; } = null!;
+    [Inject]
     private ILogger<Topic> Logger { get; set; } = null!;
     override protected void OnInitialized()
     {
+        
     }
 
 
     private void GoToTopic()
     {
-        var link = ViewModel.Link;
-
-        if (string.IsNullOrEmpty(link))
+        if (string.IsNullOrEmpty(ViewModel.Id))
         {
             return;
         }
 
-        this.NavigationManager.NavigateTo(link);
-        this.Logger.LogInformation($"GoToTopic {link}");
+        this.TopicHistoryService.Push(new Services.Topic(
+            this.ViewModel.Id,
+            this.ViewModel.Title.ToString(),
+            this.ViewModel.UserName,
+            this.ViewModel.Avatar,
+            this.ViewModel.NodeName,
+            this.ViewModel.Replies
+        ));
+        this.NavigationManager.NavigateTo($"/t/{ViewModel.Id}");
+        this.Logger.LogInformation($"GoToTopic {ViewModel.Id}");
     }
 }

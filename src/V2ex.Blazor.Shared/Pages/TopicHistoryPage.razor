@@ -1,0 +1,58 @@
+﻿@page "/history"
+
+<PageTitle>浏览历史</PageTitle>
+
+@if (topics != null)
+{
+    <RefreshView Refresh="LoadAsync">
+        <CollectionView TItem="TopicViewModel" Items="topics">
+            <ItemContent Context="item">
+                <Topic ViewModel="item"></Topic>
+            </ItemContent>
+            <Footer>
+                <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10">
+                    @if(topics.Count >0)
+                    {
+                        <div>全部加载完成</div>
+                    }
+                    else
+                    {
+                        <div>暂无浏览记录</div>
+                    }
+                </div>
+            </Footer>
+        </CollectionView>
+    </RefreshView>
+}
+@code {
+    [Inject]
+    private TopicHistoryService TopicHistoryService { get; set; } = default!;
+    private IReadOnlyList<TopicViewModel>? topics;
+
+    protected override Task OnInitializedAsync()
+    {
+        return LoadAsync();
+    }
+
+    private Task LoadAsync()
+    {
+        var topics = this.TopicHistoryService.GetList();
+
+        this.topics = topics.Select(o => new TopicViewModel(
+            o.Id,
+            "",
+            new MarkupString(o.Title),
+            null,
+            o.Avatar,
+            null,
+            o.UserName,
+            "",
+            null,
+            null,
+            o.NodeName,
+            null,
+            o.Replies
+        )).ToList();
+        return Task.CompletedTask;
+    }
+}

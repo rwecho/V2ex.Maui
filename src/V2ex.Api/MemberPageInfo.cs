@@ -63,6 +63,8 @@ public class MemberPageInfo
         [XPath("//td/a[@class='count_livid']")]
         [SkipNodeNotFound]
         public int Replies { get; init; }
+
+        public string Id => UrlUtilities.ParseId(this.Link);
     }
 
     [HasXPath]

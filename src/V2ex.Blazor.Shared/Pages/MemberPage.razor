@@ -36,12 +36,12 @@
                     @foreach (var topic in memberInfo.Topics)
                     {
                         var viewModel = new TopicViewModel(
-                        "", // id
+                        topic.Id, // id
                         "", // node id
                         new MarkupString(topic.Title),
                         topic.Link,
-                        "", // avatar
-                        "", // avatar link
+                        memberInfo.Avatar, // avatar
+                        $"/t/{topic.Id}", // avatar link
                         topic.UserName,
                         "", // user link
                         topic.CreatedText == null? null: new MarkupString(topic.CreatedText),
@@ -52,8 +52,6 @@
                         );
                         <Topic2 ViewModel="@viewModel"></Topic2>
                     }
-
-
                 </div>
 
 
