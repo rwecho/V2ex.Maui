@@ -98,7 +98,7 @@ public class ApiService
         return string.Join("&", queryString.Select(x => $"{x.Key}={x.Value}"));
     }
 
-    public async Task<NewsInfo> GetTabTopics(string? tab= null)
+    public async Task<NewsInfo> GetTabTopics(string? tab = null)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "/?tab=" + tab);
         request.Headers.Add("Referer", $"{UrlUtilities.BASE_URL}/");
@@ -119,7 +119,7 @@ public class ApiService
     {
         var url = $"/tag/{tagName}?p={page}";
         var response = await this.HttpClient.GetAsync(url);
-        var tagInfo =  await response.GetEncapsulatedData<TagInfo>(this.Logger);
+        var tagInfo = await response.GetEncapsulatedData<TagInfo>(this.Logger);
         return tagInfo;
     }
 
@@ -287,7 +287,7 @@ public class ApiService
             var redirectRequest = new HttpRequestMessage(HttpMethod.Get, response.Headers.Location);
             response = await this.HttpClient.SendAsync(redirectRequest);
         }
-        else if( response.StatusCode == System.Net.HttpStatusCode.OK)
+        else if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             var problem = await response.GetEncapsulatedData<Problem>(this.Logger);
             throw new CreateTopicException(problem);
@@ -345,7 +345,7 @@ public class ApiService
         return result;
     }
 
- 
+
 
     public async Task<ThanksInfo> ThanksMoney()
     {
@@ -486,7 +486,7 @@ public class ApiService
         var response = await this.HttpClient.GetAsync(url);
         var result = await response.GetEncapsulatedData<UnitInfo>(this.Logger);
         return result;
-     }
+    }
 
     public async Task<TopicInfo> ReplyTopic(string topicId, string content, string once)
     {
