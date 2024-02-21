@@ -35,10 +35,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             interopModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/V2ex.Blazor.Shared/Main.razor.js");
+            "./_content/V2ex.Blazor.Shared/Main.razor.js");
 
             await interopModule.InvokeVoidAsync("initialize", GetPlatform());
         }

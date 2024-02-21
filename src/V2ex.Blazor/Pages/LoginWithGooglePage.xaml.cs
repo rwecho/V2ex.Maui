@@ -7,9 +7,9 @@ namespace V2ex.Blazor.Pages;
 
 public partial class LoginWithGooglePage : ContentPage
 {
-	public LoginWithGooglePage(string once, Action<bool> loginCallback)
-	{
-		InitializeComponent();
+    public LoginWithGooglePage(string once, Action<bool> loginCallback)
+    {
+        InitializeComponent();
         this.BindingContext = this.ViewModel =
             InstanceCreator.Create<LoginWithGooglePageViewModel>();
         this.ViewModel.Once = once;

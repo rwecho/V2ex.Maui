@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 <div class="flex flex-col w-full h-full antialiased bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
+    <NavBar ShowBackButton="true"></NavBar>
     <div class="flex-1 overflow-hidden">
         <ErrorBoundary>
             <ChildContent>
@@ -9,7 +10,6 @@
                 @{
                     OnError(@ex);
                 }
-
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     @if (AppConstants.IsDebug)
                     {

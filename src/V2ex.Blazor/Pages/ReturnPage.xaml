@@ -8,26 +8,26 @@
               x:DataType="local:ReturnPageViewModel"
              x:Name="Root"
              Shell.BackgroundColor="Red"
-             NavigationPage.HasNavigationBar="{Binding HasNavigationBar}">
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="#f3f4f6" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
     <NavigationPage.TitleView>
         <HorizontalStackLayout VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding PageTitle}" 
-                   TextColor="#1f2937" 
-                   FontSize="18" 
+            <Label Text="{Binding PageTitle}"
+                   TextColor="#1f2937"
+                   FontSize="18"
                    FontAttributes="Bold"
                    FontFamily="sans-serif-medium" />
         </HorizontalStackLayout>
     </NavigationPage.TitleView>
 
-    <BlazorWebView x:Name="blazorWebView" 
-                    HostPage="wwwroot/index.html" 
+    <BlazorWebView x:Name="blazorWebView"
+                    HostPage="wwwroot/index.html"
                     StartPath="{Binding TargetLocation}"
                     local:WebViewEvents.TitleChangeCommand="{Binding TitleChangeCommand}">
         <BlazorWebView.RootComponents>
-            <RootComponent x:Name="RootComponent" Selector="#app" ComponentType="{x:Type shared:Main}"  />
+            <RootComponent x:Name="RootComponent" Selector="#app" ComponentType="{x:Type shared:Main}" />
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 </ContentPage>
