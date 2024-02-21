@@ -1,0 +1,27 @@
+<nav class="w-full bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-50 ">
+    <div class="px-2 py-2 flex items-center">
+        <button @onclick="GoBack"
+                class="absolute left-0 px-2 py-2 inline-flex items-center text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 8-4 4 4 4" />
+            </svg>
+        </button>
+        <div class="mx-auto text-gray-600 font-semibold text-lg">
+            <SectionOutlet SectionName="NavHeader"></SectionOutlet>
+        </div>
+        <div>
+            <!-- commands -->
+            <SectionOutlet SectionName="NavCommands"></SectionOutlet>
+        </div>
+    </div>
+</nav>
+
+@code {
+    [Inject]
+    private INativeNavigation Navigation { get; set; } = null!;
+
+    private Task GoBack()
+    {
+        return Navigation.GoBack();
+    }
+}
