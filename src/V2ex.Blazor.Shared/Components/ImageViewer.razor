@@ -1,27 +1,51 @@
 ﻿@implements IAsyncDisposable
 <div id="popup-modal" @ref="modalRef"
      tabindex="-1"
-     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full md:inset-0 !h-full max-h-full">
-    <div class="relative p-0 w-full max-w-md max-h-full">
+     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-end md:items-center w-full md:inset-0 !h-full max-h-full"
+     @ontouchstart:stopPropagation
+     @ontouchend:stopPropagation
+     @ontouchmove:stopPropagation
+     @ontouchstart:preventDefault
+     @ontouchend:preventDefault
+     @ontouchmove:preventDefault
+    >
+    <div class="relative flex p-0 w-full max-w-md h-full max-h-full">
         <!-- Modal header -->
-        <div class="absolute w-full z-10 flex items-center justify-between p-4 border-b dark:border-gray-600 bg-gray-800 bg-opacity-20">
+        <div class="absolute w-full bottom-0 z-10 flex items-center justify-between p-4 bg-gray-800 bg-opacity-20">
             <span class="text-white ">
                 @activeIndex/@Images.Count
             </span>
-            <button type="button" @onclick="HideModal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="blazor-error-ui">
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
+
+            <div class="flex space-x-1">
+                <button type="button" @onclick="ShareImage" class="text-gray-50 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="blazor-error-ui">
+                    <svg class="w-3 h-3 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z" />
+                    </svg>
+                    <span class="sr-only">Share Image</span>
+                </button>
+                <button type="button" @onclick="DownloadImage" class="text-gray-50 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="blazor-error-ui">
+                    <svg class="w-3 h-3 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01" />
+                    </svg>
+                    <span class="sr-only">Download Image</span>
+                </button>
+                <button type="button" @onclick="HideModal" class="text-gray-50 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="blazor-error-ui">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
         </div>
-        <div class="relative bg-white shadow dark:bg-gray-700 overflow-hidden">
+        <div class="relative shadow dark:bg-gray-700 overflow-hidden">
             <div class="swiper" style="height:100%" @ref="swiperRef">
                 <div class="swiper-wrapper">
                     @foreach (var image in Images)
                     {
                         <div class="swiper-slide">
-                            <img src="@image" class="w-full h-full object-contain" />
+                            <div class="swiper-zoom-container">
+                                <img src="@image" class="w-full h-full object-contain" />
+                            </div>
                         </div>
                     }
                 </div>
@@ -44,6 +68,21 @@
 
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    private IShare Share { get; set; } = null!;
+    [Inject]
+    private IFileSaver FileSaver { get; set; } = null!;
+
+    [Inject]
+    private IHttpClientFactory HttpClientFactory { get; set; } = null!;
+
+    [Inject]
+    private IToastService Toast { get; set; } = null!;
+
+    [Inject]
+    private ILogger<ImageViewer> Logger { get; set; } = null!;
+
     private DotNetObjectReference<ImageViewer>? thisRef;
 
     protected override void OnInitialized()
@@ -106,6 +145,43 @@
         this.activeIndex = activeIndex + 1;
         this.InvokeAsync(this.StateHasChanged);
         return Task.CompletedTask;
+    }
+
+    private Task ShareImage()
+    {
+        if (activeIndex < 0 || activeIndex >= Images.Count)
+        {
+            return Task.CompletedTask;
+        }
+        var url = Images[activeIndex];
+
+        return Share.ShareUrl("来自 V2ex", url);
+    }
+
+    private async Task DownloadImage()
+    {
+        if (activeIndex < 0 || activeIndex >= Images.Count)
+        {
+            return;
+        }
+        var url = Images[activeIndex];
+
+        try
+        {
+            var httpClient = HttpClientFactory.CreateClient("api");
+
+            var response = await httpClient.GetAsync(url);
+            var imageBytes = await response.Content.ReadAsByteArrayAsync();
+
+            var fileName = url.Split('/').Last();
+            await FileSaver.SaveAs(fileName, imageBytes);
+            await Toast.Show("下载成功.");
+        }
+        catch (Exception ex)
+        {
+            this.Logger.LogWarning(ex, "Failed to download image.");
+            await Toast.Show("下载失败");
+        }
     }
 
     public async ValueTask DisposeAsync()

@@ -1,4 +1,6 @@
-﻿namespace V2ex.Blazor.Services;
+﻿using CommunityToolkit.Maui.Storage;
+
+namespace V2ex.Blazor.Services;
 
 public class NativeBrowser : IBrowser
 {

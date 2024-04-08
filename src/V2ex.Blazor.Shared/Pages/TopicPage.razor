@@ -272,12 +272,12 @@
                                 }
                             }
 
-                            <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
+                           @*  <button class="text-sm text-gray-400 p-2 flex flex-row space-x-2 items-center font-medium bg-gray-50 rounded-lg"
                                     @onclick="ScrollToTop">
                                 <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
                                 </svg>
-                            </button>
+                            </button> *@
                         </div>
                     </div>
                 }
@@ -693,7 +693,7 @@
         return Task.CompletedTask;
     }
 
-    private bool isIgnoring, isFavoriting, isThanking;
+    private bool isFavoriting, isThanking;
 
     private async Task UnIgnoreTopic()
     {
@@ -703,7 +703,6 @@
         }
         try
         {
-            isIgnoring = true;
             var topicInfo = await this.ApiService.UnignoreTopic(this.Id.ToString(), this.viewModel.Once);
             viewModel.Ignored = false;
             viewModel.Once = topicInfo.Once;
@@ -712,10 +711,6 @@
         catch (Exception exception)
         {
             await this.Toast.Show(exception.Message);
-        }
-        finally
-        {
-            isIgnoring = false;
         }
     }
 
@@ -736,7 +731,6 @@
         }
         try
         {
-            isIgnoring = true;
             var topicInfo = await this.ApiService.IgnoreTopic(this.Id.ToString(), this.viewModel.Once);
             viewModel.Ignored = true;
             viewModel.Once = topicInfo.Once;
@@ -745,10 +739,6 @@
         catch (Exception exception)
         {
             await this.Toast.Show(exception.Message);
-        }
-        finally
-        {
-            isIgnoring = false;
         }
     }
 

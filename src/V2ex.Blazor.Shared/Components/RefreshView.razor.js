@@ -3,6 +3,9 @@
    return PullToRefresh.init({
        mainElement: id,
        triggerElement: id,
+       instructionsPullToRefresh: "下拉刷新",
+       instructionsReleaseToRefresh: "释放刷新",
+       instructionsRefreshing: "刷新中...",
        onRefresh() {
             thisRef.invokeMethodAsync('OnRefreshAsync');
        },

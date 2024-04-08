@@ -30,9 +30,7 @@ export function initializeSwiper(thisRef, swiperRef) {
         initialSlide: 0,
 
         touchStartPreventDefault: false,
-        zoom: {
-            maxRatio: 3,
-        },
+        zoom: true,
         // If we need pagination
         pagination: {
             el: '.swiper-pagination',

@@ -55,6 +55,7 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddBlazorShared();
         builder.Services.AddAuthorizationCore();
+        builder.Services.AddTransient<Services.IFileSaver, Services.NativeFileSaver>();
         builder.Services.AddTransient<Services.IBrowser, Services.NativeBrowser>();
         builder.Services.AddTransient<ApiHttpClientHandler>();
         builder.Services.AddTransient<AiHttpClientHandler>();
