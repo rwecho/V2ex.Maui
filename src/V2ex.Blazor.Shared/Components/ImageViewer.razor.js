@@ -22,7 +22,7 @@
     return new Modal(modalRef, modalOptions, instanceOptions);
 }
 
-export function initializeSwiper(swiperRef) {
+export function initializeSwiper(thisRef, swiperRef) {
     const swiper = new Swiper(swiperRef, {
         // Optional parameters
         direction: 'horizontal',
@@ -30,7 +30,9 @@ export function initializeSwiper(swiperRef) {
         initialSlide: 0,
 
         touchStartPreventDefault: false,
-
+        zoom: {
+            maxRatio: 3,
+        },
         // If we need pagination
         pagination: {
             el: '.swiper-pagination',
@@ -51,24 +53,10 @@ export function initializeSwiper(swiperRef) {
                
             },
             slideChange: function () {
+                thisRef.invokeMethodAsync("OnSlideChangeAsync", this.activeIndex);
             },
         },
     });
 
     return swiper;
-}
-
-export function initializePinchZoom(swiperRef) {
-    const images = swiperRef.querySelectorAll('.swiper-slide')
-
-    const pinches = Array.from(images)
-        .map(img => {
-            return new PinchZoom.default(img, {
-                draggableUnzoomed: false,
-                tapZoomFactor: 2,
-                zoomOutFactor: 1.3,
-                useMouseWheel: true
-            });
-        })
-    return pinches
 }

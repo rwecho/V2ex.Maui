@@ -1480,6 +1480,10 @@ input:checked + .toggle-bg {
   width: 100%;
 }
 
+.min-w-\[0\] {
+  min-width: 0;
+}
+
 .max-w-lg {
   max-width: 32rem;
 }
@@ -2039,6 +2043,10 @@ input:checked + .toggle-bg {
   background-color: rgb(244 244 245 / var(--tw-bg-opacity));
 }
 
+.bg-opacity-20 {
+  --tw-bg-opacity: 0.2;
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2057,6 +2065,11 @@ input:checked + .toggle-bg {
 
 .fill-red-400 {
   fill: #F98080;
+}
+
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .p-0 {
@@ -2238,12 +2251,12 @@ input:checked + .toggle-bg {
   font-weight: 500;
 }
 
-.font-semibold {
-  font-weight: 600;
-}
-
 .font-normal {
   font-weight: 400;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .uppercase {
@@ -3025,10 +3038,6 @@ listeners can take over.
 
   .md\:flex {
     display: flex;
-  }
-
-  .md\:hidden {
-    display: none;
   }
 
   .md\:h-auto {
