@@ -2,17 +2,17 @@
 
     // todo: prevent touchmove, https://github.com/dotnet/maui/issues/21699
     modalRef.addEventListener('touchstart', function (e) {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
     });
 
     modalRef.addEventListener('touchmove', function (e) {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
     });
 
     modalRef.addEventListener('touchend', function (e) {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
     });
 
