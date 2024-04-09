@@ -7,155 +7,158 @@
     @if (viewModel != null)
     {
         <RefreshView Refresh="OnRefreshAsync">
-            <ScrollView RemainingReachedCallback="OnRemainingReached">
-                <div class="grid grid-cols-1 divide-y ">
-                    <div class="flex flex-col">
-                        <div class="flex flex-row justify-center select-none px-4 py-2 ">
-                            <a href="@viewModel.UserLink" class="flex flex-row items-center">
-                                <img class="w-10 h-10 rounded-full shadow-md" src="@viewModel.Avatar" alt="avatar">
-                            </a>
-                            <div class="flex flex-col flex-1 mx-2 justify-center min-w-[0]">
-                                <div class="flex flex-row">
-                                    <a href="@viewModel.UserLink">
-                                        <span class="text-sm text-gray-900">@viewModel.UserName</span>
+            <ScrollView RemainingReachedCallback="OnRemainingReached"
+                OnScrollCallback="OnScroll">
+                <div class="topic-header">
+                    <div class="grid grid-cols-1 divide-y ">
+                        <div class="flex flex-col">
+                            <div class="flex flex-row justify-center select-none px-4 py-2 ">
+                                <a href="@viewModel.UserLink" class="flex flex-row items-center">
+                                    <img class="w-10 h-10 rounded-full shadow-md" src="@viewModel.Avatar" alt="avatar">
+                                </a>
+                                <div class="flex flex-col flex-1 mx-2 justify-center min-w-[0]">
+                                    <div class="flex flex-row">
+                                        <a href="@viewModel.UserLink">
+                                            <span class="text-sm text-gray-900">@viewModel.UserName</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex flex-row text-xs text-gray-500 space-x-1 whitespace-nowrap overflow-hidden">
+                                        <span>@viewModel.CreatedText</span>
+                                        <span>@viewModel.RepliesCount 评论</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center ">
+                                    <a href="@viewModel.NodeLink">
+                                        <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
                                     </a>
                                 </div>
-
-                                <div class="flex flex-row text-xs text-gray-500 space-x-1 whitespace-nowrap overflow-hidden">
-                                    <span>@viewModel.CreatedText</span>
-                                    <span>@viewModel.RepliesCount 评论</span>
-                                </div>
                             </div>
-                            <div class="flex items-center ">
-                                <a href="@viewModel.NodeLink">
-                                    <span class="text-sm text-gray-50 bg-gray-400 rounded-full px-2 py-1">@viewModel.NodeName</span>
-                                </a>
+
+                            <div class="flex flex-row select-auto px-4 py-2">
+                                <span class="text-lg font-semibold text-gray-800">@viewModel.Title</span>
                             </div>
                         </div>
 
-                        <div class="flex flex-row select-auto px-4 py-2">
-                            <span class="text-lg font-semibold text-gray-800">@viewModel.Title</span>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col divide-y">
-                        @if (formattedContent == null)
-                        {
-                            <div class="flex flex-col select-auto px-4 py-2 text-start">
-                                <MarkupStringView Content="viewModel.Content"
-                                                  ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
-                            </div>
-                        }
-                        else
-                        {
-                            <div id="accordion-collapse" data-accordion="open">
-                                <h2 id="accordion-collapse-heading-1">
-                                    <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
-                                        <span>原文</span>
-                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
-                                        </svg>
-                                    </button>
-                                </h2>
-                                <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-                                    <div class="flex flex-col select-auto px-4 py-2 text-start">
-                                        <MarkupStringView Content="viewModel.Content"
-                                                          ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
-                                    </div>
-                                </div>
-                                <h2 id="accordion-collapse-heading-2">
-                                    <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200  gap-3" data-accordion-target="#accordion-collapse-body-2" aria-expanded="true" aria-controls="accordion-collapse-body-2">
-                                        <span>AI 优化</span>
-                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
-                                        </svg>
-                                    </button>
-                                </h2>
-                                <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
-                                    <div class="flex flex-col select-auto px-4 py-2 text-start">
-                                        <MarkupStringView @ref="formattedMarkupStringViewRef" Content="formattedContent"
-                                                          ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-                @if (viewModel.Supplements.Any())
-                {
-                    <div class="flex flex-col divide-y divide-x-2">
-                        <div></div>
-                        @for (int i = 0; i < viewModel.Supplements.Count; i++)
-                        {
-                            var supplement = viewModel.Supplements[i];
-                            <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
-                                <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @(new MarkupString(supplement.CreatedText ?? ""))</span>
-                                <MarkupStringView Content="supplement.Content"></MarkupStringView>
-                            </div>
-                        }
-                    </div>
-                }
-
-                <div class="flex flex-row items-center justify-items-center p-4  bg-gray-100 text-gray-400 text-sm">
-                    <div class="flex space-x-2">
-                        <div class="hidden md:flex">@viewModel.LastReplyTime?.ToString("yyyy-MM-dd HH:mm:ss")</div>
-                    </div>
-
-                    <div class="flex-1"></div>
-                    <div class="hidden md:flex">
-                        @if (viewModel.Tags.Any())
-                        {
-                            <div class="flex flex-row select-auto space-x-2">
-                                @foreach (var tag in viewModel.Tags)
-                                {
-                                    <button @onclick="()=>GoToTagPage(tag)">
-                                        <span class="text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
-                                    </button>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    @if (IsAIEnable)
-                    {
-                        <div class="ms-2 flex flex-row ">
-                            @if (isAIGenerating)
+                        <div class="flex flex-col divide-y">
+                            @if (formattedContent == null)
                             {
-                                <button class="px-2 py-1 rounded-full text-sm flex space-x-2">
-                                    <div role="status">
-                                        <svg aria-hidden="true"
-                                             class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                                  fill="currentColor" />
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                                  fill="currentFill" />
-                                        </svg>
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </button>
+                                <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                    <MarkupStringView Content="viewModel.Content"
+                                                    ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                </div>
                             }
                             else
                             {
-                                <button class="px-2 py-1 rounded-full text-sm flex space-x-2" @onclick="FormatTopicAsync">
-                                    <svg class="w-4 h-4 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 21">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12.555 5.117 2.828 2.828M14 16v4m-2-2h4M3 6v4M1 8h4m11.01-6.339 2.828 2.829L3.99 19.339 1.161 16.51 16.01 1.661Z" />
-                                        <path fill="currentColor" d="M16 13h-2v2h2v-2ZM10 2H8v2h2V2ZM7 4H5v2h2V4ZM4 2H2v2h2V2Zm15 8h-2v2h2v-2Zm0 5h-2v2h2v-2Z" />
-                                    </svg>
-                                    <span class="hidden md:flex">
-                                        AI
-                                    </span>
-                                </button>
+                                <div id="accordion-collapse" data-accordion="open">
+                                    <h2 id="accordion-collapse-heading-1">
+                                        <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
+                                            <span>原文</span>
+                                            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
+                                            </svg>
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
+                                        <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                            <MarkupStringView Content="viewModel.Content"
+                                                            ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                        </div>
+                                    </div>
+                                    <h2 id="accordion-collapse-heading-2">
+                                        <button type="button" class="flex items-center justify-between w-full px-4 py-2 text-gray-500 border border-b-0 border-gray-200  gap-3" data-accordion-target="#accordion-collapse-body-2" aria-expanded="true" aria-controls="accordion-collapse-body-2">
+                                            <span>AI 优化</span>
+                                            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
+                                            </svg>
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
+                                        <div class="flex flex-col select-auto px-4 py-2 text-start">
+                                            <MarkupStringView @ref="formattedMarkupStringViewRef" Content="formattedContent"
+                                                            ExternalLinkClickedCallback="OnExternalLickClicked"></MarkupStringView>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    @if (viewModel.Supplements.Any())
+                    {
+                        <div class="flex flex-col divide-y divide-x-2">
+                            <div></div>
+                            @for (int i = 0; i < viewModel.Supplements.Count; i++)
+                            {
+                                var supplement = viewModel.Supplements[i];
+                                <div class="flex flex-col select-auto px-4 py-2 space-y-1 bg-yellow-50">
+                                    <span class="text-sm text-gray-400">第 @(i + 1) 条附言 @(new MarkupString(supplement.CreatedText ?? ""))</span>
+                                    <MarkupStringView Content="supplement.Content"></MarkupStringView>
+                                </div>
                             }
                         </div>
                     }
 
-                    <button class="ms-4 active:bg-gray-50" @onclick="ShowTopicMenuPopupAsync">
-                        <svg class="w-4 h-4 text-gray-400 dark:text-white" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                    </button>
+                    <div class="flex flex-row items-center justify-items-center p-4  bg-gray-100 text-gray-400 text-sm">
+                        <div class="flex space-x-2">
+                            <div class="hidden md:flex">@viewModel.LastReplyTime?.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                        </div>
+
+                        <div class="flex-1"></div>
+                        <div class="hidden md:flex">
+                            @if (viewModel.Tags.Any())
+                            {
+                                <div class="flex flex-row select-auto space-x-2">
+                                    @foreach (var tag in viewModel.Tags)
+                                    {
+                                        <button @onclick="()=>GoToTagPage(tag)">
+                                            <span class="text-gray-50 bg-gray-400 rounded-full px-2 py-1">@tag</span>
+                                        </button>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        @if (IsAIEnable)
+                        {
+                            <div class="ms-2 flex flex-row ">
+                                @if (isAIGenerating)
+                                {
+                                    <button class="px-2 py-1 rounded-full text-sm flex space-x-2">
+                                        <div role="status">
+                                            <svg aria-hidden="true"
+                                                class="w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                    fill="currentColor" />
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                    fill="currentFill" />
+                                            </svg>
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="px-2 py-1 rounded-full text-sm flex space-x-2" @onclick="FormatTopicAsync">
+                                        <svg class="w-4 h-4 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 21">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12.555 5.117 2.828 2.828M14 16v4m-2-2h4M3 6v4M1 8h4m11.01-6.339 2.828 2.829L3.99 19.339 1.161 16.51 16.01 1.661Z" />
+                                            <path fill="currentColor" d="M16 13h-2v2h2v-2ZM10 2H8v2h2V2ZM7 4H5v2h2V4ZM4 2H2v2h2V2Zm15 8h-2v2h2v-2Zm0 5h-2v2h2v-2Z" />
+                                        </svg>
+                                        <span class="hidden md:flex">
+                                            AI
+                                        </span>
+                                    </button>
+                                }
+                            </div>
+                        }
+
+                        <button class="ms-4 active:bg-gray-50" @onclick="ShowTopicMenuPopupAsync">
+                            <svg class="w-4 h-4 text-gray-400 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 divide-y">
@@ -203,6 +206,8 @@
                         <div class="flex flex-row me-2 md:me-4 w-full">
                             <div @onclick="()=>ShowReplyInput()" class="p-2 w-full z-20 text-sm text-gray-600 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
                         </div>
+
+                        @topicHeaderVisible
 
                         <div class="flex flex-row md:space-x-4 ">
                             @if (isFavoriting)
@@ -402,9 +407,7 @@
     </div>
 </div>
 
-<PopupMenu @ref="topicPopupMenu"
-    Menus="TopicPopupMenus"
-    ></PopupMenu>
+<PopupMenu @ref="topicPopupMenu" Menus="TopicPopupMenus"></PopupMenu>
 @code {
 
     [Parameter]
@@ -442,6 +445,8 @@
     private ChatGPTService ChatGPTService { get; set; } = null!;
 
     private TopicPageViewModel? viewModel;
+
+    private bool topicHeaderVisible = true;
 
     private DotNetObjectReference<TopicPage>? thisRef;
     private ElementReference? containerRef;
@@ -560,6 +565,17 @@
             return;
         }
         await this.LoadAsync(this.viewModel.CurrentPage + 1);
+    }
+
+    private async Task OnScroll(ScrollEventArgs e)
+    {
+        if(interopModule == null)
+        {
+            return;
+        }
+        topicHeaderVisible = await interopModule.InvokeAsync<bool>("isTopicHeaderVisible", e.ScrollTop);
+
+        await this.InvokeAsync(StateHasChanged);
     }
 
     private Task ScrollToTop()

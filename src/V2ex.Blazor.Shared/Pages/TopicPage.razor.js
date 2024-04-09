@@ -50,3 +50,14 @@ export function initializeReplyInputModal(containerRef, thisRef) {
 
     return new Modal($modalElement, modalOptions, instanceOptions);
 }
+
+
+export function isTopicHeaderVisible(scrollTop) {
+    const header = document.querySelector('.topic-header');
+    if (!header) {
+        return false;
+    }
+    const { height } = header.getBoundingClientRect();
+
+    return scrollTop < height;
+}
