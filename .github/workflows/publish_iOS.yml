@@ -8,43 +8,41 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Import Code-Signing Certificates
-      uses: Apple-Actions/import-codesign-certs@v1
-      with:
-        # The certificates in a PKCS12 file encoded as a base64 string.
-        p12-file-base64: ${{ secrets.CERTIFICATES_P12_BASE64 }}
-        # The password used to import the PKCS12 file.
-        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          # The certificates in a PKCS12 file encoded as a base64 string.
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12_BASE64 }}
+          # The password used to import the PKCS12 file.
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-    - name: Download Apple Provisioning Profiles
-      # You may pin to the exact commit or the version.
-      # uses: Apple-Actions/download-provisioning-profiles@3167792207a5b26099bc0ca22b5010a323dd2a0b
-      uses: Apple-Actions/download-provisioning-profiles@v1
-      with:
-        # The bundle identifier of the application
-        bundle-id: top.rwecho.v2ex.maui
-        # The AppStore Connect API Key Issuer Identifier
-        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-        # The Key ID for AppStore Connect API
-        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-        # The PKCS8 format Private Key for AppStore Connect API
-        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-          
+      - name: Download Apple Provisioning Profiles
+        # You may pin to the exact commit or the version.
+        # uses: Apple-Actions/download-provisioning-profiles@3167792207a5b26099bc0ca22b5010a323dd2a0b
+        uses: Apple-Actions/download-provisioning-profiles@v1
+        with:
+          # The bundle identifier of the application
+          bundle-id: top.rwecho.v2ex.maui
+          # The AppStore Connect API Key Issuer Identifier
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          # The Key ID for AppStore Connect API
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          # The PKCS8 format Private Key for AppStore Connect API
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
-    - name: dotnet publish
-      run: dotnet publish -c Release -f:net8.0-ios /p:ArchiveOnBuild=true /p:CodesignKey=${{ secrets.CODESIGN_KEY }}
-    
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.0.0
-      with:
-        path: '**/*.ipa'
+      - name: dotnet publish
+        run: dotnet publish  src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f:net8.0-ios /p:ArchiveOnBuild=true /p:CodesignKey="${{ secrets.CODESIGN_KEY }}"
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          path: "**/*.ipa"
