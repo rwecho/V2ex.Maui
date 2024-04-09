@@ -39,6 +39,9 @@ jobs:
           # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
       - name: dotnet publish
         run: dotnet publish  src/V2ex.Blazor/V2ex.Blazor.csproj -c Release -f:net8.0-ios /p:ArchiveOnBuild=true /p:CodesignKey="${{ secrets.CODESIGN_KEY }}"
 
