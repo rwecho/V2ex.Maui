@@ -42,7 +42,7 @@ jobs:
           
 
     - name: dotnet publish
-      run: dotnet publish -c Release -f:net8.0-ios /p:ArchiveOnBuild=true
+      run: dotnet publish -c Release -f:net8.0-ios /p:ArchiveOnBuild=true /p:CodesignKey=${{ secrets.CODESIGN_KEY }}
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.0.0
