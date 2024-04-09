@@ -1,4 +1,23 @@
 ﻿export function initializeModal(modalRef) {
+
+    // todo: prevent touchmove, https://github.com/dotnet/maui/issues/21699
+    modalRef.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    modalRef.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    modalRef.addEventListener('touchend', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+
+
     const modalOptions = {
         placement: 'center-center',
         backdrop: "dynamic",
@@ -48,7 +67,7 @@ export function initializeSwiper(thisRef, swiperRef) {
         },
         on: {
             init: function () {
-               
+
             },
             slideChange: function () {
                 thisRef.invokeMethodAsync("OnSlideChangeAsync", this.activeIndex);
