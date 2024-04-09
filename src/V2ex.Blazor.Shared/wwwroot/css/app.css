@@ -1348,6 +1348,10 @@ input:checked + .toggle-bg {
   height: 1.5rem;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -1370,6 +1374,10 @@ input:checked + .toggle-bg {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-32 {
+  height: 8rem;
 }
 
 .max-h-64 {
@@ -1885,10 +1893,6 @@ input:checked + .toggle-bg {
 
 .border-b-2 {
   border-bottom-width: 2px;
-}
-
-.border-b-\[1px\] {
-  border-bottom-width: 1px;
 }
 
 .border-t {
@@ -2731,22 +2735,6 @@ listeners can take over.
 .peer:focus ~ .peer-focus\:text-blue-600 {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
-}
-
-:is(.ios .ios\:relative) {
-  position: relative;
-}
-
-:is(.ios .ios\:h-full) {
-  height: 100%;
-}
-
-:is(.ios .ios\:overflow-auto) {
-  overflow: auto;
-}
-
-:is(.ios .ios\:overflow-hidden) {
-  overflow: hidden;
 }
 
 :is(.ios .ios\:bg-red-100) {

@@ -116,10 +116,10 @@
                         }
                     </div>
 
-                    @if (IsFormatTopicShow)
+                    @if (IsAIEnable)
                     {
                         <div class="ms-2 flex flex-row ">
-                            @if (isFormatting)
+                            @if (isAIGenerating)
                             {
                                 <button class="px-2 py-1 rounded-full text-sm flex space-x-2">
                                     <div role="status">
@@ -193,6 +193,10 @@
                     </div>
                 }
 
+                <div class="h-32"></div>
+
+
+            </ScrollView>
                 @if (currentUser != null && currentUser.IsAuthenticated)
                 {
                     <div class="sticky bottom-0 w-full flex flex-row p-4 bg-gray-50  shadow-md border-t-[1px]">
@@ -279,7 +283,6 @@
                         </div>
                     </div>
                 }
-            </ScrollView>
         </RefreshView>
     }
     else
@@ -470,16 +473,15 @@
         }
     }
 
-    private bool isFormatting;
+    private bool isAIGenerating;
 
-    private bool IsFormatTopicShow
+    private bool IsAIEnable
     {
         get
         {
             if (currentUser == null || !currentUser.IsAuthenticated
                 || viewModel == null
-                || !viewModel.Content.HasValue
-                || viewModel.Content.Value.ToString().Length < 300)
+                || !viewModel.Content.HasValue)
             {
                 return false;
             }
@@ -487,7 +489,7 @@
             var html = new HtmlDocument();
             html.LoadHtml(viewModel.Content.Value.ToString());
             var innerText = html.DocumentNode.InnerText;
-            return innerText.Length > 300;
+            return innerText.Length > 20;
         }
     }
 
@@ -832,7 +834,7 @@
     {
         try
         {
-            isFormatting = true;
+            isAIGenerating = true;
             var stream = await this.ChatGPTService.FormatTopicAsync(this.Id.ToString());
 
             formattedContent = null;
@@ -863,7 +865,7 @@
         }
         finally
         {
-            isFormatting = false;
+            isAIGenerating = false;
         }
     }
 
