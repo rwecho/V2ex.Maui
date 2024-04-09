@@ -1,5 +1,5 @@
 ﻿@page "/hottest"
-<HeadTitle Title="今日热议"></HeadTitle>
+<SectionContent SectionName="NavHeader">今日热议</SectionContent>
 
 <RefreshView Refresh="LoadAsync">
     <ScrollView>
@@ -13,8 +13,8 @@
                     }
                 </div>
                 <div class="flex flex-col items-center text-gray-400 text-sm mt-4 pb-10">
-                    <div>全部加载完成</div>
-                </div>
+                <div>全部加载完成</div>
+            </div>
             }
         </LoadingBox>
     </ScrollView>
@@ -41,7 +41,7 @@
             o.Member == null ? "" : $"/member/{o.Member?.Id}",
             o.Member == null ? "" : o.Member?.UserName,
             o.Member == null ? "" : $"/member/{o.Member?.Id}",
-            o.LastReplyBy== null? null: new MarkupString(o.LastReplyBy),
+            o.LastReplyBy == null ? null : new MarkupString(o.LastReplyBy),
             "",
             o.Node?.Title,
             $"/go/{o.Node?.Name}",

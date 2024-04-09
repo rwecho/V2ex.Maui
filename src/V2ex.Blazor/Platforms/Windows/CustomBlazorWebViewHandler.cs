@@ -6,7 +6,7 @@ using V2ex.Blazor.Pages;
 
 namespace V2ex.Blazor;
 
-public class CustomBlazorWebViewHandler: BlazorWebViewHandler
+public class CustomBlazorWebViewHandler : BlazorWebViewHandler
 {
     protected override WebView2 CreatePlatformView()
     {
@@ -26,31 +26,8 @@ public class CustomBlazorWebViewHandler: BlazorWebViewHandler
 
     private void CoreWebView2_WebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
     {
-        if (!args.WebMessageAsJson.Contains("setTitle"))
-        {
-            return;
-        }
 
-        Message message;
-        try
-        {
-            message = JsonSerializer.Deserialize<Message>(args.TryGetWebMessageAsString(), new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            }) ?? throw new InvalidCastException();
-        }
-        catch (Exception)
-        {
-            return;
-        }
-
-        var view = (BindableObject)this.VirtualView;
-
-        if (message.Type == "setTitle")
-        {
-            WebViewEvents.GetTitleChangeCommand(view)?.Execute(message.Payload);
-        }
     }
 
-    private record Message (string Type, string Payload);
+    private record Message(string Type, string Payload);
 }

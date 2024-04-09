@@ -1,5 +1,5 @@
 @page "/member/{Id}"
-<HeadTitle Title="@Id"></HeadTitle>
+<SectionContent SectionName="NavHeader">@Id</SectionContent>
 
 <RefreshView Refresh="LoadAsync">
     <ScrollView>
@@ -68,7 +68,7 @@
                     {
                         var content = new MarkupString(memberInfo.ReplyContents[i]);
                         var reply = memberInfo.Replies[i];
-                        
+
                         <div class="w-full flex flex-col space-y-2" @onclick="()=>TapReplyAsync(reply)">
                             <div class="flex flex-row justify-between py-2">
                                 <div><span>@reply.OpUserName ></span> @reply.TopicTitle </div>

@@ -41,7 +41,3 @@ export function debounce(callback, delay) {
     }, delay);
   };
 }
-
-export function getPageTitle() {
-  return document.title;
-}

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace V2ex.Blazor.Pages;
 
-public partial class ReturnPageViewModel: ObservableObject
+public partial class ReturnPageViewModel : ObservableObject
 {
     public ReturnPageViewModel(string targetLocation)
     {
@@ -11,14 +11,9 @@ public partial class ReturnPageViewModel: ObservableObject
     }
 
     [ObservableProperty]
-    private string targetLocation, pageTitle="";
+    private string targetLocation;
 
     [ObservableProperty]
     private bool hasNavigationBar = DeviceInfo.Platform != DevicePlatform.WinUI;
 
-    [RelayCommand]
-    private void OnTitleChange(string title)
-    {
-        this.PageTitle = title;
-    }
 }
