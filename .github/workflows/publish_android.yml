@@ -1,4 +1,4 @@
-name: PUBLISH Blazor
+name: publish android
 
 on:
   push:
