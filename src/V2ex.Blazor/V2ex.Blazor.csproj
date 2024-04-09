@@ -108,9 +108,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
-    <ProvisioningType>automatic</ProvisioningType>
-    <CodesignKey>Apple Development: Created via API (N6Z3ACPW2Y)</CodesignKey>
-    <CodesignProvision>VS: top.rwecho.v2ex.maui Development</CodesignProvision>
+    <ProvisioningType>manual</ProvisioningType>
+    <CodesignProvision>V2ex Maui</CodesignProvision>
   </PropertyGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionV2exBlazorHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarV2exBlazorHideInfoBar="True" /></VisualStudio></ProjectExtensions>
