@@ -2,7 +2,14 @@
 @using System.Text
 @using HtmlAgilityPack
 @implements IDisposable
-<SectionContent SectionName="NavHeader">话题</SectionContent>
+<SectionContent SectionName="NavHeader">
+    @if(topicHeaderVisible){
+        <span>话题</span>
+    }
+    else{
+        <span>@viewModel.Title</span>
+    }
+</SectionContent>
 <div @ref="containerRef" class="h-full">
     @if (viewModel != null)
     {
@@ -206,9 +213,6 @@
                         <div class="flex flex-row me-2 md:me-4 w-full">
                             <div @onclick="()=>ShowReplyInput()" class="p-2 w-full z-20 text-sm text-gray-600 bg-gray-100 rounded-lg border border-gray-300">写回复...</div>
                         </div>
-
-                        @topicHeaderVisible
-
                         <div class="flex flex-row md:space-x-4 ">
                             @if (isFavoriting)
                             {
