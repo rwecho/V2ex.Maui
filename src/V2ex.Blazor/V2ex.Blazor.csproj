@@ -35,7 +35,7 @@
         <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
 
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.4</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
@@ -105,6 +105,12 @@
   <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Release'">
     <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.Release.plist</CodesignEntitlements>
     <UseHardenedRuntime>true</UseHardenedRuntime>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
+    <ProvisioningType>automatic</ProvisioningType>
+    <CodesignKey>Apple Development: Created via API (N6Z3ACPW2Y)</CodesignKey>
+    <CodesignProvision>VS: top.rwecho.v2ex.maui Development</CodesignProvision>
   </PropertyGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionV2exBlazorHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarV2exBlazorHideInfoBar="True" /></VisualStudio></ProjectExtensions>
